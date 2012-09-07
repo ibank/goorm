@@ -1,0 +1,121 @@
+[
+    {
+        "file_extension": "html",
+        "editor": "Editor",
+        "description": "Hyper Text Markup Language",
+        "type": "Code",
+        "mode": "text/html"
+    },
+    {
+        "file_extension": "js",
+        "editor": "Editor",
+        "description": "js",
+        "type": "Code",
+        "mode": "text/javascript"
+    },
+    {
+        "file_extension": "json",
+        "editor": "Editor",
+        "description": "JSON",
+        "type": "Code",
+        "mode": "text/javascript"
+    },
+    {
+        "file_extension": "c",
+        "editor": "Editor",
+        "description": "undefined",
+        "type": "Code",
+        "mode": "text/x-csrc"
+    },
+    {
+        "file_extension": "cpp",
+        "editor": "Editor",
+        "description": "cpp",
+        "type": "Code",
+        "mode": "text/x-c++src"
+    },
+    {
+        "file_extension": "java",
+        "editor": "Editor",
+        "description": "undefined",
+        "type": "Code",
+        "mode": "text/x-java"
+    },
+    {
+        "file_extension": "asp",
+        "editor": "Editor",
+        "description": "undefined",
+        "type": "Code",
+        "mode": "text/html"
+    },
+    {
+        "file_extension": "jsp",
+        "editor": "Editor",
+        "description": "undefined",
+        "type": "Code",
+        "mode": "text/html"
+    },
+    {
+        "file_extension": "php",
+        "editor": "Editor",
+        "description": "php",
+        "type": "Code",
+        "mode": "text/html"
+    },
+    {
+        "file_extension": "css",
+        "editor": "Editor",
+        "description": "css",
+        "type": "Code",
+        "mode": "text/css"
+    },
+    {
+        "file_extension": "txt",
+        "editor": "Editor",
+        "description": "Text Source Code File",
+        "type": "Code",
+        "mode": "text/javascript"
+    },
+    {
+        "file_extension": "h",
+        "editor": "Editor",
+        "description": "undefined",
+        "type": "Code",
+        "mode": "text/x-c++src"
+    },
+    {
+        "file_extension": "uml",
+        "editor": "Designer",
+        "description": "uml file",
+        "type": "uml",
+        "mode": "text/javascript"
+    },
+    {
+        "file_extension": "ui",
+        "editor": "Designer",
+        "description": "User Interface file",
+        "type": "ui",
+        "mode": "text/javascript"
+    },
+    {
+        "file_extension": "xml",
+        "editor": "Editor",
+        "description": "undefined",
+        "type": "xml",
+        "mode": "application/xml"
+    },
+    {
+        "file_extension": "rule",
+        "editor": "Rule_Editor",
+        "description": "Code Generation Rule File",
+        "type": "Code",
+        "mode": "application/xml"
+    },
+    {
+        "file_extension": "test",
+        "editor": "Editor",
+        "description": "",
+        "type": "Code",
+        "mode": "text/javascript"
+    }
+]

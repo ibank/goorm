@@ -1,0 +1,45 @@
+<div class="content_header" localization_key='dialog_file_new_untitled_textfile'>New Untitled Text File</div>
+
+<div class="content_guide_message" localization_key='dialog_file_new_untitled_textfile_guide'>Make a New Untitled Text File</div>
+
+<div style="text-align:left;">
+	<div style="width:100%; height:21px; overflow:auto; font-size:11px;">
+    	<div style="float:left;">
+        	<span localization_key='common_location'>Location : </span>
+            <input type="text" id="text_new_location_path" style="width:160px; height:15px;" readonly="readonly" />
+        </div>
+        <div style="float:right;">
+        	<span localization_key='common_target'>Target : </span> 
+            <select name='selectbox'>
+                <option value='2' selected>Remote</option>
+            </select>
+        </div>
+    </div>
+	<div id="text_new_dialog_middle" style="width:380px; height:275px; margin-top:8px; font-size:11px;">
+		<div id="text_new_dialog_left">
+			<div id="text_new_dir_tree" class='directory_treeview' style="height:275px;overflow:auto;"></div>
+		</div>
+    </div>
+<!--
+	<div style="width:100%; height:50px; margin-top:8px; font-size:11px;">
+		<div style="width:780px; height:70px; margin-left:4px; margin-top:2px;">
+			<table>
+                <tr style="line-height:1.8em;">
+                    <td style="width:70px">Folder Name</td>
+                    <td style="text-align:right;"><input type"text" id="folder_new_input_folder_name" style="width:300px; height:15px"/></td>
+                </tr>	
+                <tr style="line-height:1.8em;">
+                    <td style="width:70px; padding-top:5px;">File Type</td>
+                    <td style="padding-top:5px; text-align:right;">
+                        <select id='file_new_input_project_type' style="width:705px; height:20px;">
+                            <option value='0' selected>All Files (*.*)</option>
+                        	<option value='html'>Html (*.html)</option>
+                            <option value='m'>Objective-C (*.m)</option>
+                        </select>
+                    </td>
+                </tr>
+			</table>
+		</div>
+    </div>    
+-->
+</div>

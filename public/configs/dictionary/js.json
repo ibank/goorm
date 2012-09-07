@@ -1,0 +1,107 @@
+[
+	{
+		"keyword": "parseInt",
+		"type": "Function",
+		"description": "The parseInt() function parses a string and returns an integer.<br/><br/>The radix parameter is used to specify which numeral system to be used, for example, a radix of 16 (hexadecimal) indicates that the number in the string should be parsed from a hexadecimal number to a decimal number.<br/><br/>If the radix parameter is omitted, JavaScript assumes the following:<br/><br/>If the string begins with \"0x\", the radix is 16 (hexadecimal)<br/>If the string begins with \"0\", the radix is 8 (octal). This feature is deprecated<br/>If the string begins with any other value, the radix is 10 (decimal)"
+	},
+	{
+		"keyword": "eval",
+		"type": "Function",
+		"description": "asdfsafsafasfsfd"
+	},
+	{
+		"keyword": "Array",
+		"type": "Function",
+		"description": "asdfsafsafasfsfd"
+	},
+	{
+		"keyword": "new",
+		"type": "Function",
+		"description": "asdfsafsafasfsfd"
+	},
+	{
+		"keyword": "Object",
+		"type": "Function",
+		"description": "asdfsafsafasfsfd"
+	},
+	{
+		"keyword": "function",
+		"type": "Function",
+		"description": "asdfsafsafasfsfd"
+	},
+	{
+		"keyword": "document",
+		"type": "",
+		"description": "asdfsafsafasfsfd"
+	},
+	{
+		"keyword": "window",
+		"type": "",
+		"description": "asdfsafsafasfsfd"
+	},
+	{
+		"keyword": "parseFloat",
+		"type": "",
+		"description": "asdfsafsafasfsfd"
+	},
+	{
+		"keyword": "parseFucking",
+		"type": "",
+		"description": "asdfsafsafasfsfd"
+	},
+	{
+		"keyword": "parse",
+		"type": "",
+		"description": "asdfsafsafasfsfd"
+	},
+	{
+		"keyword": "parseString",
+		"type": "",
+		"description": "asdfsafsafasfsfd"
+	},
+	{
+		"keyword": "parseGood",
+		"type": "",
+		"description": "asdfsafsafasfsfd"
+	},
+	{
+		"keyword": "parseBabo",
+		"type": "",
+		"description": "asdfsafsafasfsfd"
+	},
+	{
+		"keyword": "parseNimi",
+		"type": "",
+		"description": "asdfsafsafasfsfd"
+	},
+	{
+		"keyword": "parseasdfasdf",
+		"type": "",
+		"description": "asdfsafsafasfsfd"
+	},
+	{
+		"keyword": "parseasdfsdf",
+		"type": "",
+		"description": "asdfsafsafasfsfd"
+	},
+	{
+		"keyword": "parseEdsdfs",
+		"type": "",
+		"description": "asdfsafsafasfsfd"
+	},
+	{
+		"keyword": "parseDesese",
+		"type": "",
+		"description": "asdfsafsafasfsfd"
+	},
+	{
+		"keyword": "parseEEsdfsdf",
+		"type": "",
+		"description": "asdfsafsafasfsfd"
+	},
+	{
+		"keyword": "parseDSFSDFSF",
+		"type": "",
+		"description": "asdfsafsafasfsfd"
+	}
+]

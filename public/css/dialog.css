@@ -1,0 +1,199 @@
+#goorm_dialog_container .hd {
+	text-align:left;
+	font-size:11px;
+
+	-moz-border-top-left-radius: 6px;
+	-webkit-border-top-left-radius: 6px;
+	-khtml-border-top-left-radius: 6px;
+	border-top-left-radius: 6px;
+	
+	-moz-border-top-right-radius: 6px;
+	-webkit-border-top-right-radius: 6px;
+	-khtml-border-top-right-radius: 6px;
+	border-top-right-radius: 6px;	
+}
+
+#goorm_dialog_container .ft {
+	-moz-border-bottom-left-radius: 6px;
+	-webkit-border-bottom-left-radius: 6px;
+	-khtml-border-bottom-left-radius: 6px;
+	border-bottom-left-radius: 6px;
+	
+	-moz-border-bottom-right-radius: 6px;
+	-webkit-border-bottom-right-radius: 6px;
+	-khtml-border-bottom-right-radius: 6px;
+	border-bottom-right-radius: 6px;	
+}
+
+#goorm_dialog_container .yui-navset .yui-nav a em, .yui-skin-sam .yui-navset .yui-navset-top .yui-nav a em {
+	border-top: 1px solid #ccc;
+	padding-top: 3px;
+	padding-bottom: 1px;
+	padding-left: 6px;
+	padding-right: 6px;
+	position: relative;
+	font-size:11px;
+}
+
+#goorm_dialog_container .yui-navset .yui-nav {
+	background: none;
+	background-color: none;	
+	background-image: none;
+	
+	border-bottom: 0px solid #333;
+	border-left: 1px solid #999;
+}
+
+#goorm_dialog_container .selected a em {
+	padding-top: 4px !important;
+	padding-bottom: 3px !important;
+	padding-left: 7px !important;
+	padding-right: 7px !important;
+	font-size:11px;
+}
+
+#goorm_dialog_container .selector_project {
+	margin: 2px;
+	padding: 8px;
+	text-align:left;
+	cursor:pointer;
+	background-image:url(../images/org.goorm.core.project/project.png);
+	background-position:5px 5px;
+	background-repeat:no-repeat;
+	height:64px;
+}
+
+#goorm_dialog_container .selected_button {
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	-khtml-border-radius: 8px;
+	border-radius: 8px;
+	background-color: #b3d4ff;
+}
+
+#goorm_dialog_container .yui-content {
+	-moz-border-bottom-left-radius: 4px;
+	-webkit-border-bottom-left-radius: 4px;
+	-khtml-border-bottom-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+	
+	-moz-border-bottom-right-radius: 4px;
+	-webkit-border-bottom-right-radius: 4px;
+	-khtml-border-bottom-right-radius: 4px;
+	border-bottom-right-radius: 4px;
+	
+	-moz-border-top-right-radius: 4px;
+	-webkit-border-top-right-radius: 4px;
+	-khtml-border-top-right-radius: 4px;
+	border-top-right-radius: 4px;	
+	
+	border: 1px solid #999;
+	
+	padding:10px;
+}
+
+#project_export_dialog_middle .selector_project {
+	background-position:5px 8px;
+}
+
+#project_open_dialog_middle .selector_project {
+	background-position:5px 8px;
+}
+
+
+.dialogs_left {
+	float:left;
+	width: 200px;
+}
+
+.dialogs_left .yui-resize-handle-r {
+	right: -6px;
+}
+
+.dialogs_left_inner {
+	overflow-x:hidden;
+	border:1px solid #CCC;
+	background-color: #FFF;
+	height: 263px;
+	padding: 5px;
+}
+
+.dialog_center {
+	float:right;
+	width: 571px;
+	overflow:auto;
+	border:1px solid #CCC;
+	background-color: #FFF;	
+	height: 273px;
+}
+
+
+#open_dialog_middle .yui-layout-wrap {
+	border:1px solid #999;
+	background-color: #fff;
+}
+
+#move_dialog_middle .yui-layout-wrap {
+	border:1px solid #999;
+	background-color: #fff;
+}
+
+#file_new_dialog_middle .yui-layout-wrap {
+	border:1px solid #999;
+	background-color: #fff;
+}
+
+#file_new_other_dialog_middle {
+	border:1px solid #999;
+	background-color: #fff;
+}
+
+#folder_new_dialog_middle {
+	border:1px solid #999;
+	background-color: #fff;
+}
+
+#text_new_dialog_middle {
+	border:1px solid #999;
+	background-color: #fff;
+}
+
+#save_as_dialog_middle .yui-layout-wrap {
+	border:1px solid #999;
+	background-color: #fff;
+}
+
+#goorm_dialog_container .content_header {
+	border-bottom:1px solid #ccc;
+	font-size:16px;
+	height:25px;
+	text-align:right;
+	font-weight:bold;
+	margin-bottom:10px;
+	padding-right:10px;
+}
+
+#goorm_dialog_container .content_guide_message {
+	color:#666;
+	font-size:11px;
+	height:18px;
+	padding-left:5px;
+	margin-bottom:5px;
+	text-align:left;
+}
+
+#goorm_dialog_container .alert_image_div {
+	float: left;
+	width : 48px;
+	height : 48px;
+	margin-right: 10px;
+	padding: 6px;
+}
+
+#goorm_dialog_container .notice_image_div {
+	float: left;
+	width : 48px;
+	height : 48px;
+	margin-right: 10px;
+	padding: 6px;
+}

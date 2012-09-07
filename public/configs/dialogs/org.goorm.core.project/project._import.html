@@ -1,0 +1,45 @@
+<div class="content_header" localization_key='dialog_project_import'>Import Project</div>
+
+<div class="content_guide_message" localization_key='dialog_project_import_guide'>Select a Project to Import</div>
+
+<div id="project_import" style="text-align:left;">
+	<form id="project_import_my_form" action="project/import" method="post" enctype="multipart/form-data"> 
+		<div style="width:100%; height:21px; overflow:auto; font-size:11px;">
+	    	<div style="float:left;">
+	        	<span localization_key='common_location'>Location : </span> 
+	            <input type="text" id="project_import_location" name="project_import_location" style="width:500px; height:15px;" readonly="readonly" />
+	        </div>
+	        <div style="float:right;">
+	        	<span localization_key='common_type'>Type : </span>
+	            <select id='project_import_types' class='project_dialog_type' style="width:130px">
+	            	<option value='All' selected="selected">All Project</option>
+	            	<option value='goorm'>goorm Project</option>	            
+	            </select>
+	        </div>	        
+	    </div>
+		<div id="project_import_dialog_middle" style="width:780px; margin-top:8px; font-size:11px;float:left;">
+			<div id="project_import_dialog_left" class="dialogs_left" style="width:250px;">
+				<div id="project_import_list" class="dialogs_left_inner" style="height:275px;padding:0px;"></div>
+			</div>
+			<div id="project_import_dialog_center" class="dialog_center" style="height:275px;width:521px;">
+				<div id="project_import_information" style="padding:10px; line-height:18px;"></div>
+			</div>
+	    </div>
+		<div style="margin-top:10px; border:1px solid #CCC; float:left; width:768px; padding:5px;">
+			<div style="overflow:auto; font-size:11px; float:left;">
+				<span localization_key="dialog_project_import_msg">Choose the path that want to upload.</span>
+			</div>
+			<div style="overflow:auto; font-size:11px; float:right;">
+		    	<div id="project_import_file_wrapper" style="float:left;">
+					<input type="file" name="file" id="project_import_file">
+					<div id="project_import_upload_output"></div>
+		        </div>
+		    </div>
+		</div>	    
+		<input id="project_import_path" type="hidden">
+		<input id="project_import_name" type="hidden">
+		<input id="project_import_type" type="hidden">
+	</form>
+<div>
+	
+</div>

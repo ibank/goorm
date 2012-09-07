@@ -1,0 +1,256 @@
+[{
+	file: {
+		value: "File",
+		children: {
+			file_new: {
+				value: "New...",
+				children: {
+					file_new_project: { value: "Project"},
+					file_new_web_project: { value: "Web Project"},
+					file_new_php_project: { value: "PHP Project"},
+					file_new_javascript_project: { value: "Javascript Project"},
+					file_new_mobile_project: { value: "Mobile Project"},
+					file_new_ios_project: { value: "iOS Project"},
+					file_new_android_project: { value: "Android Project"},
+					file_new_uml_project: { value: "UML Project"},
+					file_new_uizard_plugin_project: { value: "goorm Plugin Project"},
+					file_new_uizard_customization_project: { value: "goorm Customization Project"},
+					file_new_file: { value: "File"},
+					file_new_folder: { value: "Folder"},
+					file_new_untitled_text_file: { value: "Untitled Text File"},
+					file_new_other: { value: "Other..."}
+				}
+			},
+			file_open_project: { value: "Open_Project..."},
+			file_open_file: { value: "Open File..."},
+			file_open_url: { value: "Open Url..."},
+			file_close: { value: "Close"},
+			file_close_all: { value: "Close All"},
+			file_save: { value: "Save..."},
+			file_save_as: { value: "Save As..."},
+			file_save_all: { value: "Save All"},
+			file_revert: { value: "Revert"},
+			file_move: { value: "Move"},
+			file_rename: { value: "Rename"},
+			file_delete: { value: "Delete"},
+			file_refresh: { value: "Refresh"},
+			file_print: { value: "Print"},
+			file_swich_workspace: { value: "Switch Workspace"},
+			file_restart: { value: "Restart"},
+			file_import: { value: "Import File"},
+			file_export: { value: "Export File"},
+			file_properties: { value: "Properties"},
+			file_exit: { value: "Exit"}
+		}
+	},	
+	
+	edit: {
+		value: "Edit",
+		children: {
+			edit_undo: { value: "Undo"},
+			edit_redo: { value: "Redo"},
+			edit_cut: { value: "Cut"},
+			edit_copy: { value: "Copy"},
+			edit_paste: { value: "Paste"},
+			edit_delete: { value: "Delete"},
+			edit_select_all: { value: "Select All"},
+			edit_find_replace: { value: "Find/Replace"},
+			edit_find_next: { value: "Find Next"},
+			edit_fine_previous: { value: "Find Previous"},
+			edit_preference: { value: "Preference"}
+		}
+	},
+	
+	design: {
+		value: "Design",
+		children: {
+			design_alignment: { 
+				value: "Alignment",
+				children: {
+					design_align_left: { value: "Align Left"},
+					design_align_right: { value: "Align Right"},
+					design_align_top: { value: "Align Top"},
+					design_align_bottom: { value: "Align Bottom"},
+					design_align_horizontally_center: { value: "Align Horizontally Center"},
+					design_align_vertically_center: { value: "Align Vertically Center"}
+				}
+			},
+			
+			design_bring_to_front: { value: "Bring to Front"},
+			design_send_to_back: { value: "Send to Back"},
+			design_bring_forward: { value: "Bring Forward"},
+			design_send_backward: { value: "Send Backward"},
+			design_canvas_setting: { value: "Canvas Setting"}
+		}
+	},
+	
+	project: {
+		value: "Project",
+		children: {
+			project_run: { value: "Run"},
+			project_debug: { value: "Debug"},
+			project_remoteRun: { value: "Remote Run"},
+			project_generate: { value: "Generate"},
+			project_generate_all: { value: "Generate All"},
+			project_build_project: { value: "Build Project"},
+			project_build_all: { value: "Build All"},
+			project_clean: { value: "Clean"},
+			project_build_configuration: { value: "Build Configuration"},
+			project_import: { value: "Import Project"},
+			project_export: { value: "Export Project"},
+			project_delete: { value: "Delete Project"},
+			project_properties: { value: "Properties"}
+		}
+	},
+	
+	collaboration: {
+		value: "Collaboartion",
+		children: {
+			collaboration_join_the_project: { value: "Join the project"},
+			collaboration_enable_chat: { value: "Enable Chat"},
+			collaboration_enable_real_time_editing: { value: "Enable Real-time Editing"},
+			collaboration_enable_real_time_drawing: { value: "Enable Real-time Drawing"},
+			collaboration_settings: { value: "Settings..."}
+		}
+	},
+	
+	window:{
+		value: "Window",
+		children: {
+			window_new_main_window : { value: "New Main Window"}, 
+			window_previous_window : { value: "Previous Window"},
+			window_next_window : { value: "Next Window"},
+			window_previous_tab : { value: "Previous Tab"},
+			window_next_tab : { value: "Next Tab"},
+			perspectives: { 
+				value: "Perspectives",
+				children: {
+					window_left_layout : { value: "Left Layout"},
+					window_left_layout_show_hide : { value: "Show/Hide"},
+					window_left_layout_toggle_project_explorer : { value: "Show Project Explorer"},
+					window_left_layout_toggle_toolbox : { value: "Show Toolbox"},
+					window_right_layout : { value: "Right Layout"},
+					window_right_layout_show_hide : { value: "Show/Hide"},
+					window_right_layout_toggle_properties : { value: "Show Properties"},
+					window_right_layout_toggle_object_explorer : { value: "Show Object Explorer"},
+					window_right_layout_toggle_chat : { value: "Show Chat"},
+					window_bottom_layout : {value: "Bottom Layout"},
+					window_bottom_layout_show_hide : { value: "Show/Hide"},
+					window_bottom_layout_toggle_messages : { value: "Show Messages"},
+					window_bottom_layout_debug : { value: "Show Debug"},
+					window_bottom_layout_console : { value: "Show Console"},
+					window_bottom_layout_search : { value: "Show Search"},
+				}
+			},
+			window_toggle_full_workspace : { value: "Toggle Full Workspace"},
+			window_hide_all_window : { value: "Hide All Window"},
+			window_show_all_window : { value: "Show All Window"},
+			window_cascade : { value: "Cascade"},
+			window_tile_vertically : { value: "Tile Vertically"},
+			window_tile_horizontally : { value: "Tile Horizontally"}
+		}
+	
+	},
+	
+	plugins: {
+		value: "Plugins",
+		children: {
+			plugin_install_new_plugin: { value: "Install New Plugin..."},
+		}
+	},
+	
+	help: {
+		value: "Help",
+		children: {
+			help_help_contents: { value: "Help Contents"},
+			help_search: { value: "Search"},
+			help_tips_and_tricks: { value: "Tips and Tricks..."},
+			help_check_for_updates: { value: "Check for Updates"},
+			help_install_new_plugin: { value: "Install New Plugin..."},
+			help_bug_report: { value: "Send Bug Report"},
+			help_about_uizard_3: { value: "About goorm 3"}
+		}
+	},
+	
+	design_zoom_in: { value: "Zoom In"},
+	design_zoom_out: { value: "Zoom Out"},
+	design_snap_to_grid: { value: "Snap To Grid"},
+	design_canvas_size: { value: "Canvas Size"},
+	
+	design_show_ruler: { value: "Show Ruler"},
+	design_hide_ruler: { value: "Hide Ruler"},
+	design_setting: { value: "Setting"},
+	
+	object_cut: { value: "Cut"},
+	object_copy: { value: "Copy"},
+	object_paste: { value: "Paste"},
+	object_delete: { value: "Delete"},
+	object_order: { 
+		value: "Order",
+		children: {
+			object_order_bring_to_front: { value: "Bring to Front"},
+			object_order_send_to_back: { value: "Send to Back"},
+			object_order_bring_forward: { value: "Bring Forward"},
+			object_order_send_backward: { value: "Send Backward"}
+		}
+	},
+	object_properties: { value: "Properties"},
+	
+	file_open_context: { value: "Open"},
+	file_open_as_context: { 
+		value: "Open As...",
+		children: {
+			file_open_as_default_editor_context: { value: "Default Editor"},
+			file_open_as_text_editor_context: { value: "Text Editor"},
+			file_open_as_code_editor_context: { value: "Code Editor"},
+			file_open_as_ui_designer_context: { value: "UI Designer"},
+			file_open_as_uml_designer_context: { value: "UML Designer"}
+		}
+	},
+	file_rename_context: { value: "Rename"},
+	file_move_context: { value: "Move"},
+	file_delete_context: { value: "Delete"},
+	file_property_context: { value: "Properties"},
+	
+	file_new_project_context: { value: "New Project"},
+	file_open_project_context: { value: "Open Project"},
+	file_save_all_context: { value: "Save All"},
+	file_import_context: { value: "Import File"},
+	file_export_context: { value: "Export File"},
+	file_refresh_context: { value: "Refresh"},
+	
+	file_new_context: {
+		value: "New",
+		children: {
+			file_new_context_new_file: { value: "File"},
+			file_new_context_new_folder: { value: "Folder"},
+			file_new_context_untitled_text_file: { value: "Untitled Text File"}
+		}	
+	},
+	
+	folder_open_context: { value: "Open"},
+	
+	project_properties_context: { value: "Project Properties"},
+	
+	toolbar_add_toolbar: { value: "Add Toolbar"},
+	toolbar_remove_toolbar: { value: "Remove Toolbar"},
+	toolbar_edit_toolbar: { value: "Edit Toolbar"},
+	
+	file_new_file_context: { value: "New File"},
+	file_open_file_context: { value: "Open File"},
+	file_close_all_context: { value: "Close All"},
+	window_toggle_full_workspace_context: { value: "Toggle Full Workspace"},
+	window_hide_all_window_context: { value: "Hide All Window"},
+	window_show_all_window_context: { value: "Show All Window"},
+	window_cascade_context: { value: "Cascade"},
+	window_tile_vertically_context: { value: "Tile Vertically"},
+	window_tile_horizontally_context: { value: "Tile Horizontally"},
+	settings: { value: "Settings..."},
+	
+	window_previous_window_context: { value: "Previous Window"},
+	window_next_window_context: { value: "Next Window"},
+	
+	maximize: { value: "Maximize" },
+	minimize: {	value: "Minimize" },
+	close: { value: "Close" }
+}]

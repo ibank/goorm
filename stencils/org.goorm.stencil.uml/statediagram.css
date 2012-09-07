@@ -1,0 +1,80 @@
+.uml {
+	font-family: Tahoma, Geneva, sans-serif;
+	line-height: 12px;
+}
+
+.stateDiagram {
+	background-color: #fff;
+	font-size: 11px;
+	height: 100%;
+}
+
+.stateDiagram .state {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #666;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	-moz-border-top-left-radius: 10px;
+	-moz-border-top-right-radius: 10px;
+	-moz-border-bottom-left-radius: 10px;
+	-moz-border-bottom-right-radius: 10px;
+	padding: 5px;
+	background-color: #EEE;
+	font-weight: bold;
+	height: 100%;
+}
+
+.stateDiagram .name {
+	text-align: center;
+	text-decoration: underline;
+	padding: 5px;
+}
+
+.stateDiagram .start {
+	border-radius: 30px;
+	border-style: solid;
+	color: black;
+	background-color: black;
+	-moz-border-radius: 30px;
+	width: 100%;
+	height: 100%;
+	
+}
+
+.stateDiagram .end {
+	border-radius: 35px;
+	border-style: solid;
+	color: black;
+	background-color: white;
+	width: 100%;
+	height: 100%;
+}
+
+.stateDiagram .endcolor {
+	border-radius: 35px;
+	border-style: solid;
+	color: black;
+	background-color: black;
+	width: 90%;
+	height: 90%;
+	margin-left: 5%;
+	margin-top: 5%;
+}
+
+.stateDiagram .attribute {
+   color: #333;
+   padding: 3px;
+   margin-left:5px;
+}
+
+.stateDiagram .attributes {
+   border-top: 1px solid #666;
+   list-style:none;
+   padding:0;
+   margin:0;
+   margin-bottom:5px;   
+}
+

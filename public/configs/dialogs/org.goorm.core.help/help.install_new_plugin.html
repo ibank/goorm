@@ -1,0 +1,41 @@
+<div style="text-align:left;" id="div_install_new_plugins">
+	<div style="width:570px; height:70px; border:1px solid #999; background-color:#fff;  overflow:auto;">
+    	<b><font style="font-size:15px"><span localization_key="dialog_help_install_new_plugins_available_software">Available Software</span></font></b>
+    	<br />
+    	<br />
+		<span localization_key="dialog_help_install_new_plugins_guide">Select a site or enter the location of a site.</span>
+    </div>
+	<div style="width:580px; height:300px; overflow:auto; font-size:11px; margin-top:8px;">
+		<div style="float:left;">
+        	<span localization_key="dialog_help_install_new_plugins_workwith">Work with</span>: 
+            <select id='selectbox' style="width:430px; height:20px;">
+                <option>type or select a site</option>
+                <option value='http://uizard.org/UIzard3/publish/list.xml'>UIzard public plugins</option>
+            </select>
+        </div>
+        <div style="float:right; margin-right:7px;">
+        	<button type="button" style="width:70px; height:20px;" id="plugins_add_button">Add...</button>
+        </div>
+    	<div style="float:left; text-align:right;">
+        	<font style="font-size:12px"><span localization_key="dialog_help_install_new_plugins_msg1">Find more software by working with the</span></font>
+        	<a href="" style=""><u>"<span localization_key="dialog_help_install_new_plugins_available_software_site">Available Software Site</span>"</u></a> 
+        	<font style="font-size:12px"><span localization_key="dialog_help_install_new_plugins_msg2">preferences</span></font> 
+            <form action="" style="margin-top:8px;">
+    			<input type"text" name="filter_text" style="width:568px; height:20px" value="type filter text"/>
+    		</form>
+        </div>
+        <div style="float:left; width:560px; height:100px; border:1px solid #999; background-color:#fff; padding:5px; overflow-y:auto;" id="div_install_new_list">
+        	<input type="checkbox" name="plugin_name1" value="http://skima.skku.edu/~moyara/"> test <br>
+        </div>
+        <div style="float:left; height:30px; margin-top:10px;">
+        	<button style="width:70px;" id="select_all"><span localization_key="common_select_all">Select All</span></button>
+        	<button style="width:70px;" id="deselect_all"><span localization_key="common_deselect_all">Deselect All</span></button>
+        </div>
+        <div style="float:right; height:30px; margin-top:10px;">
+        	<button style="width:100px;" id="install_new_plugin"><span localization_key="dialog_help_install_new_plugins_install">Install</span></button>
+        </div>
+        <div id="div_install_new_plugin_progress">
+        	
+        </div>
+	</div>
+</div>

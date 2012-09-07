@@ -1,0 +1,84 @@
+[{
+/* common */
+	alertFolderNameEmpty: { value: "Folder name is empty"},
+	alertFileNameEmpty: { value: "File name is empty"},
+	alertFileNotSelect: { value: "Please, select the file"},
+	alertFileNotOpened: { value: "Cannot find opened file"},
+	alertProjectNotSelected: { value: "Please select the project"},
+	alertOnlyZipAllowed: { value: "Only zip file is allowed"},
+	alertProjectNotOpend: { value: "Cannot find opened project"},
+	alertError: { value: "Error : "},
+	confirmationYes: { value: "Yes"},
+	confirmationCancel: { value: "Cancel"},
+	confirmationNo: { value: "No"},
+	
+/* confirmation.save.js */
+	confirmationSaveTitle: { value: "Close..."},
+	confirmationSaveTitle2: { value: "Build..."},
+	confirmationSaveMessage: { value: " has been modified. Save changes?"},
+	confirmationSaveMessage2: { value: " has been modified. Save and build?"},
+	
+/* localiztion.js */
+	confirmationLanguageTitle: { value: "언어 자동 변환"},
+	confirmationLanguageMessage: { value: "언어설정을 한국어로 변경하시겠습니까?"},
+	
+/* validate */
+	alertValidateRequired: { value: " : required"},
+	alertValidateAlpha: { value: " : only alphabets allowed"},
+	alertValidateAlphaNum: { value: " : only alphabet + numbers allowed"},
+	alertValidateDigit: { value: " : only digit numbers allowed"},
+	alertValidateNoDigit: { value: " : digit numbers are not allowed"},
+	alertValidateNum: { value: " : only numbers needed"},
+	alertValidateEmail: { value: " : invalid email"},
+	alertValidateUrl: { value: " : invalid url"},
+		
+/* dialog.wizard.js */
+	alertDialogMissing: { value: "Select project type or insert values"},
+	
+/* project._new.js */
+	alertProjectType: { value: "Select the project type"},
+	alertProjectSource: { value: "Select the project source"},
+	alertProjectDetailedType: { value: "Select the project detailed type"},
+	alertProjectAuthor: { value: "Insert the project author"},
+	alertProjectName: { value: "Insert the project name"},
+	alertProjectAbout: { value: "Insert project about"},
+	alertAllowCharacter: { value: "Only alphabets, numbers and _, - are allowed"},
+	
+/* project.explorer.js */
+	alertProjectCannotOpen: { value: "Cannot open the project"},
+	
+/* project._import.js */
+	noticeProjectImportDone: { value: "Project import done"},
+	
+/* file._import.js */
+	noticeFileImportDone: { value: "File import done"},
+	
+/* file._new.js */
+	confirmationNewTitle: { value: "New ..."},
+	confirmationNewMessage: { value: "Same file name already exists. Do you want to create anyway?"},
+	
+/* file._new.other.js */
+	confirmationNewOtherTitle: { value: "New Other ..."},
+	confirmationNewOtherMessage: { value: "Same file name already exists. Do you want to create anyway?"},
+	
+/* file.saveAs.js */
+	confirmationSaveAsTitle: { value: "saveAs ..."},
+	confirmationSaveAsMessage: { value: "Same file name already exists. Do you want to save anyway?"},
+	
+/* collaboration.joinProject.js */
+	alertCollaborationSelect: { value: "Select the project to join"},
+	
+/* help.bugReport.js */
+	alertTitleEmpty: { value: "Insert the title"},
+	alertAuthorEmpty: { value: "Insert the author"},
+	alertEmailEmpty: { value: "Insert the e-mail"},
+	alertVersionEmpty: { value: "Insert the version"},
+	alertModuleEmpty: { value: "Insert the module"},
+	alertContentsEmpty: { value: "Insert the content"},
+	alertCannotWrite: { value: "cannot write"},
+	noticeWriteDone: { value: "Bug report successfully sent. Thank you"},
+	
+/* theme.area.js */
+	alertNaming: { value: "Same area name already exists"},
+	alertValue: { value: "Area name cannot contain blank"}
+}]

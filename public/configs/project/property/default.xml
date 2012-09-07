@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	<root label="Property" expanded="true">
+		<item label="Information">
+			<tab label="Information" active="true" src="configs/project/default/project.general.html">
+				<property name="AUTHOR"  default="author"></property>
+				<property name="NAME"  default="project1"></property>
+				<property name="ABOUT"  default=""></property>
+				<property name="DETAILEDTYPE"  default=""></property>
+				<property name="DATE"  default=""></property>
+				<property name="ABOUT"  default=""></property>
+			</tab>
+		</item>
+		<!-- <item label="Run/Debug Setting">
+			<tab label="Run/Debug Setting" active="true" src="config/project/default/project.runDebugSetting.html">
+				<property name="COLLABORATION" default="false"></property>
+			</tab>
+		</item> -->
+		<item label="Collaboration Setting">
+			<tab label="Collaboration" active="true" src="configs/project/default/project.collaboration.html">
+				<property name="COLLABORATION" default="false"></property>
+			</tab>
+		</item>
+	</root>
+	<root label="Plugin" expanded="true">
+	</root>
+</project>

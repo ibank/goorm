@@ -1,0 +1,42 @@
+[
+	{
+		"keyword": "int",
+		"type": "Type",
+		"description": "?"
+	},
+	{
+		"keyword": "char",
+		"type": "Type",
+		"description": "?"
+	},
+	{
+		"keyword": "float",
+		"type": "Type",
+		"description": "?"
+	},
+	{
+		"keyword": "double",
+		"type": "Type",
+		"description": "?"
+	},
+	{
+		"keyword": "#include",
+		"type": "Type",
+		"description": "?"
+	},
+	{
+		"keyword": "#define",
+		"type": "Type",
+		"description": "?"
+	},
+	{
+		"keyword": "scanf",
+		"type": "Type",
+		"description": "?"
+	},
+	{
+		"keyword": "printf",
+		"type": "Function",
+		"description": "The parseInt() function parses a string and returns an integer.<br/><br/>The radix parameter is used to specify which numeral system to be used, for example, a radix of 16 (hexadecimal) indicates that the number in the string should be parsed from a hexadecimal number to a decimal number.<br/><br/>If the radix parameter is omitted, JavaScript assumes the following:<br/><br/>If the string begins with \"0x\", the radix is 16 (hexadecimal)<br/>If the string begins with \"0\", the radix is 8 (octal). This feature is deprecated<br/>If the string begins with any other value, the radix is 10 (decima3l)"
+	}
+]

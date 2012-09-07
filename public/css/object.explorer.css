@@ -1,0 +1,203 @@
+/*
+Copyright Sung-tae Ryu. All rights reserved.
+Code licensed under the GPL v2 License:
+http://www.goorm.org/License
+version: 3.0.0
+*/
+
+#object_explorer {
+	font-size: 11px;
+}
+
+#object_explorer .highlighted {
+	background-color: yellow;
+}
+
+#object_explorer .object_wrap {
+	line-height: 11px; white-space: nowrap; padding-right:4px; 
+}
+
+#object_explorer .object_wrap .object_square_icon {
+	float: left;
+	background: url(../images/org.goorm.core.design/item_square.png) 0 0 no-repeat; 
+	width:16px; 
+	height:16px; 
+}
+
+#object_explorer .object_wrap .object_line_icon {
+	float: left;
+	background: url(../images/org.goorm.core.design/item_line.png) 0 0 no-repeat; 
+	width:16px; 
+	height:16px; 
+}
+
+/**************************************************************************
+PROJECT TREE STYLE CUSTOMIZATION
+**************************************************************************/
+#object_explorer .project_name {
+	font-size: 11px; 
+	margin:3px;
+}
+
+#object_explorer .directory_icon {
+	margin-top:-5px;
+	margin-left:-1px;
+}
+
+#object_explorer .directory_icon {
+	margin-right:5px;
+	margin-top: 1px;
+	vertical-align:middle;
+}
+
+#object_explorer .ygtvhtml {
+	font-size:11px;
+}
+
+/* space */
+#object_explorer .ygtspacer { 
+	width:32px; 
+	height:22px; 
+}
+
+/* first or middle sibling, no children */
+#object_explorer .ygtvtn { 
+	background: url(../images/org.goorm.core.layout/fileButton.gif) 0 0 no-repeat; 
+	width:17px; 
+	height:22px; 
+}
+
+
+/* first or middle sibling, collapsable */
+/*
+#object_explorer .ygtvtm { 
+	background: url(../images/org.goorm.core.layout/openFolder.gif) 0 0 no-repeat; 
+	width:32px; 
+	height:22px; 
+	cursor:pointer; 
+}
+*/
+
+/* first or middle sibling, collapsable, hover */
+/*
+#object_explorer .ygtvtmh { 
+	background: url(../images/org.goorm.core.layout/openFolder.gif) 0 0 no-repeat; 
+	width:32px; 
+	height:22px; 
+	cursor:pointer; 
+}
+*/
+
+/* first or middle sibling, expandable */
+/*
+#object_explorer .ygtvtp { 
+	background: url(../images/org.goorm.core.layout/closedFolder.gif) 0 0 no-repeat; 
+	width:32px; 
+	height:22px; 
+	cursor:pointer; 
+}
+*/
+
+/* first or middle sibling, expandable, hover */
+/*
+#object_explorer .ygtvtph { 
+	background: url(../images/org.goorm.core.layout/closedFolder.gif) 0 0 no-repeat; 
+	width:32px; 
+	height:22px; 
+	cursor:pointer; 
+}
+*/
+
+/* last sibling, no children */
+#object_explorer .ygtvln { 
+	background: url(../images/org.goorm.core.layout/fileButtonLast.gif) 0 0 no-repeat; 
+	width:17px; 
+	height:22px; 
+}
+
+/* Last sibling, collapsable */
+/*
+#object_explorer .ygtvlm { 
+	background: url(../images/org.goorm.core.layout/openFolderLast.gif) 0 0 no-repeat; 
+	width:32px; 
+	height:22px; 
+	cursor:pointer; 
+}
+*/
+
+/* Last sibling, collapsable, hover */
+/*
+#object_explorer .ygtvlmh { 
+	background: url(../images/org.goorm.core.layout/openFolderLast.gif) 0 0 no-repeat; 
+	width:32px;
+	height:22px; 
+	cursor:pointer; 
+}
+*/
+
+/* Last sibling, expandable */
+/*
+#object_explorer .ygtvlp { 
+	background: url(../images/org.goorm.core.layout/closedFolderLast.gif) 0 0 no-repeat; 
+	width:32px; 
+	height:22px; 
+	cursor:pointer; 
+}
+*/
+
+/* Last sibling, expandable, hover */
+/*
+#object_explorer .ygtvlph { 
+	background: url(../images/org.goorm.core.layout/closedFolderLast.gif) 0 0 no-repeat; 
+	width:32px; 
+	height:22px; 
+	cursor:pointer; 
+}
+*/
+
+/* Loading icon */
+#object_explorer .ygtvloading { 
+	background:  url(http://developer.yahoo.com/yui/examples/treeview/assets/img/folders/loading.gif) 0 0 no-repeat; 
+	width:32px; 
+	height:22px;
+}
+
+/* the style for the empty cells that are used for rendering the depth 
+ * of the node */
+#object_explorer .ygtvdepthcell { 
+	background: url(http://developer.yahoo.com/yui/examples/treeview/assets/img/folders/vline.gif) 0 0 no-repeat; 
+	width:0px; 
+	height:22px; 
+}
+
+#object_explorer .ygtvblankdepthcell { 
+	width:0px; 
+	height:22px; 
+}
+
+/* the style of the div around each node */
+#object_explorer .ygtvitem { }  
+
+#object_explorer .ygtvitem  table{
+    margin-bottom:0;
+}
+#object_explorer .ygtvitem  td {
+    border:none;
+    padding:0;
+} 
+
+#object_explorer .ygtvfocus { 
+	background-color:#B3D4FF;
+}
+
+/* the style of the div around each node's collection of children */
+#object_explorer .ygtvchildren { }  
+* html .ygtvchildren { 
+	height:1%;
+}  
+
+/* the style of the text label in ygTextNode */
+#object_explorer .ygtvlabel, .ygtvlabel:link, .ygtvlabel:visited, .ygtvlabel:hover { 
+	margin-left:2px;
+	text-decoration: none;
+}

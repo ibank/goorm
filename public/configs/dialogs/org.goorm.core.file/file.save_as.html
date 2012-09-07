@@ -1,0 +1,45 @@
+<div class="content_header" localization_key=''>Save As</div>
+
+<div class="content_guide_message" localization_key=''>Select a File to Save</div>
+
+<div style="text-align:left;">
+	<div style="width:100%; height:21px; overflow:auto; font-size:11px;">
+    	<div style="float:left;">
+        	<span localization_key='common_location'>Location : </span>
+            <input type="text" id="file_save_as_location_path" style="width:600px; height:15px;">
+        </div>
+        <div style="float:right;">
+        	<span localization_key='common_target'>Type : </span>
+            <select name='selectbox'>
+                <option value='2'>Remote</option>
+            </select>
+        </div>
+    </div>
+	<div id="save_as_dialog_middle" style="width:780px; height:275px; margin-top:8px; font-size:11px;">
+		<div id="save_as_dialog_left" class="dialogs_left">
+			<div id="file_save_as_dir_tree" class='directory_treeview dialogs_left_inner'></div>
+		</div>
+		<div id="file_save_as_files" class="dialog_center"></div>
+    </div>
+	<div style="width:100%; height:50px; margin-top:8px; font-size:11px;">
+		<div style="width:780px; height:70px; margin-left:4px; margin-top:2px;">
+			<table>
+                <tr style="line-height:1.8em;">
+                    <td style="width:70px"><span localization_key='common_filename'>File Name</span></td>
+                    <td style="text-align:right;"><input type"text" id="file_save_as_target_name" style="width:695px; height:15px"/></td>
+                </tr>	
+                <tr style="line-height:1.8em;">
+                    <td style="width:70px; padding-top:5px;"><span localization_key='common_filetype'>File Type</span></td>
+                    <td style="padding-top:5px; text-align:right;">
+                        <select id='file_save_as_file_type' style="width:706px; height:20px;">
+                            <option value='' selected="selected">All Files (*.*)</option>
+                            <option value='c'>C Files (*.c)</option>
+                            <option value='uml'>UML Files (*.uml)</option>
+                            <option value='txt'>Text Files (*.txt)</option>
+                        </select>
+                    </td>
+                </tr>
+			</table>
+		</div>
+    </div>    
+</div>

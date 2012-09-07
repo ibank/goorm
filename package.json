@@ -1,0 +1,13 @@
+{
+    "name": "goormIDE"
+  , "version": "1.0.0-alpha"
+  , "private": true
+  , "dependencies": {
+      "express": "2.5.8"
+    , "jade": ">= 0.0.1"
+    , "socket.io": ""
+    , "walk": ""
+    , "connect": "",
+    , "rimraf": ""
+  }
+}
