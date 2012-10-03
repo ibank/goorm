@@ -4,7 +4,7 @@
   <script>
   function test(c){
     for (var i = 0; i < 10; i++){
-      process("a.b();c = null;", 300);
+      process("a.bhttp://localhost:9999/#();c = null;", 300);
     }
   }
   </script>

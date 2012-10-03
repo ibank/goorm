@@ -1,229 +1,229 @@
-[{
-	common_location: { value: "Location : "},
-	common_target: { value: "Target : "},
-	common_type: { value: "Type : "},
-	common_filename: { value: "File Name"},
-	common_filetype: { value: "File Type"},
-	common_selectAll: { value: "Select All"},
-	common_deselectAll: { value: "Deselect All"},
+{
+	"common_location": { "value": "Location : "},
+	"common_target": { "value": "Target : "},
+	"common_type": { "value": "Type : "},
+	"common_filename": { "value": "File Name"},
+	"common_filetype": { "value": "File Type"},
+	"common_selectAll": { "value": "Select All"},
+	"common_deselectAll": { "value": "Deselect All"},
 	
-	dialog_collaboration: {
-		value: "Join Online Project",
-		children: {
-			dialog_collaboration_guide: { value: "Join the project and work together with people!"},
-			dialog_collaboration_server: { value: "Collaboration Server"},
-			dialog_collaboration_nick: { value: "Collaboration Nickname"},
-			dialog_collaboration_option: { value: "Collaboration Option"},
-			dialog_collaboration_option_view: { value: "View-only (Example)"},
-			dialog_collaboration_option_snapshot: { value: "Client-side Snapshot (Example)"}			
+	"dialog_collaboration": {
+		"value": "Join Online Project",
+		"children": {
+			"dialog_collaboration_guide": { "value": "Join the project and work together with people!"},
+			"dialog_collaboration_server": { "value": "Collaboration Server"},
+			"dialog_collaboration_nick": { "value": "Collaboration Nickname"},
+			"dialog_collaboration_option": { "value": "Collaboration Option"},
+			"dialog_collaboration_option_view": { "value": "View-only (Example)"},
+			"dialog_collaboration_option_snapshot": { "value": "Client-side Snapshot (Example)"}			
 		}
 	},
 	
-	dialog_file_export: {
-		value: "File Export",
-		children: {
-			dialog_file_export_guide: { value: "Select the file to export"},
-			dialog_file_export_file: { value: "Selected file : "},
-			dialog_file_export_exporttype: { value: "Export file type"}
+	"dialog_file_export": {
+		"value": "File Export",
+		"children": {
+			"dialog_file_export_guide": { "value": "Select the file to export"},
+			"dialog_file_export_file": { "value": "Selected file : "},
+			"dialog_file_export_exporttype": { "value": "Export file type"}
 		}
 	},
 	
-	dialog_file_import: {
-		value: "File Import",
-		children: {
-			dialog_file_import_guide: { value: "Select the file to import"},
-			dialog_file_import_file: { value: "Select the file to import"}
+	"dialog_file_import": {
+		"value": "File Import",
+		"children": {
+			"dialog_file_import_guide": { "value": "Select the file to import"},
+			"dialog_file_import_file": { "value": "Select the file to import"}
 		}
 	},
 	
-	dialog_file_newFolder: {
-		value: "New Folder",
-		children: {
-			dialog_file_newFolder_guide: { value: "Make a new folder"},
-			dialog_file_newFolder_foldername: { value: "Folder name"}
+	"dialog_file_newFolder": {
+		"value": "New Folder",
+		"children": {
+			"dialog_file_newFolder_guide": { "value": "Make a new folder"},
+			"dialog_file_newFolder_foldername": { "value": "Folder name"}
 		}
 	},
 
-	dialog_file_newFile: {
-		value: "New File",
-		children: {
-			dialog_file_newFile_guide: { value: "Make a new file"}
+	"dialog_file_newFile": {
+		"value": "New File",
+		"children": {
+			"dialog_file_newFile_guide": { "value": "Make a new file"}
 		}
 	},
 	
-	dialog_file_newOtherFile: {
-		value: "New Other File",
-		children: {
-			dialog_file_newOtherFile_guide: { value: "Select file type to create"},
-			dialog_file_newOtherFile_textfile: { value: "Text file"}
+	"dialog_file_newOtherFile": {
+		"value": "New Other File",
+		"children": {
+			"dialog_file_newOtherFile_guide": { "value": "Select file type to create"},
+			"dialog_file_newOtherFile_textfile": { "value": "Text file"}
 		}
 	},
 		
-	dialog_file_newUntitledTextFile: {
-		value: "New Untitled Text File",
-		children: {
-			dialog_file_newUntitledTextFile_guide: { value: "Make a new untitled text file"}
+	"dialog_file_newUntitledTextFile": {
+		"value": "New Untitled Text File",
+		"children": {
+			"dialog_file_newUntitledTextFile_guide": { "value": "Make a new untitled text file"}
 		}
 	},	
 				
-	dialog_file_moveFile: {
-		value: "Move File",
-		children: {
-			dialog_file_moveFile_guide: { value: "Select path to move the file"}
+	"dialog_file_moveFile": {
+		"value": "Move File",
+		"children": {
+			"dialog_file_moveFile_guide": { "value": "Select path to move the file"}
 		}
 	},
 	
-	dialog_file_openFile: {
-		value: "Open File",
-		children: {
-			dialog_file_openFile_guide: { value: "Select the file to open"}
+	"dialog_file_openFile": {
+		"value": "Open File",
+		"children": {
+			"dialog_file_openFile_guide": { "value": "Select the file to open"}
 		}
 	},	
 	
-	dialog_file_openURL: {
-		value: "Open URL",
-		children: {
-			dialog_file_openURL_guide: { value: "Specify URL to open"}
+	"dialog_file_openURL": {
+		"value": "Open URL",
+		"children": {
+			"dialog_file_openURL_guide": { "value": "Specify URL to open"}
 		}
 	},	
 	
-	dialog_file_properties: {
-		value: "File Properties",
-		children: {
-			dialog_file_properties_fileLocation: { value: "File location"},
-			dialog_file_properties_fileSize: { value: "File size"},
-			dialog_file_properties_lastAccessTime: { value: "Last access"},
-			dialog_file_properties_LastModificationTime: { value: "Last modification"}
+	"dialog_file_properties": {
+		"value": "File Properties",
+		"children": {
+			"dialog_file_properties_fileLocation": { "value": "File location"},
+			"dialog_file_properties_fileSize": { "value": "File size"},
+			"dialog_file_properties_lastAccessTime": { "value": "Last access"},
+			"dialog_file_properties_LastModificationTime": { "value": "Last modification"}
 		}
 	},		
 	
-	dialog_file_rename: {
-		value: "File Rename",
-		children: {
-			dialog_file_rename_newName: { value: "New name"}
+	"dialog_file_rename": {
+		"value": "File Rename",
+		"children": {
+			"dialog_file_rename_newName": { "value": "New name"}
 		}
 	},
 
-	dialog_file_saveAsFile: {
-		value: "Save As",
-		children: {
-			dialog_file_saveAsFile_guide: { value: "Select the file to save"}
+	"dialog_file_saveAsFile": {
+		"value": "Save As",
+		"children": {
+			"dialog_file_saveAsFile_guide": { "value": "Select the file to save"}
 		}
 	},
 
-	dialog_file_print: {
-		value: "Print",
-		children: {
-			dialog_file_print_guide: { value: "You can print current file"},
-			dialog_file_print_pageRange: { value: "Page Range"},
-			dialog_file_print_orientation: { value: "Orientation"}
+	"dialog_file_print": {
+		"value": "Print",
+		"children": {
+			"dialog_file_print_guide": { "value": "You can print current file"},
+			"dialog_file_print_pageRange": { "value": "Page Range"},
+			"dialog_file_print_orientation": { "value": "Orientation"}
 		}
 	},
 	
-	dialog_help_bugReport: {
-		value: "Bug Report",
-		children: {
-			dialog_help_bugReport_bugReport: { value: "Bug Report"},
-			dialog_help_bugReport_title: { value: "Title"},
-			dialog_help_bugReport_author: { value: "Author"},
-			dialog_help_bugReport_email: { value: "E-mail Address"},
-			dialog_help_bugReport_currentVesion: { value: "Current Version"},
-			dialog_help_bugReport_module: { value: "Module"},
-			dialog_help_bugReport_detailed: { value: "Detailed Explanation"}
+	"dialog_help_bugReport": {
+		"value": "Bug Report",
+		"children": {
+			"dialog_help_bugReport_bugReport": { "value": "Bug Report"},
+			"dialog_help_bugReport_title": { "value": "Title"},
+			"dialog_help_bugReport_author": { "value": "Author"},
+			"dialog_help_bugReport_email": { "value": "E-mail Address"},
+			"dialog_help_bugReport_currentVesion": { "value": "Current Version"},
+			"dialog_help_bugReport_module": { "value": "Module"},
+			"dialog_help_bugReport_detailed": { "value": "Detailed Explanation"}
 		}
 	},
 
-	dialog_help_checkForUpdates: {
-		value: "Check for updates",
-		children: {
-			dialog_help_checkForUpdates_searching: { value: "Searching for updates.."}
+	"dialog_help_checkForUpdates": {
+		"value": "Check for updates",
+		"children": {
+			"dialog_help_checkForUpdates_searching": { "value": "Searching for updates.."}
 		}
 	},
 	
-	dialog_help_installNewPlugins: {
-		value: "Bug Report",
-		children: {
-			dialog_help_installNewPlugins_availableSoftware: { value: "Available Software"},
-			dialog_help_installNewPlugins_guide: { value: "Select a site or enter the location of a site"},
-			dialog_help_installNewPlugins_workwith: { value: "Work with"},
-			dialog_help_installNewPlugins_msg1: { value: "Find more software by working with the"},
-			dialog_help_installNewPlugins_availableSoftwareSite: { value: "Available Software Site"},
-			dialog_help_installNewPlugins_msg2: { value: "preferences"},
-			dialog_help_installNewPlugins_install: { value: "Install"}
+	"dialog_help_installNewPlugins": {
+		"value": "Bug Report",
+		"children": {
+			"dialog_help_installNewPlugins_availableSoftware": { "value": "Available Software"},
+			"dialog_help_installNewPlugins_guide": { "value": "Select a site or enter the location of a site"},
+			"dialog_help_installNewPlugins_workwith": { "value": "Work with"},
+			"dialog_help_installNewPlugins_msg1": { "value": "Find more software by working with the"},
+			"dialog_help_installNewPlugins_availableSoftwareSite": { "value": "Available Software Site"},
+			"dialog_help_installNewPlugins_msg2": { "value": "preferences"},
+			"dialog_help_installNewPlugins_install": { "value": "Install"}
 		}
 	},
 	
-	dialog_preference_language: {
-		value: "Language"
+	"dialog_preference_language": {
+		"value": "Language"
 	},	
 
-	dialog_project_new: {
-		value: "New Project",
-		children: {
-			dialog_project_new_guide1: { value: "Select project type"},
-			dialog_project_new_description: { value: "Project description"},
-			dialog_project_new_guide2: { value: "Insert information for new project"},
-			dialog_project_new_taget: { value: "Target :"},
-			dialog_project_new_information: { value: "Project information"},
-			dialog_project_new_author: { value: "Project author"},
-			dialog_project_new_name: { value: "Project name"},
-			dialog_project_new_about: { value: "Project about"},
-			dialog_project_new_callaboration: { value: "Collaboration setting"},
-			dialog_project_new_collaboration_use: { value: "Use collaboration"},
-			dialog_project_new_import: { value: "Project import"},
-			dialog_project_new_import_use: { value: "Import project"},
-			dialog_project_new_import_message: { value: "Select the zip file to import"}
+	"dialog_project_new": {
+		"value": "New Project",
+		"children": {
+			"dialog_project_new_guide1": { "value": "Select project type"},
+			"dialog_project_new_description": { "value": "Project description"},
+			"dialog_project_new_guide2": { "value": "Insert information for new project"},
+			"dialog_project_new_taget": { "value": "Target :"},
+			"dialog_project_new_information": { "value": "Project information"},
+			"dialog_project_new_author": { "value": "Project author"},
+			"dialog_project_new_name": { "value": "Project name"},
+			"dialog_project_new_about": { "value": "Project about"},
+			"dialog_project_new_callaboration": { "value": "Collaboration setting"},
+			"dialog_project_new_collaboration_use": { "value": "Use collaboration"},
+			"dialog_project_new_import": { "value": "Project import"},
+			"dialog_project_new_import_use": { "value": "Import project"},
+			"dialog_project_new_import_message": { "value": "Select the zip file to import"}
 		}
 	},
 	
-	dialog_project_open: {
-		value: "Open Project",
-		children: {
-			dialog_project_open_guide: { value: "Select project type"}
+	"dialog_project_open": {
+		"value": "Open Project",
+		"children": {
+			"dialog_project_open_guide": { "value": "Select project type"}
 		}
 	},
 	
-	dialog_project_clean: {
-		value: "Clean Project",
-		children: {
-			dialog_project_clean_guide: { value: "Select the project to clean"}
+	"dialog_project_clean": {
+		"value": "Clean Project",
+		"children": {
+			"dialog_project_clean_guide": { "value": "Select the project to clean"}
 		}
 	},
 
-	dialog_project_buildProject: {
-		value: "Build Project",
-		children: {
-			dialog_project_buildProject_guide: { value: "Select the project to build"}
+	"dialog_project_buildProject": {
+		"value": "Build Project",
+		"children": {
+			"dialog_project_buildProject_guide": { "value": "Select the project to build"}
 		}
 	},	
 
-	dialog_project_buildAll: {
-		value: "Build All",
-		children: {
-			dialog_project_buildAll_guide: { value: "Build projects below"}
+	"dialog_project_buildAll": {
+		"value": "Build All",
+		"children": {
+			"dialog_project_buildAll_guide": { "value": "Build projects below"}
 		}
 	},		
 	
-	dialog_project_import: {
-		value: "Import Project",
-		children: {
-			dialog_project_import_guide: { value: "Select the project to import"},
-			dialog_project_import_msg: { value: "Choose the project path to import"}
+	"dialog_project_import": {
+		"value": "Import Project",
+		"children": {
+			"dialog_project_import_guide": { "value": "Select the project to import"},
+			"dialog_project_import_msg": { "value": "Choose the project path to import"}
 		}
 	},	
 
-	dialog_project_export: {
-		value: "Export Project",
-		children: {
-			dialog_project_export_guide: { value: "Select the project to export"},
-			dialog_project_export_msg: { value: "Export project type"}
+	"dialog_project_export": {
+		"value": "Export Project",
+		"children": {
+			"dialog_project_export_guide": { "value": "Select the project to export"},
+			"dialog_project_export_msg": { "value": "Export project type"}
 		}
 	},		
 	
-	dialog_project_delete: {
-		value: "Delete Project",
-		children: {
-			dialog_project_delete_guide: { value: "Select the project to delete"}
+	"dialog_project_delete": {
+		"value": "Delete Project",
+		"children": {
+			"dialog_project_delete_guide": { "value": "Select the project to delete"}
 		}
 	}	
-}]
+}

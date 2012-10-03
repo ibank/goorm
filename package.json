@@ -1,13 +1,14 @@
 {
     "name": "goormIDE"
+  , "description": "Cloud based Integrated Development Enviroment."
   , "version": "1.0.0-alpha"
   , "private": true
   , "dependencies": {
-      "express": "2.5.8"
-    , "jade": ">= 0.0.1"
-    , "socket.io": ""
-    , "walk": ""
-    , "connect": "",
-    , "rimraf": ""
+      "express": ">= 2.5.8"
+    , "jade": ">= 0.25.0"
+    , "socket.io": ">= 2.3.6"
+    , "walk": ">= 2.2.1"
+    , "connect": ">= 2.3.6"
+    , "rimraf": ">= 2.0.2"
   }
 }

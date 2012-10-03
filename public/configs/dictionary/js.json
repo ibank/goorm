@@ -1,107 +1,147 @@
 [
 	{
-		"keyword": "parseInt",
-		"type": "Function",
-		"description": "The parseInt() function parses a string and returns an integer.<br/><br/>The radix parameter is used to specify which numeral system to be used, for example, a radix of 16 (hexadecimal) indicates that the number in the string should be parsed from a hexadecimal number to a decimal number.<br/><br/>If the radix parameter is omitted, JavaScript assumes the following:<br/><br/>If the string begins with \"0x\", the radix is 16 (hexadecimal)<br/>If the string begins with \"0\", the radix is 8 (octal). This feature is deprecated<br/>If the string begins with any other value, the radix is 10 (decimal)"
-	},
-	{
-		"keyword": "eval",
-		"type": "Function",
-		"description": "asdfsafsafasfsfd"
-	},
-	{
 		"keyword": "Array",
 		"type": "Function",
-		"description": "asdfsafsafasfsfd"
+		"description": ""
 	},
 	{
-		"keyword": "new",
+		"keyword": "concat",
 		"type": "Function",
-		"description": "asdfsafsafasfsfd"
+		"description": "Returns a new array comprised of this array joined with other array(s) and/or value(s)."
 	},
 	{
-		"keyword": "Object",
+		"keyword": "document",
+		"type": "Object",
+		"description": ""
+	},
+	{
+		"keyword": "constructor",
 		"type": "Function",
-		"description": "asdfsafsafasfsfd"
+		"description": ""
+	},
+	{
+		"keyword": "every",
+		"type": "Function",
+		"description": "Returns true if every element in an array meets the specified criteria."
+	},
+	{
+		"keyword": "filter",
+		"type": "Function",
+		"description": "Creates a new array with all elements that meet the specified criteria."
+	},
+	{
+		"keyword": "forEach",
+		"type": "Function",
+		"description": "Executes the specified function once for each element in an array."
 	},
 	{
 		"keyword": "function",
 		"type": "Function",
-		"description": "asdfsafsafasfsfd"
+		"description": ""
 	},
 	{
-		"keyword": "document",
+		"keyword": "hasOwnProperty",
+		"type": "Function",
+		"description": "Checks whether a property is inherited."
+	},
+	{
+		"keyword": "indexOf",
+		"type": "Function",
+		"description": "Returns the first index number at which the specified element can be found in the array. Returns -1 if the element is not present."
+	},
+	{
+		"keyword": "isPrototypeOf",
 		"type": "",
-		"description": "asdfsafsafasfsfd"
+		"description": "Returns true if the object is a prototype of another."
+	},
+	{
+		"keyword": "join",
+		"type": "Function",
+		"description": "Joins all elements of an array into a string."
+	},
+	{
+		"keyword": "lastIndexOf",
+		"type": "Function",
+		"description": "Searches an array backwards starting from fromIndex and returns the last index number at which the specified element can be found in the array. Returns -1 if the element is not present."
+	},
+	{
+		"keyword": "map",
+		"type": "Function",
+		"description": "Creates a new array with the results of calling a provided function on every element in this array."
+	},
+	{
+		"keyword": "Object",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "pop",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "propertyIsEnumerable",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "push",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "reverse",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "shift",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "slice",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "some",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "sort",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "toLocaleString",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "toSource",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "toString",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "unshift",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "valueOf",
+		"type": "Function",
+		"description": ""
 	},
 	{
 		"keyword": "window",
-		"type": "",
-		"description": "asdfsafsafasfsfd"
-	},
-	{
-		"keyword": "parseFloat",
-		"type": "",
-		"description": "asdfsafsafasfsfd"
-	},
-	{
-		"keyword": "parseFucking",
-		"type": "",
-		"description": "asdfsafsafasfsfd"
-	},
-	{
-		"keyword": "parse",
-		"type": "",
-		"description": "asdfsafsafasfsfd"
-	},
-	{
-		"keyword": "parseString",
-		"type": "",
-		"description": "asdfsafsafasfsfd"
-	},
-	{
-		"keyword": "parseGood",
-		"type": "",
-		"description": "asdfsafsafasfsfd"
-	},
-	{
-		"keyword": "parseBabo",
-		"type": "",
-		"description": "asdfsafsafasfsfd"
-	},
-	{
-		"keyword": "parseNimi",
-		"type": "",
-		"description": "asdfsafsafasfsfd"
-	},
-	{
-		"keyword": "parseasdfasdf",
-		"type": "",
-		"description": "asdfsafsafasfsfd"
-	},
-	{
-		"keyword": "parseasdfsdf",
-		"type": "",
-		"description": "asdfsafsafasfsfd"
-	},
-	{
-		"keyword": "parseEdsdfs",
-		"type": "",
-		"description": "asdfsafsafasfsfd"
-	},
-	{
-		"keyword": "parseDesese",
-		"type": "",
-		"description": "asdfsafsafasfsfd"
-	},
-	{
-		"keyword": "parseEEsdfsdf",
-		"type": "",
-		"description": "asdfsafsafasfsfd"
-	},
-	{
-		"keyword": "parseDSFSDFSF",
-		"type": "",
-		"description": "asdfsafsafasfsfd"
+		"type": "Object",
+		"description": ""
 	}
 ]

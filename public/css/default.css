@@ -289,6 +289,19 @@ label:hover {
 #login_box input {
 	font-size: 11px;
 }
+#login_message {
+	position:absolute; 
+	left:2px; 
+	top:449px; 
+	width:626px; 
+	height:25px; 
+	padding:5px 5px 0; 
+	display:block;
+	color: white;
+	opacity:0.7;
+	display: none;
+}
+
 
 #goorm_left {
 	border-right: 1px solid #666;
