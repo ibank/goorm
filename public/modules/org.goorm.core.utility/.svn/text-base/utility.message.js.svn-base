@@ -1,0 +1,5 @@
+/**
+ * Copyright Sung-tae Ryu. All rights reserved.
+ * Code licensed under the GPL v2 License:
+ * http://www.goorm.org/License
+ **/org.goorm.core.utility.message=function(){},org.goorm.core.utility.message.prototype={s:function(e,t){var n="Success",r="#000099";$("#message").prepend(this.make_message(n,r,e,t))},f:function(e,t){var n="Fail",r="#f66";$("#message").prepend(this.make_message(n,r,e,t))},w:function(e,t){var n="Warning",r="orange";$("#message").prepend(this.make_message(n,r,e,t))},er:function(e,t){var n="Error",r="red";$("#message").prepend(this.make_message(n,r,e,t))},ev:function(e,t){var n="Event",r="sky";$("#message").prepend(this.make_message(n,r,e,t))},a:function(e,t){var n="Alarm",r="black";$("#message").prepend(this.make_message(n,r,e,t))},make_message:function(e,t,n,r){var i="<font color="+t+">";return i+=e+": ",i+=n,i+="</font>",i+="<font color='gray'>",i+=" (from "+r+")",i+="</font>",i+="<br>",i},clean:function(){$("#message").html("")}};

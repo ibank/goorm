@@ -1,0 +1,31 @@
+#toolbox .tool_title {
+	width:100%; padding-top:5px; padding-bottom:5px; border-bottom:1px solid #333; background-color:#EEE; font-weight:bold; text-indent:5px; font-size:11px;
+}
+
+#toolbox .title_icon {
+	margin-right:5px;
+}
+
+#toolbox .tool_category {
+	width:100%; border-bottom:1px solid #333; background-color:#FAFAFA; font-weight:bold; padding-top:3px; padding-bottom:3px; text-indent:24px; font-size:11px;
+}
+
+#toolbox .category_icon {
+	background-image:url('../images/org.goorm.core.layout/item_toolboxCategory.png'); background-repeat:no-repeat; background-position: 3px 3px;
+}
+
+#toolbox .tool_item {
+	cursor:pointer; width:100%; border-bottom:1px solid #ccc; padding-top:3px; padding-bottom:3px; text-indent:24px; font-size:11px;
+}
+
+#toolbox .item_icon_line {
+	background-image:url('../images/org.goorm.core.design/item_line.png'); background-repeat:no-repeat; background-position: 3px 3px;
+}
+
+#toolbox .item_icon_square {
+	background-image:url('../images/org.goorm.core.design/item_square.png'); background-repeat:no-repeat; background-position: 3px 3px;
+}
+
+#toolbox .tool_item:hover{
+	background-color:#B3D4FF;
+}

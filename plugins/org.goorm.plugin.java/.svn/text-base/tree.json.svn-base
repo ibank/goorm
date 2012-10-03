@@ -1,0 +1,8 @@
+{
+	"label" : "Java",
+	"tab" : [
+				{	"label" : "Java",
+					"html"	: "/org.goorm.plugin.java/preference.html"
+				}
+			]
+}

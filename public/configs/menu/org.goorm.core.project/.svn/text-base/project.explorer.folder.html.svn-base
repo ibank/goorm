@@ -1,0 +1,47 @@
+<!--
+Copyright Sung-tae Ryu. All rights reserved.
+Code licensed under the GPL v2 License:
+http://www.uizard.org/License
+version: 3.0.0
+-->
+<div id="project.explorer.folder">
+    <div class="bd">
+        <ul class="first-of-type">
+            <li class="yuimenuitem">
+                <a class="yuimenuitemlabel" action="open_context" localization_key='file_new_context'>New</a>
+                 <div id="submenu_new" class="yuimenu"> 
+					<div class="bd"> 
+                    	<ul class="first-of-type"> 
+                			<li class="yuimenuitem">
+                            	<a class="yuimenuitemlabel" href="#" action="new_file_file_context" localization_key='file_new_context_new_file'>File</a>
+                            </li>
+                            <li class="yuimenuitem">
+                                <a class="yuimenuitemlabel" href="#" action="new_file_folder_context" localization_key='file_new_context_new_folder'>Folder</a>
+                            </li>
+                            <li class="yuimenuitem">
+                                <a class="yuimenuitemlabel" href="#" action="new_file_textfile_context" localization_key='file_new_context_untitled_text_file'>Untitled Text File</a>
+                            </li>
+                        </ul>
+                    </div>
+				</div>
+            </li>
+            <li class="yuimenuitem">
+                <a class="yuimenuitemlabel" action="folder_open_context" localization_key='folder_open_context'>Open</a>
+            </li>
+            <li class="yuimenuitem">
+                <a class="yuimenuitemlabel" action="rename_context" localization_key='file_rename_context'>Rename</a>
+            </li>
+			<li class="yuimenuitem">
+                <a class="yuimenuitemlabel" action="move_context" localization_key='file_move_context'>Move</a>
+            </li>
+            <li class="yuimenuitem">
+                <a class="yuimenuitemlabel" action="delete_context" localization_key='file_delete_context'>Delete</a>
+            </li>                        
+        </ul>
+        <ul>
+            <li class="yuimenuitem">
+                <a class="yuimenuitemlabel" action="property" localization_key='file_property_context'>Properties </a>
+            </li>
+        </ul>
+    </div>
+</div>

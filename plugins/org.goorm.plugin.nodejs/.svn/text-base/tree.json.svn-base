@@ -1,0 +1,8 @@
+{
+	"label" : "Nodejs",
+	"tab" : [
+				{	"label" : "Nodejs",
+					"html"	: "/org.goorm.plugin.Nodejs/preference.html"
+				}
+			]
+}

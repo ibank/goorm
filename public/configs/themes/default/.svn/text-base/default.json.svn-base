@@ -1,0 +1,266 @@
+{
+	"top-textmenu-normal": {
+		"selector": "#goorm_top .yuimenubaritem .yuimenubaritemlabel",
+		"description": "edit style of text menu : normal",
+		"style": {
+			"font-family": "Verdana, Arial, 굴림체, 굴림",
+			"color": "#000000"
+		}
+	},
+	"top-textmenu-selected": {
+		"selector": "#goorm_top .yuimenubaritem .yuimenubaritemlabel-selected",
+		"description": "edit style of text menu : selected",
+		"style": {
+			"color": "#000000",
+			"background-image": [
+				"-o-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)",
+				"-moz-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)",
+				"-webkit-gradient(linear, left bottom, left bottom, color-stop(0.1, rgb(200,200,200)), color-stop(0.9, rgb(150,150,150)))",
+				"-webkit-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)",
+				"-ms-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)",
+				"linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)"
+			]
+		}
+	},
+	"top-textmenu-background": {
+		"selector": "#goorm_top .yuimenubar",
+		"description": "edit style of text menu background",
+		"style": {
+			"background": "none"
+		}
+	},
+	"top-toolbar-normal": {
+		"selector": "#goorm_top .main_toolbar .toolbar_button",
+		"description": "edit style of toolbar : normal",
+		"style": {
+			"background": "none"
+		}
+	},
+	"top-toolbar-hover": {
+		"selector": "#goorm_top .main_toolbar .toolbar_button:hover",
+		"description": "edit style of toolbar : hover",
+		"style": {
+			"background": "none"
+		}
+	},
+	"top-toolbar-selected": {
+		"selector": "#goorm_top .main_toolbar .toolbar_button:active",
+		"description": "edit style of toolbar : selected",
+		"style": {
+			"background": "none"
+		}
+	},
+	"top-toolbar-background": {
+		"selector": ".yui-skin-sam .yui-layout .yui-layout-unit-top div.yui-layout-bd",
+		"description": "edit style of toolbar background",
+		"style": {
+			"background-image": [
+				"-o-linear-gradient(top, rgb(220,220,220) 10%, rgb(170,170,170) 90%)",
+				"-moz-linear-gradient(top, rgb(220,220,220) 10%, rgb(170,170,170) 90%)",
+				"-webkit-gradient(linear, left top, left top, color-stop(0.24, rgb(220,220,220)), color-stop(0.62, rgb(170,170,170)))",
+				"-webkit-linear-gradient(top, rgb(220,220,220) 10%, rgb(170,170,170) 90%)",
+				"-ms-linear-gradient(top, rgb(220,220,220) 10%, rgb(170,170,170) 90%)",
+				"linear-gradient(top, rgb(220,220,220) 10%, rgb(170,170,170) 90%)"
+			]
+		}
+	},
+	"left-tabmenu-normal": {
+		"selector": "#goorm_left.yui-navset .yui-nav",
+		"description": "edit style of tabmenu : normal",
+		"style": {
+			"background-image": [
+				"-o-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-moz-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-webkit-gradient(linear, left top, left top, color-stop(0.1, rgb(240,240,240)), color-stop(0.9, rgb(200,200,200)))",
+				"-webkit-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-ms-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)"
+			]
+		}
+	},
+	"left-tabmenu-hover": {
+		"selector": "#goorm_left.yui-navset .yui-nav a:hover, #goorm_left.yui-navset .yui-nav a:focus",
+		"description": "edit style of tabmenu : hover",
+		"style": {
+			"background": "#BFDAFF url(../../../lib/com.yahoo.developer.yui/build/assets/skins/sam/sprite.png) repeat-x left -1300px"
+		}
+	},
+	"left-tabmenu-selected": {
+		"selector": "#goorm_left.yui-navset .yui-nav .selected a, #goorm_left.yui-navset .yui-nav .selected a:focus, #goorm_left.yui-navset .yui-nav .selected a:hover",
+		"description": "edit style of tabmenu : selected",
+		"style": {
+			"background": "none",
+			"background-image": [
+				"-o-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)",
+				"-moz-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)",
+				"-webkit-gradient(linear, left bottom, left bottom, color-stop(0.1, rgb(200,200,200)), color-stop(0.9, rgb(150,150,150)))",
+				"-webkit-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)",
+				"-ms-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)",
+				"linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)"
+			]
+		}
+	},
+	"left-tabmenu-background": {
+		"selector": "#goorm_left .yui-navset .yui-nav",
+		"description": "edit style of tabmenu background",
+		"style": {
+			"background-image": [
+				"-o-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-moz-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-webkit-gradient(linear, left top, left top, color-stop(0.1, rgb(240,240,240)), color-stop(0.9, rgb(200,200,200)))",
+				"-webkit-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-ms-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)"
+			]
+		}
+	},
+	"right-tabmenu-normal": {
+		"selector": "#goorm_inner_layout_right.yui-navset .yui-nav",
+		"description": "edit style of tabmenu : normal",
+		"style": {
+			"background-image": [
+				"-o-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-moz-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-webkit-gradient(linear, left top, left top, color-stop(0.1, rgb(240,240,240)), color-stop(0.9, rgb(200,200,200)))",
+				"-webkit-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-ms-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)"
+			]
+		}
+	},
+	"right-tabmenu-hover": {
+		"selector": "#goorm_inner_layout_right.yui-navset .yui-nav a:hover, #goorm_inner_layout_right.yui-navset .yui-nav a:focus",
+		"style": {
+			"background": "#BFDAFF url(../../../lib/com.yahoo.developer.yui/build/assets/skins/sam/sprite.png) repeat-x left -1300px"
+		}
+	},
+	"right-tabmenu-selected": {
+		"selector": "#goorm_inner_layout_right.yui-navset .yui-nav .selected a, #goorm_inner_layout_right.yui-navset .yui-nav .selected a:focus, #goorm_inner_layout_right.yui-navset .yui-nav .selected a:hover",
+		"description": "edit style of tabmenu : selected",
+		"style": {
+			"background": "none",
+			"background-image": [
+				"-o-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)",
+				"-moz-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)",
+				"-webkit-gradient(linear, left bottom, left bottom, color-stop(0.1, rgb(200,200,200)), color-stop(0.9, rgb(150,150,150)))",
+				"-webkit-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)",
+				"-ms-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)",
+				"linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)"
+			]
+		}
+	},
+	"right-tabmenu-background": {
+		"selector": "#goorm_inner_layout_right.yui-navset .yui-nav",
+		"description": "edit style of tabmenu background",
+		"style": {
+			"background-image": [
+				"-o-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-moz-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-webkit-gradient(linear, left top, left top, color-stop(0.1, rgb(240,240,240)), color-stop(0.9, rgb(200,200,200)))",
+				"-webkit-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-ms-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)"
+			]
+		}
+	},
+	"bottom-tabmenu-normal": {
+		"selector": "#goorm_inner_layout_bottom.yui-navset .yui-nav",
+		"description": "edit style of tabmenu : normal",
+		"style": {
+			"background-image": [
+				"-o-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-moz-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-webkit-gradient(linear, left top, left top, color-stop(0.1, rgb(240,240,240)), color-stop(0.9, rgb(200,200,200)))",
+				"-webkit-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-ms-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)"
+			]
+		}
+	},
+	"bottom-tabmenu-hover": {
+		"selector": "#goorm_inner_layout_bottom.yui-navset .yui-nav a:hover, #goorm_inner_layout_bottom.yui-navset .yui-nav a:focus",
+		"description": "edit style of tabmenu : hover",
+		"style": {
+			"background": "#BFDAFF url(../../../lib/com.yahoo.developer.yui/build/assets/skins/sam/sprite.png) repeat-x left -1300px"
+		}
+	},
+	"bottom-tabmenu-selected": {
+		"selector": "#goorm_inner_layout_bottom.yui-navset .yui-nav .selected a, #goorm_inner_layout_bottom.yui-navset .yui-nav .selected a:focus, #goorm_inner_layout_bottom.yui-navset .yui-nav .selected a:hover",
+		"description": "edit style of tabmenu : selected",
+		"style": {
+			"background": "none",
+			"background-image": [
+				"-o-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)",
+				"-moz-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)",
+				"-webkit-gradient(linear, left bottom, left bottom, color-stop(0.1, rgb(200,200,200)), color-stop(0.9, rgb(150,150,150)))",
+				"-webkit-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)",
+				"-ms-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)",
+				"linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)"
+			]
+		}
+	},
+	"bottom-tabmenu-background": {
+		"selector": "#goorm_inner_layout_bottom.yui-navset .yui-nav",
+		"description": "edit style of tabmenu background",
+		"style": {
+			"background-image": [
+				"-o-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-moz-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-webkit-gradient(linear, left top, left top, color-stop(0.1, rgb(240,240,240)), color-stop(0.9, rgb(200,200,200)))",
+				"-webkit-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-ms-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)"
+			]
+		}
+	},
+	"center-tabmenu-normal": {
+		"selector": "#goorm_inner_layout_center.yui-navset .yui-nav",
+		"description": "edit style of tabmenu : normal",
+		"style": {
+			"background-image": [
+				"-o-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-moz-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-webkit-gradient(linear, left top, left top, color-stop(0.1, rgb(240,240,240)), color-stop(0.9, rgb(200,200,200)))",
+				"-webkit-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-ms-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)"
+			]
+		}
+	},
+	"center-tabmenu-hover": {
+		"selector": "#goorm_inner_layout_center.yui-navset .yui-nav a:hover, #goorm_inner_layout_center.yui-navset .yui-nav a:focus",
+		"description": "edit style of tabmenu : hover",
+		"style": {
+			"background": "#BFDAFF url(../../../lib/com.yahoo.developer.yui/build/assets/skins/sam/sprite.png) repeat-x left -1300px"
+		}
+	},
+	"center-tabmenu-selected": {
+		"selector": "#goorm_inner_layout_center.yui-navset .yui-nav .selected a, #goorm_inner_layout_center.yui-navset .yui-nav .selected a:focus, #goorm_inner_layout_center.yui-navset .yui-nav .selected a:hover",
+		"description": "edit style of tabmenu : selected",
+		"style": {
+			"background": "none",
+			"background-image": [
+				"-o-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)",
+				"-moz-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)",
+				"-webkit-gradient(linear, left bottom, left bottom, color-stop(0.1, rgb(200,200,200)), color-stop(0.9, rgb(150,150,150)))",
+				"-webkit-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)",
+				"-ms-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)",
+				"linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%)"
+			]
+		}
+	},
+	"center-tabmenu-background": {
+		"selector": "#goorm_inner_layout_center.yui-navset .yui-nav, #workspace_window_list",
+		"description": "edit style of tabmenu background",
+		"style": {
+			"background-image": [
+				"-o-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-moz-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-webkit-gradient(linear, left top, left top, color-stop(0.1, rgb(240,240,240)), color-stop(0.9, rgb(200,200,200)))",
+				"-webkit-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"-ms-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)",
+				"linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%)"
+			]
+		}
+	}
+}

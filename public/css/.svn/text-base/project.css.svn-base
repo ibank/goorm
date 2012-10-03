@@ -1,0 +1,82 @@
+.project_wizard_first_button {
+	height:64px; 
+	padding:8px; 
+	cursor:pointer;
+	margin:2px;
+}
+
+.project_wizard_first_button .project_icon {
+	width:64px;
+	height:64px;
+	vertical-align:middle;
+	margin-right:8px;
+}
+
+.project_wizard_first_button .project_type_icon {
+	float:left;
+	width:64px;
+	height:64px;
+	margin-right:8px;
+}
+
+.project_wizard_first_button .project_type_title {
+	float:left;
+	width:145px;
+	height:20px;
+	margin-top:7px;
+	font-weight:bold;
+}
+
+.project_wizard_first_button .project_type_description {
+	float:left;
+	width:145px;
+	margin-left:3px;
+	color:gray;
+	line-height:13px;
+}
+
+.project_wizard_second_button {
+	float:left;
+	width:80px;
+	height:90px;
+	margin:5px;
+	padding:5px;
+	cursor:pointer;
+}
+
+.project_wizard_second_button .project_item_icon {
+	width:64px;
+	height:64px;
+	vertical-align:middle;
+	margin-bottom:3px;
+}
+
+.project_wizard_second_button .selected_button {
+	background-color: #b3d4ff;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	-khtml-border-radius: 8px;
+	border-radius: 8px;
+	border:1px dotted #999;
+	padding:4px;	
+}
+
+.project_wizard_second_button:hover {
+	background-color: #FFFFDF;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	-khtml-border-radius: 8px;
+	border-radius: 8px;		
+	border:1px dotted #999;
+	padding:4px;
+}
+
+.project_wizard_second_button:active {
+	background-color: #FFFFDF;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	-khtml-border-radius: 8px;
+	border-radius: 8px;		
+	border:1px dotted #999;
+	padding:4px;	
+}

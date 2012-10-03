@@ -1,0 +1,1101 @@
+/*
+Copyright Sung-tae Ryu. All rights reserved.
+Code licensed under the GPL v2 License:
+http://www.goorm.org/License
+version: 3.0.0
+*/
+
+
+/**************************************************************************
+goorm
+**************************************************************************/
+A:link    {color:#333333;text-decoration:none;}
+A:visited {color:#333333;text-decoration:none;}
+A:active  {color:#333333;text-decoration:none;}
+A:hover   {color:#2d88dc;text-decoration:none;}
+
+body {
+	font-family: Verdana, Arial, 굴림체, 굴림;
+	width:100%;
+	margin:0px;
+	overflow:hidden;
+	
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+fieldset {
+	position: relative;
+	
+	padding: 10px;
+	padding-top: 30px;
+	border:1px solid #ccc;
+	margin-top:10px;
+	background-color:#FBFBFB;
+	
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;	
+	
+	-moz-box-shadow: inset 1px 1px 2px 0px #999;
+	-webkit-box-shadow: inset 1px 1px 2px 0px #999;
+	 box-shadow: inset 1px 1px 2px 0px #999;
+	
+	border-top: 0px solid #888;
+	border-left: 0px solid #888;
+	border-bottom: 1px solid #fff;
+	border-right: 1px solid #fff;	
+}
+
+fieldset legend {
+	display: block;
+	
+	position: absolute;
+	top: 5px;
+	right: 10px;
+	
+	text-align: right;
+	
+	color: #999;
+}
+
+input {
+	border:1px solid #ccc;
+	padding:2px;
+	
+	padding-left: 5px;
+	padding-right: 5px;
+	
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;	
+}
+
+textarea {
+	border:1px solid #ccc;
+	padding:2px;
+	
+	padding-left: 5px;
+	padding-right: 5px;
+	
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;	
+}
+
+label {
+	cursor: pointer;
+}
+
+label:hover {
+	color: #666;
+}
+
+.checkbox {
+	display:inline-block;
+	position:relative;
+	text-align:left;
+	width:38px;
+	height:16px;
+
+	vertical-align:middle;
+	margin-right:3px;
+  
+  	background-image: -o-linear-gradient(bottom, rgb(220,220,220) 0%, rgb(170,170,170) 100%);
+	background-image: -moz-linear-gradient(bottom, rgb(220,220,220) 0%, rgb(170,170,170) 100%);
+	background-image: -webkit-linear-gradient(bottom, rgb(220,220,220) 0%, rgb(170,170,170) 100%);
+	background-image: -ms-linear-gradient(bottom, rgb(220,220,220) 0%, rgb(170,170,170) 100%);
+	background-image: linear-gradient(bottom, rgb(220,220,220) 0%, rgb(170,170,170) 100%);
+	
+	border-top: 1px solid #555;
+	border-left: 1px solid #555;
+	border-bottom: 1px solid #fff;
+	border-right: 1px solid #fff;	
+
+	-moz-box-shadow: inset 0px 0px 3px 0px #585858;
+	-webkit-box-shadow: inset 0px 0px 3px 0px #585858;
+	 box-shadow: inset 0px 0px 3px 0px #585858;	
+	
+	overflow:hidden;
+/*
+  -webkit-box-shadow:inset 0 1px 1px black,0 1px 0 rgba(255,255,255,0.1);
+  -moz-box-shadow:inset 0 1px 1px black,0 1px 0 rgba(255,255,255,0.1);
+  box-shadow:inset 0 1px 1px black,0 1px 0 rgba(255,255,255,0.1);
+*/
+
+	-webkit-border-radius:8px;
+	-moz-border-radius:8px;
+	border-radius:8px;
+}
+
+.checkbox input {
+	display:block;
+	position:absolute;
+	top:0;
+	right:0;
+	bottom:0;
+	left:0;
+	width:100%;
+	height:100%;
+	margin:0 0;
+	cursor:pointer;
+	opacity:0;
+	filter:alpha(opacity=0);
+	z-index:2;
+	padding:0px;
+}
+
+.checkbox label {
+	background-color: #bbb;
+	background-image:-webkit-linear-gradient(-40deg,rgba(200,200,200,0.0),rgba(255,255,255,0.4),rgba(200,200,200,0.2));
+	background-image:-moz-linear-gradient(-40deg,rgba(200,200,200,0.0),rgba(255,255,255,0.4),rgba(200,200,200,0.2));
+	background-image:-ms-linear-gradient(-40deg,rgba(200,200,200,0.0),rgba(255,255,255,0.4),rgba(200,200,200,0.2));
+	background-image:-o-linear-gradient(-40deg,rgba(200,200,200,0.0),rgba(255,255,255,0.4),rgba(200,200,200,0.2));
+	background-image:linear-gradient(-40deg,rgba(200,200,200,0.0),rgba(255,255,255,0.4),rgba(200,200,200,0.2));
+  
+	-webkit-box-shadow:0 0 0 1px rgba(0,0,0,0.1),0 1px 2px rgba(0,0,0,0.7);
+	-moz-box-shadow:0 0 0 1px rgba(0,0,0,0.1),0 1px 2px rgba(0,0,0,0.7);
+	box-shadow:0 0 0 1px rgba(0,0,0,0.1),0 1px 2px rgba(0,0,0,0.7);
+
+	-webkit-border-radius:6px;
+	-moz-border-radius:6px;
+	border-radius:6px;
+
+	display:inline-block;
+	width:26px;
+	height: 13px;
+	text-align:center;
+	font-family: Consolas, Monotype;
+	font-size: 8px;
+	font-weight: bold;
+	letter-spacing: 1px;
+
+	color:#999;
+	text-shadow:0 -1px 0 rgba(0,0,0,0.7);
+
+	-webkit-transition:margin-left 0.2s ease-in-out;
+	-moz-transition:margin-left 0.2s ease-in-out;
+	-ms-transition:margin-left 0.2s ease-in-out;
+	-o-transition:margin-left 0.2s ease-in-out;
+	transition:margin-left 0.2s ease-in-out;
+
+	margin-left:1px;
+	margin-top:1px;
+}
+
+.checkbox label:before {
+	content:attr(data-off);
+}
+
+.checkbox input:checked + label {
+	margin-left:10px;
+	background-color:#eee;
+	color:#999;
+}
+
+.checkbox input:checked + label:before {
+	content:attr(data-on);
+}
+
+.yui-skin-sam {
+	background-color: #F8F8F8;
+}
+
+#main_loading_image {
+	background-image:url(../images/loading.png); 
+	width:640px; 
+	height:480px; 
+	position:relative;
+}
+
+#goorm_loading_status_bar {
+	left:2px; 
+	top:414px; 
+	position:absolute;
+	width:7px;
+	height:10px;
+	background-color:#000; 
+	filter:alpha(opacity=50); 
+	opacity:0.5;
+}
+
+#developers {
+	top:10px; 
+	left:10px; 
+	width:600px; 
+	position:absolute; 
+	text-align:left;  
+	
+	font-size:11px; 
+	color:#fff;
+	
+	text-shadow: 0px 1px 4px #000000;
+}
+
+#loading_message {
+	top:345px; 
+	left:215px; 
+	position:absolute; 
+	text-align:left; 
+	font-size:10px; 
+	color:#fff;
+}
+
+#login_box_bg {
+	position:absolute; 
+	left:2px; 
+	top:414px; 
+	width:626px; 
+	height:25px; 
+	padding:5px; 
+	display:none;
+	
+	background-color: black;
+	filter:alpha(opacity=30); 
+	opacity:0.3;
+}
+
+#login_box {
+	font-size: 11px;
+	
+	position:absolute; 
+	left:2px; 
+	top:414px; 
+	width:626px; 
+	height:25px;  
+	display:none;
+}
+
+#goorm_id {
+	margin-top: -14px;
+	margin-right: 15px;
+	
+	vertical-align: middle;
+}
+
+#goorm_pw {
+	margin-top: -14px;
+	margin-right: 15px;
+	
+	vertical-align: middle;
+}
+
+#goorm_login_button {
+	margin-top: 5px;
+}
+
+#login_box input {
+	font-size: 11px;
+}
+#login_message {
+	position:absolute; 
+	left:2px; 
+	top:449px; 
+	width:626px; 
+	height:25px; 
+	padding:5px 5px 0; 
+	display:block;
+	color: white;
+	opacity:0.7;
+	display: none;
+}
+
+
+#goorm_left {
+	border-right: 1px solid #666;
+	/* border-top: 1px solid #999; */
+}
+
+#goorm_inner_layout_right {
+	border-left: 1px solid #666;
+	/*border-top: 1px solid #999;
+	border-bottom: 1px solid #999;*/	
+}
+
+#goorm_inner_layout_center {
+	/*
+	border-left: 1px solid #999;
+	border-right: 1px solid #999;
+	border-top: 1px solid #999;
+	border-bottom: 1px solid #999;
+	*/	
+}
+
+#goorm_inner_layout_bottom {
+	/* border-left: 1px solid #999; */
+	border-top: 1px solid #666;
+}
+
+#goorm_bottom {
+	border-top: 1px solid #666;
+}
+
+#goorm_bottom .device_type {
+	margin-left:2px;
+	float:left;	
+}
+
+#goorm_bottom .goorm_version {
+	margin-left:2px;
+	float:left;	
+}
+
+#goorm_bottom .browser_name {
+	margin-left:2px;
+	float:left;	
+}
+
+#goorm_bottom .is_collaboration_on {
+	margin-left:2px;	
+	float:left;	
+	color:#999;
+}
+
+#goorm_bottom .is_chat_on {
+	margin-left:2px;	
+	float:left;
+	color:#999;	
+}
+
+#goorm_statusbar_device_type {
+	height:16px;	
+	padding-top:1px;
+	padding-left:7px;
+	padding-right:10px;	
+	margin-top:6px;
+	font-size:11px;
+	float:left;
+	text-align:left;
+	border-right:1px solid #999;
+}
+
+#goorm_statusbar_goorm_version {
+	height:16px;	
+	padding-top:1px;
+	padding-left:7px;
+	padding-right:10px;	
+	margin-top:6px;
+	font-size:11px;
+	float:left;
+	text-align:left;
+	border-right:1px solid #999;
+}
+
+#goorm_statusbar_version {
+	height:16px;	
+	padding-top:1px;
+	padding-left:7px;
+	padding-right:10px;	
+	margin-top:6px;
+	font-size:11px;
+	float:left;
+	text-align:left;
+	border-right:1px solid #999;
+}
+
+#goorm_statusbar_collaboration {
+	height:16px;
+	padding-top:1px;
+	padding-left:7px;
+	padding-right:10px;	
+	margin-top:6px;
+	font-size:11px;
+	float:left;
+	text-align:left;
+	border-right:1px solid #999;
+}
+
+#goorm_statusbar_chat {
+	height:16px;	
+	padding-top:1px;
+	padding-left:7px;
+	padding-right:10px;	
+	margin-top:6px;
+	font-size:11px;
+	float:left;
+	text-align:left;
+}
+
+#goorm_statusbar_message {
+	padding: 7px;
+	font-size: 11px;
+	width:200px;
+	float:left;
+	text-align:right;
+}
+
+#goorm_loading_indicator {
+	padding-top: 7px;
+	width:30px;
+	float:left;
+	text-align:right;
+}
+
+#goorm_progress_bar {
+	padding: 7px;
+	font-size: 11px;
+	width:100px;
+	float:left;
+}
+
+#message {
+	margin:5px;
+	font-size:11px;
+	padding:2px;
+}
+
+#debug {
+	font-size:11px;
+}
+
+#debug_left {
+	border-right: 1px solid #666;
+}
+
+#debug_right {
+
+}
+
+#debug .debugLine {
+	cursor: pointer;
+}
+
+#terminal, .terminal {
+	font-family: Consolas, Monaco, monospace, Monotype;
+	font-size:11px;
+	background-color: black;
+	color: white;
+	padding:5px;
+}
+
+#terminal #prompt_input, .terminal .prompt_input {
+	font-family: Consolas, Monaco, monospace, Monotype;
+	font-size:11px;
+	background-color: black;
+	border:0px;
+	color:white;
+	padding: 0px;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+	border-radius: 0px;
+}
+
+#terminal #prompt_input:focus, .terminal .prompt_input:focus {
+	outline: none;
+}
+
+#terminal .stdout, .terminal .stdout {
+	font-size:11px;
+}
+
+#terminal pre, .terminal pre {
+	background-color: transparent;
+	padding: 0px;
+	line-height: 14px;
+	font-family: Consolas, Monaco, monospace, Monotype;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+	border-radius: 0px;
+}
+
+#project_selector, #toolbox_selector {
+	overflow:hidden;
+	font-size: 12px;
+	height:27px;
+	padding-left:5px;
+	padding-right:5px;
+	padding-top:5px;
+	background-color:#eee;
+	border-bottom:1px solid #ddd;
+	text-align:center;
+}
+
+#startpage_container {
+	position:absolute;
+	left:0px;
+	top:0px;
+	background-color: #fff;
+	width:100%;
+	height:100%;
+	overflow:hidden;
+	z-index:10;
+}
+
+.button {
+	cursor:pointer;
+}
+
+
+.debug_tab_line_selection {
+	cursor:pointer;
+	border-bottom:1px solid #eee;
+	padding:3px;
+}
+
+.debug_tab_line_selection:hover {
+	background-color:#FFFFDF;
+}
+
+.select_div {
+	padding: 3px;
+	cursor: pointer;
+	line-height: 11px;
+}
+
+.select_div:hover {
+	background-color:#B3D4FF;
+	color:#FFF;
+}
+
+.selected_div {
+	background-color:#B3D4FF;
+	color:#FFF;
+}
+
+
+/**************************************************************************
+YUI BUTTON STYLE CUSTOMIZATION
+**************************************************************************/
+.yui-skin-sam .yui-button {
+	color: #000;
+	font-size: 11px !important;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	-khtml-border-radius: 6px;
+	border-radius: 6px;
+	padding-left:8px;
+	padding-right:8px;
+	
+	background-image: -o-linear-gradient(top, rgb(245,245,245) 30%, rgb(210,210,210) 90%);
+	background-image: -moz-linear-gradient(top, rgb(245,245,245) 30%, rgb(210,210,210) 90%);
+	background-image: -webkit-gradient(linear, left top, left top, color-stop(0.30, rgb(245,245,245)), color-stop(0.90, rgb(210,210,210)));
+	background-image: -webkit-linear-gradient(top, rgb(245,245,245) 30%, rgb(210,210,210) 90%);
+	background-image: -ms-linear-gradient(top, rgb(245,245,245) 30%, rgb(210,210,210) 90%);
+	background-image: linear-gradient(top, rgb(245,245,245) 30%, rgb(210,210,210) 90%);
+	
+	border-color: #666 !important;
+	border-width: 1px;
+	border-style: solid;
+	height:22px;
+	
+	-moz-box-shadow: 0px 0px 2px 0px #aaa;
+	-webkit-box-shadow: 0px 0px 2px 0px #aaa;
+	 box-shadow: 0px 0px 2px 0px  #aaa;
+}
+
+.yui-skin-sam .yui-button button {
+	font-family: Verdana, Arial, 굴림체, 굴림;
+	font-size: 100%;
+}
+
+.yui-skin-sam .yui-button span {
+	border:0px !important;
+}
+
+.yui-skin-sam .default {
+	background-image:url(../images/org.goorm.core/default_button_bg.png);
+	background-position:0px 0px !important;
+	border-color: #666 !important;
+}
+
+.yui-skin-sam .default button {
+	color: #000 !important;
+	border-color: #666 !important;
+}
+
+.yui-skin-sam .yui-button-hover {
+	border-color: #aaa !important;	
+	background-position:0px 0px !important;
+}
+
+.yui-skin-sam .yui-button-active {
+	border-color: #aaa !important;	
+	background-position:0px 0px !important;
+}
+
+/**************************************************************************
+YUI MENU STYLE CUSTOMIZATION
+**************************************************************************/
+.yui-skin-sam .yuimenu {
+	font-size: 11px;
+	font-family: Verdana, Arial, 굴림체, 굴림;
+}
+
+.yui-skin-sam .yui-menu-button button {
+	text-align: left;
+}
+
+.yui-skin-sam .yuimenu .bd {
+	background-color: #f6f6f6;
+	padding:3px;
+}
+
+.yui-skin-sam .yuimenu li {
+	background-repeat: no-repeat;
+}
+
+.yui-skin-sam .yuimenubar {
+	background: none;
+	border: none;
+}
+
+.yui-skin-sam .yuimenubaritem .yuimenubaritemlabel {
+	font-size: 11px;
+	font-family: Verdana, Arial, 굴림체, 굴림;
+}
+
+.yui-skin-sam .yuimenubaritem .yuimenubaritemlabel-selected {
+	background-image: -o-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%);
+	background-image: -moz-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%);
+	background-image: -webkit-gradient(linear, left bottom, left bottom, color-stop(0.1, rgb(200,200,200)), color-stop(0.9, rgb(150,150,150)));
+	background-image: -webkit-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%);
+	background-image: -ms-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%);
+	background-image: linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%);
+}
+
+.yui-skin-sam .yuimenubaritemlabel {
+	border:none;
+}
+
+.yui-skin-sam .yuimenuitem .yuimenuitemlabel {
+	font-size: 11px;
+	font-family: Verdana, Arial, 굴림체, 굴림;
+}
+
+#goorm_top .yuimenuitem .yuimenuitemlabel {
+	height:18px;
+	padding-left:26px;
+	padding-top:2px;
+	background-position: 5px;
+	background-repeat: no-repeat;
+}
+
+.yui-skin-sam .yuimenuitem .helptext {
+	font-size: 90%;
+	color: #AAA;
+	padding-left: 40px;
+	text-align: right;
+}
+
+.yui-skin-sam .yuimenu h6 {
+	font-weight: normal;
+	font-size: 11px;
+	padding: 3px 5px 0;
+	text-align:left;
+}
+
+/**************************************************************************
+YUI PROGRESSBAR STYLE CUSTOMIZATION
+**************************************************************************/
+.yui-skin-sam .yui-pb-rtl, .yui-skin-sam .yui-pb-ltr {
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	-khtml-border-radius: 6px;
+	border-radius: 6px;
+	
+	-moz-box-shadow: 0px 0px 2px 1px #fff;
+	-webkit-box-shadow: 0px 0px 2px 1px #fff;
+	 box-shadow: 0px 0px 2px 1px  #fff;
+}
+
+.yui-skin-sam .yui-pb-ltr .yui-pb-bar, .yui-skin-sam .yui-pb-rtl .yui-pb-bar {
+	background-image: -o-linear-gradient(top, rgb(91,199,255) 50%, rgb(0,144,255) 90%);
+	background-image: -moz-linear-gradient(top, rgb(91,199,255) 50%, rgb(0,144,255) 90%);
+	background-image: -webkit-gradient(linear, left top, left top, color-stop(0.50, rgb(91,199,255)), color-stop(0.90, rgb(0,144,255)));
+	background-image: -webkit-linear-gradient(top, rgb(91,199,255) 50%, rgb(0,144,255) 90%);
+	background-image: -ms-linear-gradient(top, rgb(91,199,255) 50%, rgb(0,144,255) 90%);
+	background-image: linear-gradient(top, rgb(91,199,255) 50%, rgb(0,144,255) 90%);
+	
+	-moz-box-shadow: inset 0px 0px 4px -1px #333;
+	-webkit-box-shadow: inset 0px 0px 4px -1px #333;
+	 box-shadow: inset 0px 0px 4px -1px  #333;
+	 
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	-khtml-border-radius: 6px;
+	border-radius: 6px;	 
+}
+
+.yui-skin-sam .yui-pb-mask {
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	-khtml-border-radius: 6px;
+	border-radius: 6px;	 
+}
+
+/**************************************************************************
+YUI LAYOUT STYLE CUSTOMIZATION
+**************************************************************************/
+
+.yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-bd {
+	background-color:transparent;
+}
+
+.yui-skin-sam .yui-layout .yui-layout-unit-top div.yui-layout-bd {
+	border: 0px;
+	border-bottom: 1px solid #666;
+	
+	background-image: -o-linear-gradient(top, rgb(220,220,220) 10%, rgb(170,170,170) 90%);
+	background-image: -moz-linear-gradient(top, rgb(220,220,220) 10%, rgb(170,170,170) 90%);
+	background-image: -webkit-gradient(linear, left top, left top, color-stop(0.24, rgb(220,220,220)), color-stop(0.62, rgb(170,170,170)));
+	background-image: -webkit-linear-gradient(top, rgb(220,220,220) 10%, rgb(170,170,170) 90%);
+	background-image: -ms-linear-gradient(top, rgb(220,220,220) 10%, rgb(170,170,170) 90%);
+	background-image: linear-gradient(top, rgb(220,220,220) 10%, rgb(170,170,170) 90%);
+	
+	-moz-box-shadow: 0px -1px 10px 0px #333;
+	-webkit-box-shadow: 0px -1px 10px 0px #333;
+	 box-shadow: 0px -1px 10px 0px #333;	
+}
+
+.yui-skin-sam .yui-layout .yui-layout-unit-left div.yui-layout-bd {
+	border: none;
+	/*
+	border-top:#666 1px solid;
+	border-right:#666 1px solid;
+	border-bottom:#666 1px solid;
+	*/
+}
+
+.yui-skin-sam .yui-layout .yui-layout-unit-center div.yui-layout-bd {
+	border: none;
+}
+
+.yui-skin-sam .yui-layout .yui-layout-unit-right div.yui-layout-bd {
+	border: none;
+	/*
+	border-top:#666 1px solid;
+	border-left:#666 1px solid;
+	border-bottom:#666 1px solid;
+	*/
+}
+
+.yui-skin-sam .yui-layout .yui-layout-unit-bottom div.yui-layout-bd {
+	border: none;
+	
+	background-image: -o-linear-gradient(top, rgb(220,220,220) 10%, rgb(170,170,170) 90%);
+	background-image: -moz-linear-gradient(top, rgb(220,220,220) 10%, rgb(170,170,170) 90%);
+	background-image: -webkit-gradient(linear, left top, left top, color-stop(0.24, rgb(220,220,220)), color-stop(0.62, rgb(170,170,170)));
+	background-image: -webkit-linear-gradient(top, rgb(220,220,220) 10%, rgb(170,170,170) 90%);
+	background-image: -ms-linear-gradient(top, rgb(220,220,220) 10%, rgb(170,170,170) 90%);
+	background-image: linear-gradient(top, rgb(220,220,220) 10%, rgb(170,170,170) 90%);
+}
+
+.yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-hd h2 {
+    font-weight: bold;
+    color: #fff;
+    padding: 3px;
+	font-size:12px;
+}
+
+.yui-skin-sam .yui-layout .yui-layout-hd {  
+     border: 1px solid #808080;   
+}  
+
+.yui-skin-sam .yui-layout {
+    background-color: transparent;
+}
+
+.yui-skin-sam .yui-layout-unit .yui-resize-handle-t .yui-layout-resize-knob, .yui-skin-sam .yui-layout-unit .yui-resize-handle-b .yui-layout-resize-knob {
+	background: none;
+}
+
+.yui-skin-sam .yui-layout-unit .yui-resize-handle-r .yui-layout-resize-knob, .yui-skin-sam .yui-layout-unit .yui-resize-handle-l .yui-layout-resize-knob {
+	background: none;
+}
+
+.yui-skin-sam .yui-layout .yui-layout-clip {
+	background-color: #f8f8f8;
+	border: 0px;
+}
+
+.yui-skin-sam .yui-layout .yui-layout-clip-left {
+	border:0px;
+	border-right:1px solid #666;
+	
+	background-image: -o-linear-gradient(right, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: -moz-linear-gradient(right, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: -webkit-linear-gradient(right, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: -ms-linear-gradient(right, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: linear-gradient(right, rgb(240,240,240) 10%, rgb(200,200,200) 90%);	
+}
+
+.yui-skin-sam .yui-layout .yui-layout-clip-bottom {
+	border:0px;
+	border-top:1px solid #666;
+	
+	background-image: -o-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: -moz-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: -webkit-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: -ms-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);	
+}
+
+.yui-skin-sam .yui-layout .yui-layout-clip-right {
+	border:0px;	
+	border-left:1px solid #666;
+	
+	background-image: -o-linear-gradient(left, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: -moz-linear-gradient(left, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: -webkit-linear-gradient(left, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: -ms-linear-gradient(left, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: linear-gradient(left, rgb(240,240,240) 10%, rgb(200,200,200) 90%);	
+}
+
+.yui-skin-sam .yui-layout .yui-layout-hd {
+	background-color:transparent;
+	height: 0px;
+	border: white;
+}
+
+.yui-layout .yui-layout-unit div.yui-layout-hd .collapse {
+	z-index: 10;
+	top: 5px;
+	right: 5px;	
+	width:16px;
+	height:16px;	
+}
+
+.yui-skin-sam .yui-layout .yui-layout-unit-left div.yui-layout-hd .collapse {
+	background: transparent url(../images/org.goorm.core.layout/collapse_left.png) no-repeat 0px 0px;
+	border: 0px;
+}
+
+.yui-skin-sam .yui-layout .yui-layout-unit-right div.yui-layout-hd .collapse {
+	background: transparent url(../images/org.goorm.core.layout/collapse_right.png) no-repeat 0px 0px;
+	border: 0px;
+}
+
+.yui-skin-sam .yui-layout .yui-layout-unit-bottom div.yui-layout-hd .collapse {
+	background: transparent url(../images/org.goorm.core.layout/collapse_down.png) no-repeat 0px 0px;
+	border: 0px;
+}
+
+.yui-layout .yui-layout-clip .collapse {
+	z-index: 10;
+	top: 3px;
+	right: 3px;	
+	width:16px;
+	height:16px;	
+}
+
+.yui-skin-sam .yui-layout .yui-layout-clip-left .collapse {
+	background: transparent url(../images/org.goorm.core.layout/uncollapse_right.png) no-repeat 0px 0px;
+	border: 0px;
+}
+
+.yui-skin-sam .yui-layout .yui-layout-clip-right .collapse {
+	background: transparent url(../images/org.goorm.core.layout/uncollapse_left.png) no-repeat 0px 0px;
+	border: 0px;
+}
+
+.yui-skin-sam .yui-layout .yui-layout-clip-bottom .collapse {
+	background: transparent url(../images/org.goorm.core.layout/uncollapse_up.png) no-repeat 0px 0px;
+	border: 0px;
+}
+
+/**************************************************************************
+YUI TAB STYLE CUSTOMIZATION
+**************************************************************************/
+.yui-skin-sam .yui-navset .yui-nav,  
+.yui-skin-sam .yui-navset .yui-navset-top .yui-nav { /* protect nested tabviews from other orientations */  
+    border:solid #ccc; /* color between tab list and content */  
+	border: 0px;
+	border-bottom: 1px solid #666;
+    Xposition:relative;   
+    /*zoom:1;*/
+	font-size:11px;   
+	padding-left:0px;
+	padding-right:0px;
+	padding-top:0px;
+	
+	height:24px;
+	overflow: hidden;
+	
+	background-image: -o-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: -moz-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: -webkit-gradient(linear, left top, left top, color-stop(0.1, rgb(240,240,240)), color-stop(0.9, rgb(200,200,200)));
+	background-image: -webkit-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: -ms-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+}
+
+.yui-skin-sam .yui-navset .yui-content {  
+	background: #ffffff;
+}
+.yui-skin-sam .yui-navset .yui-content,
+.yui-skin-sam .yui-navset .yui-navset-top .yui-content {
+    padding:0px; /* content padding */
+}
+
+.yui-skin-sam  .yui-content {
+	overflow: auto;
+	border:none;
+}
+
+.yui-skin-sam .yui-navset .yui-content, .yui-skin-sam .yui-navset .yui-navset-top .yui-content {
+	border:none;
+}
+
+.yui-skin-sam .yui-navset .yui-nav li,
+.yui-skin-sam .yui-navset .yui-navset-top .yui-nav li {
+    margin:0; /* space between tabs */
+    padding:0; /* gecko: make room for overflow */
+    /*zoom:1;*/
+    zoom:0;
+	font-size:11px;
+	font-family: Verdana, Arial, 굴림체, 굴림;
+	padding-top:0px;
+	border:0px;
+	border-right:1px solid #666;
+}
+
+.yui-skin-sam .yui-navset .yui-nav a em, .yui-skin-sam .yui-navset .yui-navset-top .yui-nav a em {
+	border:0px;
+	padding-top:3px;
+	top:0px;
+	
+	padding-left: 10px;
+	padding-right: 10px;	
+}
+
+.yui-skin-sam .yui-navset .yui-nav a,
+.yui-skin-sam .yui-navset .yui-navset-top .yui-nav a {
+    color:#222;
+	background:none;
+	background-color:#F8F8F8;
+	height:24px;
+	border:0px;
+	
+	background-image: -o-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: -moz-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: -webkit-gradient(linear, left top, left top, color-stop(0.1, rgb(240,240,240)), color-stop(0.9, rgb(200,200,200)));
+	background-image: -webkit-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: -ms-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);	
+}
+.yui-skin-sam .yui-navset .yui-nav .selected a,   
+.yui-skin-sam .yui-navset .yui-nav .selected a:focus, /* no focus effect for selected */ 
+.yui-skin-sam .yui-navset .yui-nav .selected a:hover { /* no hover effect for selected */  
+	margin: 0; /* space between tabs */
+	background:none;
+	/* background-color:#999; /* selected tab background */
+	font-size:11px; 
+	font-family: Verdana, Arial, 굴림체, 굴림;
+	color: #333;
+	
+	background-image: -o-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%);
+	background-image: -moz-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%);
+	background-image: -webkit-gradient(linear, left bottom, left bottom, color-stop(0.1, rgb(200,200,200)), color-stop(0.9, rgb(150,150,150)));
+	background-image: -webkit-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%);
+	background-image: -ms-linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%);
+	background-image: linear-gradient(bottom, rgb(200,200,200) 10%, rgb(150,150,150) 90%);
+	
+	-moz-box-shadow: inset 0px 1px 8px -2px #333;
+	-webkit-box-shadow: inset 0px 1px 8px -2px #333;
+	 box-shadow: inset 0px 1px 8px -2px #333;
+}
+
+
+.yui-skin-sam .yui-navset .yui-nav .selected a,  
+.yui-skin-sam .yui-navset .yui-nav .selected a em {  
+	border: 0px;
+	top:0px;
+    /* border-color:#ccc; /* selected tab border color */
+}
+
+.yui-skin-sam .yui-navset .yui-nav .selected a em {
+	padding-top: 3px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.yui-skin-sam .yui-navset .yui-nav .selected,
+.yui-skin-sam .yui-navset .yui-navset-top .yui-nav .selected {
+	margin: 0px;
+}
+
+
+/**************************************************************************
+YUI PANEL STYLE CUSTOMIZATION
+**************************************************************************/
+.yui-skin-sam .yui-panel-container {
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	-khtml-border-radius: 6px;
+	border-radius: 6px;
+}
+
+.yui-skin-sam .yui-panel {
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	-khtml-border-radius: 6px;
+	border-radius: 6px;
+	
+	-moz-box-shadow: 0px 2px 7px 0px #333;
+	-webkit-box-shadow: 0px 2px 7px 0px #333;
+	box-shadow: 0px 2px 7px 0px #333;
+	 
+	border: 0px solid #444;
+	border-top: 1px solid #444;
+}
+
+.yui-skin-sam .container-close {
+	top:5px;
+	width: 12px;
+	height: 12px;
+	border: 1px solid #AAA;
+	background: url(../images/icons/context/closebutton.png) no-repeat 0 0px;
+	background-position: 2px 2px;
+	background-color: #FFF;
+	
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	border-radius: 3px;		
+}
+
+.yui-skin-sam .container-close:hover {
+	border: 1px solid #CCC;
+	background-color: #FFF;
+	
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	border-radius: 3px;	
+}
+
+.yui-skin-sam .yui-panel .hd, .yui-skin-sam .yui-panel .bd, .yui-skin-sam .yui-panel .ft {
+	border-left-color: #333;
+	border-right-color: #333;
+}
+
+.yui-skin-sam .yui-panel .ft {
+	border-bottom: 1px solid #444;
+}
+
+.yui-skin-sam .yui-panel .bd {
+	border-top: 1px solid #666;
+}
+
+.yui-skin-sam .yui-panel .ft {
+	margin-right: -1px;
+}
+
+.yui-skin-sam .yui-panel .hd {
+	font-weight: normal;
+	
+	background:none;
+	background-color: none;	
+	background-image: none;
+	
+	background-image: -o-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: -moz-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: -webkit-gradient(linear, left top, left top, color-stop(0.1, rgb(240,240,240)), color-stop(0.9, rgb(200,200,200)));
+	background-image: -webkit-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: -ms-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	background-image: linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	
+	border-bottom: solid 1px #BBB;
+}

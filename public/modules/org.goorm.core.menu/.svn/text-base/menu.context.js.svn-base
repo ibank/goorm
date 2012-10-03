@@ -1,0 +1,5 @@
+/**
+ * Copyright Sung-tae Ryu. All rights reserved.
+ * Code licensed under the GPL v2 License:
+ * http://www.goorm.org/License
+ **/org.goorm.core.menu.context=function(){this.menu=null,this.target=null,this.name=null},org.goorm.core.menu.context.prototype={init:function(e,t,n,r,i,s){var o=this;this.target=i;if(t=="none")$(n).bind("contextMenu",function(e){return!1});else{var u="file/get_contents";n==""&&(n=null),$.ajax({url:u,type:"GET",data:"path=public/"+e,success:function(e){if(r!=null&&r!=""){while(e.indexOf("[{@FINGERPRINT}]")!=-1)e=e.replace("[{@FINGERPRINT}]",r);t=t+"_"+r}o.name=t,$("#goorm_menu_container").find("div[id='"+t+"']").remove(),$("#goorm_menu_container").append(e),$(n).bind("contextmenu",function(e){return e.preventDefault(),!1}),o.menu=new YAHOO.widget.ContextMenu(t,{trigger:n,lazyload:!0,effect:{effect:YAHOO.widget.ContainerEffect.FADE,duration:.15}}),s&&s.call(o)}})}},show:function(){this.menu&&this.menu.show()},cancel:function(){this.menu&&this.menu.cancel()},blur:function(){this.menu&&this.menu.blur()},hide:function(){this.menu&&this.menu.hide()},remove:function(){$("#"+this.target).remove(),delete this}};

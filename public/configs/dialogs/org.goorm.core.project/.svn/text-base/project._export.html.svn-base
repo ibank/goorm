@@ -1,0 +1,39 @@
+<div class="content_header" localization_key='dialog_project_export'>Export Project</div>
+
+<div class="content_guide_message" localization_key='dialog_project_export_guide'>Select a Project to Export</div>
+
+<div id="project_export" style="text-align:left;">
+	<div style="width:100%; height:20px; overflow:auto; font-size:11px;">
+    	<div style="float:left;">
+        	<span localization_key='common_location'>Location : </span>
+            <input id="project_export_location" style="width:520px;" readonly="readonly" />
+        </div>
+        <div style="float:right;">
+        	<span localization_key='common_type'>Type : </span>
+            <select id='project_export_types' class='project_dialog_type' style="width:130px">
+            	<option value='All' selected="selected">All Project</option>
+            	<option value='goorm'>goorm Project</option>            
+            </select>
+        </div>
+    </div>
+	<div id="project_export_dialog_middle" style="width:780px; height:300px; margin-top:8px; font-size:11px;">
+		<div id="project_export_dialog_left" class="dialogs_left" style="width:250px;">
+			<div id="project_export_list" class="dialogs_left_inner" style="height:298px;padding:0px;"></div>
+		</div>
+		<div id="project_export_dialog_center" class="dialog_center" style="height:298px;width:521px;">
+			<div id="project_export_information" style="padding:10px; line-height:18px;"></div>
+		</div>
+    </div>
+	<input id="project_export_path" type="hidden">
+	<input id="project_export_name" type="hidden">
+	<input id="project_export_type" type="hidden">
+	<div style="width:100%; height:20px; overflow:auto; font-size:11px; margin-top:10px;">
+		<div style="float:right;">
+            <select id='project_export_datatype'>
+                <option value='1' selected="selected">zip</option>
+                <!--<option value='2'>zip</option>-->
+            </select>
+		</div>
+		<div style="float:right; margin-right:20px;"><span localization_key='dialog_project_export_msg'>Export project type</span></div>
+	</div>
+</div>

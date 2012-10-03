@@ -1,0 +1,33 @@
+<div class="content_header" localization_key='dialog_project_open'>Open Project</div>
+
+<div class="content_guide_message" localization_key='dialog_project_open_guide'>Select a Project to Open</div>
+
+<div id="project_open" style="text-align:left;">
+	<div style="width:100%; height:20px; overflow:auto; font-size:11px;">
+    	<div style="float:left;">
+        	<span localization_key='common_location'>Location : </span> 
+            <input id="project_open_location" style="width:500px;" readonly="readonly" />
+        </div>
+        <div style="float:right;">
+        	<span localization_key='common_type'>Type : </span>
+            <select id='project_open_types' class='project_dialog_type' style="width:130px">
+            	<option value='All' selected="selected">All Project</option>
+            	<option value='goorm'>goorm Project</option>
+            </select>
+        </div>
+    </div>
+	<div id="project_open_dialog_middle" style="width:780px; margin-top:8px; font-size:11px;float:left;">
+		<div id="project_open_dialog_left" class="dialogs_left" style="width:250px;">
+			<div id="project_open_list" class="dialogs_left_inner" style="height:320px;padding:0px;"></div>
+		</div>
+		<div id="project_open_dialog_center" class="dialog_center" style="height:320px;width:521px;">
+			<div id="project_open_information" style="padding:10px; line-height:18px;"></div>
+		</div>
+    </div>
+	<input id="project_open_path" type="hidden">
+	<input id="project_open_name" type="hidden">
+	<input id="project_open_type" type="hidden">
+</div>
+<div>
+	
+</div>

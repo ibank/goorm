@@ -1,0 +1,23 @@
+<!--
+Copyright Sung-tae Ryu. All rights reserved.
+Code licensed under the GPL v2 License:
+http://www.uizard.org/License
+version: 3.0.0
+-->
+<div id="window.tab_[{@FINGERPRINT}]">
+    <div class="bd">
+        <ul class="first-of-type">
+            <li class="yuimenuitem first-of-type">
+                <a class="yuimenuitemlabel minimize" href="#File" localization_key="minimize">Minimize </a>
+            </li>
+            <li class="yuimenuitem">
+                <a class="yuimenuitemlabel unminimize" href="#Edit" localization_key="minimize">Unminimize </a>
+            </li>
+        </ul>
+        <ul>
+            <li class="yuimenuitem">
+                <a class="yuimenuitemlabel close" href="#" localization_key="close">Close </a>
+            </li>
+        </ul>
+    </div>
+</div>

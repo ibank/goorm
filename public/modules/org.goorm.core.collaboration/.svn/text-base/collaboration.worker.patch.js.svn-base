@@ -1,0 +1,1 @@
+importScripts("collaboration.edit.diffMatchPatch.js"),onmessage=function(e){var t=new diff_match_patch,n=e.data.uuid,r=e.data.user_id,i=e.data.patch,s=e.data.current_text,o=t.patch_apply(i,s);postMessage([n,r,o[0]])};

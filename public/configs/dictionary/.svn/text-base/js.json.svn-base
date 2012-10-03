@@ -1,0 +1,147 @@
+[
+	{
+		"keyword": "Array",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "concat",
+		"type": "Function",
+		"description": "Returns a new array comprised of this array joined with other array(s) and/or value(s)."
+	},
+	{
+		"keyword": "document",
+		"type": "Object",
+		"description": ""
+	},
+	{
+		"keyword": "constructor",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "every",
+		"type": "Function",
+		"description": "Returns true if every element in an array meets the specified criteria."
+	},
+	{
+		"keyword": "filter",
+		"type": "Function",
+		"description": "Creates a new array with all elements that meet the specified criteria."
+	},
+	{
+		"keyword": "forEach",
+		"type": "Function",
+		"description": "Executes the specified function once for each element in an array."
+	},
+	{
+		"keyword": "function",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "hasOwnProperty",
+		"type": "Function",
+		"description": "Checks whether a property is inherited."
+	},
+	{
+		"keyword": "indexOf",
+		"type": "Function",
+		"description": "Returns the first index number at which the specified element can be found in the array. Returns -1 if the element is not present."
+	},
+	{
+		"keyword": "isPrototypeOf",
+		"type": "",
+		"description": "Returns true if the object is a prototype of another."
+	},
+	{
+		"keyword": "join",
+		"type": "Function",
+		"description": "Joins all elements of an array into a string."
+	},
+	{
+		"keyword": "lastIndexOf",
+		"type": "Function",
+		"description": "Searches an array backwards starting from fromIndex and returns the last index number at which the specified element can be found in the array. Returns -1 if the element is not present."
+	},
+	{
+		"keyword": "map",
+		"type": "Function",
+		"description": "Creates a new array with the results of calling a provided function on every element in this array."
+	},
+	{
+		"keyword": "Object",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "pop",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "propertyIsEnumerable",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "push",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "reverse",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "shift",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "slice",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "some",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "sort",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "toLocaleString",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "toSource",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "toString",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "unshift",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "valueOf",
+		"type": "Function",
+		"description": ""
+	},
+	{
+		"keyword": "window",
+		"type": "Object",
+		"description": ""
+	}
+]

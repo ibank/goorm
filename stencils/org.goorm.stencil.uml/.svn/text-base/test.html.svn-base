@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+
+<link rel=stylesheet type="text/css" href="classDiagram.css"/>
+
+</head>
+
+<body>
+
+<div>
+	<div style="width:7px; 
+	height:7px;
+	margin-top:-3px; 
+	background-color: yellow;
+	float:left;
+	-moz-transform:rotate(45deg);
+	-moz-transform:rotate(45deg); 
+	-moz-transform:skewx(25deg) translatex(150px);
+	-webkit-transform:rotate(45deg);"></div>
+	<div style="width:17px; 
+	height:17px; 
+	margin-top:-3px; 
+	background-color:black; 
+	float:right;
+	-moz-transform:rotate(-45deg);
+	-moz-transform:rotate(-45deg); 
+	-moz-transform:skewx(25deg) translatex(150px);
+	-webkit-transform:rotate(-45deg);"></div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,78 @@
+<div>
+	<div id="tip_and_tricks_contents" style="float:right; width:680px; height:300px; text-align:left; margin-top:8px;border:1px solid #ccc; background-color:#fff;">
+		<div class="wizard_step" step="1">
+			<div class="subject">
+            	UIzard3의 숨겨진 기능!
+            </div>
+            <div class="media">
+            	<!--
+            	<object width="340" height="203"><param name="movie" value="http://www.youtube.com/v/3X6TQsQ7Zic?version=3&amp;hl=ko_KR&amp;rel=0"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/3X6TQsQ7Zic?version=3&amp;hl=ko_KR&amp;rel=0" type="application/x-shockwave-flash" width="340" height="203" allowscriptaccess="always" allowfullscreen="true"></embed></object>
+            	-->
+            </div>
+			<div class="description">
+            	<span class="title">Angra - Nova Era (2010)</span><br />
+                UIzard3 는 여러분에게 웹을 기반으로 하는 새로운 개발 경험을 가져다 줄 것입니다!
+            </div>
+            <div class="additional">
+            	는 개 똥이고 잘됐으면 좋겠다!
+            </div>            
+    	</div>
+		<div class="wizard_step" step="2" style="display:none;">
+			Tips and Tricks step 2
+	    </div>
+		<div class="wizard_step" step="3" style="display:none;">
+			Tips and Tricks step 3
+	    </div>
+		<div class="wizard_step" step="4" style="display:none;">
+			Tips and Tricks step 4
+	    </div>
+		<div class="wizard_step" step="5" style="display:none;">
+			Tips and Tricks step 5
+	    </div>
+		<div class="wizard_step" step="6" style="display:none;">
+			Tips and Tricks step 1
+    	</div>
+		<div class="wizard_step" step="7" style="display:none;">
+			Tips and Tricks step 2
+	    </div>
+		<div class="wizard_step" step="8" style="display:none;">
+			Tips and Tricks step 3
+	    </div>
+		<div class="wizard_step" step="9" style="display:none;">
+			Tips and Tricks step 4
+	    </div>
+		<div class="wizard_step" step="10" style="display:none;">
+			Tips and Tricks step 5
+	    </div>
+		<div class="wizard_step" step="11" style="display:none;">
+			Tips and Tricks step 1
+    	</div>
+		<div class="wizard_step" step="12" style="display:none;">
+			Tips and Tricks step 2
+	    </div>
+		<div class="wizard_step" step="13" style="display:none;">
+			Tips and Tricks step 3
+	    </div>
+		<div class="wizard_step" step="14" style="display:none;">
+			Tips and Tricks step 4
+	    </div>
+		<div class="wizard_step" step="15" style="display:none;">
+			Tips and Tricks step 5
+	    </div>
+		<div class="wizard_step" step="16" style="display:none;">
+			Tips and Tricks step 1
+    	</div>
+		<div class="wizard_step" step="17" style="display:none;">
+			Tips and Tricks step 2
+	    </div>
+		<div class="wizard_step" step="18" style="display:none;">
+			Tips and Tricks step 3
+	    </div>
+		<div class="wizard_step" step="19" style="display:none;">
+			Tips and Tricks step 4
+	    </div>
+		<div class="wizard_step" step="20" style="display:none;">
+			Tips and Tricks step 5
+	    </div>                        
+    </div>    
+</div>

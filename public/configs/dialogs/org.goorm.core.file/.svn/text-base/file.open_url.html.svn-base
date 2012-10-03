@@ -1,0 +1,10 @@
+<div>
+	<div style="font-size:11px; margin-bottom:8px; text-align:left;">
+    	<span localization_key="dialog_file_open_url_guide">Specify URL to open</span> 
+    </div>
+	<div style="width:400px; height:50px; margin-top:8px; text-align:center;">
+		<input type="text" id="open_url_address" value="http://" style="width:400px; height:20px; font-size:11px;" />
+    </div>	
+</div>
+
+<!-- 입력이 가능한 Select box (combo box) 구현 필요 -->

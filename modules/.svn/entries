@@ -1,0 +1,58 @@
+10
+
+dir
+176
+svn+ssh://jeg0330@svn.code.sf.net/p/goorm/code/trunk/modules
+svn+ssh://jeg0330@svn.code.sf.net/p/goorm/code
+
+
+
+2012-10-03T09:41:15.503038Z
+176
+moyara
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+745096f2-0d0b-4187-a893-ad0b4f80928c
+
+org.goorm.core.theme
+dir
+
+org.goorm.core.utility
+dir
+
+org.goorm.core.project
+dir
+
+org.goorm.core.member
+dir
+
+org.goorm.core.shell
+dir
+
+org.goorm.plugin
+dir
+
+org.goorm.core.collaboration
+dir
+
+org.goorm.core.terminal
+dir
+
+org.goorm.core.preference
+dir
+
+org.goorm.core.file
+dir
+

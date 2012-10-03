@@ -1,0 +1,58 @@
+10
+
+dir
+176
+svn+ssh://jeg0330@svn.code.sf.net/p/goorm/code/trunk/public/configs/toolbars
+svn+ssh://jeg0330@svn.code.sf.net/p/goorm/code
+
+
+
+2012-08-30T13:02:16.570501Z
+145
+xenoz0718
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+745096f2-0d0b-4187-a893-ad0b4f80928c
+
+org.goorm.core.scm
+dir
+
+org.goorm.core.edit
+dir
+
+org.goorm.core.debug
+dir
+
+org.goorm.core.project
+dir
+
+org.goorm.core.window
+dir
+
+org.goorm.core.collaboration
+dir
+
+org.goorm.core.help
+dir
+
+org.goorm.core.design
+dir
+
+org.goorm.core.layout
+dir
+
+org.goorm.core.file
+dir
+

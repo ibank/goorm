@@ -1,0 +1,11 @@
+<div class="content_header" localization_key='dialog_project_clean'>Clean Project</div>
+
+<div class="content_guide_message" localization_key='dialog_project_clean_guide'>Select a Project to Clean</div>
+
+<div id="build_clean" style="text-align:left;">
+	<div id="build_clean_list" style="width:373px; height:210px; margin-top:8px; overflow:auto; font-size:11px; border:1px solid #bbb; background:white; padding:2px; line-height:1.5em;">
+    </div>
+    <div style="padding-top:10px; text-align:right;">
+    	<button id="build_clean_select_all" style="padding: 5px;margin-top:5px;"><span localization_key="common_select_all">Select All</span></button><button id="build_clean_unselect_all" style="padding: 5px;margin-top:5px;margin-left: 5px;"><span localization_key="common_deselect_all">Deselect All</span></button>
+    </div>
+<div>

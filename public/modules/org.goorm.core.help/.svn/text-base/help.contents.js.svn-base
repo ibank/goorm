@@ -1,0 +1,5 @@
+/**
+ * Copyright Sung-tae Ryu. All rights reserved.
+ * Code licensed under the GPL v2 License:
+ * http://www.goorm.org/License
+ **/org.goorm.core.help.contents=function(){this.dialog=null,this.buttons=null,this.tabview=null,this.treeview=null},org.goorm.core.help.contents.prototype={init:function(){var e=this,t=function(){this.hide()},n=function(){this.hide()};this.buttons=[{text:"OK",handler:t,isDefault:!0},{text:"Cancel",handler:n}],this.dialog=new org.goorm.core.help.contents.dialog,this.dialog.init({title:"Help Contents",path:"configs/dialogs/org.goorm.core.help/help.contents.html",width:900,height:600,modal:!0,yes_text:"OK",no_text:"Close",buttons:this.buttons,success:function(){var t=new YAHOO.util.Resize("help_contents_left",{handles:["r"],minWidth:150,maxWidth:350});t.on("resize",function(e){var t=e.width;$("#help_contents_middle").css("width",900-t-30+"px")}),e.treeview=new YAHOO.widget.TreeView("help_contents_treeview"),e.treeview.render()}}),this.dialog=this.dialog.dialog},show:function(){this.dialog.panel.show()}};

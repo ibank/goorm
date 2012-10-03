@@ -1,0 +1,11 @@
+<div>
+	<div style="float:left; width:200px; height:400px; padding:5px; border:1px solid #ccc; background-color:#fff; overflow:auto; font-size:11px;">
+		<div id="property_treeview" class="dialog_treeview">
+		</div>
+	</div>
+	<div style="float:right; width:460px; height:410px; text-align:left;">
+		<div id="property_tabview" class="yui-navset">
+		</div>
+	</div>
+</div>
+
