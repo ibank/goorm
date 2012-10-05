@@ -72,7 +72,7 @@ Getting Started
           ...
           Thu Oct  4 23:26:15 [websvr] admin web console waiting for connections on port 28017
           Thu Oct  4 23:26:15 [initandlisten] waiting for connections on port 27017
-
+          ...
 
 
         
