@@ -62,16 +62,17 @@ Getting Started
           $ git clone git://github.com/xenoz0718/goorm.git
 
   or
+  
           $ svn checkout svn://svn.code.sf.net/p/goorm/code/trunk goorm 
                  
 
 * **Run**
 
-  run MongoDB:
+  run mongodb:
     
           $ mongod
           
-  if MongoDB installed successfully, it prints information as below:
+  if mongodb installed successfully, it prints information as below:
 
           ...
           Thu Oct  4 23:26:15 [websvr] admin web console waiting for connections on port 28017
@@ -88,7 +89,7 @@ Getting Started
           { port: 9999, process_name: 'goorm' }
           goorm IDE server listening on port 9999 in development mode
           
-  you can run the goorm below URL in your web-browser (google chrome is hardly recommended)
+  you can run the goorm as below URL in your web-browser (google chrome is hardly recommended)
   
           http://localhost:9999
         
