@@ -12,8 +12,8 @@ Official Site
 Sorry! The official site of this project currently provides only in Korean now.
 English site is preparing, now.
 
-          http://goorm.io
-          http://goorm.org
+* http://goorm.io
+* http://goorm.org
 
 Features
 --------
