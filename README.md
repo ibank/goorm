@@ -73,8 +73,6 @@ Getting Started
           Thu Oct  4 23:26:15 [websvr] admin web console waiting for connections on port 28017
           Thu Oct  4 23:26:15 [initandlisten] waiting for connections on port 27017
           ...
-
-
         
   run goorm.js:
           
@@ -85,9 +83,6 @@ Getting Started
           info  - socket.io started
           { port: 9999, process_name: 'goorm' }
           goorm IDE server listening on port 9999 in development mode
-
-        
-  
         
 License
 -------
