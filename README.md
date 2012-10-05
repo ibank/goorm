@@ -86,4 +86,4 @@ Getting Started
         
 License
 -------
-[GNU General Public License Version 3.0(GPLv3)](http://gplv3.fsf.org/)
+goorm is provided under the [GNU General Public License Version 3.0(GPLv3)](http://gplv3.fsf.org/)
