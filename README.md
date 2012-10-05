@@ -36,12 +36,12 @@ Getting Started
   
           $ node -v
           
-  if node.js installed successfully, it prints node.js version like below:
+  if node.js installed successfully, it prints node.js version as below:
   
           $ v0.8.2
 
   install npm   
-  it requires curl to install npm, install curl like below :
+  it requires curl to install npm, install curl as below :
         
           $ sudo chown -R $USER /usr/local
           $ apt-get install curl
@@ -67,7 +67,7 @@ Getting Started
     
           $ mongod
           
-  if MongoDB installed successfully, it prints information like below:
+  if MongoDB installed successfully, it prints information as below:
 
           ...
           Thu Oct  4 23:26:15 [websvr] admin web console waiting for connections on port 28017
@@ -78,7 +78,7 @@ Getting Started
           
           $ node goorm.js
           
-  if goorm runned successfully, it prints information like below:
+  if goorm runned successfully, it prints information as below:
   
           info  - socket.io started
           { port: 9999, process_name: 'goorm' }
