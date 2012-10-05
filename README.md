@@ -32,7 +32,7 @@ Features
 Getting Started
 ---------------
 
-* **Installation**
+* **node.js installation**
 
   install node.js :
 
