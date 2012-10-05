@@ -18,7 +18,7 @@ Features
 * **Powerful search/replace**
 * **Customize your own goorm** (not yet)
 * **Manage your project via FTP / SVN** (not yet)
-* **Work with useful Terminal**
+* **Work with the useful terminal**
 
 Getting Started
 ---------------
@@ -43,7 +43,8 @@ Getting Started
   
           $ v0.8.2
 
-  install npm   
+  install npm (optional- latest version of node.js automatically install npm, so you may not install npm) :
+  
   it requires curl to install npm, install curl as below :
         
           $ sudo chown -R $USER /usr/local
@@ -57,12 +58,12 @@ Getting Started
 * **Download**
 
   checkout goorm:
-    
-          $ svn checkout svn://svn.code.sf.net/p/goorm/code/trunk goorm 
-          
+
+          $ git clone git://github.com/xenoz0718/goorm.git
+
   or
-          
-          $ git clone git://github.com/xenoz0718/goorm.git        
+          $ svn checkout svn://svn.code.sf.net/p/goorm/code/trunk goorm 
+                 
 
 * **Run**
 
@@ -86,6 +87,10 @@ Getting Started
           info  - socket.io started
           { port: 9999, process_name: 'goorm' }
           goorm IDE server listening on port 9999 in development mode
+          
+  you can run the goorm below URL in your web-browser (google chrome is hardly recommended)
+  
+          http://localhost:9999
         
 License
 -------
