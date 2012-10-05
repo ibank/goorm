@@ -1,7 +1,10 @@
-goorm
+project.goorm
 =========================
 
-goorm is an open source project for cloud based integrated development Environment developed in using various open source libraries. goorm supports C/C++ and Java as well as HTML, CSS, PHP, Javascript and other languages.
+goorm is the cloud-based Integrated Development Environment. It is developed in only javascript and using various open source libraries. It is also an open-source project. goorm supports currently C/C++ and Java as well as HTML, CSS, PHP and Javascript. Other languages will be supported by plugin. (future work).
+
+goorm is developing now and this repository provides only alpha version.
+
 
 Features
 --------
@@ -9,12 +12,12 @@ Features
 * **Build your own cloud integrated development environment**
 * **Support various plug-ins**
 * **Collaborate on projects in real-time with other developers**
-* **Design UI through goorm**
+* **Design UI through goorm** (not yet)
 * **Reorganize your own goorm**
 * **Support syntax highlighting**
-* **Powerful search**
-* **Design your own goorm**
-* **Manage your project via FTP / SVN**
+* **Powerful search/replace**
+* **Customize your own goorm** (not yet)
+* **Manage your project via FTP / SVN** (not yet)
 * **Work with useful Terminal**
 
 Getting Started
