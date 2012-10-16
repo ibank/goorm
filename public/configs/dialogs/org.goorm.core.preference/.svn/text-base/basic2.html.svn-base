@@ -1,1 +1,0 @@
-testvar2 : <input type="text" name="testvar2" value="default" validate="required,alpha">

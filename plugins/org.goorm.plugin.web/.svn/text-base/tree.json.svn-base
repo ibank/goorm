@@ -1,8 +1,0 @@
-{
-	"label" : "Web",
-	"tab" : [
-				{	"label" : "Web",
-					"html"	: "/org.goorm.plugin.web/preference.html"
-				}
-			]
-}

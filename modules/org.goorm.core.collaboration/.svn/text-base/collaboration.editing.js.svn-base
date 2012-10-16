@@ -1,1 +1,0 @@
-module.exports={msg:function(e,t){e.broadcast.to(t.workspace).emit("editing_message",JSON.stringify(t))}};

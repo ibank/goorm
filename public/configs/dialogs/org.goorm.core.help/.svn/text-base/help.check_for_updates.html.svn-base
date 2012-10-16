@@ -1,5 +1,0 @@
-<div>
-	<div style="float:left; width:100%; height:20px; text-align:left;" id="div_check_for_update">
-		<font style="font-size:14px;"><span localization_key="dialog_help_check_for_updates_searching">Searching for updates..</span></font>
-	</div>
-</div>

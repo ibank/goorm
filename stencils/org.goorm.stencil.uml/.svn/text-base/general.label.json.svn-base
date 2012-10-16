@@ -1,8 +1,0 @@
-{
-	label: "Label",
-	font_size: "12px",
-	font_color: "#000",	
-	font_style: "normal",	
-	font_weight: "normal",		
-	bg_color: "transparent"
-}

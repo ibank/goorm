@@ -1,8 +1,0 @@
-{
-	"label" : "C",
-	"tab" : [
-				{	"label" : "C",
-					"html"	: "/org.goorm.plugin.cpp/preference.html"
-				}
-			]
-}

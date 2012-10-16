@@ -1,5 +1,0 @@
-<div id="collaboration.toolbar" class="toolbar_part">
-	<a action='chat_on_off'><img src="configs/toolbars/org.goorm.core.collaboration/image/chat.png" class="toolbar_button" border="0" /></a>
-	<a action='collaboration_edit_on_off'><img src="configs/toolbars/org.goorm.core.collaboration/image/edit.png" class="toolbar_button" border="0" /></a>
-	<a action='collaboration_draw_on_off'><img src="configs/toolbars/org.goorm.core.collaboration/image/drawing.png" class="toolbar_button" border="0" /></a>
-</div>

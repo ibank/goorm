@@ -1,6 +1,0 @@
-{
-	"plugin.c.version" : 		"1.0.0",
-	"plugin.c.buildOptions" : 	"-o",
-	"plugin.c.buildSource" : 	"main.c",
-	"plugin.c.buildTarget" : 	"main.o"
-}

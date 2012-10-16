@@ -1,5 +1,0 @@
-<div id="window.toolbar" class="toolbar_part">
-	<a action="cascade"><img src="configs/toolbars/org.goorm.core.window/image/cascade.png" class="toolbar_button cascade" border="0" /></a>
-    <a action="tile_vertically"><img src="configs/toolbars/org.goorm.core.window/image/tile_vertical.png" class="toolbar_button tile_horizontal" border="0" /></a>
-    <a action="tile_horizontally"><img src="configs/toolbars/org.goorm.core.window/image/tile_horizontal.png" class="toolbar_button tile_vertical" border="0" /></a>
-</div>

@@ -1,9 +1,0 @@
-<!-- classdiagram.inheritance -->
-<!-- 막힌 빈 화살표로 변경요 -->
-<div>
-	<div style="height:9px; width:9px; margin-top:-5px; float: left; background-image:url(stencil/org.uizard.stencil.uml/images/bordered_arrow_left.png);">
-    </div>
-    
-	<div style="height:9px; width:9px; margin-top:-5px; float: right; background-image:url(stencil/org.uizard.stencil.uml/images/bordered_arrow_right.png);">
-    </div>
-</div>

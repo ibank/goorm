@@ -1,4 +1,0 @@
-<div style="width:31px; height:18px; float:left; padding-top:2px; padding-left:9px; text-align:left; font-size:11px; margint-top:2px;">Area</div><input type="text" id="newArea" class="exampleArea" style="width:150px; height:18px; border: 1px solid #ccc; float:left; font-size:11px; margint-top:2px;" value="workspace">
-
-
-<div style="width:40px; font-size:11px; margin-top:15px; float:left">Note </div><div style="width:160px; font-size:11px; margin-top:15px; text-align:left; line-height:1; float:left">Area name should not include white-space</div>

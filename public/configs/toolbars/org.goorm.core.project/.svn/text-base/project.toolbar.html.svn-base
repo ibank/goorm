@@ -1,7 +1,0 @@
-<div id="project.toolbar" class="toolbar_part">
-	<a action='run'><img src="configs/toolbars/org.goorm.core.project/image/run.png" class="toolbar_button" border="0" /></a>
-	<a action='debug'><img src="configs/toolbars/org.goorm.core.project/image/debug.png" class="toolbar_button" border="0" /></a>    
-    <a action='generate'><img src="configs/toolbars/org.goorm.core.project/image/generate.png" class="toolbar_button" border="0" /></a>
-    <a action='build_project'><img src="configs/toolbars/org.goorm.core.project/image/build.png" class="toolbar_button" border="0" /></a>
-    <a action='build_clean'><img src="configs/toolbars/org.goorm.core.project/image/clean.png" class="toolbar_button" border="0" /></a>
-</div>

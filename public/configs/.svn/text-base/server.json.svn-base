@@ -1,9 +1,0 @@
-{
-	"OS_version" : "Darwin Kernel Version 11.2.0",
-	"Apache_version" : "2.0.64",
-	"PHP_version" : "5.3.5",
-	"Redis_version" : "Not Found",
-	"Node_version" : "Not Found",
-	"Theme" : "default",
-	"Language" : "client"
-}
