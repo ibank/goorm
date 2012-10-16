@@ -2,4 +2,320 @@
  * Copyright Sung-tae Ryu. All rights reserved.
  * Code licensed under the GPL v2 License:
  * http://www.goorm.org/License
- **/org.goorm.plugin.java=function(){this.name="java",this.mainmenu=null,this.build_options=null,this.build_source=null,this.build_target=null,this.build_file_type="o",this.debug_con=null,this.current_debug_project=null,this.terminal=null,this.breakpoints=null},org.goorm.plugin.java.prototype={init:function(){this.addProjectItem(),this.mainmenu=core.module.layout.mainmenu,this.cErrorFilter=/[A-Za-z]* error: [A-Za-z0-9 '",:_\\\/\.\+\-\*\#\@]*/,this.cWarningFilter=/[A-Za-z]* warning: [A-Za-z0-9 '",:_\\\/\.\+\-\*\#\@]*/,this.lineFilter=/:[0-9]*:/,this.add_mainmenu()},addProjectItem:function(){$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='javap'><div class='project_type_icon'><img src='/org.goorm.plugin.java/images/java.png' class='project_icon' /></div><div class='project_type_title'>Java Project</div><div class='project_type_description'>Java Project using GNU Compiler Collection</div></div>"),$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all javap' description='  Create New Project for Java' projecttype='java'><img src='/org.goorm.plugin.java/images/java_console.png' class='project_item_icon' /><br /><a>Java Console Project</a></div>"),$(".project_dialog_type").append("<option value='c'>Java Projects</option>")},add_mainmenu:function(){var e=this;$("ul[id='plugin_new_project']").append('<li class="yuimenuitem"><a class="yuimenuitemlabel" href="#" action="new_file_java" localizationKey=\'file_new_java_project\'>Java Project</a></li>'),this.mainmenu.render()},add_menu_action:function(){$("a[action=new_file_java]").unbind("click"),$("a[action=new_file_java]").click(function(){core.dialog.new_project.show(),$(".project_wizard_first_button[project-type=java]").trigger("click"),$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project-type=java]").position().top-100)})},new_project:function(e){var t={plugin:"org.goorm.plugin.java",data:e};$.get("/plugin/new",t,function(e){core.module.layout.project_explorer.refresh()})},run:function(e){var t=this;this.path_project="";var n="src/project",r="main",i="java -cp "+n+" "+r;console.log(i),core.module.layout.terminal.send_command(i+"\r")},debug:function(e){var t=this,n=core.module.debug.table_variable,r=core.module.debug;this.terminal=core.module.layout.workspace.window_manager.open("/","debug","terminal","Terminal").terminal,this.current_debug_project=e,n.initializeTable(),n.refreshView(),this.breakpoints=[];var i={plugin:"org.goorm.plugin.java",path:e,mode:"init"};this.terminal.index!=-1?t.debug_cmd(i):$(this.terminal).one("terminal_ready",function(){t.debug_cmd(i)}),this.status_updated=!1,this.data_buffer=null,this.debug_buffer=null,this.timeouts=[];if(this.started==1){this.started=!1;return}this.started=!1,$(core.module.debug).on("terminal_msg",function(r,i){var s=/Local variables:/,o=/where/,u=/main\[[\d]\]/;if(/application exited/.test(i)){n.initializeTable(),n.refreshView();while(t.timeouts.length>0)clearTimeout(t.timeouts.pop());var a=core.module.layout.workspace.window_manager.window;for(var f in a){var l=a[f];l.editor&&l.editor.clear_highlight()}}else if(t.started===!1&&/Initializing jdb/.test(i))t.debug_cmd({mode:"run",project_path:e}),t.started=!0;else if(t.started===!0&&t.status_updated===!1&&u.test(i)){t.terminal.send_command("where\r");var c=setTimeout(function(){t.terminal.send_command("locals\r")},200);t.timeouts.push(c),t.status_updated=!0}if(u.test(i)){if(t.debug_buffer!=null){var h=t.debug_buffer.split("\n"),p=null;$.each(h,function(e,r){if(r=="")return;if(o.test(r))console.log("@catch","where"),p=1;else if(p==1){var i=/\[\d\].*\((.*):([\d]+)\)/;if(i.test(r)){var u=r.match(i),a=u[1],f=u[2],l=core.module.layout.workspace.window_manager.window;for(var c=0;c<l.length;c++){var h=l[c];h.project==t.current_debug_project&&h.filename==a&&h.editor.highlight_line(f)}}}if(s.test(r))console.log("@catch","locals"),p=2,n.initializeTable();else if(p==2){var d=r.split(" = ");n.addRow({variable:d[0].trim(),value:d[1].trim()})}}),n.refreshView()}t.debug_buffer=i}else t.debug_buffer+="\n"+i}),$(r).off("value_changed"),$(r).on("value_changed",function(e,n){t.terminal.send_command("set "+n.variable+"="+n.value+"\r")})},debug_cmd:function(e){var t=this;if(this.terminal===null){console.log("no connection!");return}this.status_updated=!1,e.mode=="init"&&t.terminal.send_command("jdb -classpath src/project/ main\r");var n=core.module.layout.workspace.window_manager.window;for(var r=0;r<n.length;r++){var i=n[r],s=[];if(i.project==this.current_debug_project){var o=i.filename;if(i.editor===null)continue;var u=i.editor.breakpoints;for(var a=0;a<t.breakpoints.length;a++)s.push(t.breakpoints[a]);if(u.length>0)for(var a=0;a<u.length;a++){var f=u[a];f+=1;var l=o.split(".java")[0];f=l+":"+f;var c=s.inArray(f);c==-1?(t.terminal.send_command("stop at "+f+"\r"),t.breakpoints.push(f)):s.remove(c)}else this.status_updated=!0;for(var a=0;a<s.length;a++){var c=t.breakpoints.inArray(s[a]);c!=-1&&(t.breakpoints.remove(c),t.terminal.send_command("clear "+s[a]+"\r"))}}}switch(e.mode){case"run":t.terminal.send_command("run\r");break;case"continue":t.terminal.send_command("cont\r");break;case"terminate":t.terminal.send_command("exit\r"),table_variable.initializeTable(),table_variable.refreshView(),t.status_updated=!0;break;case"step_over":t.terminal.send_command("next\r");break;case"step_in":t.terminal.send_command("step\r");break;case"step_out":t.terminal.send_command("step up\r");break;default:}},build:function(e,t,n){var r=this;this.path_project="";var i="",s="src/project/main.java",o="javac "+s+" -g";console.log(o),core.module.layout.terminal.send_command(o+"\r"),n&&n()},clean:function(){console.log("java clean")}};
+ **/
+
+org.goorm.plugin.java = function () {
+	this.name = "java";
+	this.mainmenu = null;
+	this.build_options = null;
+	this.build_source = null;
+	this.build_target = null;
+	this.build_file_type = "o";
+	this.debug_con = null;
+	this.current_debug_project = null;
+	this.terminal = null;
+	this.breakpoints = null;
+};
+
+org.goorm.plugin.java.prototype = {
+	init: function () {
+		
+		this.addProjectItem();
+		
+		this.mainmenu = core.module.layout.mainmenu;
+		
+		//this.debugger = new org.uizard.core.debug();
+		//this.debug_message = new org.uizard.core.debug.message();
+		
+		this.cErrorFilter = /[A-Za-z]* error: [A-Za-z0-9 '",:_\\\/\.\+\-\*\#\@]*/;
+		this.cWarningFilter = /[A-Za-z]* warning: [A-Za-z0-9 '",:_\\\/\.\+\-\*\#\@]*/;
+		this.lineFilter = /:[0-9]*:/;
+		
+		this.add_mainmenu();
+		
+		//core.dictionary.loadDictionary("plugins/org.uizard.plugin.c/dictionary.json");
+	},
+	
+	addProjectItem: function () {
+		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='javap'><div class='project_type_icon'><img src='/org.goorm.plugin.java/images/java.png' class='project_icon' /></div><div class='project_type_title'>Java Project</div><div class='project_type_description'>Java Project using GNU Compiler Collection</div></div>");
+		
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all javap' description='  Create New Project for Java' projecttype='java'><img src='/org.goorm.plugin.java/images/java_console.png' class='project_item_icon' /><br /><a>Java Console Project</a></div>");
+		
+		$(".project_dialog_type").append("<option value='c'>Java Projects</option>");
+		
+	},
+	
+	add_mainmenu: function () {
+		var self = this;
+		
+		$("ul[id='plugin_new_project']").append("<li class=\"yuimenuitem\"><a class=\"yuimenuitemlabel\" href=\"#\" action=\"new_file_java\" localizationKey='file_new_java_project'>Java Project</a></li>");
+		this.mainmenu.render();
+	},
+	
+	add_menu_action: function () {
+		$("a[action=new_file_java]").unbind("click");
+		$("a[action=new_file_java]").click(function () {
+			core.dialog.new_project.show();
+			$(".project_wizard_first_button[project-type=java]").trigger("click");
+			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project-type=java]").position().top - 100);
+		});
+	},
+	
+	new_project: function(data) {
+		/* data = 
+		   { 
+			project_type,
+			project_detailed_type,
+			project_author,
+			project_name,
+			project_about,
+			use_collaboration
+		   }
+		*/
+		var send_data = {
+				"plugin" : "org.goorm.plugin.java",
+				"data" : data
+		};
+		
+		$.get('/plugin/new', send_data, function(result){
+			core.module.layout.project_explorer.refresh();
+		});
+	},
+	
+	run: function(path) {
+		var self=this;
+		
+		this.path_project = "";
+
+		var classpath = "src/project";
+		var classname = "main";
+
+		var cmd1 = "java -cp "+classpath+" "+classname;
+		console.log(cmd1);
+		core.module.layout.terminal.send_command(cmd1+'\r');
+
+	},
+	
+	debug: function (path) {
+		var self = this;
+		var table_variable = core.module.debug.table_variable;
+		var debug_module = core.module.debug;
+		this.terminal = core.module.layout.workspace.window_manager.open("/", "debug", "terminal", "Terminal").terminal;
+		this.current_debug_project = path;
+		this.prompt = /(main\[[\d]\][\s\n]*)$/;
+		this.terminal.debug_endstr = /application exited/;
+		
+		// debug탭 초기화
+		table_variable.initializeTable();
+		table_variable.refreshView();
+		
+		this.breakpoints = [];
+		
+		// debug start!
+		var send_data = {
+				"plugin" : "org.goorm.plugin.java",
+				"path" : path,
+				"mode" : "init"
+		};
+		
+		if(this.terminal.index != -1) {
+			self.debug_cmd(send_data);
+		}
+		else {
+			$(this.terminal).one("terminal_ready", function(){
+				self.debug_cmd(send_data);
+			});
+		}
+		
+		$(debug_module).off("value_changed");
+		$(debug_module).on("value_changed",function(e, data){
+			self.terminal.send_command("set "+data.variable+"="+data.value+"\r", self.prompt);
+		});
+	},
+	
+	/*
+	 * 디버깅 명령어 전송
+	 */
+	debug_cmd: function (cmd) {
+		/*
+		 * cmd = { mode, project_path }
+		 */
+		var self=this;
+		if(this.terminal === null) {
+			console.log("no connection!");
+			return ;
+		}
+		
+		switch (cmd.mode) {
+		case 'init' :
+			self.terminal.send_command("jdb -classpath src/project/ main\r", null);
+			self.set_breakpoints();
+			self.terminal.send_command("run\r", />/, function(){
+				self.debug_get_status();
+			});
+			break;
+//		case 'run':
+//			self.terminal.send_command("run\r"); break;
+		case 'continue':
+			self.set_breakpoints();
+			self.terminal.send_command("cont\r", self.prompt, function(){
+				self.debug_get_status();
+			}); break;
+		case 'terminate':
+			self.set_breakpoints();
+			self.terminal.send_command("exit\r", self.prompt); 
+			table_variable.initializeTable();
+			table_variable.refreshView();
+			break;
+		case 'step_over':
+			self.set_breakpoints();
+			self.terminal.send_command("next\r", self.prompt, function(){
+				self.debug_get_status();
+			}); break;
+		case 'step_in':
+			self.set_breakpoints();
+			self.terminal.send_command("step\r", self.prompt, function(){
+				self.debug_get_status();
+			}); break;
+		case 'step_out':
+			self.set_breakpoints();
+			self.terminal.send_command("step up\r", self.prompt, function(){
+				self.debug_get_status();
+			}); break;
+		default : break;
+		}
+		
+	},
+	
+	debug_get_status: function(){
+		var self = this;
+		this.terminal.send_command("where\r", this.prompt, function(terminal_data){
+			self.set_currentline(terminal_data);
+		});
+		this.terminal.send_command("locals\r", this.prompt, function(terminal_data){
+			self.set_debug_variable(terminal_data);
+		});
+	},
+	
+	set_currentline: function(terminal_data){
+		var self = this;
+		var lines = terminal_data.split('\n');
+		$.each(lines, function(i, line){
+			if(line == '') return;
+			// 현재 라인 처리
+			var regex = /\[\d\].*\((.*):([\d]+)\)/;
+			if(regex.test(line)) {
+				var match = line.match(regex);
+				var filename = match[1];
+				var line_number = match[2];
+				
+				var windows = core.module.layout.workspace.window_manager.window;
+				for (var j=0; j<windows.length; j++) {
+					var window = windows[j];
+					if (window.project == self.current_debug_project 
+							&& window.filename == filename) {
+						window.editor.highlight_line(line_number);
+					}
+				}
+			}
+		});
+	},
+	
+	set_debug_variable: function(terminal_data){
+		var lines = terminal_data.split('\n');
+		var table_variable = core.module.debug.table_variable;
+		
+		table_variable.initializeTable();
+		
+		$.each(lines, function(i, line){
+			if(line == '') return;
+			
+			// local variable 추가
+			var variable = line.split(' = ');
+			if (variable.length == 2) {
+				table_variable.addRow({
+					"variable": variable[0].trim(),
+					"value": variable[1].trim()
+				});
+			}
+		});
+		table_variable.refreshView();
+	},
+	
+	set_breakpoints: function(){
+		var self = this;
+		var windows = core.module.layout.workspace.window_manager.window;
+		for (var i=0; i < windows.length; i++) {
+			var window = windows[i];
+			var remains = [];
+
+			if (window.project == this.current_debug_project) {
+				var filename = window.filename;
+				
+				if(window.editor === null) continue;				
+				var breakpoints = window.editor.breakpoints;
+				for(var j=0; j < self.breakpoints.length; j++) {
+					remains.push(self.breakpoints[j]);
+				}
+
+				if(breakpoints.length > 0){
+					for(var j=0; j < breakpoints.length; j++) {
+						var breakpoint = breakpoints[j];
+						breakpoint += 1;
+						var classname = filename.split('.java')[0];
+						
+						breakpoint = classname+":"+breakpoint;
+						var result = remains.inArray(breakpoint);
+						if(result == -1) {
+							self.terminal.send_command("stop at "+breakpoint+"\r", />|(main\[[\d]\][\s\n]*)$/);
+							self.breakpoints.push(breakpoint);
+						}
+						else {
+							remains.remove(result);
+						}
+					}
+				}
+				else {
+					// no breakpoints
+				}
+				
+				for(var j=0; j < remains.length; j++) {
+					var result = self.breakpoints.inArray(remains[j]);
+					if(result != -1) {
+						self.breakpoints.remove(result);
+						self.terminal.send_command("clear "+remains[j]+"\r", self.prompt);
+					}
+				}
+			}
+		}
+	},
+	
+	build: function (projectName, projectPath, callback) {
+		var self=this;
+		
+		this.path_project = "";
+
+		var buildOptions = "";
+//		var buildOptions = $("#buildConfiguration").find('[name=plugin\\.c\\.buildOptions]').val();		
+//		if(buildOptions == undefined){
+//			buildOptions = core.dialogPreference.preference['plugin.c.buildOptions'];
+//		}
+//		
+		var buildSource = "src/project/main.java";
+//		var buildSource = $("#buildConfiguration").find('[name=plugin\\.c\\.buildSource]').val();		
+//		if(buildSource == undefined){
+//			buildSource = core.dialogPreference.preference['plugin.c.buildSource'];
+//		}
+//		
+		var cmd1 = "javac "+buildSource+" -g";
+		console.log(cmd1);
+		core.module.layout.terminal.send_command(cmd1+'\r', null, function(){
+			core.module.layout.project_explorer.refresh();
+		});
+		if(callback) callback();
+	},
+	clean: function(){
+		console.log("java clean");
+		core.module.layout.project_explorer.refresh();
+	}
+};

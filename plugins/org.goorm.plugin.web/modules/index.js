@@ -1,1 +1,41 @@
-var common=require(__path+"plugins/org.goorm.plugin.web/modules/common.js"),EventEmitter=require("events").EventEmitter;module.exports={do_new:function(e,t){var n=new EventEmitter,r=require(common.path+"modules/project/new_project.js");n.on("do_new_complete",function(e){t.json(e)}),r.do_new(e,n)},run:function(e,t){var n=new EventEmitter,r=require(common.path+"modules/project/run.js");n.on("do_run_complete",function(e){t.json(e)}),r.run(e,n)}};
+var common = require(__path+"plugins/org.goorm.plugin.web/modules/common.js");
+var EventEmitter = require("events").EventEmitter
+
+module.exports = {
+	do_new: function(req, res) {
+		var evt = new EventEmitter();
+		var new_project = require(common.path+"modules/project/new_project.js");
+		/* req.data = 
+		   { 
+			project_type,
+			project_detailed_type,
+			project_author,
+			project_name,
+			project_about,
+			use_collaboration
+		   }
+		*/
+		
+		evt.on("do_new_complete", function (data) {
+			res.json(data);
+		});
+		
+		new_project.do_new(req, evt);
+	},
+	
+	run: function(req, res) {
+		var evt = new EventEmitter();
+		var run_project = require(common.path+"modules/project/run.js");
+		/* req.data = 
+		   { 
+			project_path
+		   }
+		*/
+		
+		evt.on("do_run_complete", function (data) {
+			res.json(data);
+		});
+		
+		run_project.run(req, evt);
+	}
+};

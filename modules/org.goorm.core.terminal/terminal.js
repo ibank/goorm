@@ -1,1 +1,89 @@
-var pty=require("../../libs/pty/pty.js");module.exports={start:function(e){var t=this;e.set("log level",0),e.sockets.on("connection",function(e){var n=[];e.on("terminal_join",function(t){t=JSON.parse(t),e.join(t.workspace+"/"+t.terminal_name),console.log("Joined: "+t.workspace+"/"+t.terminal_name),n.push(pty.spawn("bash",[],{name:"xterm-color",cols:80,rows:30,cwd:process.env.HOME,env:process.env})),n[n.length-1].on("data",function(n){var r={};r.stdout=n,r.terminal_name=t.terminal_name,e.emit("pty_command_result",r)}),console.log("Terminal Count: "+n.length);var r={index:n.length-1,timestamp:t.timestamp};e.to().emit("terminal_index",JSON.stringify(r))}),e.on("terminal_leave",function(t){t=JSON.parse(t),e.leave(t.workspace+"/"+t.terminal_name)}),e.on("pty_execute_command",function(e){console.log("#execute command"),console.log(e),e=JSON.parse(e),t.exec(n[e.index],e.command)}),e.on("change_project_dir",function(t){console.log(t),t=JSON.parse(t),n[t.index].write("cd "+global.__path+"workspace/"+t.project_path+"\r"),e.to().emit("on_change_project_dir",t)})})},exec:function(e,t){e!=undefined&&e!=null?t.indexOf("	")>-1?e.write(t):e.write(t+" \r"):console.log("terminal object is empty...")}};
+var pty = require('../../libs/pty/pty.js');
+
+
+module.exports = {
+	start: function (io) {
+		var self = this;
+		
+		io.set('log level', 0);
+		io.sockets.on('connection', function (socket) {
+			var term = [];
+			
+			socket.on('terminal_join', function (msg) {
+				msg = JSON.parse(msg);
+				
+				socket.join(msg.workspace + '/' + msg.terminal_name);
+				
+				console.log("Joined: " + msg.workspace + '/' + msg.terminal_name);
+				
+				term.push(pty.spawn('bash', [], {
+					name: 'xterm-color',
+					cols: 80,
+					rows: 30,
+					cwd: process.env.HOME,
+					env: process.env
+				}));
+				
+				term[term.length-1].on('data', function (data) {
+					var result = {};
+					result.stdout = data;
+					result.terminal_name = msg.terminal_name;
+					//evt.emit("executed_command", result);
+					//console.log(data);
+//					console.log("on data : " + msg.workspace + '/' + msg.terminal_name);
+					socket.emit("pty_command_result", result);
+					//io.sockets.in(msg.workspace + '/' + msg.terminal_name).emit("pty_command_result", result);
+				});
+				
+				console.log("Terminal Count: " + term.length);
+				
+				var data = {
+					index: term.length - 1,
+					timestamp: msg.timestamp
+				};
+				
+				socket.to().emit("terminal_index", JSON.stringify(data));
+			});
+			
+			socket.on('terminal_leave', function (msg) {
+				msg = JSON.parse(msg);
+				
+				socket.leave(msg.workspace + '/' + msg.terminal_name);
+			});
+
+			socket.on('pty_execute_command', function (msg) {
+				console.log("#execute command");
+				console.log(msg);
+				msg = JSON.parse(msg);
+				
+				self.exec(term[msg.index], msg.command);
+			});
+			
+			socket.on('change_project_dir', function (msg) {
+				console.log(msg);
+				msg = JSON.parse(msg);
+				
+				term[msg.index].write("cd " + global.__path + "workspace/" + msg.project_path  + "\r");
+				socket.to().emit("on_change_project_dir", msg);
+			});
+			
+
+			
+			
+		});
+	},
+	
+	exec: function (term, command) {
+		if (term != undefined && term != null) {
+			if (command.indexOf('\t') > -1) { //TAB
+				term.write(command);
+			}
+			else {
+				term.write(command + ' \r');
+			}
+		}
+		else {
+			console.log("terminal object is empty...");
+		}
+	}
+};

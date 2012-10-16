@@ -2,4 +2,474 @@
  * Copyright Sung-tae Ryu. All rights reserved.
  * Code licensed under the GPL v2 License:
  * http://www.goorm.org/License
- **/org.goorm.core.edit.find_and_replace=function(){this.dialog=null,this.buttons=null,this.editor=null,this.last_pos=null,this.last_query=null,this.marked=[],this.match_case=!1,this.ignore_whitespace=!1,this.use_regexp=!1,this.replace_cursor=null},org.goorm.core.edit.find_and_replace.prototype={init:function(){var e=this;this.buttons=[{text:"Find",handler:function(){e.find()}},{text:"Find All",handler:function(){e.find_all()}},{text:"Replace/Find",handler:function(){e.handle_replace_and_find()}},{text:"Replace",handler:function(){e.handle_replace()}},{text:"Replace All",handler:function(){e.handle_replace_all()}},{text:"Close",handler:function(){e.hide()}}],this.dialog=new org.goorm.core.edit.find_and_replace.dialog,this.dialog.init({title:"Find/Replace",path:"configs/dialogs/org.goorm.core.edit/edit.find_and_replace.html",width:550,height:300,modal:!1,buttons:this.buttons,draggable:!0,success:function(){$("#find_query_inputbox").keydown(function(t){var n=t||event;if(n.keyCode==13)return e.find(),t.stopPropagation(),t.preventDefault(),!1}),e.dialog.panel.hideEvent.subscribe(function(t){e.unmark()}),$("#match_case").change(function(){$("#match_case")[0].checked==1?e.match_case=!0:e.match_case=!1}),$("#match_case_checkbox_name").click(function(){$("#match_case")[0].checked==1?($("#match_case")[0].checked=!1,e.match_case=!1):($("#match_case")[0].checked=!0,e.match_case=!0)}),$("#ignore_whitespace").change(function(){$("#ignore_whitespace")[0].checked==1?e.ignore_whitespace=!0:e.ignore_whitespace=!1}),$("#ignore_whitespace_checkbox_name").click(function(){$("#ignore_whitespace")[0].checked==1?($("#ignore_whitespace")[0].checked=!1,e.ignore_whitespace=!1):($("#ignore_whitespace")[0].checked=!0,e.ignore_whitespace=!0)}),$("#use_regexp").change(function(t){$("#use_regexp")[0].checked==1?(e.use_regexp=!0,$("#match_case")[0].disabled=!0,$("#ignore_whitespace")[0].disabled=!0):(e.use_regexp=!1,$("#match_case")[0].disabled=!1,$("#ignore_whitespace")[0].disabled=!1)}),$("#use_regexp_checkbox_name").click(function(){$("#use_regexp")[0].checked==1?($("#use_regexp")[0].checked=!1,e.use_regexp=!1,$("#match_case")[0].disabled=!1,$("#ignore_whitespace")[0].disabled=!1):($("#use_regexp")[0].checked=!0,e.use_regexp=!0,$("#match_case")[0].disabled=!0,$("#ignore_whitespace")[0].disabled=!0)})}}),this.dialog=this.dialog.dialog},find:function(e){var t=core.module.layout.workspace.window_manager;if(t.window[t.active_window].editor){var n=t.window[t.active_window].editor.editor,r=$("#find_query_inputbox").val();this.search(r,n,e)}},find_all:function(){var e=core.module.layout.workspace.window_manager;if(e.window[e.active_window].editor){var t=e.window[e.active_window].editor.editor,n=$("#find_query_inputbox").val();this.search_all(n,t)}},handle_replace_and_find:function(){var e=core.module.layout.workspace.window_manager;if(e.window[e.active_window].editor){var t=e.window[e.active_window].editor.editor,n=$("#find_query_inputbox").val(),r=$("#replace_query_inputbox").val();this.replace(n,r,t),this.search(n,t)}},handle_replace:function(){var e=core.module.layout.workspace.window_manager;if(e.window[e.active_window].editor){var t=e.window[e.active_window].editor.editor,n=$("#find_query_inputbox").val(),r=$("#replace_query_inputbox").val();this.replace(n,r,t)}},handle_replace_all:function(){var e=core.module.layout.workspace.window_manager;if(e.window[e.active_window].editor){var t=e.window[e.active_window].editor.editor,n=$("#find_query_inputbox").val(),r=$("#replace_query_inputbox").val();this.replace_all(n,r,t)}},search:function(e,t,n){if(!e)return;var r=e,i=!0;this.use_regexp==1?r=RegExp(e,"g"):(this.match_case==1&&(i=!1),this.ignore_whitespace==1&&(r=r.replace(/\s*/g,""))),this.unmark();for(var s=t.getSearchCursor(r,null,i);s.findNext();)this.marked.push(t.markText(s.from(),s.to(),"searched"));this.last_query!=r&&(this.last_pos=null);var s=t.getSearchCursor(r,this.last_pos?this.last_pos:t.getCursor(),i);if(n=="previous"){s.find_previous();if(s.find_previous()==0){for(s=t.getSearchCursor(r,null,i);s.findNext(););s.find_previous();if(!t.getSearchCursor(r,null,i).findNext())return}}else if(!s.findNext()){s=t.getSearchCursor(r,null,i);if(!s.findNext())return}t.setSelection(s.from(),s.to()),this.replace_cursor=s,this.last_query=r,this.last_pos=s.to()},search_all:function(e,t){if(!e)return;var n=e,r=!0;this.use_regexp==1?n=RegExp(e,"g"):(this.match_case==1&&(r=!1),this.ignore_whitespace==1&&(n=n.replace(/\s*/g,""))),core.module.layout.inner_bottom_tabview.selectTab(3),core.module.search.clean();var i=[];this.unmark();for(var s=t.getSearchCursor(n,null,r);s.findNext();){this.marked.push(t.markText(s.from(),s.to(),"searched"));var o={fline:s.from().line,fch:s.from().ch,tline:s.to().line,tch:s.to().ch};i.push(o)}for(var u=i.length-1;u>-1;u--)core.module.search.m(i[u].fline,i[u].fch,i[u].tline,i[u].tch,t.getLine(i[u].fline));this.dialog.panel.hide(),$(".search_message").click(function(){$(".search_message").css("background-color",""),$(this).css("background-color","#fff8dc");var e=parseInt($(this).attr("fline")),n=parseInt($(this).attr("fch")),r=parseInt($(this).attr("tline")),i=parseInt($(this).attr("tch")),s={line:e,ch:n},o={line:r,ch:i};t.setSelection(s,o)})},replace_search:function(e,t,n){if(!e)return;var r=e,i=t,s=!0;this.use_regexp==1?r=RegExp(e,"g"):(this.match_case==1&&(s=!1),this.ignore_whitespace==1&&(r=r.replace(/\s*/g,""))),this.unmark();for(var o=n.getSearchCursor(r,null,s);o.findNext();)this.marked.push(n.markText(o.from(),o.to(),"searched"));this.last_query!=r&&(this.last_pos=null);var o=n.getSearchCursor(r,n.getCursor()||this.last_pos,s);if(!o.findNext()){o=n.getSearchCursor(r,null,s);if(!o.findNext())return}n.setSelection(o.from(),o.to()),this.last_query=r,this.last_pos=o.to()},replace:function(e,t,n){if(!e)return;var r=e,i=t,s=!0;this.use_regexp==1?r=RegExp(e,"g"):(this.match_case==1&&(s=!1),this.ignore_whitespace==1&&(r=r.replace(/\s*/g,""))),this.unmark();var o=n.getSearchCursor(r,this.last_pos,s);o.find_previous(),n.replaceRange(i,o.from(),o.to())},replace_all:function(e,t,n){if(!e)return;var r=e,i=t,s=!0;this.use_regexp==1?r=RegExp(e,"g"):(this.match_case==1&&(s=!1),this.ignore_whitespace==1&&(r=r.replace(/\s*/g,""))),core.module.layout.inner_bottom_tabview.selectTab(3),core.module.search.clean(),this.unmark();for(var o=n.getSearchCursor(r,null,s);o.findNext();)n.replaceRange(i,o.from(),o.to()),core.module.search.mreplace_all(o.from().line,o.from().ch,o.to().line,o.to().ch,r,i);this.dialog.panel.hide(),$(".search_message").click(function(){$(".search_message").css("background-color",""),$(this).css("background-color","#fff8dc");var e=parseInt($(this).attr("fline")),t=parseInt($(this).attr("fch")),r=parseInt($(this).attr("tline")),s=parseInt($(this).attr("tch")),o={line:e,ch:t},u={line:r,ch:t+i.length};n.setSelection(o,u)})},unmark:function(){for(var e=0;e<this.marked.length;++e)this.marked[e].clear();this.marked.length=0},show:function(){this.dialog.panel.show();var e=core.module.layout.workspace.window_manager;if(e.window[e.active_window].editor){var t=e.window[e.active_window].editor.editor;$("#find_query_inputbox").val(t.getSelection())}$("#find_query_inputbox").select()},hide:function(){this.dialog.panel.hide()}};
+ **/
+
+org.goorm.core.edit.find_and_replace = function() {
+	this.dialog = null;
+	this.buttons = null;
+	this.editor = null;
+	this.last_pos = null;
+	this.last_query = null;
+	this.marked = [];
+	this.match_case = false;
+	this.ignore_whitespace = false;
+	this.use_regexp = false;
+	this.replace_cursor = null;
+};
+
+org.goorm.core.edit.find_and_replace.prototype = {
+	init : function() {
+		var self = this;
+		this.buttons = [{
+			text : "Find",
+			handler : function() {
+				self.find();
+			}
+		}, {
+			text : "Find All",
+			handler : function() {
+				self.find_all();
+			}
+		}, {
+			text : "Replace/Find",
+			handler : function() {
+				self.handle_replace_and_find();
+			}
+		}, {
+			text : "Replace",
+			handler : function() {
+				self.handle_replace();
+			}
+		}, {
+			text : "Replace All",
+			handler : function() {
+				self.handle_replace_all();
+			}
+		}, {
+			text : "Close",
+			handler : function() {
+				self.hide();
+			}
+		}];
+
+		this.dialog = new org.goorm.core.edit.find_and_replace.dialog();
+		this.dialog.init({
+			title : "Find/Replace",
+			path : "configs/dialogs/org.goorm.core.edit/edit.find_and_replace.html",
+			width : 550,
+			height : 300,
+			modal : false,
+			buttons : this.buttons,
+			draggable : true,
+			success : function() {
+				$("#find_query_inputbox").keydown(function(e) {
+					var ev = e || event;
+
+					if(ev.keyCode == 13) {
+						self.find();
+
+						e.stopPropagation();
+						e.preventDefault();
+						return false;
+					}
+				});
+
+				self.dialog.panel.hideEvent.subscribe(function(e) {
+					self.unmark();
+				});
+				// Checkbox event handler
+				$("#match_case").change(function() {
+					if($("#match_case")[0].checked == true)
+						self.match_case = true;
+					else
+						self.match_case = false;
+				});
+
+				$("#match_case_checkbox_name").click(function() {
+					if($("#match_case")[0].checked == true) {
+						$("#match_case")[0].checked = false;
+						self.match_case = false;
+					} else {
+						$("#match_case")[0].checked = true;
+						self.match_case = true;
+					}
+				});
+
+				$("#ignore_whitespace").change(function() {
+					if($("#ignore_whitespace")[0].checked == true)
+						self.ignore_whitespace = true;
+					else
+						self.ignore_whitespace = false;
+				});
+
+				$("#ignore_whitespace_checkbox_name").click(function() {
+					if($("#ignore_whitespace")[0].checked == true) {
+						$("#ignore_whitespace")[0].checked = false;
+						self.ignore_whitespace = false;
+					} else {
+						$("#ignore_whitespace")[0].checked = true;
+						self.ignore_whitespace = true;
+					}
+				});
+
+				$("#use_regexp").change(function(e) {
+					if($("#use_regexp")[0].checked == true) {
+						self.use_regexp = true;
+						$("#match_case")[0].disabled = true;
+						$("#ignore_whitespace")[0].disabled = true;
+					} else {
+						self.use_regexp = false;
+						$("#match_case")[0].disabled = false;
+						$("#ignore_whitespace")[0].disabled = false;
+					}
+				});
+
+				$("#use_regexp_checkbox_name").click(function() {
+					if($("#use_regexp")[0].checked == true) {
+						$("#use_regexp")[0].checked = false;
+						self.use_regexp = false;
+						$("#match_case")[0].disabled = false;
+						$("#ignore_whitespace")[0].disabled = false;
+					} else {
+						$("#use_regexp")[0].checked = true;
+						self.use_regexp = true;
+						$("#match_case")[0].disabled = true;
+						$("#ignore_whitespace")[0].disabled = true;
+					}
+				});
+			}
+		});
+
+		this.dialog = this.dialog.dialog;
+
+	},
+
+	find : function(direction) {
+		var window_manager = core.module.layout.workspace.window_manager;
+		// Get current active_window's editor
+		if(window_manager.window[window_manager.active_window].editor) {
+			// Get current active_window's CodeMirror editor
+			var editor = window_manager.window[window_manager.active_window].editor.editor;
+			// Get input query of this dialog
+			var keyword = $("#find_query_inputbox").val();
+			// Call search function of org.goorm.core.file.findReplace with keyword and editor
+			this.search(keyword, editor, direction);
+		}
+	},
+
+	find_all : function() {
+
+		var window_manager = core.module.layout.workspace.window_manager;
+		// Get current active_window's editor
+		if(window_manager.window[window_manager.active_window].editor) {
+			// Get current active_window's CodeMirror editor
+			var editor = window_manager.window[window_manager.active_window].editor.editor;
+			// Get input query of this dialog
+			var keyword = $("#find_query_inputbox").val();
+			// Call search function of org.goorm.core.file.findReplace with keyword and editor
+			this.search_all(keyword, editor);
+		}
+	},
+
+	handle_replace_and_find : function() {
+
+		var window_manager = core.module.layout.workspace.window_manager;
+		// Get current active_window's editor
+		if(window_manager.window[window_manager.active_window].editor) {
+			// Get current active_window's CodeMirror editor
+			var editor = window_manager.window[window_manager.active_window].editor.editor;
+			// Get input query and replacing word of this dialog
+			var keyword1 = $("#find_query_inputbox").val();
+			var keyword2 = $("#replace_query_inputbox").val();
+			// Call search function of org.goorm.core.file.findReplace with keyword and editor
+			this.replace(keyword1, keyword2, editor);
+			this.search(keyword1, editor);
+			//this.replace_search(keyword1, keyword2, editor);
+		}
+	},
+
+	handle_replace : function() {
+
+		var window_manager = core.module.layout.workspace.window_manager;
+		// Get current active_window's editor
+		if(window_manager.window[window_manager.active_window].editor) {
+			// Get current active_window's CodeMirror editor
+			var editor = window_manager.window[window_manager.active_window].editor.editor;
+			// Get input query and replacing word of this dialog
+			var keyword1 = $("#find_query_inputbox").val();
+			var keyword2 = $("#replace_query_inputbox").val();
+			// Call search function of org.goorm.core.file.findReplace with keyword and editor
+			this.replace(keyword1, keyword2, editor);
+		}
+	},
+
+	handle_replace_all : function() {
+
+		var window_manager = core.module.layout.workspace.window_manager;
+		// Get current active_window's editor
+		if(window_manager.window[window_manager.active_window].editor) {
+			// Get current active_window's CodeMirror editor
+			var editor = window_manager.window[window_manager.active_window].editor.editor;
+			// Get input query and replacing word of this dialog
+			var keyword1 = $("#find_query_inputbox").val();
+			var keyword2 = $("#replace_query_inputbox").val();
+			// Call search function of org.goorm.core.file.findReplace with keyword and editor
+			this.replace_all(keyword1, keyword2, editor);
+		}
+	},
+
+	search : function(keyword, editor, direction) {
+		if(!keyword)
+			return;
+		var text = keyword;
+		var caseFold = true;
+
+		if(this.use_regexp == true)
+			text = RegExp(keyword, "g");
+		else {
+			if(this.match_case == true)
+				caseFold = false;
+			if(this.ignore_whitespace == true)
+				text = text.replace(/\s*/g, '');
+		}
+
+		this.unmark();
+
+		for(var cursor = editor.getSearchCursor(text, null, caseFold); cursor.findNext(); ) {
+			this.marked.push(editor.markText(cursor.from(), cursor.to(), "searched"));
+		}
+
+		if(this.last_query != text)
+			this.last_pos = null;
+
+		var cursor = editor.getSearchCursor(text, this.last_pos ? this.last_pos : editor.getCursor(), caseFold);
+
+		if(direction == "previous") {
+			cursor.find_previous();
+			if(cursor.find_previous() == false) {
+				for( cursor = editor.getSearchCursor(text, null, caseFold); cursor.findNext(); ) {
+				}
+				cursor.find_previous();
+				if(!editor.getSearchCursor(text, null, caseFold).findNext()) {
+					return;
+				}
+			}
+		} else {
+			if(!cursor.findNext()) {
+				cursor = editor.getSearchCursor(text, null, caseFold);
+
+				if(!cursor.findNext())
+					return;
+			}
+		}
+
+		editor.setSelection(cursor.from(), cursor.to());
+		this.replace_cursor = cursor;
+		this.last_query = text;
+		this.last_pos = cursor.to();
+	},
+
+	search_all : function(keyword, editor) {
+
+		if(!keyword)
+			return;
+		var text = keyword;
+		var caseFold = true;
+
+		if(this.use_regexp == true)
+			text = RegExp(keyword, "g");
+		else {
+			if(this.match_case == true)
+				caseFold = false;
+			if(this.ignore_whitespace == true)
+				text = text.replace(/\s*/g, '');
+		}
+
+		// Activate search tab and clean it.
+		core.module.layout.inner_bottom_tabview.selectTab(3);
+		core.module.search.clean();
+
+		var searchedWords = [];
+
+		this.unmark();
+		// search all matched words and set background of them yellow
+		for(var cursor = editor.getSearchCursor(text, null, caseFold); cursor.findNext(); ) {
+			this.marked.push(editor.markText(cursor.from(), cursor.to(), "searched"));
+			var temp = {
+				fline : cursor.from().line,
+				fch : cursor.from().ch,
+				tline : cursor.to().line,
+				tch : cursor.to().ch
+			};
+			searchedWords.push(temp);
+		}
+
+		// print messages in reverse order (becuase getSearchCursor search text from the end to the start of the document)
+		for(var i = searchedWords.length - 1; i > -1; i--) {
+			core.module.search.m(searchedWords[i].fline, searchedWords[i].fch, searchedWords[i].tline, searchedWords[i].tch, editor.getLine(searchedWords[i].fline));
+		}
+
+		this.dialog.panel.hide();
+
+		// highlight the selected word on the editor with gray background
+		$(".search_message").click(function() {
+
+			$(".search_message").css("background-color", "");
+			$(this).css("background-color", "#fff8dc");
+
+			var fLine = parseInt($(this).attr("fline"));
+			var fCh = parseInt($(this).attr("fch"));
+			var tLine = parseInt($(this).attr("tline"));
+			var tCh = parseInt($(this).attr("tch"));
+
+			var from = {
+				line : fLine,
+				ch : fCh
+			};
+			var to = {
+				line : tLine,
+				ch : tCh
+			};
+			editor.setSelection(from, to);
+		});
+	},
+
+	replace_search : function(keyword1, keyword2, editor) {
+
+		if(!keyword1)
+			return;
+		var text = keyword1, replace = keyword2;
+		var caseFold = true;
+
+		if(this.use_regexp == true)
+			text = RegExp(keyword1, "g");
+		else {
+			if(this.match_case == true)
+				caseFold = false;
+			if(this.ignore_whitespace == true)
+				text = text.replace(/\s*/g, '');
+		}
+
+		this.unmark();
+
+		for(var cursor = editor.getSearchCursor(text, null, caseFold); cursor.findNext(); ) {
+			this.marked.push(editor.markText(cursor.from(), cursor.to(), "searched"));
+		}
+
+		if(this.last_query != text)
+			this.last_pos = null;
+
+		var cursor = editor.getSearchCursor(text, editor.getCursor() || this.last_pos, caseFold);
+
+		if(!cursor.findNext()) {
+			cursor = editor.getSearchCursor(text, null, caseFold);
+
+			if(!cursor.findNext())
+				return;
+		}
+
+		editor.setSelection(cursor.from(), cursor.to());
+		this.last_query = text;
+		this.last_pos = cursor.to();
+
+	},
+
+	replace : function(keyword1, keyword2, editor) {
+		if(!keyword1)
+			return;
+
+		var text = keyword1, replace = keyword2;
+		var caseFold = true;
+
+		if(this.use_regexp == true)
+			text = RegExp(keyword1, "g");
+		else {
+			if(this.match_case == true)
+				caseFold = false;
+			if(this.ignore_whitespace == true)
+				text = text.replace(/\s*/g, '');
+		}
+
+		this.unmark();
+		var cursor = editor.getSearchCursor(text, this.last_pos, caseFold);
+		cursor.find_previous();
+		editor.replaceRange(replace, cursor.from(), cursor.to());
+	},
+
+	replace_all : function(keyword1, keyword2, editor) {
+
+		if(!keyword1)
+			return;
+		var text = keyword1, replace = keyword2;
+		var caseFold = true;
+
+		if(this.use_regexp == true)
+			text = RegExp(keyword1, "g");
+		else {
+			if(this.match_case == true)
+				caseFold = false;
+			if(this.ignore_whitespace == true)
+				text = text.replace(/\s*/g, '');
+		}
+
+		// Activate search tab and clean it.
+		core.module.layout.inner_bottom_tabview.selectTab(3);
+		core.module.search.clean();
+
+		this.unmark();
+		for(var cursor = editor.getSearchCursor(text, null, caseFold); cursor.findNext(); ) {
+			editor.replaceRange(replace, cursor.from(), cursor.to());
+			core.module.search.mreplace_all(cursor.from().line, cursor.from().ch, cursor.to().line, cursor.to().ch, text, replace);
+		}
+
+		this.dialog.panel.hide();
+
+		// highlight the selected word on the editor with gray background
+		$(".search_message").click(function() {
+
+			$(".search_message").css("background-color", "");
+			$(this).css("background-color", "#fff8dc");
+
+			var fLine = parseInt($(this).attr("fline"));
+			var fCh = parseInt($(this).attr("fch"));
+			var tLine = parseInt($(this).attr("tline"));
+			var tCh = parseInt($(this).attr("tch"));
+
+			var from = {
+				line : fLine,
+				ch : fCh
+			};
+			var to = {
+				line : tLine,
+				ch : fCh + replace.length
+			};
+			editor.setSelection(from, to);
+		});
+	},
+
+	unmark : function() {
+		for(var i = 0; i < this.marked.length; ++i)this.marked[i].clear();
+		this.marked.length = 0;
+	},
+
+	show : function() {
+
+		this.dialog.panel.show();
+
+		var window_manager = core.module.layout.workspace.window_manager;
+
+		// Get current active_window's editor
+		if(window_manager.window[window_manager.active_window].editor) {
+			// Get current active_window's CodeMirror editor
+			var editor = window_manager.window[window_manager.active_window].editor.editor;
+			$("#find_query_inputbox").val(editor.getSelection());
+		}
+
+		//$("#find_query_inputbox").focus();
+		$("#find_query_inputbox").select();
+	},
+
+	hide : function() {
+		this.dialog.panel.hide();
+	}
+};

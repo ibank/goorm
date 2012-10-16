@@ -1,1 +1,303 @@
-var fs=require("fs"),walk=require("walk"),rimraf=require("rimraf"),EventEmitter=require("events").EventEmitter,exec=require("child_process").exec,projects=[];module.exports={do_new:function(e,t){var n={};n.err_code=0,n.message="process done",e.project_type!=null&&e.project_detailed_type!=null&&e.project_author!=null&&e.project_name!=null&&e.project_about!=null&&e.use_collaboration?fs.readdir(__path+"workspace/",function(r,i){if(r!=null)n.err_code=10,n.message="Server can not response",t.emit("project_do_new",n);else{var s=e.project_author+"_"+e.project_name;i.hasObject(s)?(n.err_code=20,n.message="Exist project",t.emit("project_do_new",n)):fs.mkdir(__path+"/workspace/"+s,"0777",function(r){if(r!=null)n.err_code=30,n.message="Cannot make directory",t.emit("project_do_new",n);else{var i=new Date,o=i.getFullYear()+"/"+i.getMonth()+"/"+i.getDate()+" "+i.getHours()+":"+i.getMinutes()+":"+i.getSeconds(),u='{"type": "'+e.project_type+'", "detailedtype": "'+e.project_detailed_type+'", "author": "'+e.project_author+'", "name": "'+e.project_name+'", "about": "'+e.project_about+'", "date": "'+o+'", "collaboration": "'+e.use_collaboration+'"}';fs.writeFile(__path+"workspace/"+s+"/project.json",u,function(r){r!=null?(n.err_code=40,n.message="Can not make project file",t.emit("project_do_new",n)):(n.project_name=e.project_name,n.project_author=e.project_author,n.project_type=e.project_type,t.emit("project_do_new",n))})}})}}):(n.err_code=10,n.message="Invalid query",t.emit("project_do_new",n))},do_delete:function(e,t){var n={};n.err_code=0,n.message="process done",e.project_path!=null?rimraf(__path+"workspace/"+e.project_path,function(e){e!=null?(n.err_code=20,n.message="Can not delete project",t.emit("project_do_delete",n)):t.emit("project_do_delete",n)}):(n.err_code=10,n.message="Invalide query",t.emit("project_do_delete",n))},do_import:function(e,t,n){var r={};r.err_code=0,r.message="process done";if(e.project_import_location!=null&&t!=null)var i=exec("unzip -o "+t.path+" -d workspace/"+e.project_import_location,function(e,i,s){e==null?(rimraf(t.path,function(e){e!=null}),n.emit("project_do_import",r)):(r.err_code=20,r.message="Cannot extract zip file",n.emit("project_do_import",r))});else r.err_code=10,r.message="Invalide query",n.emit("project_do_import",r)},do_export:function(e,t){var n={};n.err_code=0,n.message="process done",e.user!=null&&e.project_path!=null&&e.project_name!=null?fs.mkdir(__path+"temp_files/"+e.user,"0777",function(r){if(r==null||r.errno==47)var i=exec("cd workspace; zip -r ../temp_files/"+e.user+"/"+e.project_name+".zip ./"+e.project_path,function(r,i,s){r==null?(n.path=e.user+"/"+e.project_name+".zip",t.emit("project_do_export",n)):(n.err_code=20,n.message="Cannot make zip file",t.emit("project_do_export",n))});else n.err_code=30,n.message="Cannot make directory",t.emit("project_do_export",n)}):(n.err_code=10,n.message="Invalide query",t.emit("project_do_export",n))},get_list:function(e){var t=this;projects=[];var n={followLinks:!1},r=walk.walk(__path+"workspace",n);r.on("directories",function(n,r,i){var s=r.length;if(n==__path+"workspace"){var o=0,u=new EventEmitter;u.on("get_list",function(){o++,o<r.length?t.get_project_info(r[o],u):e.emit("project_get_list",projects)}),t.get_project_info(r[o],u)}i()}),r.on("end",function(){})},get_project_info:function(e,t){var n={};n.name=e.name,fs.readFile(__path+"workspace/"+n.name+"/project.json","utf-8",function(e,r){e==null&&(n.contents=JSON.parse(r),projects.push(n)),t.emit("get_list")})},get_property:function(e,t){var n={};n.err_code=0,n.message="process done",e.project_path!=null?fs.readFile(__path+"workspace/"+e.project_path+"/project.json","utf-8",function(e,r){e==null?(n.contents=JSON.parse(r),t.emit("get_property",n)):(n.err_code=20,n.message="Can not read project file.",t.emit("get_property",n))}):(n.err_code=10,n.message="Invalid query",t.emit("get_property",n))},do_clean:function(e,t){var n=this,r={};r.err_code=0,r.message="process done",console.log(e.project_list);if(e.project_list!=null){var i=e.project_list.length,s=0,o=new EventEmitter;console.log(i+" "+s),o.on("do_delete_for_clean",function(){s++,s<i?n.do_delete_for_clean(e.project_list[s],o):t.emit("project_do_clean",r)}),n.do_delete_for_clean(e.project_list[s],o)}else r.err_code=10,r.message="Invalide query",t.emit("project_do_clean",r)},do_delete_for_clean:function(e,t){console.log(e+"pre"),rimraf(__path+"workspace/"+e+"/build",function(n){console.log(e+"post"),t.emit("do_delete_for_clean")})}};
+var fs = require('fs');
+var walk = require('walk');
+var rimraf = require('rimraf');
+var EventEmitter = require("events").EventEmitter;
+var exec = require('child_process').exec;
+
+var projects = [];
+
+module.exports = {
+	do_new: function (query, evt) {
+
+		var data = {};
+		data.err_code = 0;
+		data.message = "process done";
+
+		if ( query.project_type!=null && query.project_detailed_type !=null && query.project_author!=null && query.project_name!=null && query.project_about!=null && query.use_collaboration ) {
+			fs.readdir(__path+'workspace/', function(err, files) {
+				if (err!=null) {
+					data.err_code = 10;
+					data.message = "Server can not response";
+
+					evt.emit("project_do_new", data);
+				}
+				else {
+					var project_dir = query.project_author+'_'+query.project_name;
+					if (files.hasObject(project_dir)) {
+						data.err_code = 20;
+						data.message = "Exist project";
+
+						evt.emit("project_do_new", data);
+					}
+					else {
+						fs.mkdir(__path+'/workspace/'+project_dir, '0777', function(err) {
+							if (err!=null) {
+								data.err_code = 30;
+								data.message = "Cannot make directory";
+		
+								evt.emit("project_do_new", data);
+							}
+							else {
+								var today = new Date();
+								var date_string = today.getFullYear()+'/'+today.getMonth()+'/'+today.getDate()+' '+today.getHours()+':'+today.getMinutes()+':'+today.getSeconds();
+							
+								var file_contents = '{"type": "'+query.project_type+'", "detailedtype": "'+query.project_detailed_type+'", "author": "'+query.project_author+'", "name": "'+query.project_name+'", "about": "'+query.project_about+'", "date": "'+date_string+'", "collaboration": "'+query.use_collaboration+'"}';
+
+								fs.writeFile(__path+'workspace/'+project_dir+'/project.json', file_contents, function(err) {
+									if (err!=null) {
+										data.err_code = 40;
+										data.message = "Can not make project file";
+										
+										evt.emit("project_do_new", data);
+									}
+									else {
+										data.project_name = query.project_name;
+										data.project_author = query.project_author;
+										data.project_type = query.project_type;
+
+										evt.emit("project_do_new", data);
+									}
+								});
+							}
+						});
+					}
+				}
+			});	
+		}
+		else {
+			data.err_code = 10;
+			data.message = "Invalid query";
+
+			evt.emit("project_do_new", data);
+		}
+	},
+	
+	do_delete: function (query, evt) {
+		var data = {};
+		data.err_code = 0;
+		data.message = "process done";
+		
+		if (query.project_path != null) {
+			rimraf(__path+"workspace/"+query.project_path, function(err) {
+				if (err!=null) {
+					data.err_code = 20;
+					data.message = "Can not delete project";
+					
+					evt.emit("project_do_delete", data);
+				}
+				else {
+					//success
+					evt.emit("project_do_delete", data);
+				}
+			});
+		}
+		else {
+			data.err_code = 10;
+			data.message = "Invalide query";
+			
+			evt.emit("project_do_delete", data);
+		}		
+/*
+		rimraf(__path+query.path, function(err) {
+		evt.emit("project_do_delete", err);			
+		});
+*/
+		
+	},
+	
+	do_import: function (query, file, evt) {
+		var data = {};
+		data.err_code = 0;
+		data.message = "process done";	
+
+		if (query.project_import_location!=null && file!=null) {
+			var command = exec("unzip -o "+file.path+" -d workspace/"+query.project_import_location, function (error, stdout, stderr) {
+				if (error == null) {
+				
+					rimraf(file.path, function(err) {
+						if (err!=null) {
+						}
+						else {
+							// remove complete
+						}
+					});
+					
+					evt.emit("project_do_import", data);
+				}
+				else {
+					data.err_code = 20;
+					data.message = "Cannot extract zip file";
+					
+					evt.emit("project_do_import", data);
+				}
+			});
+		}
+		else {
+			data.err_code = 10;
+			data.message = "Invalide query";
+			
+			evt.emit("project_do_import", data);			
+		}
+	},
+
+	
+	do_export: function (query, evt) {
+		var data = {};
+		data.err_code = 0;
+		data.message = "process done";	
+
+		if ( query.user!=null && query.project_path!=null && query.project_name!=null ) {
+				
+			fs.mkdir(__path+"temp_files/"+query.user, '0777', function(err) {
+
+				if (err==null || err.errno == 47) {		//errno 47 is exist folder error
+
+					var command = exec("cd workspace; zip -r ../temp_files/"+query.user+"/"+query.project_name+".zip ./"+query.project_path, function (error, stdout, stderr) {
+						if (error == null) {
+							data.path = query.user+'/'+query.project_name+".zip";
+							evt.emit("project_do_export", data);
+						}
+						else {
+							data.err_code = 20;
+							data.message = "Cannot make zip file";
+							
+							evt.emit("project_do_export", data);
+						}
+					});
+					
+				}
+				else {
+					data.err_code = 30;
+					data.message = "Cannot make directory";
+
+					evt.emit("project_do_export", data);
+				}
+			});
+		}
+		else {
+			data.err_code = 10;
+			data.message = "Invalide query";
+			
+			evt.emit("project_do_export", data);			
+		}
+	},
+	
+	get_list: function (evt) {
+	
+		var self = this;
+		projects = [];
+		
+		var options = {
+			followLinks: false
+		};
+				
+		var walker = walk.walk(__path+"workspace", options);
+
+		walker.on("directories", function (root, dirStatsArray, next) {
+
+			var count = dirStatsArray.length;
+			if (root==__path+"workspace" ) {
+				var dir_count = 0;
+
+				var evt_dir = new EventEmitter();
+	
+				evt_dir.on("get_list", function () {
+					dir_count++;
+					if (dir_count<dirStatsArray.length) {
+						self.get_project_info(dirStatsArray[dir_count], evt_dir);						
+					}
+					else {
+						evt.emit("project_get_list", projects);
+					}
+				});
+				
+				self.get_project_info(dirStatsArray[dir_count], evt_dir);
+			}
+			
+			next();
+		});
+		
+		walker.on("end", function () {
+		});
+	},
+	
+	get_project_info: function (dirStatsArray, evt_dir) {
+		var project = {};
+		project.name = dirStatsArray.name;
+
+		fs.readFile(__path+"workspace/"+project.name+"/project.json", 'utf-8', function (err, data) {
+			if (err==null) {
+				project.contents = JSON.parse(data);
+
+				projects.push(project);
+			}
+			evt_dir.emit("get_list");
+		});
+	},
+	
+	get_property: function (query, evt) {
+		var data = {};
+		data.err_code = 0;
+		data.message = "process done";
+
+		if (query.project_path != null) {
+			fs.readFile(__path+"workspace/"+query.project_path+"/project.json", 'utf-8', function (err, file_data) {
+				if (err==null) {
+					data.contents = JSON.parse(file_data);
+					evt.emit("get_property", data);
+				}
+				else {
+					data.err_code = 20;
+					data.message = "Can not read project file.";
+					evt.emit("get_property", data);
+				}
+			});
+		}
+		else {
+			data.err_code = 10;
+			data.message = "Invalid query";
+			evt.emit("get_property", data);
+		}
+	},
+	
+	do_clean: function (query, evt) {
+		var self = this;
+		var data = {};
+		data.err_code = 0;
+		data.message = "process done";
+		console.log(query.project_list);
+		if (query.project_list != null) {
+
+			var total_count = query.project_list.length;
+			var clean_count = 0;
+			var evt_clean = new EventEmitter();
+console.log(total_count+" "+clean_count);
+			evt_clean.on("do_delete_for_clean", function () {
+				
+				clean_count++;
+				if (clean_count<total_count) {
+					self.do_delete_for_clean(query.project_list[clean_count], evt_clean);						
+				}
+				else {
+					evt.emit("project_do_clean", data);
+				}
+			});
+			
+			self.do_delete_for_clean(query.project_list[clean_count], evt_clean);
+		}
+		else {
+			data.err_code = 10;
+			data.message = "Invalide query";
+			
+			evt.emit("project_do_clean", data);
+		}		
+	},
+	
+	do_delete_for_clean: function (project_path, evt_clean) {
+		console.log(project_path+"pre");
+		rimraf(__path+"workspace/"+project_path+"/build", function(err) {
+			console.log(project_path+"post");
+			evt_clean.emit("do_delete_for_clean");
+		});
+	}
+};

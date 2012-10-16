@@ -1,1 +1,77 @@
-var users=require("./collaboration.users.js"),workspace=require("./collaboration.workspace.js"),communication=require("./collaboration.communication.js"),editing=require("./collaboration.editing.js"),composing=require("./collaboration.composing.js"),drawing=require("./collaboration.drawing.js"),slideshare=require("./collaboration.slideshare.js");module.exports={start:function(e){var t=this;e.set("log level",0),e.sockets.on("connection",function(e){e.on("join",function(t){var n=JSON.parse(t),r="";n["channel"]!=undefined&&(r=n.channel),r=="workspace"&&workspace.join(e,n)}),e.on("message",function(t){var n=JSON.parse(t),r="";n["channel"]!=undefined&&(r=n.channel),r=="communication"?communication.msg(e,n):r=="editing"?editing.msg(e,n):r=="composing"?composing.msg(e,n):r=="drawing"?drawing.msg(e,n):r=="slideshare"&&slideshare.msg(e,n)}),e.on("leave",function(t){var n=JSON.parse(t),r="";n["channel"]!=undefined&&(r=n.channel),r=="workspace"&&workspace.leave(e,n)})}),e.sockets.on("close",function(e){})}};
+var users = require('./collaboration.users.js');
+var workspace = require('./collaboration.workspace.js');
+var communication = require('./collaboration.communication.js');
+var editing = require('./collaboration.editing.js');
+var composing = require('./collaboration.composing.js');
+var drawing = require('./collaboration.drawing.js');
+var slideshare = require('./collaboration.slideshare.js');
+
+
+module.exports = {
+	start: function (io) {
+		var self = this;
+		
+		
+		
+		io.set('log level', 0);
+		io.sockets.on('connection', function (socket) {
+			socket.on('join', function (raw_msg) {
+				var msg_obj = JSON.parse(raw_msg);
+
+				var channel = "";
+				
+				if(msg_obj["channel"] != undefined) {
+					channel = msg_obj["channel"];
+				}
+				
+				if (channel == "workspace") {
+					workspace.join(socket, msg_obj);
+				}
+			});
+			
+			socket.on('message', function (raw_msg) {
+				var msg_obj = JSON.parse(raw_msg);
+				
+				var channel = "";
+
+				if(msg_obj["channel"] != undefined) {
+					channel = msg_obj["channel"];
+				}
+
+				if (channel == "communication") {
+					communication.msg(socket, msg_obj);
+				}
+				else if (channel == "editing") {
+					editing.msg(socket, msg_obj);
+				}
+				else if (channel == "composing") {
+					composing.msg(socket, msg_obj);
+				}
+				else if (channel == "drawing") {
+					drawing.msg(socket, msg_obj);
+				}
+				else if (channel == "slideshare") {
+					slideshare.msg(socket, msg_obj);
+				}
+			});
+			
+			socket.on('leave', function (raw_msg) {
+				var msg_obj = JSON.parse(raw_msg);
+				
+				var channel = "";
+
+				if(msg_obj["channel"] != undefined) {
+					channel = msg_obj["channel"];
+				}
+				
+				if (channel == "workspace") {
+					workspace.leave(socket, msg_obj);
+				}
+			});
+		}); 
+		
+		io.sockets.on('close', function (socket) {
+			
+		});
+	}
+};

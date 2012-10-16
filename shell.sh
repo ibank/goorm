@@ -10,16 +10,16 @@ echo "goorm.js"
 uglifyjs -o ./release/goorm.js ./release/goorm.js
 
 for name in $(find ./release/modules/ -name "*.js" ); do
-    uglifyjs -o $name --overwrite $name
-    echo $name
+uglifyjs -o $name --overwrite $name
+echo $name
 done
 
 for name in $(find ./release/public/modules/ -name "*.js"); do
-    uglifyjs -o $name --overwrite $name
-    echo $name
+uglifyjs -o $name --overwrite $name
+echo $name
 done
 
 for name in $(find ./release/plugins -name "*.js"); do
-    uglifyjs -o $name --overwrite $name
-    echo $name
+uglifyjs -o $name --overwrite $name
+echo $name
 done

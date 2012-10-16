@@ -2,4 +2,203 @@
  * Copyright Sung-tae Ryu. All rights reserved.
  * Code licensed under the GPL v2 License:
  * http://www.goorm.org/License
- **/org.goorm.core.edit.dictionary=function(){this.target=null,this.editor=null,this.dictionary_list=null,this.contents=[],this.result=[],this.index=0},org.goorm.core.edit.dictionary.prototype={init:function(e,t,n){this.dictionary_list=[];var r=this;this.target=e,this.editor=t,this.contents=[],this.result=[],$(this.target).append("<div class='dictionary_box'><div class='dictionary_list'></div></div>"),$(this.target).find(".dictionary_box").hide(),this.load(n),CodeMirror.connect($(this.target).find(".dictionary_box").get(0),"keydown",function(e){var t=e.keyCode;$(r.target).find(".dictionary_box").css("display")=="block"&&(t==27?(CodeMirror.e_stop(e),r.hide(),r.editor.focus()):t==38?r.select(-1):t==40?r.select(1):t==13?(CodeMirror.e_stop(e),r.complete(),r.editor.focus()):r.editor.focus())})},complete:function(){var e=this.editor.getCursor(),t=this.editor.getTokenAt(e);if(this.result.length>0){var n=this.result[this.index].keyword,r={line:e.line,ch:t.start},i={line:e.line,ch:t.end};t.string=="."&&(r.ch+=1,i.ch+=1),this.hide(),this.editor.replaceRange(n,r,i)}},load:function(filetype){var self=this;$(this.target).find(".dictionary_list").empty(),filetype!=null&&$.getJSON("configs/dictionary/"+filetype+".json",function(data){self.contents=eval(data)})},set:function(){var e=this;$(this.target).find(".dictionary_list").empty(),$(this.result).each(function(t){$(e.target).find(".dictionary_list").append("<div class='dictionary_element'>"+this.keyword+"</div>")}),$(this.target).find(".dictionary_list .dictionary_element").hover(function(){$(e.target).find(".dictionary_list .hovered").removeClass("hovered"),$(this).addClass("hovered")},function(){$(this).removeClass("hovered")}),$(this.target).find(".dictionary_list .dictionary_element").each(function(t){$(this).click(function(){e.index=t,e.complete()})})},select:function(e){var t=this,n=$(this.target).find(".dictionary_list").prop("scrollHeight")-$(this.target).find(".dictionary_list").prop("clientHeight");e==-1?this.index>0?(this.index--,this.index*20<n-20&&$(this.target).find(".dictionary_list").scrollTop($(this.target).find(".dictionary_list").scrollTop()-20)):this.result.length!=0&&(this.index=this.result.length-1,$(this.target).find(".dictionary_list").scrollTop(this.index*20)):e==1&&(this.index<this.result.length-1?(this.index++,this.index*20>$(this.target).find(".dictionary_list").height()&&$(this.target).find(".dictionary_list").scrollTop($(this.target).find(".dictionary_list").scrollTop()+20)):(this.index=0,$(this.target).find(".dictionary_list").scrollTop(0))),$(this.target).find(".dictionary_list .dictionary_element").removeClass("hovered"),$(this.target).find(".dictionary_list .dictionary_element").each(function(e){t.index==e&&$(this).addClass("hovered")})},show:function(e){$(this.target).find(".dictionary_box").css("left",e.x+35),$(this.target).find(".dictionary_box").css("top",e.y+20),$(this.target).find(".dictionary_box").show(),$(this.target).find(".dictionary_desc").css("left",e.x+45+$(this.target).find(".dictionary_box").width()),$(this.target).find(".dictionary_desc").css("top",e.y+20),$(this.target).find(".dictionary_desc").show(),$(this.target).find(".dictionary_list .hovered").removeClass("hovered"),$(this.target).find(".dictionary_list .dictionary_element:first").addClass("hovered"),$(this.target).find(".dictionary_box").attr("tabindex",-1).focus(),this.index=0},hide:function(){$(this.target).find(".dictionary_box").hide(),$(this.target).find(".dictionary_desc").hide()},search:function(e){var t=this;this.result=[];var n=new RegExp("^"+e,"");$(this.contents).each(function(e){n.test(this.keyword)&&t.result.push(this)}),this.set()}};
+ **/
+
+org.goorm.core.edit.dictionary = function () {
+	this.target = null;
+	this.editor = null;
+	this.dictionary_list = null;
+	this.contents = [];
+	this.result = [];
+	this.index = 0;
+};
+
+org.goorm.core.edit.dictionary.prototype = {
+	
+	init: function (target, editor, filetype){
+		this.dictionary_list = [];
+		var self = this;
+		
+		this.target = target;
+		this.editor = editor;
+		
+		this.contents = [];
+		this.result = [];
+
+		$(this.target).append("<div class='dictionary_box'><div class='dictionary_list'></div></div>");
+		$(this.target).find(".dictionary_box").hide();
+		
+		this.load(filetype);
+		
+		CodeMirror.connect($(this.target).find(".dictionary_box").get(0), "keydown", function (e) {
+			var code = e.keyCode;
+			
+			if ($(self.target).find(".dictionary_box").css("display") == "block") {
+				if (code == 27) {
+					CodeMirror.e_stop(e);
+					
+					self.hide();
+					
+					self.editor.focus();
+				}
+				else if (code == 38) {
+					self.select(-1);
+				}
+				else if (code == 40) {
+					self.select(1);
+				}
+				else if (code == 13) {
+					CodeMirror.e_stop(e);
+					
+					self.complete();
+					
+					self.editor.focus();
+				}
+				else {
+					self.editor.focus();
+				}
+			}
+		});
+	},
+	
+	complete: function () {
+		var cursor = this.editor.getCursor();
+		var token = this.editor.getTokenAt(cursor);
+		
+		if (this.result.length > 0) {
+			var string = this.result[this.index].keyword;
+			
+			var from = {line:cursor.line, ch:token.start};
+			var to = {line:cursor.line, ch:token.end};
+			if(token.string == ".") {
+				from.ch += 1;
+				to.ch += 1;
+			}
+			
+			this.hide();
+			this.editor.replaceRange(string, from, to);
+		}
+	},
+	
+	load: function (filetype) {
+		var self = this;
+		
+		$(this.target).find(".dictionary_list").empty();
+		
+		if (filetype != null) {
+			$.getJSON("configs/dictionary/" + filetype + ".json", function(data) {
+				self.contents = eval(data);
+			});
+		}
+	},
+	
+	set: function () {
+		var self = this;
+		
+		$(this.target).find(".dictionary_list").empty();
+		
+		$(this.result).each(function (i) {
+			$(self.target).find(".dictionary_list").append("<div class='dictionary_element'>" + this.keyword + "</div>");
+		});
+
+		$(this.target).find(".dictionary_list .dictionary_element").hover(
+			function () {
+				$(self.target).find(".dictionary_list .hovered").removeClass("hovered");
+				$(this).addClass("hovered");
+			},
+			function () {
+				$(this).removeClass("hovered");
+			}
+		);
+		
+		$(this.target).find(".dictionary_list .dictionary_element").each(function (i) {
+			$(this).click(function () {
+				self.index = i;
+				self.complete();
+			});
+		});
+	},
+	
+	select: function (direction) {
+		var self = this;
+		var scroll_height = $(this.target).find(".dictionary_list").prop('scrollHeight') - $(this.target).find(".dictionary_list").prop('clientHeight');
+		
+		if (direction == -1) {
+			if (this.index > 0) {
+				this.index--;
+				//$(this.target).find(".dictionary_box").scrollTop($(this.target).find(".dictionary_box").scrollTop() - 5);
+				
+				if (this.index * 20 < scroll_height - 20) {
+					$(this.target).find(".dictionary_list").scrollTop($(this.target).find(".dictionary_list").scrollTop() - 20);
+				}
+			}
+			else if (this.result.length != 0) {
+				this.index = this.result.length - 1;
+				//$(this.target).find(".dictionary_box").scrollTop(20 * (this.result.length - 1));
+				
+				$(this.target).find(".dictionary_list").scrollTop(this.index * 20);
+			}
+		}
+		else if (direction == 1) {
+			if (this.index < this.result.length - 1) {
+				this.index++;
+				//$(this.target).find(".dictionary_box").scrollTop($(this.target).find(".dictionary_box").scrollTop() + 5);
+				
+				if (this.index * 20 > $(this.target).find(".dictionary_list").height()) {
+					$(this.target).find(".dictionary_list").scrollTop($(this.target).find(".dictionary_list").scrollTop() + 20);
+				}
+			}
+			else {
+				this.index = 0;
+				//$(this.target).find(".dictionary_box").scrollTop(0);
+				
+				$(this.target).find(".dictionary_list").scrollTop(0);
+			}
+		}
+		
+		$(this.target).find(".dictionary_list .dictionary_element").removeClass("hovered");
+		
+		$(this.target).find(".dictionary_list .dictionary_element").each(function (i) {
+			if (self.index == i) {
+				$(this).addClass("hovered");
+			}
+		});
+	},
+	
+	show: function (cursor_pos) {
+		$(this.target).find(".dictionary_box").css('left', cursor_pos.x + 35);
+		$(this.target).find(".dictionary_box").css('top', cursor_pos.y + 20);
+		$(this.target).find(".dictionary_box").show();
+		
+		$(this.target).find(".dictionary_desc").css('left', cursor_pos.x + 45 + $(this.target).find(".dictionary_box").width());
+		$(this.target).find(".dictionary_desc").css('top', cursor_pos.y + 20);
+		$(this.target).find(".dictionary_desc").show();
+		
+		$(this.target).find(".dictionary_list .hovered").removeClass("hovered");
+		$(this.target).find(".dictionary_list .dictionary_element:first").addClass("hovered");
+		
+		$(this.target).find(".dictionary_box").attr("tabindex", -1).focus();
+		
+		this.index = 0;
+	},
+	
+	hide: function () {
+		$(this.target).find(".dictionary_box").hide();
+		$(this.target).find(".dictionary_desc").hide();
+	},
+	
+	search: function (keyword) {
+		var self = this;
+		this.result = [];
+		var reg_exp = new RegExp('^' + keyword, '');
+		
+		$(this.contents).each(function (i) {
+			if (reg_exp.test(this.keyword)) {
+				self.result.push(this);
+			}
+		});
+		
+		this.set();
+	}
+
+};

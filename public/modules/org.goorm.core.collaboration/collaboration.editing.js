@@ -2,4 +2,303 @@
  * Copyright Sung-tae Ryu. All rights reserved.
  * Code licensed under the GPL v2 License:
  * http://www.goorm.org/License
- **/org.goorm.core.collaboration.editing=function(){this.target=null,this.diff_worker=null,this.patch_worker=null,this.socket=null,this.previous_text=null,this.task_queue=[],this.removed_lines_uuids=[],this.user=null,this.updating_process_running=!1,this.playback_mode=!1,this.take_diffs=!0,this.stored_lines={},this.contents=null,this.editor=null,this.parent=null,this.filename=null,this.filepath=null,this.identifier=null,this.auto_save_timer=null,this.status=0,this.timer=null},org.goorm.core.collaboration.editing.prototype={init:function(e){var t=this;this.parent=e,this.target=e.target,this.socket=io.connect(),this.task_queue=[],this.removed_lines_uuids=[],this.user=core.user.first_name+"_"+core.user.last_name;var n=function(){while(t.task_queue.length>0&&t.updating_process_running==0){var e=t.task_queue.shift();t.updating_process_running=!0,t.apply_update(e.action,e.message)}};this.timer=window.setInterval(n,500),this.set_collaboration_data("!refresh"),this.socket.on("editing_message",function(e){if(!e)return!1;var n=JSON.parse(e);if(n.channel=="editing"&&n.user!=core.user.first_name+"_"+core.user.last_name&&n.filepath==t.filepath)switch(n.action){case"change":t.task_queue.push(n);break;case"cursor":t.task_queue.push(n);break;default:}}),this.socket.on("editing_someone_leaved",function(e){console.log(e+" leaved..."),$(t.target).find(".CodeMirror-scroll").find(".user_name_"+e).remove(),$(t.target).find(".CodeMirror-scroll").find(".user_cursor_"+e).remove()}),$(this.target).find("[id='collaboration.editing']").keydown(function(e){if(e.keyCode==8||e.keyCode==46){var n=$(t.target).find("[id='collaboration.editing']").find("div").find("p");if(n.length==1&&$(n[0]).html()=="")return $(n[0]).html("&nbsp;"),!1}}),setInterval(function(){$(t.target).find(".CodeMirror-scroll").find(".user_cursor").each(function(e){$(this).css("visibility")=="hidden"?$(this).css("visibility","visible"):$(this).css("visibility","hidden")})},600)},set_editor:function(e){this.editor=e},set_filepath:function(){this.filepath=this.parent.filepath+this.parent.filename},update_change:function(e){var t=this;if(this.socket!=null){if(!t.socket.socket.connected)return alert.show("Collaboration server is disconnected!"),!1;e.user=core.user.first_name+"_"+core.user.last_name,t.socket.emit("message",'{"channel": "editing", "action":"change", "user":"'+core.user.first_name+"_"+core.user.last_name+'", "workspace": "'+core.status.current_project_name+'", "filepath":"'+t.filepath+'", "message":'+JSON.stringify(e)+"}"),clearTimeout(this.auto_save_timer),this.auto_save_timer=setTimeout(function(){t.parent.save()},5e3)}},update_cursor:function(e){var t=this;if(this.socket!=null){if(!t.socket.socket.connected)return alert.show("Collaboration server is disconnected!"),!1;e.user=core.user.first_name+"_"+core.user.last_name,t.socket.emit("message",'{"channel": "editing", "action":"cursor", "user":"'+core.user.first_name+"_"+core.user.last_name+'", "workspace": "'+core.status.current_project_name+'", "filepath":"'+t.filepath+'", "message":'+JSON.stringify(e)+"}")}},apply_update:function(e,t){switch(e){case"change":this.change(t);break;case"cursor":this.set_cursor(t);break;default:console.log("invalid update")}},set_cursor:function(e){if(e.user!=core.user.first_name+"_"+core.user.last_name){var t=this.editor.charCoords({line:e.line,ch:e.ch}),n=parseInt(t.y)-parseInt($(this.target).find(".CodeMirror-scroll").offset().top),r=parseInt(t.x)-parseInt($(this.target).find(".CodeMirror-scroll").offset().left);if($(this.target).find(".CodeMirror-scroll").find(".user_name_"+e.user).length>0)$(this.target).find(".CodeMirror-scroll").find(".user_name_"+e.user).css("top",n-8),$(this.target).find(".CodeMirror-scroll").find(".user_name_"+e.user).css("left",r+5),$(this.target).find(".CodeMirror-scroll").find(".user_cursor_"+e.user).css("top",n),$(this.target).find(".CodeMirror-scroll").find(".user_cursor_"+e.user).css("left",r);else{$(this.target).find(".CodeMirror-scroll").prepend("<span class='user_name_"+e.user+" user_name' style='top:"+(n-8)+"px; left:"+(r+5)+"px;'>"+e.user+"</span>"),$(this.target).find(".CodeMirror-scroll").prepend("<span class='user_cursor_"+e.user+" user_cursor' style='top:"+n+"px; left:"+r+"px;'></span>");var i=Math.floor(Math.random()*206)-Math.floor(Math.random()*30),s=Math.floor(Math.random()*206)-Math.floor(Math.random()*30),o=Math.floor(Math.random()*206)-Math.floor(Math.random()*30),u=i+90>=255?255:i+90,a=i+90>=255?255:s+90,f=i+90>=255?255:o+90,l="#"+i.toString(16)+s.toString(16)+o.toString(16),c="#"+u.toString(16)+a.toString(16)+f.toString(16);$(this.target).find(".CodeMirror-scroll").find(".user_name_"+e.user).css("background-color",c),$(this.target).find(".CodeMirror-scroll").find(".user_name_"+e.user).css("border-color",l),$(this.target).find(".CodeMirror-scroll").find(".user_name_"+e.user).css("color",l),$(this.target).find(".CodeMirror-scroll").find(".user_cursor_"+e.user).css("border-color",l)}}this.updating_process_running=!1},change:function(e){var t=this;if(e.user!=core.user.first_name+"_"+core.user.last_name){var n="";for(var r=0;r<e.text.length;r++)r!=0&&(n+="\n"),n+=e.text[r];this.editor.replaceRange(n,e.from,e.to)}this.updating_process_running=!1},generate_uuid:function(){var e="1",t=this.user,n=new Date,r=$.map([n.getUTCFullYear(),n.getUTCMonth(),n.getUTCDate(),n.getUTCHours(),n.getUTCMinutes(),n.getUTCSeconds(),n.getUTCMilliseconds()],function(e,t){return e<10?"0"+e:e}).join("");return e+"_"+t+"_"+r},set_collaboration_data:function(e){var t=this;if(e){if(e=="!refresh")return this.set_collaboration_data(this.contents),!1;var n=e.split("\n"),r="";$(n).each(function(e){r+="<p id='line"+(e+1)+"' data-uuid='"+t.generate_uuid()+"'>"+this+"</p>"}),$(this.target).find("[id='collaboration.editing']").find("div").html(r),this.contents=e}else $(this.target).find("[id='collaboration.editing']").find("div").html("<p id='line1' data-uuid='"+this.generate_uuid()+"'>&nbsp;</p>")}};
+ **/
+
+org.goorm.core.collaboration.editing = function () {
+	this.target = null;
+	this.diff_worker = null;
+	this.patch_worker = null;
+	this.socket = null;
+	this.previous_text = null;
+	this.task_queue = [];	
+	this.removed_lines_uuids = [];
+	this.user = null;
+	this.updating_process_running = false;
+	this.playback_mode = false;
+	this.take_diffs = true;
+	this.stored_lines = {};
+	this.contents = null;
+	this.editor = null;
+	this.parent = null;
+	this.filename = null;
+	this.filepath = null;
+	this.identifier = null;
+	this.auto_save_timer=null;
+	this.status = 0;
+	this.timer = null;
+};
+
+org.goorm.core.collaboration.editing.prototype = {
+	init: function(parent) {
+		var self = this;
+		this.parent = parent;
+		this.target = parent.target;
+		
+		this.socket = io.connect();
+		
+  		this.task_queue = [];
+  		this.removed_lines_uuids = [];
+ 		
+ 		this.user = core.user.first_name + "_" + core.user.last_name;
+
+		var check_for_updates = function() {
+			while(self.task_queue.length > 0 && self.updating_process_running == false) {
+				var current_update = self.task_queue.shift(); 
+				
+				self.updating_process_running = true;
+				
+				self.apply_update(current_update.action, current_update.message);
+			}
+		};
+ 		
+ 		this.timer = window.setInterval(check_for_updates, 500);
+ 		this.set_collaboration_data("!refresh");
+ 		
+		this.socket.on("editing_message", function (data) {
+ 			if(!data) {
+ 				return false;
+ 			}
+
+			var received_msg = JSON.parse(data);
+			
+			if(received_msg.channel == "editing" && 
+			   received_msg.user != core.user.first_name + "_" + core.user.last_name &&
+			   received_msg.filepath == self.filepath) {
+				switch(received_msg.action){
+					case "change":
+						self.task_queue.push(received_msg);
+						break;
+					case "cursor":
+						self.task_queue.push(received_msg);
+						break;
+					default:
+						
+				}
+			}
+		});
+		
+		this.socket.on("editing_someone_leaved", function (name) {
+			console.log(name + " leaved...");
+			$(self.target).find(".CodeMirror-scroll").find(".user_name_" + name).remove();
+			$(self.target).find(".CodeMirror-scroll").find(".user_cursor_" + name).remove();
+		});
+		
+		$(this.target).find("[id='collaboration.editing']").keydown(function(evt) {
+			//don't delete the beyond p
+			if(evt.keyCode == 8 || evt.keyCode == 46){
+				var editing_lines = $(self.target).find("[id='collaboration.editing']").find("div").find("p");
+				if(editing_lines.length == 1 && $(editing_lines[0]).html() == ""){
+					$(editing_lines[0]).html("&nbsp;");
+					return false; 
+				}
+			} 
+		});
+		
+		setInterval(function() {
+			$(self.target).find(".CodeMirror-scroll").find(".user_cursor").each(function (i) {
+				if ($(this).css('visibility') == 'hidden') {
+					$(this).css('visibility', 'visible');
+				} else {
+					$(this).css('visibility', 'hidden');
+				}
+			});
+		}, 600);
+		
+	},
+
+	set_editor: function(editor){
+		this.editor = editor;
+	},
+	
+	set_filepath: function () {
+		this.filepath = this.parent.filepath + this.parent.filename;
+	},
+	
+	update_change: function(data){
+		var self = this;
+
+		console.log("change", data);
+
+		if(this.socket != null){
+			if (self.socket.socket.connected) {
+				data.user = core.user.first_name + "_" + core.user.last_name;
+				self.socket.emit("message", '{"channel": "editing", "action":"change", "user":"' + core.user.first_name + "_" + core.user.last_name + '", "workspace": "'+ core.status.current_project_name +'", "filepath":"' + self.filepath + '", "message":' + JSON.stringify(data) + '}');
+				
+				clearTimeout(this.auto_save_timer);
+				this.auto_save_timer = setTimeout(function(){
+					self.parent.save();
+				},5000);
+			}
+			else {
+				alert.show("Collaboration server is disconnected!");
+				return false;
+			}
+		}
+	},
+	
+	update_cursor: function(data) {
+		var self = this;
+		if(this.socket != null){
+			if (self.socket.socket.connected) {
+				data.user = core.user.first_name + "_" + core.user.last_name;
+				self.socket.emit("message", '{"channel": "editing", "action":"cursor", "user":"' + core.user.first_name + "_" + core.user.last_name + '", "workspace": "'+ core.status.current_project_name +'", "filepath":"' + self.filepath + '", "message":' + JSON.stringify(data) + '}');
+			}
+			else {
+				alert.show("Collaboration server is disconnected!");
+				return false;
+			}
+		}
+	},
+
+	apply_update: function(action, update){
+		switch(action) {
+			case "change":
+				this.change(update);
+				break;
+			case "cursor":
+				this.set_cursor(update);
+				break;
+			default:
+				console.log("invalid update");
+		};
+	},
+	
+	set_cursor: function(message) {
+		if (message.user != core.user.first_name + "_" + core.user.last_name) {
+			var coords = this.editor.charCoords({line:message.line, ch:message.ch});
+			var top = parseInt(coords.y) - parseInt($(this.target).find(".CodeMirror-scroll").offset().top);
+			var left = parseInt(coords.x) - parseInt($(this.target).find(".CodeMirror-scroll").offset().left);
+			
+			if ($(this.target).find(".CodeMirror-scroll").find(".user_name_" + message.user).length > 0) {
+				$(this.target).find(".CodeMirror-scroll").find(".user_name_" + message.user).css("top", top - 8);
+				$(this.target).find(".CodeMirror-scroll").find(".user_name_" + message.user).css("left", left + 5);
+				
+				$(this.target).find(".CodeMirror-scroll").find(".user_cursor_" + message.user).css("top", top);
+				$(this.target).find(".CodeMirror-scroll").find(".user_cursor_" + message.user).css("left", left);
+			}
+			else {
+				$(this.target).find(".CodeMirror-scroll").prepend("<span class='user_name_" + message.user + " user_name' style='top:" + (top - 8) + "px; left:" + (left + 5) + "px;'>" + message.user + "</span>");
+				$(this.target).find(".CodeMirror-scroll").prepend("<span class='user_cursor_" + message.user + " user_cursor' style='top:" + top + "px; left:" + left + "px;'></span>");
+				
+				var red = Math.floor(Math.random()*206) - Math.floor(Math.random()*30);
+				var green = Math.floor(Math.random()*206) - Math.floor(Math.random()*30);
+				var blue = Math.floor(Math.random()*206) - Math.floor(Math.random()*30);
+				
+				var light_red = (red + 90 >= 255)? 255 : red + 90;
+				var light_green = (red + 90 >= 255)? 255 : green + 90;
+				var light_blue = (red + 90 >= 255)? 255 : blue + 90;
+				
+				var color = '#' + red.toString(16) + green.toString(16) + blue.toString(16);
+				var light_color = '#' + light_red.toString(16) + light_green.toString(16) + light_blue.toString(16);
+				
+				$(this.target).find(".CodeMirror-scroll").find(".user_name_" + message.user).css("background-color", light_color);
+				$(this.target).find(".CodeMirror-scroll").find(".user_name_" + message.user).css("border-color", color);
+				$(this.target).find(".CodeMirror-scroll").find(".user_name_" + message.user).css("color", color);
+				
+				$(this.target).find(".CodeMirror-scroll").find(".user_cursor_" + message.user).css("border-color", color);
+			}
+		}
+
+		this.updating_process_running = false;
+	},
+	
+	change: function(message){
+		var self = this;
+		
+		console.log("receive", message);
+
+		if (message.user != core.user.first_name + "_" + core.user.last_name) {
+			var textStr = "";
+			
+			for(var i=0; i < message.text.length; i++){
+				if(i != 0 && message.text[0] != "\n" ){
+					textStr+="\n";
+				}
+				textStr += message.text[i];
+			}
+			console.log("start" + textStr + "end");
+			this.editor.replaceRange(textStr, message.from, message.to);
+
+			if(message.next){
+				message.next.user = message.user;
+				self.change(message.next);
+			}
+
+			/*
+			var from_coords = this.editor.charCoords({line:message.from.line, ch:message.from.ch});
+			var from_top = parseInt(from_coords.y) - parseInt($(this.target).find(".CodeMirror-scroll").offset().top);
+			var from_left = parseInt(from_coords.x) - parseInt($(this.target).find(".CodeMirror-scroll").offset().left);
+			
+			var to_coords = this.editor.charCoords({line:message.to.line, ch:message.to.ch});
+			var to_top = parseInt(to_coords.y) - parseInt($(this.target).find(".CodeMirror-scroll").offset().top);
+			var to_left = parseInt(to_coords.x) - parseInt($(this.target).find(".CodeMirror-scroll").offset().left);
+			
+			var color = $(this.target).find(".CodeMirror-scroll").find(".user_name_" + message.user).css("color");
+			var width = from_left - to_left;
+			var height = from_top - to_top;
+			
+			console.log("--------------------------------------");
+			console.log(from_top);
+			console.log(from_left);
+			console.log(to_top);
+			console.log(to_left);
+			console.log(color);
+			console.log(width);
+			console.log(height);
+			
+			$(this.target).find(".CodeMirror-scroll").prepend("<span class='user_modifying_" + message.user + " user_modifying' style='top:" + from_top + "px; left:" + from_left + "px; width:" + width + "px; height:" + height + "px; background-color: " + color  +";'></span>");
+			
+			$(this.target).find(".CodeMirror-scroll").find(".user_modifying_" + message.user).hide("fast", function () {
+				$(self.target).find(".CodeMirror-scroll").find(".user_modifying_" + message.user).remove();
+			});
+			*/
+		}
+		
+		this.updating_process_running = false;
+	},
+
+	generate_uuid: function(){
+		//get the pad id
+		var padid = "1";
+	
+		//get the user id
+		var userid = this.user;
+	
+		//get the current timestamp (in UTC)
+		var d = new Date();
+		var timestamp = $.map([d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(),
+		d.getUTCHours(), d.getUTCMinutes(), d.getUTCSeconds(), d.getUTCMilliseconds()], function(n, i) {
+			return (n < 10) ? "0"+n : n;
+		}).join("");
+		//combine them and generate the UUID
+		//format: padid_userid_timestamp
+		return padid + "_" + userid + "_" + timestamp;
+	}, 
+	
+	set_collaboration_data: function(contents) {
+		var self = this;
+	
+		if(contents) {
+			if(contents == "!refresh") {
+      			this.set_collaboration_data(this.contents);
+      			return false;
+      		}
+      		
+	      	var original_contents = contents.split("\n");
+	      	var result = "";
+	      	
+	      	$(original_contents).each(function (i){
+	      		result += "<p id='line" + (i+1) + "' data-uuid='" + self.generate_uuid() + "'>" + this + "</p>";
+	      	});
+	      	
+	      	$(this.target).find("[id='collaboration.editing']").find("div").html(result);
+	      	
+	      	this.contents = contents;
+      	}
+      	else {
+    		$(this.target).find("[id='collaboration.editing']").find("div").html("<p id='line1' data-uuid='" + this.generate_uuid() + "'>&nbsp;</p>");
+		}
+
+	}
+	
+};

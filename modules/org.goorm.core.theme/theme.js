@@ -1,1 +1,80 @@
-var fs=require("fs"),walk=require("walk"),rimraf=require("rimraf"),EventEmitter=require("events").EventEmitter,exec=require("child_process").exec,themes=[];module.exports={init:function(){},get_list:function(e){var t=this;themes=[];var n={followLinks:!1},r=walk.walk(__path+"public/configs/themes",n);r.on("directories",function(n,r,i){var s=r.length;if(n==__path+"public/configs/themes"){var o=0,u=new EventEmitter;u.on("get_list",function(){o++,o<r.length?t.get_theme_info(r[o],u):e.emit("theme_get_list",themes)}),t.get_theme_info(r[o],u)}i()}),r.on("end",function(){})},get_theme_info:function(e,t){var n={};n.name=e.name,fs.readFile(__path+"public/configs/themes/"+n.name+"/theme.json","utf-8",function(e,r){e==null&&(n.contents=JSON.parse(r),themes.push(n)),t.emit("get_list")})},put_contents:function(e,t){var n={};fs.writeFile(__path+"public/configs/themes/"+e.path,e.data,function(e){e!=null?(n.err_code=10,n.message="Can not save",t.emit("theme_put_contents",n)):(n.err_code=0,n.message="saved",t.emit("theme_put_contents",n))})}};
+var fs = require('fs');
+var walk = require('walk');
+var rimraf = require('rimraf');
+var EventEmitter = require("events").EventEmitter;
+var exec = require('child_process').exec;
+
+var themes = [];
+
+module.exports = {
+	init: function () {
+	
+	},
+	
+	get_list: function (evt) {
+		var self = this;
+		themes = [];
+
+		var options = {
+			followLinks: false
+		};
+		var walker = walk.walk(__path+"public/configs/themes", options);
+		
+		walker.on("directories", function (root, dirStatsArray, next) {
+			var count = dirStatsArray.length;
+			if (root==__path+"public/configs/themes" ) {
+				var dir_count = 0;
+				var evt_dir = new EventEmitter();
+
+				evt_dir.on("get_list", function () {
+					dir_count++;
+
+					if (dir_count<dirStatsArray.length) {
+						self.get_theme_info(dirStatsArray[dir_count], evt_dir);
+					}
+					else {
+						evt.emit("theme_get_list", themes);
+					}
+				});
+				self.get_theme_info(dirStatsArray[dir_count], evt_dir);
+			}			
+			next();
+		});
+		
+		walker.on("end", function () {
+		});
+	},
+	
+	get_theme_info: function (dirStatsArray, evt_dir) {
+		var theme = {};
+		theme.name = dirStatsArray.name;
+
+		fs.readFile(__path+"public/configs/themes/"+theme.name+"/theme.json", 'utf-8', function (err, data) {
+			if (err==null) {
+				theme.contents = JSON.parse(data);
+				//theme.contents.title
+				themes.push(theme);
+			}
+			evt_dir.emit("get_list");
+		});
+	},
+	
+	put_contents: function (query, evt) {
+		var data = {};
+
+		fs.writeFile(__path+'public/configs/themes/'+query.path, query.data, function(err) {
+			if (err!=null) {
+				data.err_code = 10;
+				data.message = "Can not save";
+	
+				evt.emit("theme_put_contents", data);
+			}
+			else {
+				data.err_code = 0;
+				data.message = "saved";
+	
+				evt.emit("theme_put_contents", data);
+			}
+		});
+	},
+};

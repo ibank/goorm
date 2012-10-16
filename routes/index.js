@@ -9,7 +9,7 @@ var g_project = require("../modules/org.goorm.core.project/project");
 var g_terminal = require("../modules/org.goorm.core.terminal/terminal");
 var g_theme = require("../modules/org.goorm.core.theme/theme");
 var g_plugin = require("../modules/org.goorm.plugin/plugin");
-var g_member_service = require("../modules/org.goorm.core.member/member_service");
+/* var g_member_service = require("../modules/org.goorm.core.member/member_service"); */
 
 var EventEmitter = require("events").EventEmitter;
 
@@ -452,31 +452,23 @@ exports.download = function(req, res) {
  * 로그인 관련
  *************************/
 //id/pw 로그인
+/*
 exports.member = {};
 exports.member.login = function(req, res){
 	g_member_service.login(req, function(result) { 
 		res.send(result); 
 	});
-/*
-	req.logout(); //소셜로그인 되어있던게 있으면 로그아웃 시킴
-	service.member.login(req, function(result){ res.json(result); });
-*/
 };
+*/
 //로그아웃
+/*
 exports.member.logout = function(req, res){
 	res.send("member logout");
-/*
-	service.member.logout(req, function(result){ 
-		res.json(result); 
-	}); 
-*/
 };
+*/
 //현재 로그인 상태 (로그인한 계정의 정보)
+/*
 exports.member.login_status = function(req, res){
 	res.send("member login status");
-/*
-	service.member.get_login_status(req, function(result){ 
-		res.json(result); 
-	}); 
-*/
 };
+*/

@@ -1,1 +1,1 @@
-this.path=__path+"plugins/org.goorm.plugin.nodejs/";
+this.path = __path+"plugins/org.goorm.plugin.nodejs/";

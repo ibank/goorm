@@ -1,1 +1,14 @@
-module.exports={files:[],msg:function(e,t){var n={slide_url:t.slide_url,page:t.page};e.broadcast.to(t.workspace).emit("slideshare_message",n),e.emit("slideshare_message",n)}};
+module.exports = {
+	files: [],
+	
+	msg: function (socket, msg) {
+		/*
+		 * msg = {slide_url, page}
+		 */
+//		console.log(111,msg);
+		var message = {slide_url: msg.slide_url, page:msg.page};
+		
+		socket.broadcast.to(msg.workspace).emit("slideshare_message", message);
+		socket.emit("slideshare_message", message);
+	}
+};

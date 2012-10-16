@@ -1,1 +1,11 @@
-module.exports={users:[],join:function(){},leave:function(){}};
+module.exports = {
+	users: [],
+	
+	join: function () {
+		
+	},
+	
+	leave: function () {
+		
+	}
+};

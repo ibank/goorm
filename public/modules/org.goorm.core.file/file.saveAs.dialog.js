@@ -5,9 +5,32 @@
  * version: 3.0.0
  * This is the module example for YUI_DOCS
  * @module file
- **//**
+ **/
+
+/**
  * This is an goorm code generator.  
  * goorm starts with this code generator.
  * @class saveAs.dialog
  * @extends saveAs
- **/org.goorm.core.file.saveAs.dialog=function(){this.dialog=null},org.goorm.core.file.saveAs.dialog.prototype={init:function(e){return this.dialog=new org.goorm.core.dialog,this.dialog.init(e),this}};
+ **/
+org.goorm.core.file.saveAs.dialog = function () {
+	/**
+	 * This presents the current browser version
+	 * @property dialog
+	 **/
+	this.dialog = null;
+};
+
+org.goorm.core.file.saveAs.dialog.prototype = {
+	/**
+	 * This function is an goorm core initializating function.  
+	 * @constructor 
+	 * @param {String} option The option.
+	 **/
+	init: function (option) {
+		this.dialog = new org.goorm.core.dialog();
+		this.dialog.init(option);
+		
+		return this;
+	}
+};

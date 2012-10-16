@@ -1,1 +1,15 @@
-module.exports={files:[],subscribe:function(){},publish:function(){},snapshot:function(){}};
+module.exports = {
+	files: [],
+	
+	subscribe: function () {
+		
+	},
+	
+	publish: function () {
+		
+	},
+	
+	snapshot: function () {
+		
+	}
+};

@@ -2,4 +2,105 @@
  * Copyright Sung-tae Ryu. All rights reserved.
  * Code licensed under the GPL v2 License:
  * http://www.goorm.org/License
- **/org.goorm.core.dialog.confirmation.save=function(){this.panel=null,this.context_menu=null,this.path=null,this.title=null,this.type=null,this.left=null,this.top=null,this.width=null,this.height=null,this.yes_text=null,this.no_text=null,this.yes=null,this.no=null},org.goorm.core.dialog.confirmation.save.prototype={init:function(e){var t=this;this.title=e.title,this.message=e.message,this.yes_text=e.yes_text,this.cancel_text=e.cancel_text,this.no_text=e.no_text,this.yes=e.yes,this.cancel=e.cancel,this.no=e.no,this.title=this.title.split(" ").join("_"),this.timestamp=(new Date).getTime();var n=function(){typeof t.yes=="function"&&t.yes(),this.hide()},r=function(){typeof t.cancel=="function"&&t.cancel(),this.hide()},i=function(){typeof t.no=="function"&&t.no(),this.hide()};$("#goorm_dialog_container").find("#panelContainer_"+this.title)&&$("#goorm_dialog_container").find("#panelContainer_"+this.title).remove(),$("#goorm_dialog_container").append("<div id='panelContainer_"+this.title+"'></div>"),this.panel=new YAHOO.widget.SimpleDialog("panelContainer_"+this.title,{width:"400px",visible:!1,underlay:"none",close:!0,draggable:!0,text:this.message,constraintoviewport:!0,fixedcenter:!0,effect:{effect:YAHOO.widget.ContainerEffect.FADE,duration:.2},buttons:[{text:t.yes_text,handler:n,isDefault:!0},{text:t.cancel_text,handler:r},{text:t.no_text,handler:i}]}),this.panel.setHeader(this.title.split("_").join(" ")),this.panel.setBody("Loading Data..."),this.panel.render(),$(document).bind("keydown","esc",function(){t.panel.cfg.config.visible.value&&!core.status.keydown&&t.panel.hide()}),$(document).bind("keydown","return",function(e){t.panel.cfg.config.visible.value&&!core.status.keydown&&!alert.panel.cfg.config.visible.value&&!notice.panel.cfg.config.visible.value&&(n(),core.status.keydown=!0)})}};
+ **/
+
+org.goorm.core.dialog.confirmation.save = function () {
+	this.panel = null;
+	this.context_menu = null;
+	this.path = null;
+	this.title = null;
+	this.type = null;
+	this.left = null;
+	this.top = null;
+	this.width = null;
+	this.height = null;
+	this.yes_text = null;
+	this.no_text = null;
+	this.yes = null;
+	this.no = null;
+};
+
+org.goorm.core.dialog.confirmation.save.prototype = {
+	init: function (option) {
+		var self = this;
+
+		this.title = option["title"];
+		this.message = option["message"];
+		
+		this.yes_text = option["yes_text"];
+		this.cancel_text = option["cancel_text"];
+		this.no_text = option["no_text"];
+		
+		this.yes = option["yes"];
+		this.cancel = option["cancel"];
+		this.no = option["no"];
+		
+		
+		this.title = this.title.split(" ").join("_");
+		this.timestamp = new Date().getTime();
+		
+		var handle_yes = function() { 
+			if ( typeof self.yes == "function" )
+				self.yes();
+			this.hide(); 
+		};
+		
+		var handle_cancel = function() {
+			if ( typeof self.cancel == "function" )
+				self.cancel();
+			this.hide(); 
+		}
+		
+		var handle_no = function() { 
+			if ( typeof self.no == "function" )
+				self.no();
+			this.hide(); 
+		};
+		
+		if ($("#goorm_dialog_container").find("#panelContainer_" + this.title)) {
+			$("#goorm_dialog_container").find("#panelContainer_" + this.title).remove();
+		}
+		
+		$("#goorm_dialog_container").append("<div id='panelContainer_" + this.title + "'></div>");
+		
+		this.panel = new YAHOO.widget.SimpleDialog(
+			"panelContainer_" + this.title, { 
+				width: '400px',
+				visible: false, 
+				underlay: "none",
+				close: true,
+				draggable: true,
+				text: this.message,
+				constraintoviewport: true,
+				fixedcenter: true,
+				effect:{effect:YAHOO.widget.ContainerEffect.FADE,duration:0.2},
+				buttons: [ 
+					{ text:self.yes_text, handler:handle_yes, isDefault:true },
+					{ text:self.cancel_text,  handler:handle_cancel },
+					{ text:self.no_text,  handler:handle_no }
+				] 
+			} 
+		);
+		
+		this.panel.setHeader(this.title.split("_").join(" "));
+		this.panel.setBody("Loading Data...");
+		this.panel.render();
+		
+		//$(document).unbind('keydown', 'esc');
+		$(document).bind('keydown', 'esc', function () {
+			if (self.panel.cfg.config.visible.value && !core.status.keydown) {
+				self.panel.hide();
+			}
+		});
+		
+		//$(document).unbind('keydown', 'return');
+		$(document).bind('keydown', 'return', function (e) {
+			if (self.panel.cfg.config.visible.value && !core.status.keydown && !alert.panel.cfg.config.visible.value && !notice.panel.cfg.config.visible.value) {
+				handle_yes();
+						
+				core.status.keydown = true;
+			}
+		});	
+	}
+	
+};

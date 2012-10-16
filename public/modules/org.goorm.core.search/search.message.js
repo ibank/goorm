@@ -2,4 +2,61 @@
  * Copyright Sung-tae Ryu. All rights reserved.
  * Code licensed under the GPL v2 License:
  * http://www.goorm.org/License
- **/org.goorm.core.search.message=function(){},org.goorm.core.search.message.prototype={m:function(e,t,n,r,i){var s="#333";$("#search").prepend(this.make_message(e,t,n,r,i,s))},make_message:function(e,t,n,r,i,s){var o="<div class='search_message' fline='"+e+"' fch='"+t+"' tline='"+n+"' tch='"+r+"'><font color="+s+">";o+="["+core.status.selected_file.split("/").pop(),o+=":"+e+1+"]: ";var u=this.html_encode(i.slice(0,t)+"[underLineInsert]"+i.slice(t,r)+"[/underLineInsert]"+i.slice(r)),a=u.replace(this.html_encode("[underLineInsert]"),"<span style='text-decoration:none; border-bottom:1px solid red;'>");return a=a.replace(this.html_encode("[/underLineInsert]"),"</span>"),o+=a,o+="  (from "+core.status.current_project_name+")",o+="</font>",o+="<br>",o},replace_all:function(e,t,n,r,i,s){var o="#333";$("#search").prepend(this.make_replace_all_message(e,t,n,r,i,s,o))},make_replace_all_message:function(e,t,n,r,i,s,o){var u="<div class='search_message' fline='"+e+"' fch='"+t+"' tline='"+n+"' tch='"+r+"'><font color="+o+">";return u+="["+core.status.selected_file.split("/").pop(),u+=":"+e+" ("+t+"~"+r+")]: ",u+=this.html_encode(i)+" -> "+this.html_encode(s),u+="  (from "+core.status.current_project_name+")",u+="</font>",u+="<br>",u},clean:function(){$("#search").html("")},html_encode:function(e){var t=document.createElement("div");return t.innerText=t.textContent=e,e=t.innerHTML,delete t,e}};
+ **/
+
+org.goorm.core.search.message = function () {
+
+};
+
+org.goorm.core.search.message.prototype = {
+	m: function (fromLine, fromCh, toLine, toCh, text) {
+		var color = "#333";
+		
+		$("#search").prepend(this.make_message(fromLine, fromCh, toLine, toCh, text, color));
+	},
+	
+	make_message: function (fromLine, fromCh, toLine, toCh, text, color) {
+		var message = "<div class='search_message' fline='" + fromLine + "' fch='" + fromCh + "' tline='" + toLine + "' tch='" + toCh + "'><font color=" + color + ">";
+		message += "[" + (core.status.selected_file.split("/")).pop();
+		message += ":" + fromLine+1 + "]: ";
+		// var encoded_text = this.html_encode(text);
+		// var temp_message = encoded_text.slice(0, fromCh) + "<u>" + encoded_text.slice(fromCh, toCh) + "</u>" + encoded_text.slice(toCh);
+		var encoded_text = this.html_encode(text.slice(0, fromCh) + "[underLineInsert]" + text.slice(fromCh, toCh) + "[/underLineInsert]" + text.slice(toCh));
+		var temp_message = encoded_text.replace(this.html_encode("[underLineInsert]"), "<span style='text-decoration:none; border-bottom:1px solid red;'>");
+		temp_message = temp_message.replace(this.html_encode("[/underLineInsert]"), "</span>");
+		message += temp_message;
+		message += "  (from " + core.status.current_project_name + ")";
+		message += "</font>";
+		message += "<br>";
+		return message;
+	},
+	
+	replace_all: function (fromLine, fromCh, toLine, toCh, fromText, toText) {
+		var color = "#333";
+		
+		$("#search").prepend(this.make_replace_all_message(fromLine, fromCh, toLine, toCh, fromText, toText, color)); 
+	},
+	
+	make_replace_all_message: function (fromLine, fromCh, toLine, toCh, fromText, toText, color) {
+		var message = "<div class='search_message' fline='" + fromLine + "' fch='" + fromCh + "' tline='" + toLine + "' tch='" + toCh + "'><font color=" + color + ">";
+		message += "[" + (core.status.selected_file.split("/")).pop();
+		message += ":" + fromLine + " (" + fromCh + "~" + toCh + ")]: ";
+		message += this.html_encode(fromText) + " -> " + this.html_encode(toText);
+		message += "  (from " + core.status.current_project_name + ")";
+		message += "</font>";
+		message += "<br>";
+		return message;
+	},
+
+	clean: function () {
+		$("#search").html("");
+	},
+	
+	html_encode: function (s)	{
+	  var el = document.createElement("div");
+	  el.innerText = el.textContent = s;
+	  s = el.innerHTML;
+	  delete el;
+	  return s;
+	}
+};

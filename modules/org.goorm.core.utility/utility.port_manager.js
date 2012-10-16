@@ -1,1 +1,63 @@
-var port_list=[],port_init=10001;module.exports={alloc_port:function(e){console.log(e),e.process_name||(e.process_name="goorm_unknown"),e.port||(e.port=port_init);var t=!1;for(var n=0;n<port_list.length;n++){var r=port_list[n];if(e.port==r.port){t=!0;break}}if(!t)return port_list.push(e),e;var r=this.new_port();return e.port=r,port_list.push(e),e},new_port:function(){var e=!0;for(var t=port_init;t<=65535;t++){e=!0;for(var n=0;n<port_list.length;n++)if(port_list[n].port==t){e=!1;break}if(e===!0)return t}},remove_port:function(e){var t=e.port;for(var n=0;n<port_list.length;n++)port_list[n].port==t&&port_list.remove(n);return console.log(t+" port is removed"),1}};
+var port_list = [];
+var port_init = 10001;
+//{ "port": 9999,
+//	"process_name": "goorm" }
+
+module.exports = {
+	alloc_port: function(portItem){
+		console.log(portItem);
+		// port, process_name
+		if(!portItem.process_name) portItem.process_name = "goorm_unknown";
+		if(!portItem.port) portItem.port = port_init;
+		
+		var has_port = false;
+		
+		// search port is already allocated.
+		for(var i =0; i < port_list.length; i++) {
+			var port = port_list[i];
+			
+			if (portItem.port == port.port) {
+				has_port = true;
+				break;
+			}
+		}
+		
+		if(!has_port) {
+			port_list.push(portItem);
+			return portItem;
+		}
+		
+		var port = this.new_port();
+		portItem.port = port;
+		port_list.push(portItem);
+		return portItem;
+	},
+	
+	new_port: function() {
+		// allocate port
+		var alloc_flag = true;
+		for(var i = port_init; i <= 65535; i++) {
+			alloc_flag = true;
+			for (var j = 0; j < port_list.length; j++) {
+				if(port_list[j].port == i) {
+					alloc_flag = false;
+					break;
+				}
+			}
+			if(alloc_flag === true) {
+				return i;
+			}
+		}
+	},
+	
+	remove_port: function(req) {
+		var port = req.port;
+		for (var i = 0; i < port_list.length; i++) {
+			if(port_list[i].port == port) {
+				port_list.remove(i);
+			}
+		}
+		console.log(port+" port is removed");
+		return 1;
+	}
+}

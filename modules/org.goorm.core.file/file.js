@@ -1,1 +1,654 @@
-var fs=require("fs"),walk=require("walk"),EventEmitter=require("events").EventEmitter,rimraf=require("rimraf"),http=require("http"),root_dir="";module.exports={init:function(){},do_new:function(e,t){var n=this,r={};r.err_code=0,r.message="process done";if(e.path!=null&&e.new_anyway){var i=e.path;e.type!=""&&(i+="."+e.type),fs.exists(__path+"workspace/"+i,function(n){n&&e.new_anyway=="false"?(r.err_code=99,r.message="exist file",t.emit("file_do_new",r)):fs.writeFile(__path+"workspace/"+i,"",function(e){e!=null?(r.err_code=40,r.message="Can not make project file",t.emit("file_do_new",r)):t.emit("file_do_new",r)})})}else r.err_code=10,r.message="Invalid query",t.emit("file_do_new",r)},do_new_folder:function(e,t){var n=this,r={};r.err_code=0,r.message="process done",e.current_path!=null&&e.folder_name!=null?fs.exists(__path+"workspace/"+e.path,function(n){n?(r.err_code=20,r.message="Exist folder",t.emit("file_do_new_folder",r)):fs.mkdir(__path+"workspace/"+e.current_path+"/"+e.folder_name,"0777",function(e){e!=null?(r.err_code=30,r.message="Cannot make directory",t.emit("file_do_new_folder",r)):t.emit("file_do_new_folder",r)})}):(r.err_code=10,r.message="Invalid query",t.emit("file_do_new_folder",r))},do_new_untitled_text_file:function(e,t){var n=this,r={};r.err_code=0,r.message="process done",e.current_path!=null?fs.readdir(__path+"workspace/"+e.current_path,function(n,i){if(n!=null)r.err_code=10,r.message="Server can not response",t.emit("file_do_new_untitled_text_file",r);else{var s="untitled",o=1;for(;;){if(!i.hasObject(s+o+".txt"))break;o++}fs.writeFile(__path+"workspace/"+e.current_path+"/"+s+o+".txt","",function(e){e!=null?(r.err_code=40,r.message="Can not make project file",t.emit("file_do_new_untitled_text_file",r)):t.emit("file_do_new_untitled_text_file",r)})}}):(r.err_code=10,r.message="Invalid query",t.emit("file_do_new_untitled_text_file",r))},do_new_other:function(e,t){var n=this,r={};r.err_code=0,r.message="process done",e.current_path!=null&&e.file_name!=null?fs.exists(__path+"workspace/"+e.path,function(n){n?(r.err_code=20,r.message="Exist file",t.emit("file_do_new_other",r)):fs.writeFile(__path+"workspace/"+e.current_path+"/"+e.file_name,"",function(e){e!=null?(r.err_code=40,r.message="Can not make file",t.emit("file_do_new_other",r)):t.emit("file_do_new_other",r)})}):(r.err_code=10,r.message="Invalid query",t.emit("file_do_new_other",r))},put_contents:function(e,t){var n={};fs.writeFile(__path+"/workspace/"+e.path,e.data,function(e){e!=null?(n.err_code=10,n.message="Can not save",t.emit("file_put_contents",n)):(n.err_code=0,n.message="saved",t.emit("file_put_contents",n))})},get_nodes:function(e,t){var n=this,r=new EventEmitter,i=[];root_dir=e.replace(__path+"workspace/","")+"/",r.on("got_dir_nodes_for_get_nodes",function(r){var s={followLinks:!1},o=walk.walk(e,s);o.on("files",function(e,t,n){if(e.indexOf("/.")==-1)for(var r=0;r<t.length;r++)if(t[r].name.indexOf(".")!=0){var s={};s.root=e.replace(__path+"workspace/","")+"/",s.filename=t[r].name,s.parent_label=s.root,s.project_path=root_dir,s.cls="file",s.expanded=!1,s.sortkey=1+s.filename,s.type="html";var o=s.filename.split(".").pop();o==s.filename&&(o="etc"),s.html="<div class='node'><img src=images/icons/filetype/"+o+'.filetype.png class="directory_icon file" />'+s.filename+'<div class="fullpath" style="display:none;">'+s.root+s.filename+"</div>"+"</div>",s.children=[],s.filetype=o,i.push(s)}n()}),o.on("end",function(){tree=n.make_dir_tree(root_dir,r),tree=n.make_file_tree(tree,i),t.emit("got_nodes",tree)})}),this.get_dir_nodes(e,r)},get_dir_nodes:function(e,t){var n=this,r={followLinks:!1},i=[],s=walk.walk(e,r);s.on("directories",function(e,t,n){if(e.indexOf("/.")==-1)for(var r=0;r<t.length;r++)if(t[r].name.indexOf(".")!=0){var s={};s.root=e.replace(__path+"workspace/","")+"/",s.name=t[r].name,s.parent_label=s.root,s.cls="dir",s.expanded=!0,s.sortkey=0+s.name,s.type="html",s.html="<div class='node'><img src=images/icons/filetype/folder.filetype.png class=\"directory_icon file\" />"+s.name+'<div class="fullpath" style="display:none;">'+s.root+s.name+"</div>"+"</div>",s.children=[],i.push(s)}n()}),s.on("end",function(){tree=n.make_dir_tree(root_dir,i);var e={};e.root="",e.name=root_dir.replace(/\//g,""),e.parent_label=e.root,e.cls="dir",e.expanded=!0,e.sortkey=0+e.name,e.type="html";var r=e.name;e.name==""&&(r="workspace"),e.html="<div class='node'><img src=images/icons/filetype/folder.filetype.png class=\"directory_icon file\" />"+r+'<div class="fullpath" style="display:none;">'+e.root+e.name+"</div>"+"</div>",e.children=tree,t.emit("got_dir_nodes",e),t.emit("got_dir_nodes_for_get_nodes",i)})},make_dir_tree:function(e,t){var n=[],r=[];for(var i=0;i<t.length;i++)t[i].root==e?n.push(t[i]):r.push(t[i]);for(var i=0;i<n.length;i++){var s=this.make_dir_tree(e+n[i].name+"/",r);n[i].children=s}return n},make_file_tree:function(e,t){if(e!=undefined){var n=[];for(var r=0;r<t.length;r++)t[r].root==root_dir&&(n.push(r),e.push(t[r]));for(var i=0;i<e.length;i++)for(var r=0;r<t.length;r++)!n.hasObject(r)&&e[i].root+e[i].name+"/"==t[r].root&&(n.push(r),e[i].children.push(t[r]));var s=[];for(var r=0;r<t.length;r++)n.hasObject(r)||s.push(t[r]);for(var i=0;i<e.length;i++)e[i].children.length>0&&e[i].children.join(this.make_file_tree(e[i].children,s));return e}return null},do_delete:function(e,t){var n={};n.err_code=0,n.message="process done",e.file_path!=null?rimraf(__path+"workspace/"+e.file_path,function(e){e!=null?(n.err_code=20,n.message="Can not delete file",t.emit("file_do_delete",n)):t.emit("file_do_delete",n)}):(n.err_code=10,n.message="Invalide query",t.emit("file_do_delete",n))},do_rename:function(e,t){var n={};n.err_code=0,n.message="process done";if(e.ori_path!=null&&e.ori_name!=null&&e.dst_name!=null){var r=__path+"workspace/"+e.ori_path;fs.rename(r+e.ori_name,r+e.dst_name,function(r){n.path=e.ori_path,n.file=e.dst_name,t.emit("file_do_rename",n)})}else n.err_code=10,n.message="Invalide query",t.emit("file_do_rename",n)},do_move:function(e,t){var n={};n.err_code=0,n.message="process done";if(e.ori_path!=null&&e.ori_file!=null&&e.dst_path!=null&&e.dst_file!=null){var r=__path+"workspace/"+e.ori_path+"/"+e.ori_file,i=__path+"workspace/"+e.dst_path+"/"+e.dst_file;fs.rename(r,i,function(r){r!=null?(n.err_code=20,n.message="Can not move file",t.emit("file_do_move",n)):(n.path=e.dst_path,n.file=e.dst_name,t.emit("file_do_move",n))})}else n.err_code=10,n.message="Invalide query",t.emit("file_do_move",n)},do_import:function(e,t,n){var r={};r.err_code=0,r.message="process done",e.file_import_location_path!=null&&t!=null?fs.rename(t.path,__path+"workspace/"+e.file_import_location_path+"/"+t.name,function(e){e==null?n.emit("file_do_import",r):(r.err_code=20,r.message="Cannot extract zip file",n.emit("file_do_import",r))}):(r.err_code=10,r.message="Invalide query",n.emit("file_do_import",r))},do_export:function(e,t){var n={};n.err_code=0,n.message="process done",e.user!=null&&e.path!=null&&e.file!=null?fs.mkdir(__path+"temp_files/"+e.user,"0777",function(r){r==null||r.errno==47?fs.readFile(__path+"workspace/"+e.path+"/"+e.file,"utf8",function(r,i){r!=null?(n.err_code=40,n.message="Cannot find target file",t.emit("file_do_export",n)):fs.writeFile(__path+"temp_files/"+e.user+"/"+e.file,i,function(r){r!=null?(n.err_code=10,n.message="Can not save",t.emit("file_do_export",n)):(n.path=e.user+"/"+e.file,t.emit("file_do_export",n))})}):(n.err_code=30,n.message="Cannot make directory",t.emit("file_do_export",n))}):(n.err_code=10,n.message="Invalide query",t.emit("file_do_export",n))},get_url_contents:function(e,t){var n="";http.get(e,function(e){e.on("data",function(e){n+=e}),e.on("end",function(){t.emit("file_get_url_contents",n)})}).on("error",function(e){n="Got error: "+e.message,t.emit("file_get_url_contents",n)})},get_property:function(e,t){var n={};n.err_code=0,n.message="process done",e.path!=null?fs.stat(__path+"workspace/"+e.path,function(r,i){if(r==null){var s=e.path.split("/"),o="";for(var u=0;u<s.length-1;u++)o+=s[u]+"/";n.filename=s[s.length-1],n.filetype=s[s.length-1].split(".")[1],n.path=o,n.size=i.size,n.atime=i.atime,n.mtime=i.mtime,t.emit("file_get_property",n)}else n.err_code=20,n.message="Can not find target file",t.emit("file_get_property",n)}):(n.err_code=10,n.message="Invalide query",t.emit("file_get_property",n))},do_save_as:function(e,t){var n=this,r={};r.err_code=0,r.message="process done";if(e.path!=null&&e.save_anyway){var i=e.path;e.type!=""&&(i+="."+e.type),fs.exists(__path+"workspace/"+i,function(n){n&&e.save_anyway=="false"?(r.err_code=99,r.message="exist file",t.emit("file_do_save_as",r)):fs.writeFile(__path+"workspace/"+i,e.data,function(e){e!=null?(r.err_code=40,r.message="Can not save file",t.emit("file_do_save_as",r)):t.emit("file_do_save_as",r)})})}else r.err_code=10,r.message="Invalid query",t.emit("file_do_save_as",r)}};
+var fs = require('fs');
+var walk = require('walk');
+var EventEmitter = require("events").EventEmitter;
+var rimraf = require('rimraf');
+var http = require('http');
+
+var root_dir = "";
+
+module.exports = {
+	init: function () {
+	
+	},
+	
+	do_new: function (query, evt) {
+		var self = this;
+		
+		var data = {};
+		data.err_code = 0;
+		data.message = "process done";
+		
+		if ( query.path!=null && query.new_anyway ) {
+			var path = query.path;
+			if(query.type!="") {
+				path += "."+query.type;
+			}
+			
+			fs.exists(__path+'workspace/'+path, function(exists) {
+
+				if (exists && query.new_anyway=="false") {
+					data.err_code = 99;
+					data.message = "exist file";
+					evt.emit("file_do_new", data);					
+				}
+				else {
+					fs.writeFile(__path+'workspace/'+path, "", function(err) {
+						if (err!=null) {
+							data.err_code = 40;
+							data.message = "Can not make project file";
+							
+							evt.emit("file_do_new", data);
+						}
+						else {	
+							evt.emit("file_do_new", data);
+						}
+					});
+				}
+			});
+		}
+		else {
+			data.err_code = 10;
+			data.message = "Invalid query";
+			evt.emit("file_do_new", data);
+		}
+	},
+	
+	do_new_folder: function (query, evt) {
+		var self = this;
+		
+		var data = {};
+		data.err_code = 0;
+		data.message = "process done";
+
+		if ( query.current_path!=null && query.folder_name!=null ) {
+			fs.exists(__path+'workspace/'+query.path, function(exists) {
+				if (exists) {
+					data.err_code = 20;
+					data.message = "Exist folder";
+
+					evt.emit("file_do_new_folder", data);
+				}
+				else {
+					fs.mkdir(__path+'workspace/'+query.current_path+'/'+query.folder_name, '0777', function(err) {
+
+						if (err!=null) {
+							data.err_code = 30;
+							data.message = "Cannot make directory";
+	
+							evt.emit("file_do_new_folder", data);
+						}
+						else {
+							evt.emit("file_do_new_folder", data);
+						}
+					});
+				}
+			});
+		}
+		else {
+			data.err_code = 10;
+			data.message = "Invalid query";
+			evt.emit("file_do_new_folder", data);
+		}
+	},
+	
+	do_new_untitled_text_file: function (query, evt) {
+		var self = this;
+		
+		var data = {};
+		data.err_code = 0;
+		data.message = "process done";
+		
+		if ( query.current_path!=null ) {
+			fs.readdir(__path+'workspace/'+query.current_path, function(err, files) {
+				if (err!=null) {
+					data.err_code = 10;
+					data.message = "Server can not response";
+
+					evt.emit("file_do_new_untitled_text_file", data);
+				}
+				else {
+					var temp_file_name = "untitled";
+					var i=1;
+					
+					while(1) {
+						if (files.hasObject(temp_file_name+i+".txt")) {
+						}
+						else {
+							break;
+						}
+						i++;
+					}
+					
+					fs.writeFile(__path+'workspace/'+query.current_path+'/'+temp_file_name+i+'.txt', "", function(err) {
+						if (err!=null) {
+							data.err_code = 40;
+							data.message = "Can not make project file";
+							
+							evt.emit("file_do_new_untitled_text_file", data);
+						}
+						else {
+							//data.
+
+							evt.emit("file_do_new_untitled_text_file", data);
+						}
+					});
+				}
+			});
+		}
+		else {
+			data.err_code = 10;
+			data.message = "Invalid query";
+			evt.emit("file_do_new_untitled_text_file", data);
+		}
+	},
+	
+	do_new_other: function (query, evt) {
+		var self = this;
+		
+		var data = {};
+		data.err_code = 0;
+		data.message = "process done";
+
+		if ( query.current_path!=null && query.file_name!=null ) {
+			fs.exists(__path+'workspace/'+query.path, function(exists) {
+				if (exists) {
+					data.err_code = 20;
+					data.message = "Exist file";
+
+					evt.emit("file_do_new_other", data);
+				}
+				else {
+					fs.writeFile(__path+'workspace/'+query.current_path+'/'+query.file_name, "", function(err) {
+						if (err!=null) {
+							data.err_code = 40;
+							data.message = "Can not make file";
+							
+							evt.emit("file_do_new_other", data);
+						}
+						else {
+							evt.emit("file_do_new_other", data);
+						}
+					});
+				}
+			});
+		}
+		else {
+			data.err_code = 10;
+			data.message = "Invalid query";
+			evt.emit("file_do_new_other", data);
+		}
+	},
+	
+	put_contents: function (query, evt) {
+
+		var data = {};
+
+		fs.writeFile(__path+'/workspace/'+query.path, query.data, function(err) {
+			if (err!=null) {
+				data.err_code = 10;
+				data.message = "Can not save";
+	
+				evt.emit("file_put_contents", data);
+			}
+			else {
+				data.err_code = 0;
+				data.message = "saved";
+	
+				evt.emit("file_put_contents", data);
+			}
+		});		
+	},
+		
+	get_nodes: function (path, evt) {
+		var self = this;
+		
+		var evt_dir = new EventEmitter();
+				
+		var nodes = [];
+		
+		root_dir = path.replace(__path + "workspace/", "") + "/";
+
+		evt_dir.on("got_dir_nodes_for_get_nodes", function (dirs) {
+			var options = {
+				followLinks: false
+			};
+
+			var walker = walk.walk(path, options);
+			
+			walker.on("files", function (root, file_stats, next) {
+				if (root.indexOf("\/\.")==-1) {			
+					for (var i=0; i < file_stats.length; i++) {
+						if (file_stats[i].name.indexOf("\.") != 0 ) {
+							var node = {};
+							node.root = root.replace(__path + "workspace/", "") + "/";
+							node.filename = file_stats[i].name;
+							node.parent_label = node.root;
+							node.project_path = root_dir;
+							node.cls = "file";
+							node.expanded = false;
+							node.sortkey = 1 + node.filename;
+							node.type = "html";
+							
+							var extension = node.filename.split('.').pop();
+							if (extension == node.filename) {
+								extension = "etc";
+							}
+							node.html = "<div class='node'>" 
+										+ "<img src=images/icons/filetype/" + extension + ".filetype.png class=\"directory_icon file\" />"
+										+ node.filename
+										+ "<div class=\"fullpath\" style=\"display:none;\">" + node.root + node.filename + "</div>"
+									  + "</div>";
+							node.children = [];
+							node.filetype = extension;
+							nodes.push(node);
+						}
+					}
+				}
+				next();
+			});
+			
+			walker.on("end", function () {
+				tree = self.make_dir_tree(root_dir, dirs);
+				tree = self.make_file_tree(tree, nodes);				
+				evt.emit("got_nodes", tree);
+			});
+		
+		});
+		
+		this.get_dir_nodes(path, evt_dir);
+	},
+	
+	get_dir_nodes: function (path, evt) {
+		var self = this;
+		
+		var options = {
+			followLinks: false
+		};
+		
+		var dirs = [];
+		
+		var walker = walk.walk(path, options);
+		
+		walker.on("directories", function (root, dir_stats_array, next) {
+			if (root.indexOf("\/\.")==-1) {
+				for (var i=0; i < dir_stats_array.length; i++) {
+					if (dir_stats_array[i].name.indexOf("\.") != 0 ) {				
+						var dir = {};
+						dir.root = root.replace(__path + "workspace/", "") + "/";
+						dir.name = dir_stats_array[i].name;
+						dir.parent_label = dir.root;
+						dir.cls = "dir";
+						dir.expanded = true;
+						dir.sortkey = 0 + dir.name;
+						dir.type = "html";
+						dir.html = "<div class='node'>" 
+									+ "<img src=images/icons/filetype/folder.filetype.png class=\"directory_icon file\" />"
+									+ dir.name
+									+ "<div class=\"fullpath\" style=\"display:none;\">" + dir.root + dir.name + "</div>"
+								 + "</div>";
+						dir.children = [];
+						dirs.push(dir);
+					}
+				}
+			}
+			next();
+		});
+		
+		walker.on("end", function () {
+			tree = self.make_dir_tree(root_dir, dirs);
+			
+			// root directory for get_dir_nodes only
+			var dir_tree = {};
+			dir_tree.root = "";
+			dir_tree.name = root_dir.replace(/\//g, "");
+			dir_tree.parent_label = dir_tree.root;
+			dir_tree.cls = "dir";
+			dir_tree.expanded = true;
+			dir_tree.sortkey = 0 + dir_tree.name;
+			dir_tree.type = "html";
+
+			var temp_label = dir_tree.name;
+			if (dir_tree.name=="") {
+				temp_label="workspace";
+			}
+
+			dir_tree.html = "<div class='node'>" 
+						+ "<img src=images/icons/filetype/folder.filetype.png class=\"directory_icon file\" />"
+						+ temp_label
+						+ "<div class=\"fullpath\" style=\"display:none;\">" + dir_tree.root + dir_tree.name + "</div>"
+					 + "</div>";
+			dir_tree.children = tree;
+			
+			evt.emit("got_dir_nodes", dir_tree);
+			evt.emit("got_dir_nodes_for_get_nodes", dirs);
+		});
+	},
+	
+	make_dir_tree: function (root, dirs) {
+		var tree = [];
+		var rest = [];
+				
+		for (var i=0; i<dirs.length; i++) {
+			if (dirs[i].root == root) {
+				tree.push(dirs[i]);
+			}
+			else {
+				rest.push(dirs[i]);
+			}
+		}
+		
+		for (var i=0; i<tree.length; i++) {
+			var children = this.make_dir_tree(root + tree[i].name + '/', rest);
+			tree[i].children = children;
+		}
+		
+		return tree;
+	},
+	
+	make_file_tree: function (tree, files) {
+		if (tree != undefined) {
+			var marked = [];
+
+			// files on root
+			for (var j=0; j<files.length; j++) {
+				if (files[j].root == root_dir) {
+					marked.push(j);
+					tree.push(files[j]);
+				}
+			}
+			
+			for (var i=0; i<tree.length; i++) {
+				for (var j=0; j<files.length; j++) {
+					if (!marked.hasObject(j) && tree[i].root + tree[i].name + '/' == files[j].root) {
+						marked.push(j);
+						tree[i].children.push(files[j]);
+					}
+				}
+			}
+			
+			var rest_files = [];
+			
+			for (var j=0; j<files.length; j++) {
+				if (!marked.hasObject(j)) {
+					rest_files.push(files[j]);
+				}
+			}
+			
+			for (var i=0; i<tree.length; i++) {
+				if (tree[i].children.length > 0) {
+					tree[i].children.join(this.make_file_tree(tree[i].children, rest_files));
+				}
+			}
+			
+			return tree;
+		}
+		else {
+			return null;
+		}
+	},
+	
+	do_delete: function (query, evt) {
+		var data = {};
+		data.err_code = 0;
+		data.message = "process done";
+		
+		if (query.file_path != null) {
+			rimraf(__path+"workspace/"+query.file_path, function(err) {
+				if (err!=null) {
+					data.err_code = 20;
+					data.message = "Can not delete file";
+					
+					evt.emit("file_do_delete", data);
+				}
+				else {
+					//success
+					evt.emit("file_do_delete", data);
+				}
+			});
+		}
+		else {
+			data.err_code = 10;
+			data.message = "Invalide query";
+			
+			evt.emit("file_do_delete", data);
+		}		
+/*
+		rimraf(__path+query.path, function(err) {
+		evt.emit("project_do_delete", err);			
+		});
+*/
+		
+	},
+	
+	do_rename: function (query, evt) {
+		var data = {};
+		data.err_code = 0;
+		data.message = "process done";
+				
+		if (query.ori_path != null && query.ori_name != null && query.dst_name != null) {
+			var path = __path+"workspace/"+query.ori_path;
+			fs.rename(path+query.ori_name, path+query.dst_name, function (err) {
+
+				data.path = query.ori_path;
+				data.file = query.dst_name;
+
+				evt.emit("file_do_rename", data);
+			});
+		}
+		else {
+			data.err_code = 10;
+			data.message = "Invalide query";
+			
+			evt.emit("file_do_rename", data);
+		}				
+	},
+	
+	do_move: function (query, evt) {
+		var data = {};
+		data.err_code = 0;
+		data.message = "process done";
+
+		if (query.ori_path != null && query.ori_file != null && query.dst_path != null && query.dst_file != null) {
+			var ori_full = __path+"workspace/"+query.ori_path+"/"+query.ori_file;
+			var dst_full = __path+"workspace/"+query.dst_path+"/"+query.dst_file;
+			fs.rename(ori_full, dst_full, function (err) {
+
+				if (err!=null) {
+					data.err_code = 20;
+					data.message = "Can not move file";
+					
+					evt.emit("file_do_move", data);
+				}
+				else {
+					
+					data.path = query.dst_path;
+					data.file = query.dst_name;
+	
+					evt.emit("file_do_move", data);
+				}
+			});
+		}
+		else {
+			data.err_code = 10;
+			data.message = "Invalide query";
+			
+			evt.emit("file_do_move", data);
+		}				
+	},
+	
+	do_import: function (query, file, evt) {
+		var data = {};
+		data.err_code = 0;
+		data.message = "process done";	
+
+		if (query.file_import_location_path!=null && file!=null) {
+
+			fs.rename(file.path, __path+"workspace/"+query.file_import_location_path+"/"+file.name, function (err) {
+				if (err==null) {
+					evt.emit("file_do_import", data);
+				}
+				else {
+					data.err_code = 20;
+					data.message = "Cannot extract zip file";
+					
+					evt.emit("file_do_import", data);
+				}
+			});
+		}
+		else {
+			data.err_code = 10;
+			data.message = "Invalide query";
+			
+			evt.emit("file_do_import", data);			
+		}
+	},
+
+	
+	do_export: function (query, evt) {
+		var data = {};
+		data.err_code = 0;
+		data.message = "process done";
+		
+		if ( query.user!=null && query.path!=null && query.file!=null ) {
+			fs.mkdir(__path+'temp_files/'+query.user, '0777', function(err) {
+				if (err==null || err.errno == 47) {		//errno 47 is exist folder error
+					fs.readFile(__path + 'workspace/'+query.path+'/'+query.file, "utf8", function(err, contents) {
+						if (err!=null) {
+							data.err_code = 40;
+							data.message = "Cannot find target file";
+	
+							evt.emit("file_do_export", data);
+						}
+						else {
+							fs.writeFile(__path+'temp_files/'+query.user+'/'+query.file, contents, function(err) {
+								if (err!=null) {
+									data.err_code = 10;
+									data.message = "Can not save";
+						
+									evt.emit("file_do_export", data);
+								}
+								else {
+									data.path = query.user+'/'+query.file;
+									evt.emit("file_do_export", data);
+								}
+							});		
+						}
+					});
+				}
+				else {
+					data.err_code = 30;
+					data.message = "Cannot make directory";
+
+					evt.emit("file_do_export", data);
+				}
+			});
+		}
+		else {
+			data.err_code = 10;
+			data.message = "Invalide query";
+			
+			evt.emit("file_do_export", data);
+		}				
+		
+	},
+	
+	get_url_contents: function (path, evt) {//file_get_url_contents
+		var data = "";
+
+		http.get(path, function(res) {
+			res.on("data", function(chunk) {
+				data += chunk;
+			});
+			
+			res.on("end", function() {
+				evt.emit("file_get_url_contents", data);
+			});
+		}).on("error", function(e) {
+			data = "Got error: " + e.message;
+			evt.emit("file_get_url_contents", data);
+		});
+	},
+	
+	get_property: function (query, evt) {
+
+		var data = {};
+		data.err_code = 0;
+		data.message = "process done";
+
+		if ( query.path!=null ) {
+			
+			fs.stat(__path+"workspace/"+query.path, function (err, stats) {
+				if ( err == null ) {
+				
+					var temp_path = query.path.split("/");
+					var path = "";
+					for (var i=0; i<temp_path.length-1; i++) {
+						path += temp_path[i]+"/"
+					}
+				
+					data.filename = temp_path[temp_path.length-1];
+					data.filetype = temp_path[temp_path.length-1].split(".")[1];
+					data.path = path;
+					data.size = stats.size;
+					data.atime = stats.atime;
+					data.mtime = stats.mtime;
+					
+					evt.emit("file_get_property", data);
+				}
+				else {
+					data.err_code = 20;
+					data.message = "Can not find target file";
+					
+					evt.emit("file_get_property", data);
+				}
+			});
+		}
+		else {
+			data.err_code = 10;
+			data.message = "Invalide query";
+
+			evt.emit("file_get_property", data);			
+		}				
+	},
+	
+	do_save_as: function (query, evt) {
+		var self = this;
+		
+		var data = {};
+		data.err_code = 0;
+		data.message = "process done";
+		
+		if ( query.path!=null && query.save_anyway ) {
+			var path = query.path;
+			if(query.type!="") {
+				path += "."+query.type;
+			}
+			
+			fs.exists(__path+'workspace/'+path, function(exists) {
+				if (exists && query.save_anyway=="false") {
+					data.err_code = 99;
+					data.message = "exist file";
+					evt.emit("file_do_save_as", data);					
+				}
+				else {
+					fs.writeFile(__path+'workspace/'+path, query.data, function(err) {
+						if (err!=null) {
+							data.err_code = 40;
+							data.message = "Can not save file";
+							
+							evt.emit("file_do_save_as", data);
+						}
+						else {	
+							evt.emit("file_do_save_as", data);
+						}
+					});
+				}
+			});
+		}
+		else {
+			data.err_code = 10;
+			data.message = "Invalid query";
+			evt.emit("file_do_save_as", data);
+		}
+	},
+};
