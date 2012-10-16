@@ -73,13 +73,17 @@ Getting Started
   
 * **Download**
 
-  checkout goorm:
+  clone goorm (git) :
 
           $ git clone git://github.com/xenoz0718/goorm.git
 
-  or
+  checkout goorm (svn) :
   
           $ svn checkout svn://svn.code.sf.net/p/goorm/code/trunk goorm 
+
+  or using npm :
+
+          $ npm install goorm
                  
 
 * **Run**
