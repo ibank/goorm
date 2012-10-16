@@ -6,6 +6,13 @@ goorm is the cloud-based Integrated Development Environment. It is developed in 
 * **goorm is developing now and this repository provides only alpha version.**
 * **please, feedback to us about bugs and feature what you need.** (email: xenoz0718@gmail.com)
 
+Installation
+------------
+
+  install using npm :
+
+          $ npm install goorm
+
 Official Site
 -------------
 
