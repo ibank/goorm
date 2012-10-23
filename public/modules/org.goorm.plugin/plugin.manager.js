@@ -112,10 +112,16 @@ org.goorm.plugin.manager.prototype = {
 					index++;
 					self.load(index);
 					
+					core.module.preference.manager.get_default_file('/' + plugin_name + '/preference.json', function(json){
+						$.extend(true, core.preference.plugins[plugin_name], json);
+						
+						// restore default를 위한 기본 preference데이터를 저장.
+						core.module.preference.preference_default.plugins[plugin_name] = {};
+						$.extend(true, core.module.preference.preference_default.plugins[plugin_name], json);
+					});
+					
 					$(core).trigger("goorm_loading");
 				});
-				
-				core.module.preference.load_preference('/' + plugin_name + '/preference.json');
 			}
 		}
 		// else {

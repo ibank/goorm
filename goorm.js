@@ -5,9 +5,10 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , socketio = require('socket.io');
+  , socketio = require('socket.io')
+  , http = require('http');
 
-var goorm = module.exports = express.createServer();
+var goorm = module.exports = express();
 var g_terminal = require("./modules/org.goorm.core.terminal/terminal");
 var g_collaboration = require("./modules/org.goorm.core.collaboration/collaboration");
 var g_utility = require("./modules/org.goorm.core.utility/utility");
@@ -52,6 +53,7 @@ goorm.post('/project/import', routes.project.do_import);
 goorm.get('/project/export', routes.project.do_export);
 goorm.get('/project/clean', routes.project.do_clean);
 goorm.get('/project/get_property', routes.project.get_property);
+goorm.get('/project/set_property', routes.project.set_property);
 
 
 //for plugin
@@ -106,11 +108,11 @@ goorm.get('/download', routes.download);
 //현재 로그인 상태 (로그인한 계정의 정보)
 /* goorm.get('/member/login_status', routes.member.login_status); */
 /*************************/
-goorm.listen(9999, function(){
-  console.log("goorm IDE server listening on port %d in %s mode", goorm.address().port, goorm.settings.env);
+var server = http.createServer(goorm).listen(9999, function(){
+  console.log("goorm IDE server listening on port %d in %s mode", server.address().port, goorm.settings.env);
 });
 
-var io = socketio.listen(goorm);
+var io = socketio.listen(server);
 
 g_terminal.start(io);
 g_collaboration.start(io);

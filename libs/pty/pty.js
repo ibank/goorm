@@ -7,11 +7,16 @@
 var net = require('net');
 
 var os = require('os');
+var pty = null;
 if(/darwin/.test(os.platform())) {
-	var pty = require('./pty_darwin.node');
+	pty = require('./pty_darwin.node');
 }
 else if(/linux/.test(os.platform())) {
-	var pty = require('./pty_linux.node');
+	if(/ia32/.test(os.arch())) 
+		pty = require('./pty_linux32.node');
+	else pty = require('./pty_linux.node');
+}
+else {
 }
 
 /**

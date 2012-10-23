@@ -281,7 +281,6 @@ org.goorm.core.window.manager.prototype = {
 			this.window[this.index].connect(this.tab[this.index]);
 			this.tab[this.index].connect(this.window[this.index]);
 			
-			this.active_window = this.index;
 			this.window[this.index].index = this.index;
 			
 			this.window[this.index].activate();				
@@ -522,16 +521,34 @@ org.goorm.core.window.manager.prototype = {
 		return count;
 	},
 	
-	delete_window_in_tab : function(index){
-		if(this.tab && this.tab[index]){
-			this.tab.splice(index, 1);
+	delete_window_in_tab : function(target_index){
+		if(this.tab && this.tab[target_index]){
+			this.tab.splice(target_index, 1);
 		}
 	},
 	
 	decrement_index_in_window : function(close_index){
 		var length = this.window.length;
-		for(var i = close_index+1; i < length; i++)
+		var workspace_container = this.workspace_container;
+		
+		for(var i = close_index+1; i < length; i++){
+			var new_index = parseInt(i)-1;
+			
+			var new_container = "filewindow"+new_index;
+			var new_container_c = "filewindow"+new_index+"_c";
+			var new_container_h = "filewindow"+new_index+"_h";
+			
+			this.window[i].panel.dd.id = new_container_c;
+			this.window[i].panel.dd.dragElId = new_container_c;
+			this.window[i].panel.dd.handleElId = new_container_h;
+			
+			$("#"+workspace_container).find("#filewindow"+i).parent().attr("id", new_container_c);
+			$("#"+workspace_container).find("#filewindow"+i).find("#filewindow"+i+"_h").attr("id", new_container_h);
+			$("#"+workspace_container).find("#filewindow"+i).attr("id", new_container);
+			
+			this.window[i].container = new_container;
 			this.window[i].index--;
+		}
 	},
 	
 	close_all: function() {

@@ -27,7 +27,7 @@ org.goorm.core.project.build.project.prototype = {
 				if($(list).is(":checked")){
 				
 					var window_manager = core.module.layout.workspace.window_manager;
-					var did_save = false;
+					var did_save = true;
 					var target_window = -1;
 					var temp_filename = "";
 
@@ -37,9 +37,9 @@ org.goorm.core.project.build.project.prototype = {
 								// temp_filename = this.filename;
 								// did_save = true;
 								// target_window = i;
-														if( $(list).attr("project_path") + '/' ==  this.filepath && !this.isSaved ) {
+														if( $(list).attr("project_path") ==  this.project && !this.is_saved ) {
 								temp_filename = this.filename;
-								did_save = true;
+								did_save = false;
 								target_window = i;
 							}
 						});

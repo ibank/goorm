@@ -1,5 +1,15 @@
 var pty = require('../../libs/pty/pty.js');
 
+var os = require('os');
+var platform = null;
+if(/darwin/.test(os.platform())) {
+	platform = "darwin";
+}
+else if(/linux/.test(os.platform())) {
+	platform = "linux";
+}
+else {
+}
 
 module.exports = {
 	start: function (io) {
@@ -43,6 +53,7 @@ module.exports = {
 				};
 				
 				socket.to().emit("terminal_index", JSON.stringify(data));
+				socket.to().emit("platform", JSON.stringify({"platform":platform}));
 			});
 			
 			socket.on('terminal_leave', function (msg) {

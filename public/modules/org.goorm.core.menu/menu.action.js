@@ -460,6 +460,7 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=run]").click(function() {
 			if(core.module.plugin_manager.plugins["org.goorm.plugin." + core.status.current_project_type] != undefined
 			&& !$(this).hasClass('yuimenuitemlabel-disabled')) {
+				core.module.layout.inner_bottom_tabview.selectTab(2);
 				core.module.plugin_manager.plugins["org.goorm.plugin." + core.status.current_project_type].run(core.status.current_project_path);
 			}
 		});
@@ -490,6 +491,7 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=build_project]").unbind("click");
 		$("a[action=build_project]").click(function() {
 			if(!$(this).hasClass('yuimenuitemlabel-disabled')) {
+				core.module.layout.inner_bottom_tabview.selectTab(2);
 				core.dialog.build_project.show();
 			}
 			// if(core.module.plugin_manager.plugins["org.goorm.plugin."+core.status.current_project_type]!=undefined) {
@@ -503,6 +505,7 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=build_all]").unbind("click");
 		$("a[action=build_all]").click(function() {
 			if(!$(this).hasClass('yuimenuitemlabel-disabled')) {
+				core.module.layout.inner_bottom_tabview.selectTab(2);
 				core.dialog.build_all.show();
 			}
 		});
@@ -510,6 +513,7 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=build_clean]").unbind("click");
 		$("a[action=build_clean]").click(function() {
 			if(!$(this).hasClass('yuimenuitemlabel-disabled')) {
+				core.module.layout.inner_bottom_tabview.selectTab(2);
 				core.dialog.build_clean.show();
 			}
 		});

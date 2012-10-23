@@ -12,122 +12,67 @@ org.goorm.core.project.property = function () {
 	this.manager = null;
 	this.property = null;
 	this.plugin = null;
+	this.firstShow = true;
 };
 
 org.goorm.core.project.property.prototype = {
 	init: function () { 
 		var self = this;
 		this.manager = new org.goorm.core.project.property.manager();
-		this.manager.xml_parser("configs/project/property/default.xml");
-		this.xml=this.manager.xml;
 		
 		this.property = {};
-		this.plugin = {};
 		
 		this.dialog = new org.goorm.core.project.property.dialog();
 		
-		// Handler for OK button
-		var handle_ok = function() {
-			var valid = 1;
-			
-			// For input elements, validate values and put them into 'postdata'
-			$("#property_tabview").find("input").each(function(){
+		this.init_dialog();
+		
+		$(core).on("on_project_open", function(){
 				
-				var input = $(this);
-				if ($(this).attr("validate")){
-					var validate = $(this).attr("validate").split(',');
-					
-					// Check validation criteria
-					for (var i=0;i<validate.length;i++){
-						if (valid) valid = self.manager.validate(input, validate[i]);
-						else return false;
-					}
-				}
-				if(valid){
-					if($(this).attr("type") == "checkbox"){
-						if($(this).attr("checked") == true){
-							self.property[$(this).attr("name")]="true";
-						}
-						else {
-							self.property[$(this).attr("name")]="false";
+			// property 로드
+			self.load_property(core.status.current_project_path, function(contents){
+				self.property = contents;
+				core.property = self.property;
+				self.property.plugins || (self.property.plugins = {});
+				
+				// 프로젝트에 사용하는 플러그인만 출력.
+				var node = self.manager.treeview.getNodeByProperty("label", "Plugin");
+				var last_node;
+				for (var i=0; i < node.children.length; i++) {
+					var plugin = node.children[i];
+					if(plugin.label.toLowerCase() == contents.type.toLowerCase()) {
+						$("#"+plugin.contentElId).prev().removeClass("ygtvln").addClass("ygtvtn")
+						.parent().show();
+						last_node = $("#"+plugin.contentElId);
+						
+						// 플러그인 프로퍼티가 지정되지 않은경우 프리퍼런스에서 자동으로 가져온다.
+						for(var name in core.preference.plugins) {
+							if(self.property.plugins[name] === undefined && name.search("org.goorm.plugin."+contents.type.toLowerCase()) != -1) {
+								self.property.plugins[name] = core.preference.plugins[name];
+							}
 						}
 					}
 					else {
-						self.property[$(this).attr("name")]=$(this).val();
+						$("#"+plugin.contentElId).prev().removeClass("ygtvln").addClass("ygtvtn")
+						.parent().hide();
 					}
 				}
-			});
-			// For textarea elements, validate values and put them into 'postdata'
-			$("#property_tabview").find("textarea").each(function(){
-				var str = $(this).val();
+				last_node.prev().removeClass("ygtvtn").addClass("ygtvln");
 				
-				if(valid){
-					self.property[$(this).attr("name")]=$(this).val();
-				}
-			});
-			
-			$("#property_tabview").find("select").each(function(){
-				self.property[$(this).attr("name")]=$(this).text();
-			});
-			// If all values are valid, call php function to save them in project.xml
-			if(valid) {
-				self.save_project_xml();
-				this.hide();
-			}
-		};
-
-		var handle_cancel = function() { 
-			this.hide();
-			self.set_before(); 
-		};
-		
-		this.buttons = [ {text:"OK", handler:handle_ok, isDefault:true},
-						 {text:"Cancel",  handler:handle_cancel}]; 
-						 
-		this.dialog = new org.goorm.core.project.property.dialog();
-		this.dialog.init({
-			title:"Project Property", 
-			path:"configs/dialogs/org.goorm.core.project/project.property.html",
-			width:700,
-			height:500,
-			modal:true,
-			buttons:this.buttons,
-			success: function () {
-				// On the right side of dialog
-				self.manager.create_treeview(self.xml);
-
-				// Plugin setting
-				for (var i=0;i < core.module.plugin_manager.list.length; i++){
-										
-					var plugin_name=core.module.plugin_manager.list[i].plugin_name;
-					//self.manager.xml_parser('plugins/' + plugin_name + '/config.xml');
-					plugin_name = $(self.manager.xml).find("plugin").attr("name");
+				self.fill_dialog();
 				
-					self.plugin[plugin_name] = new self.manager.plugin(core.module.plugin_manager.list[i].plugin_name);
-					self.plugin[plugin_name].xml = self.manager.xml;
-				}
-					
-				$("#property_tabview #Information").show();
-
-				// TreeView labelClick function
-				self.manager.treeview.subscribe("clickEvent", function(nodedata){
-					var label = nodedata.node.label;
-					label = label.replace(/[/#. ]/g,"");
-					
-					$("#property_tabview").children().hide();
-					$("#property_tabview #property_"+label).show();
-				});
-			}
+				$("#property_tabview > *").hide();
+				$("#property_tabview #property_Information").show();
+			});
 		});
-		this.dialog = this.dialog.dialog;
-		
 	},
 	
 	show: function () {
 		var self = this;
-		if(core.status.current_project_path != null && core.status.current_project_path != ""){
-			this.set_project_information();
-			this.dialog.panel.show();
+		this.dialog.panel.show();
+//		this.set_before();
+		if(this.firstShow){
+			$("#property_tabview #property_Information").show();
+			this.firstShow=false;
 		}
 	},
 	
@@ -140,8 +85,6 @@ org.goorm.core.project.property.prototype = {
 		if (core.module.layout.workspace.window_manager.active_window > -1) {
 			active_file_type = core.module.layout.workspace.window_manager.window[core.module.layout.workspace.window_manager.active_window].filetype;
 		}
-
-
 
 		if(core.status.current_project_type) {
 			for (var value in core.module.plugin_manager.plugins) {
@@ -177,87 +120,129 @@ org.goorm.core.project.property.prototype = {
 		}
 	},
 	
-	set_project_information: function () {
-		var self=this;
-		this.property = {};
+	// save current property(core.property) to project.json
+	save: function(callback) {
+		var path = core.status.current_project_path, 
+			data = core.property;
 		
-		var postdata = {
-			project_path: core.status.current_project_path
-		};
-							
-		$.get("project/get_property", postdata, function (data) {
+		$.get("project/set_property", {project_path: path, data:JSON.stringify(data)}, function (data) {
 			if (data.err_code == 0) {
-				// need.... fucking
+				callback && callback();
 			}
 			else {
 				alert.show(data.message);
 			}
 		});
-/*
-		this.get_property(this.xml);			
+	},
+	
+	apply: function(){
+		this.read_dialog();
+		$(core).trigger("on_property_confirmed");
+	},
+	
+	restore_default: function(){
+		var self=this;
+		var target = "#property_tabview";
+		var restore_object = {};
+		var flag=0;
+		
+		this.fill_dialog();
+	},
+	
+	// dialog에 있는 property를 모두 읽어들인다.
+	read_dialog: function() {
+		var target="#property_tabview";
+		
+		var targets = $(target).children('div');
+		
+		var key = null;
+		$.each(targets, function(index, div){
+			if($(targets[index]).attr('plugin') == 'null') {
+				key = core.property;
+			}
+			else {
+				key = core.property.plugins[$(targets[index]).attr('plugin')];
+				
+				if(key === undefined) return ;
+			}
+				
+			$(targets[index]).find("input").each(function(){
+				var value;
+				if($(this).attr("type") == "checkbox"){
+					value = ($(this).attr("checked") == "checked") ? true : false;
+				}
+				else {
+					value = $(this).val();
+				}
+				key[$(this).attr("name")] = value;
+			});
 			
-		// Get the contents of project.xml and put them into repective HTML elements
-		$.ajax({
-			type: "POST",
-			dataType: "xml",
-			url: "project/" + core.status.current_project_path + "/project.xml",
-			success: function (xml) {
-				
-				$("#property_tabview").text("");
-				
-				$(xml).find("PROJECT").each(function(){
-					$(this).children().each(function(){
-						self.property[$(this)[0].tagName] = $(this).text();
-					});
-				});
-				
-				self.manager.create_tabview(self.xml);
-				// Plugin setting
-				var plugin_node = self.manager.treeview.getNodeByProperty("label","Plugin");
-				self.manager.treeview.removeChildren(plugin_node);
-				for (var name in self.plugin){
-					if(name == self.property['TYPE']){
-						$(self.plugin[name].xml).find("project").each(function(){
-							$(this).find("property").each(function(){
-								if(self.property[$(this).attr("name")] == null){
-									self.property[$(this).attr("name")] = $(this).attr("default");
-									self.plugin[name].property[$(this).attr("name")] = $(this).attr("default");
-								}
-								else {
-									self.plugin[name].property[$(this).attr("name")] = self.property[$(this).attr("name")];
-								}
-							});
-						});
-						
-						self.manager.add_treeview(plugin_node,self.plugin[name].xml);
-						self.manager.treeview.render();
-						self.manager.create_tabview(self.plugin[name].xml);
-						
-						// Set build configuration
-						core.dialog.build_configuration.set_build_config();
+			$(targets[index]).find("textarea").each(function(){
+				key[$(this).attr("name")] = $(this).val();
+			});
+			
+			$(targets[index]).find("select").each(function(){
+				key[$(this).attr("name")] = $(this).children("option:selected").val();
+			});
+		});
+	},
+	
+	fill_dialog: function () {
+		var target="#property_tabview";
+		
+		var targets = $(target).children('div');
+		
+		var key = null;
+		
+		$.each(targets, function(index, div){
+			var plugin_name = $(targets[index]).attr('plugin');
+			if($(targets[index]).attr('plugin') == 'null') {
+				key = core.property;
+			}
+			else {
+				key = core.property.plugins[plugin_name];
+				if(key === undefined) return ;
+			}
+			
+			$(targets[index]).find("input").each(function(){
+				if(key[$(this).attr("name")] !== null){
+					if($(this).attr("type") == "checkbox"){
+						if(key[$(this).attr("name")] == "true")
+							$(this).attr("checked","checked");
+//						else $(this).attr("checked",);
 					}
-
-					else {
-						self.plugin[name].property = {};
+					else{
+						$(this).val(key[$(this).attr("name")]);
 					}
 				}
-				
-				// TreeView labelClick function
-				self.manager.treeview.subscribe("labelClick", function(node){
-					var label = node.label;
-					label = label.replace(/[/#. ]/g,"");
-					
-					$("#property_tabview").children().hide();
-					$("#property_tabview #property_"+label).show();
-				});
-				
-				self.set_before();
-				
-				self.refresh_toolbox();
+			});
+			$(targets[index]).find("textarea").each(function(){
+				if(key[$(this).attr("name")] !== null){
+					$(this).val(key[$(this).attr("name")]);
+				}
+			});
+			$(targets[index]).find("select").each(function(){
+				if(key[$(this).attr("name")] !== null){
+					$(this).children("option[value = " + key[$(this).attr("name")] + "]").attr("selected", "true");
+					$(this).val(key[$(this).attr("name")]);
+				}
+			});
+		});
+	},
+	
+	// project.json파일을 읽어온다.
+	load_property: function(path, callback) {
+		var self = this;
+		$.get("project/get_property", {project_path: path}, function (data) {
+			if (data.err_code == 0) {
+				callback && callback(data.contents);
+			}
+			else {
+				alert.show(data.message);
 			}
 		});
-*/
 	},
+	
 	set_before: function(){
 		var self=this;
 		$("#property_tabview").find("input").each(function(){
@@ -285,30 +270,110 @@ org.goorm.core.project.property.prototype = {
 		});
 	},
 	
-	get_property: function (xml) {
-		var self=this;
-		$(xml).find("project").each(function(){
-			if ($(this).find("property").length > 0) {
-				$(this).find("property").each(function(){
-					self.property[$(this).attr("name")] = $(this).attr("default");
+	init_dialog: function() {
+		var self = this;
+		// Handler for OK button
+		var handle_ok = function() {
+			self.apply();
+			self.save();
+			this.hide();
+		};
+
+		var handle_cancel = function() { 
+			self.set_before(); 
+			this.hide();
+		};
+		
+		this.buttons = [ {text:"OK", handler:handle_ok, isDefault:true},
+						 {text:"Cancel",  handler:handle_cancel}]; 
+						 
+		this.dialog = new org.goorm.core.project.property.dialog();
+		this.dialog.init({
+			title:"Project Property", 
+			path:"configs/dialogs/org.goorm.core.project/project.property.html",
+			width:700,
+			height:500,
+			modal:true,
+			buttons:this.buttons,
+			success: function () {
+				$.getJSON("configs/dialogs/org.goorm.core.project/tree.json", function(json){
+					// construct basic tree structure
+					self.manager.create_treeview(json);
+					self.manager.create_tabview(json);
+
+					// load plugin tree
+					load_plugin_tree();
+
+					// TreeView labelClick function
+					self.manager.treeview.subscribe("clickEvent", function(nodedata){
+						var label = nodedata.node.label;
+						label = label.replace(/[/#. ]/,"");
+						$("#property_tabview > *").hide();
+						$("#property_tabview #property_"+label).show();
+					});
+					
+					self.grid_opacity_slider = YAHOO.widget.Slider.getHorizSlider("grid_opacity_sliderBg", "grid_opacity_slider_thumb", 0, 200, 20);
+					self.grid_opacity_slider.animate = true;
+					self.grid_opacity_slider.getRealValue = function() {
+						return ((this.getValue()/200).toFixed(1));
+					}
+					self.grid_opacity_slider.subscribe("change", function(offsetFromStart) {
+						$("#grid_opacity_slider_value").val(self.grid_opacity_slider.getRealValue());
+						$("#grid_opacity_slider_value_text").text((self.grid_opacity_slider.getRealValue()*100)+"%");
+					});
 				});
 			}
 		});
-	},
-	
-	save_project_xml: function(callback){
-		var self=this;
-		self.property['project_path'] = core.status.current_project_path;
-		var str = JSON.stringify(self.property);
 		
-		$.ajax({
-			type: "POST",
-			data: "data="+str,
-			url: "./module/org.goorm.core.project/project.property.ok.php",
-			success: function (data) {
-				if(typeof callback == "function")
-					callback();
-			}
-		});
+		var set_dialog_button = function(){
+			// set Apply, restore_default Button
+			setTimeout(function(){
+				$("#property_tabview").find(".apply").each(function(i){
+				$(this).attr("id","applyBt_"+i);
+				new YAHOO.widget.Button("applyBt_"+i,{onclick:{fn:function(){
+					self.apply($("#property_tabview #applyBt_"+i).parents(".yui-navset").attr("id"));
+				}}});
+			});
+			
+			$("#property_tabview").find(".restore_default").each(function(i){
+				$(this).attr("id","restore_defaultBt_"+i);
+				new YAHOO.widget.Button("restore_defaultBt_"+i,{onclick:{fn:function(){
+					self.restore_default($("#property_tabview #restore_defaultBt_"+i).parents(".yui-navset").attr("id"));
+				}}});
+			});
+			}, 500);
+			
+		};
+		
+		var load_plugin_tree = function(){
+			var plugin_node = null,
+				plugin_list = core.module.plugin_manager.list,
+			    plugin_count = plugin_list.length;
+				
+			// load plugin tree.json
+			$.each(core.module.plugin_manager.list, function(index, plugin){
+				var plugin_name = plugin.name;
+				$.getJSON("/" + plugin_name + "/tree.json", function(json){
+					if (plugin_node === null) {
+						plugin_node = self.manager.treeview.getNodeByProperty("label", "Plugin");
+					}
+					if (json && json.property) {
+						// construct basic tree structure
+						self.manager.add_treeview(plugin_node, json.property);
+						self.manager.add_tabview(json.property, plugin_name);
+						self.manager.treeview.render();
+						self.manager.treeview.expandAll();
+					}
+				}).complete(function(){
+					if(--plugin_count == 0) {
+						// when all plugin tree loaded, render dialog buttons.
+						console.log("set_dialogBT");
+						set_dialog_button();
+					}
+				});
+			});
+		};
+		
+		this.dialog = this.dialog.dialog;
 	}
 };

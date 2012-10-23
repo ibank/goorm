@@ -13,6 +13,7 @@ org.goorm.plugin.cpp = function () {
 	this.debug_con = null;
 	this.current_debug_project = null;
 	this.terminal = null;
+	this.preference = null;
 };
 
 org.goorm.plugin.cpp.prototype = {
@@ -31,6 +32,8 @@ org.goorm.plugin.cpp.prototype = {
 		this.add_mainmenu();
 		
 		//core.dictionary.loadDictionary("plugins/org.uizard.plugin.c/dictionary.json");
+		
+		this.preference = core.preference.plugins['org.goorm.plugin.cpp'];
 	},
 	
 	addProjectItem: function () {
@@ -98,7 +101,7 @@ org.goorm.plugin.cpp.prototype = {
 		this.terminal = core.module.layout.workspace.window_manager.open("/", "debug", "terminal", "Terminal").terminal;
 		this.current_debug_project = path;
 		this.prompt = /(\(gdb\)[\s\n]*)$/;
-		this.terminal.debug_endstr = /Program exited normally./;
+		this.terminal.debug_endstr = /Program exited normally/;
 		
 		// debug탭 초기화
 		table_variable.initializeTable();
@@ -124,6 +127,25 @@ org.goorm.plugin.cpp.prototype = {
 		$(debug_module).on("value_changed",function(e, data){
 			self.terminal.send_command("p "+data.variable+"="+data.value+"\r", self.prompt);
 		});
+		
+		$(debug_module).off("debug_end");
+		$(debug_module).on("debug_end",function(){
+			table_variable.initializeTable();
+			table_variable.refreshView();
+			
+			// clear highlight lines
+			var windows = core.module.layout.workspace.window_manager.window;
+			for (var i in windows) {
+				var window = windows[i];
+				if (window.project == self.current_debug_project) {
+					window.editor && window.editor.clear_highlight();
+				}
+			}
+			
+			setTimeout(function(){
+				self.debug_cmd({mode:'terminate'});
+			}, 500);
+		});
 	},
 	
 	/*
@@ -134,6 +156,8 @@ org.goorm.plugin.cpp.prototype = {
 		 * cmd = { mode, project_path }
 		 */
 		var self=this;
+		var table_variable = core.module.debug.table_variable;
+		
 		if(this.terminal === null) {
 			console.log("no connection!");
 			return ;
@@ -141,7 +165,8 @@ org.goorm.plugin.cpp.prototype = {
 		
 		switch (cmd.mode) {
 		case 'init':
-			self.terminal.send_command("gdb main\r", null);
+			self.terminal.flush_command_queue();
+			self.terminal.send_command("gdb main --quiet\r", null);
 			self.set_breakpoints();
 			self.terminal.send_command("run\r", self.prompt, function(){
 				self.debug_get_status();
@@ -155,9 +180,24 @@ org.goorm.plugin.cpp.prototype = {
 				self.debug_get_status();
 			}); break;
 		case 'terminate':
-			self.terminal.send_command("quit\r", self.prompt); 
+			self.terminal.flush_command_queue();
+			self.terminal.send_command("quit\r", self.prompt);
+			setTimeout(function(){
+				self.terminal.send_command("y\r", /Exit anyway\?/);
+				self.terminal.flush_command_queue();
+			}, 500);
 			table_variable.initializeTable();
 			table_variable.refreshView();
+			
+			// clear highlight lines
+			var windows = core.module.layout.workspace.window_manager.window;
+			for (var i in windows) {
+				var window = windows[i];
+				if (window.project == self.current_debug_project) {
+					window.editor && window.editor.clear_highlight();
+				}
+			}
+			
 			break;
 		case 'step_over':
 			self.set_breakpoints();

@@ -89,5 +89,7 @@ org.goorm.core.project.open.prototype = {
 		
 		core.module.layout.communication.join();
 		core.module.layout.terminal.change_project_dir();
+		
+		$(core).trigger("on_project_open");
 	}
 };

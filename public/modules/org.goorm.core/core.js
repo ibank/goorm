@@ -43,6 +43,7 @@ org.goorm.core = function() {
 		dialog: null,
 		key_listener: null,
 		preference: null,
+		project: null,
 		layout: null,
 		localization: null,
 		action: null,
@@ -130,6 +131,7 @@ org.goorm.core = function() {
 	this.plugins = [];
 	
 	this.preference = null;
+	this.property = null;
 };
 
 org.goorm.core.prototype = {
@@ -261,6 +263,9 @@ org.goorm.core.prototype = {
 		//Preference
 		this.module.preference = new org.goorm.core.preference();
 		this.module.preference.init();
+		
+		//Project
+		this.module.project = new org.goorm.core.project();
 		
 		//Plugin Loading Aspects
 		this.module.plugin_manager = new org.goorm.plugin.manager();

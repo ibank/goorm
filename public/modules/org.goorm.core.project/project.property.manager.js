@@ -5,7 +5,6 @@
  **/
 
 org.goorm.core.project.property.manager = function () {
-	this.ini = null;
 	this.treeview = null;
 	this.tabview = null;
 };
@@ -15,130 +14,83 @@ org.goorm.core.project.property.manager.prototype = {
 		
 	},
 	
-	add_treeview: function (treeview, xml){
-		if ($(xml).find("project").length > 0) {
-			$(xml).find("project").each(function(){
-				$(this).find("item").each(function(){
-					var tmpnode2 = new YAHOO.widget.TextNode($(this).attr("label"), treeview, false);
-				});
+	// add treeview node revursively
+	add_treeview: function (parent, json){
+		var self = this;
+		var label = json.label;
+		var tmpnode = new YAHOO.widget.TextNode(label, parent, json.expanded);
+		if ($.isArray(json.child)) {
+			$.each(json.child, function(index, object){
+				self.add_treeview(tmpnode, object);
 			});
 		}
 	},
 	
-	create_treeview: function (xml) {
-		if ($(xml).find("project").length > 0) {
-			var treeview = new YAHOO.widget.TreeView("property_treeview");
-			
-			$(xml).find("project").each(function(){
-				$(this).find("root").each(function(){
-					var tmpnode = new YAHOO.widget.TextNode($(this).attr("label"), treeview.getRoot(), $(this).attr("expanded"));
-					$(this).find("item").each(function(){
-						var tmpnode2 = new YAHOO.widget.TextNode($(this).attr("label"), tmpnode, false);
-					});
-				});
-			});
-			treeview.render();
-			this.treeview = treeview;
-		}	
+	// create treeview structure
+	create_treeview: function (json) {
+		var self = this;
+		var treeview = new YAHOO.widget.TreeView("property_treeview");
+		
+		var core = new YAHOO.widget.TextNode(json.core.label, treeview.getRoot(), json.core.expanded);
+		var plugin = new YAHOO.widget.TextNode(json.plugin.label, treeview.getRoot(), false);
+		
+		// add subtrees
+		$.each(json.core.child, function(index, object){
+			self.add_treeview(core, object);
+		});
+		
+		treeview.render();
+		this.treeview = treeview;
 	},
 	
-	create_tabview: function (xml) {
-		
+	// add tabview node reculsively
+	add_tabview: function(json, plugin_name){
 		var self = this;
-		var tabview = null;
-		$(xml).find("project").each(function(){
-			if ($(this).find("item").length > 0){
-				$(this).find("item").each(function(){
-					if ($(this).find("tab").length > 0) {
-						var label = $(this).attr("label");
-						label = "property_"+label.replace(/[/#. ]/g,"");
-						
-						$("#property_tabview").append("<div id='" + label + "' style='display:none'></div>");
-						tabview = new YAHOO.widget.TabView(label);
-						
-						$(this).find("tab").each(function(){
-							
-							if($(this).attr("src")){
-								var url = $(this).attr("src");
-								var label = $(this).attr("label");
-								var classname = $(this).attr("classname");
-								$.ajax({
-									type: "GET",
-									dataType: "html",
-									async: false,
-									url: url,
-									success: function(data) {
-										var tab = new YAHOO.widget.Tab({ 
-										    label: label, 
-										    content: data, 
-										});
-										tabview.addTab(tab);
-										
-										
-									}
-								});
-							}
-							
-						});
-	
-						tabview.set('activeIndex', 0);
-						//tabview.appendTo("preference_tabview");
-					}
-					else {
-						
-						var content="";
-						if($(this).attr("src")){
-							var label = $(this).attr("label");
-							label = "property_"+label.replace(/[/#. ]/g,"");
-							var url = $(this).attr("src");
-							$.ajax({
-								type: "GET",
-								dataType: "html",
-								url: url,
-								success: function(data) {
-									content=data;
-									$("#property_tabview").append("<div class='yui-content' id='"+label+"' style='display:none'>"+content+"</div>");
-								}
-							});
-						}
-					}
-				});
-			}
-			
-			
-			$(this).find("root").each(function(){
-				
-				if($(this).attr("src")){
-						
-					var url = $(this).attr("src");
-					var label = $(this).attr("label");
-					label = "property_"+label.replace(/[/#. ]/g,"");
+		var label = json.label;
+		label = label.replace(/[/#. ]/g,"");
+		
+		plugin_name || (plugin_name = "null");
+		
+		$("#property_tabview").append("<div id='property_" + label + "' plugin="+plugin_name+" style='display:none'></div>");
+		var tabview = new YAHOO.widget.TabView('property_'+label);
+		if ($.isArray(json.tab)) {
+			// 각각의 탭을 추가한다.
+			$.each(json.tab, function(index, object){
+				if(!$.isEmptyObject(object.html)){
+					var url = object.html;
+					var label = object.label;
+					var classname = object.classname;
 					$.ajax({
 						type: "GET",
 						dataType: "html",
+						async: false,
 						url: url,
 						success: function(data) {
-							$("#property_tabview").append("<div class='yui-content' id='"+label+"' style='display:none'>"+data+"</div>");
+							var tab = new YAHOO.widget.Tab({ 
+							    label: label, 
+							    content: data 
+							});
+							tabview.addTab(tab);
+							
+//							if(classname) {
+//								eval("self.preferences.push("+"new "+classname+"())");
+//								eval("self.preferences[self.preferences.length-1].init()");
+//							}
 						}
 					});
 				}
 			});
-		});
-		
+			
+			tabview.set('activeIndex', 0);
+		}
 	},
 	
-	xml_parser: function (url) {
-		var self=this;
-		$.ajax({
-			type: "GET",
-			dataType: "xml",
-			async :false,
-			url: url,
-			success: function(xml) {
-				self.xml = xml;
-				return this;
-			}
-			, error: function(xhr, status, error) {alert.show(core.module.localization.msg["alertError"] + error); }
+	// create treeview structure
+	create_tabview: function (json) {
+		var self = this;
+		var tabview = null;
+		$.each(json.core.child, function(index, object) {
+			self.add_tabview(object);
 		});
 	},
 	

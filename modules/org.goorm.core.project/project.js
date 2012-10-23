@@ -235,6 +235,30 @@ module.exports = {
 		});
 	},
 	
+	set_property: function (query, evt) {
+		var data = {};
+		data.err_code = 0;
+		data.message = "process done";
+
+		if (query.project_path != null) {
+			fs.writeFile(__path+"workspace/"+query.project_path+"/project.json", query.data, 'utf-8', function (err) {
+				if (err==null) {
+					evt.emit("set_property", data);
+				}
+				else {
+					data.err_code = 20;
+					data.message = "Can not write project file.";
+					evt.emit("set_property", data);
+				}
+			});
+		}
+		else {
+			data.err_code = 10;
+			data.message = "Invalid query";
+			evt.emit("set_property", data);
+		}
+	},
+	
 	get_property: function (query, evt) {
 		var data = {};
 		data.err_code = 0;

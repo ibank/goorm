@@ -277,7 +277,7 @@ org.goorm.core.edit.prototype = {
 		});
 		
 		
-		$(document).bind("on_preference_confirmed", function () {
+		$(core).bind("on_preference_confirmed", function () {
 			self.set_option();
 		});
 		

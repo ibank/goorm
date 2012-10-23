@@ -387,6 +387,7 @@ org.goorm.core.window.panel.prototype = {
 	
 	close: function() {
 		var self = this;
+		
 		var window_manager = core.module.layout.workspace.window_manager;
 		if(this.is_saved) {
 			this.alive = false;
@@ -431,7 +432,6 @@ org.goorm.core.window.panel.prototype = {
 //			}
 			
 			window_manager.window.remove(this.index, this.index);
-			window_manager.decrement_index_in_window(this.index);
 			window_manager.index--;
 			
 			window_manager.active_window = window_manager.window.length-1;

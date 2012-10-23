@@ -18,7 +18,7 @@ var EventEmitter = require("events").EventEmitter;
  */
 
 exports.index = function(req, res){
-	res.render('index', { title: 'goormIDE' })
+	res.render('index', { title: 'goormIDE' });
 };
 
 
@@ -105,6 +105,15 @@ exports.project.get_property = function(req, res){
 	});
 	
 	g_project.get_property(req.query, evt);
+};
+
+exports.project.set_property = function(req, res){
+	var evt = new EventEmitter();
+	evt.on("set_property", function (data) {
+		res.json(data);
+	});
+	
+	g_project.set_property(req.query, evt);
 };
 
 
