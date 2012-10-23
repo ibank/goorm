@@ -1,8 +1,0 @@
-*.DS_Store
-.svn*
-workspace/*
-shell.sh
-ignore_git.sh
-ignore_svn.sh
-.project
-.project.edited
