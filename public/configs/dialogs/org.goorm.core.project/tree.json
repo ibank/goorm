@@ -1,0 +1,19 @@
+{
+	"core" : {
+		"label" : "Property",
+		"expanded" : true,
+		"child" : [
+			{	"label" : "Information",
+				"tab" : [
+					{	"label" : "Information",
+						"html"	: "configs/project/default/project.general.html"
+					}
+				]
+			}
+		]
+	},
+	"plugin" : {
+		"label" : "Plugin",
+		"child" : []
+	}
+}
