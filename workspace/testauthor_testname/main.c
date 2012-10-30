@@ -1,5 +1,13 @@
 #include <stdio.h>
 
-int	main(int argc, char* argv[]) {
-	printf("Hello, Goorm!");
+int	main(int argc, char* argv[]) {  
+    printf("Hello, Goorm!")
+
 }
+
+
+
+
+
+
+

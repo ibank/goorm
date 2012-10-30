@@ -15,13 +15,7 @@ org.goorm.core.file._import.prototype = {
 	init: function () { 
 		var self = this;
 		
-		var handle_ok = function() {
-
-			if($("#file_import_file").attr("value").substr($("#file_import_file").attr("value").length-3,3).toLowerCase()!="zip") {
-				alert.show(core.module.localization.msg["alertFileNotSelect"]);
-				return false;
-			}
-		
+		var handle_ok = function() {		
 			core.module.loading_bar.start("Import processing...");
 			$('#myForm').submit();
 			this.hide(); 

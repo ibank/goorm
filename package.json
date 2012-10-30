@@ -1,14 +1,30 @@
 {
-    "name": "goormIDE"
-  , "description": "Cloud based Integrated Development Enviroment."
-  , "version": "1.0.0-alpha"
-  , "private": true
-  , "dependencies": {
-      "express": ">= 2.5.8"
-    , "jade": ">= 0.25.0"
-    , "socket.io": ">= 2.3.6"
-    , "walk": ">= 2.2.1"
-    , "connect": ">= 2.3.6"
-    , "rimraf": ">= 2.0.2"
+  "name": "goorm",
+  "author": "xenoz0718 <xenoz0718@gmail.com> (http://www.goorm.org/)",
+  "description": "Cloud based Integrated Development Enviroment.",
+  "version": "1.0.0-alpha2",
+  "dependencies": {
+    "express": ">= 3.0.0rc5",
+    "jade": ">= 0.25.0",
+    "socket.io": ">= 0.9.10",
+    "walk": ">= 2.2.1",
+    "connect": ">= 2.3.6",
+    "rimraf": ">= 2.0.2",
+    "mongoose": ">= 3.3.0",
+    "connect-mongodb": ">= 1.1.5"
+  },
+  "main": "goorm.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "goorm",
+    "ide",
+    "goormIDE"
+  ],
+  "license": "GPLv3",
+  "directories": {
+    "test": "test"
   }
 }

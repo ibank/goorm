@@ -16,7 +16,8 @@ org.goorm.core.project._import.prototype = {
 		var self = this;
 		
 		var handle_ok = function() {
-			if($("#project_import_file").attr("value").substr($("#project_import_file").attr("value").length-3,3).toLowerCase()!="zip") {
+			var file_name = $("#project_import_file").val();
+			if(file_name.substr(file_name.length-3,3).toLowerCase()!="zip") {
 				//alert.show(core.module.localization.msg["alertOnlyZipAllowed"]);
 				alert.show("Zip file only");
 				return false;
@@ -89,6 +90,8 @@ org.goorm.core.project._import.prototype = {
 	},
 	
 	show: function () {
+		$("#project_import_upload_output").empty();
+		$("#project_import_file").val("");	
 		this.project_list.init("#project_import");
 		this.dialog.panel.show();
 	}

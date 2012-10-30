@@ -58,13 +58,21 @@ org.goorm.core.dialog.explorer.prototype = {
 		var self = this;
 	
 		var data = {};
-		data.path = $(self.location_path).val();
+		
+		if (self.files=="#file_open_files") {
+			data.name = self.filename;
+			data.type = self.filetype;
+			data.path = self.filepath;
+		}
+		else {
+			data.path = $(self.location_path).val();
+			data.name = $(self.target_name).val();
+			data.type = $(self.file_type).val();
+		}
+
 		if (data.path=="") {
 			data.path="/";
 		}
-		data.name = $(self.target_name).val();
-		data.type = $(self.file_type).val();
-		
 		
 		if ( data.path.indexOf(" ")==-1 && data.name.indexOf(" ")==-1 && data.type.indexOf(" ")==-1 ) {
 			return data;

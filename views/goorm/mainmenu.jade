@@ -245,8 +245,8 @@
          li.yuimenuitem
           a.yuimenuitemlabel(action='delete_project', localization_key='project_delete', style='background-image: url(configs/toolbars/org.goorm.core.project/image/delete.png);') Delete Project
         ul
-         li.yuimenuitem.yuimenuitem-disabled
-          a.yuimenuitemlabel.yuimenuitemlabel-disabled(action='show_properties', localization_key='project_properties') Properties
+         li.yuimenuitem
+          a.yuimenuitemlabel(action='show_properties', localization_key='project_properties') Properties
     li.yuimenubaritem
      a.yuimenubaritemlabel(href='#Debug', localization_key='debug') Debug 
      #Debug.yuimenu
@@ -313,12 +313,10 @@
         li.yuimenuitem
          a.yuimenuitemlabel(action='previous_window', localization_key='window_previous_window')
           | Previous Window
-          em.helptext Shift + Alt + ←
-        li.yuimenuitem
+          em.helptext Shift + Alt + ��        li.yuimenuitem
          a.yuimenuitemlabel(action='next_window', localization_key='window_next_window')
           | Next Window
-          em.helptext Shift + Alt + →
-       ul
+          em.helptext Shift + Alt + ��       ul
         li.yuimenuitem
          a.yuimenuitemlabel(href='#submenu_perspectives', action='', style='background-image: url(configs/toolbars/org.goorm.core.layout/image/perspective.png);', localization_key='perspectives') Perspectives
          #submenu_perspectives.yuimenu

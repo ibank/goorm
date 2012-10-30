@@ -15,7 +15,7 @@ org.goorm.core.file.open_url.prototype = {
 	init: function () { 
 		
 		var handle_ok = function() { 
-			core.module.layout.workspace.window_manager.add($("#open_url_address").val(),$("#open_url_address").val(),"url");
+			core.module.layout.workspace.window_manager.add($("#open_url_address").val(),$("#open_url_address").val(),"url","Editor");
 			this.hide(); 
 		};
 

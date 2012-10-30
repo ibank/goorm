@@ -49,12 +49,15 @@ org.goorm.core.window.panel.prototype = {
 		
 		this.alive = true;
 		this.is_first_maximize = true;
-
-		if(filetype == "url"){
+		console.log(filetype);
+		if(filetype == "" || filetype == "etc") {
+			filetype = "txt";
+		}
+		else if(filetype == "url"){
 			this.type = "codemirror_editor";
 			this.filename = filepath;
 		}
-		
+		console.log(filetype);
 		var window_count = core.module.layout.workspace.window_manager.window.length;
 				
 		this.panel = new YAHOO.widget.Panel(
@@ -93,13 +96,11 @@ org.goorm.core.window.panel.prototype = {
 		$("#" + this.container).width(this.width);
 		$("#" + this.container).height(this.height);
 		
-				
 		// Due to file type, create proper tool.
 		if (editor == "Editor") {
 			this.type = "Editor";
-			
-			var mode = core.filetypes[this.inArray(this.filetype)].mode;
-			
+			//var mode = core.filetypes[this.inArray(this.filetype)].mode;
+			var mode = core.filetypes[this.inArray("html")].mode;
 			this.editor = new org.goorm.core.edit();
 			this.editor.init($("#"+container).find(".window_container"));
 			this.editor.load(this.filepath, this.filename, this.filetype);
@@ -171,7 +172,7 @@ org.goorm.core.window.panel.prototype = {
 		this.resize = new YAHOO.util.Resize(container+"_c", {
 			handles: 'all',
 			minWidth: 100,
-            minHeight: 100,
+			minHeight: 100,
 			status: false,
 			proxy: false, 
 		});
@@ -213,6 +214,7 @@ org.goorm.core.window.panel.prototype = {
 			self.height = $("#" + self.container + "_c").height();
 		
 			self.resize_all();
+			self.refresh();
 		}, this.panel, true);
 		
 		
@@ -387,6 +389,7 @@ org.goorm.core.window.panel.prototype = {
 	
 	close: function() {
 		var self = this;
+		
 		var window_manager = core.module.layout.workspace.window_manager;
 		if(this.is_saved) {
 			this.alive = false;
@@ -431,7 +434,6 @@ org.goorm.core.window.panel.prototype = {
 //			}
 			
 			window_manager.window.remove(this.index, this.index);
-			window_manager.decrement_index_in_window(this.index);
 			window_manager.index--;
 			
 			window_manager.active_window = window_manager.window.length-1;
@@ -555,6 +557,10 @@ org.goorm.core.window.panel.prototype = {
 		else if(this.type == "Designer") {
 			this.designer.resize_all();
 		}
+	},
+	
+	refresh : function(){
+		this.editor.line_refresh();
 	},
 	
 	inArray: function(keyword) {

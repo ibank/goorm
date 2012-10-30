@@ -28,7 +28,7 @@ org.goorm.core.project.explorer.prototype = {
 
 		$.get("project/get_list", "", function (data) {
 			self.project_data = data
-			self.make_project_selectbox();
+//			self.make_project_selectbox();
 		});
 		
 		$("#project_explorer").append("<div id='project_treeview' style='overflow-x:hidden'></div>");
@@ -97,6 +97,7 @@ org.goorm.core.project.explorer.prototype = {
 					core.dialog.open_project.open(self.current_project.current_project_path, self.current_project.current_project_name, self.current_project.current_project_type);
 				}
 			}
+			self.make_project_selectbox();
 		});
 	},
 	

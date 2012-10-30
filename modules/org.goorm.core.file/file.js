@@ -388,12 +388,13 @@ module.exports = {
 	},
 	
 	do_delete: function (query, evt) {
+		console.log(query);
 		var data = {};
 		data.err_code = 0;
 		data.message = "process done";
 		
-		if (query.file_path != null) {
-			rimraf(__path+"workspace/"+query.file_path, function(err) {
+		if (query.filename != null) {
+			rimraf(__path+"workspace/"+query.filename, function(err) {
 				if (err!=null) {
 					data.err_code = 20;
 					data.message = "Can not delete file";
@@ -554,7 +555,6 @@ module.exports = {
 	
 	get_url_contents: function (path, evt) {//file_get_url_contents
 		var data = "";
-
 		http.get(path, function(res) {
 			res.on("data", function(chunk) {
 				data += chunk;

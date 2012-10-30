@@ -7,14 +7,10 @@
 org.goorm.plugin.java = function () {
 	this.name = "java";
 	this.mainmenu = null;
-	this.build_options = null;
-	this.build_source = null;
-	this.build_target = null;
-	this.build_file_type = "o";
-	this.debug_con = null;
 	this.current_debug_project = null;
 	this.terminal = null;
 	this.breakpoints = null;
+	this.preference = null;
 };
 
 org.goorm.plugin.java.prototype = {
@@ -34,6 +30,8 @@ org.goorm.plugin.java.prototype = {
 		this.add_mainmenu();
 		
 		//core.dictionary.loadDictionary("plugins/org.uizard.plugin.c/dictionary.json");
+		
+		this.preference = core.preference.plugins['org.goorm.plugin.java'];
 	},
 	
 	addProjectItem: function () {
@@ -78,26 +76,28 @@ org.goorm.plugin.java.prototype = {
 		};
 		
 		$.get('/plugin/new', send_data, function(result){
-			core.module.layout.project_explorer.refresh();
+			// 가끔씩 제대로 refresh가 안됨.
+			setTimeout(function(){
+				core.module.layout.project_explorer.refresh();
+			}, 500);
 		});
 	},
 	
 	run: function(path) {
 		var self=this;
+		var property = core.property.plugins['org.goorm.plugin.java'];
 		
-		this.path_project = "";
-
-		var classpath = "src/project";
-		var classname = "main";
+		var classpath = property['plugin.java.build_path'];
+		var classname = property['plugin.java.main'];
 
 		var cmd1 = "java -cp "+classpath+" "+classname;
-		console.log(cmd1);
 		core.module.layout.terminal.send_command(cmd1+'\r');
 
 	},
 	
 	debug: function (path) {
 		var self = this;
+		var property = core.property.plugins['org.goorm.plugin.java'];
 		var table_variable = core.module.debug.table_variable;
 		var debug_module = core.module.debug;
 		this.terminal = core.module.layout.workspace.window_manager.open("/", "debug", "terminal", "Terminal").terminal;
@@ -131,6 +131,21 @@ org.goorm.plugin.java.prototype = {
 		$(debug_module).on("value_changed",function(e, data){
 			self.terminal.send_command("set "+data.variable+"="+data.value+"\r", self.prompt);
 		});
+		
+		$(debug_module).off("debug_end");
+		$(debug_module).on("debug_end",function(){
+			table_variable.initializeTable();
+			table_variable.refreshView();
+			
+			// clear highlight lines
+			var windows = core.module.layout.workspace.window_manager.window;
+			for (var i in windows) {
+				var window = windows[i];
+				if (window.project == self.current_debug_project) {
+					window.editor && window.editor.clear_highlight();
+				}
+			}
+		});
 	},
 	
 	/*
@@ -140,32 +155,47 @@ org.goorm.plugin.java.prototype = {
 		/*
 		 * cmd = { mode, project_path }
 		 */
+		
 		var self=this;
+		var property = core.property.plugins['org.goorm.plugin.java'];
+		var table_variable = core.module.debug.table_variable;
+		
+		var mainPath = " "+property['plugin.java.main'];
+		var buildPath = " "+property['plugin.java.build_path'];
+		
 		if(this.terminal === null) {
 			console.log("no connection!");
 			return ;
 		}
-		
 		switch (cmd.mode) {
 		case 'init' :
-			self.terminal.send_command("jdb -classpath src/project/ main\r", null);
+			self.terminal.send_command("jdb -classpath"+buildPath+mainPath+"\r", null);
 			self.set_breakpoints();
 			self.terminal.send_command("run\r", />/, function(){
 				self.debug_get_status();
 			});
 			break;
-//		case 'run':
-//			self.terminal.send_command("run\r"); break;
 		case 'continue':
 			self.set_breakpoints();
 			self.terminal.send_command("cont\r", self.prompt, function(){
 				self.debug_get_status();
 			}); break;
 		case 'terminate':
-			self.set_breakpoints();
+//			self.set_breakpoints();
+			self.terminal.flush_command_queue();
 			self.terminal.send_command("exit\r", self.prompt); 
+			
 			table_variable.initializeTable();
 			table_variable.refreshView();
+			
+			// clear highlight lines
+			var windows = core.module.layout.workspace.window_manager.window;
+			for (var i in windows) {
+				var window = windows[i];
+				if (window.project == self.current_debug_project) {
+					window.editor && window.editor.clear_highlight();
+				}
+			}
 			break;
 		case 'step_over':
 			self.set_breakpoints();
@@ -200,10 +230,20 @@ org.goorm.plugin.java.prototype = {
 	set_currentline: function(terminal_data){
 		var self = this;
 		var lines = terminal_data.split('\n');
+		
+		// clear highlight lines
+		var windows = core.module.layout.workspace.window_manager.window;
+		for (var i in windows) {
+			var window = windows[i];
+			if (window.project == self.current_debug_project) {
+				window.editor && window.editor.clear_highlight();
+			}
+		}
+		
 		$.each(lines, function(i, line){
 			if(line == '') return;
 			// 현재 라인 처리
-			var regex = /\[\d\].*\((.*):([\d]+)\)/;
+			var regex = /\[1\].*\((.*):([\d]+)\)/;
 			if(regex.test(line)) {
 				var match = line.match(regex);
 				var filename = match[1];
@@ -244,78 +284,86 @@ org.goorm.plugin.java.prototype = {
 	
 	set_breakpoints: function(){
 		var self = this;
+		var property = core.property.plugins['org.goorm.plugin.java'];
 		var windows = core.module.layout.workspace.window_manager.window;
+		var remains = [];
+		var breakpoints = [];
 		for (var i=0; i < windows.length; i++) {
 			var window = windows[i];
-			var remains = [];
 
 			if (window.project == this.current_debug_project) {
 				var filename = window.filename;
-				
+				var filepath = window.filepath;
 				if(window.editor === null) continue;				
-				var breakpoints = window.editor.breakpoints;
-				for(var j=0; j < self.breakpoints.length; j++) {
-					remains.push(self.breakpoints[j]);
-				}
-
-				if(breakpoints.length > 0){
-					for(var j=0; j < breakpoints.length; j++) {
-						var breakpoint = breakpoints[j];
-						breakpoint += 1;
-						var classname = filename.split('.java')[0];
-						
-						breakpoint = classname+":"+breakpoint;
-						var result = remains.inArray(breakpoint);
-						if(result == -1) {
-							self.terminal.send_command("stop at "+breakpoint+"\r", />|(main\[[\d]\][\s\n]*)$/);
-							self.breakpoints.push(breakpoint);
-						}
-						else {
-							remains.remove(result);
-						}
-					}
-				}
-				else {
-					// no breakpoints
-				}
 				
-				for(var j=0; j < remains.length; j++) {
-					var result = self.breakpoints.inArray(remains[j]);
-					if(result != -1) {
-						self.breakpoints.remove(result);
-						self.terminal.send_command("clear "+remains[j]+"\r", self.prompt);
-					}
+				for (var j = 0; j < window.editor.breakpoints.length; j++) {
+					var breakpoint = window.editor.breakpoints[j];
+					breakpoint += 1;
+					var classname = filename.split('.java')[0];
+					var package = filepath.split(property['plugin.java.source_path']).pop();
+					package = package.replace("/", ".");
+					
+					breakpoint = package + classname + ":" + breakpoint;
+					breakpoints.push(breakpoint);
 				}
 			}
 		}
+		
+		for(var j=0; j < self.breakpoints.length; j++) {
+			remains.push(self.breakpoints[j]);
+		}
+		
+		if(breakpoints.length > 0){
+			for(var j=0; j < breakpoints.length; j++) {
+				var breakpoint = breakpoints[j];
+				var result = remains.inArray(breakpoint);
+				if(result == -1) {
+					self.terminal.send_command("stop at "+breakpoint+"\r", />|(main\[[\d]\][\s\n]*)$/);
+					self.breakpoints.push(breakpoint);
+				}
+				else {
+					remains.remove(result);
+				}
+			}
+		}
+		else {
+			// no breakpoints
+		}
+				
+		for(var j=0; j < remains.length; j++) {
+			var result = self.breakpoints.inArray(remains[j]);
+			if(result != -1) {
+				self.breakpoints.remove(result);
+				self.terminal.send_command("clear "+remains[j]+"\r", />|(main\[[\d]\][\s\n]*)$/);
+			}
+		}
+
 	},
 	
 	build: function (projectName, projectPath, callback) {
 		var self=this;
-		
-		this.path_project = "";
+		var property = core.property.plugins['org.goorm.plugin.java'];
 
-		var buildOptions = "";
-//		var buildOptions = $("#buildConfiguration").find('[name=plugin\\.c\\.buildOptions]').val();		
-//		if(buildOptions == undefined){
-//			buildOptions = core.dialogPreference.preference['plugin.c.buildOptions'];
-//		}
-//		
-		var buildSource = "src/project/main.java";
-//		var buildSource = $("#buildConfiguration").find('[name=plugin\\.c\\.buildSource]').val();		
-//		if(buildSource == undefined){
-//			buildSource = core.dialogPreference.preference['plugin.c.buildSource'];
-//		}
-//		
-		var cmd1 = "javac "+buildSource+" -g";
-		console.log(cmd1);
-		core.module.layout.terminal.send_command(cmd1+'\r', null, function(){
-			core.module.layout.project_explorer.refresh();
+		var buildOptions = " "+property['plugin.java.build_option'];
+		var buildPath = " -d "+property['plugin.java.build_path'];
+		var classPath = " -cp "+property['plugin.java.source_path'];
+
+		var cmd = 'find '+property['plugin.java.source_path']+' -name "*.java" -print > file.list';
+		var cmd1 = "javac"+classPath+buildPath+buildOptions+" @file.list";
+
+		core.module.layout.terminal.send_command(cmd+'\r', null, function(){
+			core.module.layout.terminal.send_command(cmd1+'\r', null, function(){
+				core.module.layout.project_explorer.refresh();
+			});
 		});
 		if(callback) callback();
 	},
+	
 	clean: function(){
-		console.log("java clean");
-		core.module.layout.project_explorer.refresh();
+		var property = core.property.plugins['org.goorm.plugin.java'];
+		var buildPath = property['plugin.java.build_path'];
+		core.module.layout.terminal.send_command("rm -rf "+buildPath+"* \r", null, function(){
+			core.module.layout.project_explorer.refresh();
+		});
 	}
 };

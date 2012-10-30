@@ -117,8 +117,6 @@ org.goorm.core.collaboration.editing.prototype = {
 	update_change: function(data){
 		var self = this;
 
-		console.log("change", data);
-
 		if(this.socket != null){
 			if (self.socket.socket.connected) {
 				data.user = core.user.first_name + "_" + core.user.last_name;
@@ -204,8 +202,6 @@ org.goorm.core.collaboration.editing.prototype = {
 	
 	change: function(message){
 		var self = this;
-		
-		console.log("receive", message);
 
 		if (message.user != core.user.first_name + "_" + core.user.last_name) {
 			var textStr = "";
@@ -216,7 +212,6 @@ org.goorm.core.collaboration.editing.prototype = {
 				}
 				textStr += message.text[i];
 			}
-			console.log("start" + textStr + "end");
 			this.editor.replaceRange(textStr, message.from, message.to);
 
 			if(message.next){

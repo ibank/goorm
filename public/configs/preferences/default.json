@@ -4,7 +4,7 @@
 	
 	"preference.core.animation.menu" : 		true,
 	
-	"preference.editor.indent_unit" : 		2,
+	"preference.editor.indent_unit" : 		4,
 	"preference.editor.indent_with_tabs" :	false,
 	"preference.editor.show_line_numbers" : true,
 	"preference.editor.first_line_number" : 1,
@@ -29,5 +29,7 @@
 	"share" : [
 		"collaboration_server_url",
 		"collaboration_server_port"
-	]
+	],
+	
+	"plugins" : {}
 }

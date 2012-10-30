@@ -4,15 +4,12 @@
  * http://www.goorm.org/License
  **/
 org.goorm.plugin.cpp = function () {
-	this.name = "c";
+	this.name = "cpp";
 	this.mainmenu = null;
-	this.build_options = null;
-	this.build_source = null;
-	this.build_target = null;
-	this.build_file_type = "o";
 	this.debug_con = null;
 	this.current_debug_project = null;
 	this.terminal = null;
+	this.preference = null;
 };
 
 org.goorm.plugin.cpp.prototype = {
@@ -31,6 +28,8 @@ org.goorm.plugin.cpp.prototype = {
 		this.add_mainmenu();
 		
 		//core.dictionary.loadDictionary("plugins/org.uizard.plugin.c/dictionary.json");
+		
+		this.preference = core.preference.plugins['org.goorm.plugin.cpp'];
 	},
 	
 	addProjectItem: function () {
@@ -75,34 +74,39 @@ org.goorm.plugin.cpp.prototype = {
 		};
 		
 		$.get('/plugin/new', send_data, function(result){
-			core.module.layout.project_explorer.refresh();
+			// 가끔씩 제대로 refresh가 안됨.
+			setTimeout(function(){
+				core.module.layout.project_explorer.refresh();
+			}, 500);
 		});
 	},
 	
 	run: function(path) {
 		var self=this;
+		var property = core.property.plugins['org.goorm.plugin.cpp'];
 		
-		this.path_project = "";
+		var classpath = property['plugin.cpp.build_path'];
+		var classname = property['plugin.cpp.main'];
 
-		var classname = "main";
-
-		var cmd1 = "./"+classname;
-		console.log(cmd1);
+		var cmd1 = "./"+classpath+classname;
 		core.module.layout.terminal.send_command(cmd1+'\r');
 	},
 	
 	debug: function (path) {
 		var self = this;
+		var property = core.property.plugins['org.goorm.plugin.cpp'];
 		var table_variable = core.module.debug.table_variable;
 		var debug_module = core.module.debug;
 		this.terminal = core.module.layout.workspace.window_manager.open("/", "debug", "terminal", "Terminal").terminal;
 		this.current_debug_project = path;
 		this.prompt = /(\(gdb\)[\s\n]*)$/;
-		this.terminal.debug_endstr = /Program exited normally./;
+		this.terminal.debug_endstr = /exited normally/;
 		
 		// debug탭 초기화
 		table_variable.initializeTable();
 		table_variable.refreshView();
+		
+		this.breakpoints = [];
 		
 		// debug start!
 		var send_data = {
@@ -124,6 +128,25 @@ org.goorm.plugin.cpp.prototype = {
 		$(debug_module).on("value_changed",function(e, data){
 			self.terminal.send_command("p "+data.variable+"="+data.value+"\r", self.prompt);
 		});
+		
+		$(debug_module).off("debug_end");
+		$(debug_module).on("debug_end",function(){
+			table_variable.initializeTable();
+			table_variable.refreshView();
+			
+			// clear highlight lines
+			var windows = core.module.layout.workspace.window_manager.window;
+			for (var i in windows) {
+				var window = windows[i];
+				if (window.project == self.current_debug_project) {
+					window.editor && window.editor.clear_highlight();
+				}
+			}
+			
+			setTimeout(function(){
+				self.debug_cmd({mode:'terminate'});
+			}, 500);
+		});
 	},
 	
 	/*
@@ -134,6 +157,12 @@ org.goorm.plugin.cpp.prototype = {
 		 * cmd = { mode, project_path }
 		 */
 		var self=this;
+		var property = core.property.plugins['org.goorm.plugin.cpp'];
+		var table_variable = core.module.debug.table_variable;
+		
+		var mainPath = property['plugin.cpp.main'];
+		var buildPath = property['plugin.cpp.build_path'];
+		
 		if(this.terminal === null) {
 			console.log("no connection!");
 			return ;
@@ -141,23 +170,37 @@ org.goorm.plugin.cpp.prototype = {
 		
 		switch (cmd.mode) {
 		case 'init':
-			self.terminal.send_command("gdb main\r", null);
+			self.terminal.flush_command_queue();
+			self.terminal.send_command("gdb "+buildPath+mainPath+" --quiet\r", null);
 			self.set_breakpoints();
 			self.terminal.send_command("run\r", self.prompt, function(){
 				self.debug_get_status();
 			});
 			break;
-//		case 'run':
-//			self.terminal.send_command("run\r"); break;
 		case 'continue':
 			self.set_breakpoints();
 			self.terminal.send_command("continue\r", self.prompt, function(){
 				self.debug_get_status();
 			}); break;
 		case 'terminate':
-			self.terminal.send_command("quit\r", self.prompt); 
+			self.terminal.flush_command_queue();
+			self.terminal.send_command("quit\r", self.prompt);
+			setTimeout(function(){
+				self.terminal.send_command("y\r", /(Exit|Quit) anyway\?/);
+				self.terminal.flush_command_queue();
+			}, 500);
 			table_variable.initializeTable();
 			table_variable.refreshView();
+			
+			// clear highlight lines
+			var windows = core.module.layout.workspace.window_manager.window;
+			for (var i in windows) {
+				var window = windows[i];
+				if (window.project == self.current_debug_project) {
+					window.editor && window.editor.clear_highlight();
+				}
+			}
+			
 			break;
 		case 'step_over':
 			self.set_breakpoints();
@@ -192,21 +235,37 @@ org.goorm.plugin.cpp.prototype = {
 	set_currentline: function(terminal_data){
 		var self = this;
 		var lines = terminal_data.split('\n');
+		
+		// clear highlight lines
+		var windows = core.module.layout.workspace.window_manager.window;
+		for (var i in windows) {
+			var window = windows[i];
+			if (window.project == self.current_debug_project) {
+				window.editor && window.editor.clear_highlight();
+			}
+		}
+		
 		$.each(lines, function(i, line){
 			if(line == '') return;
 			// 현재 라인 처리
-			var regex = /#\d .* (.*):(\d+)/;
+			var regex = /#0.*at ((.*)\/)?(.*):(\d+)/;
 			if(regex.test(line)) {
 				var match = line.match(regex);
-				var filename = match[1];
-				var line_number = match[2];
-				
+				var filepath = match[2];
+				var filename = match[3];
+				var line_number = match[4];
+
 				var windows = core.module.layout.workspace.window_manager.window;
-				for (var i in windows) {
-					var window = windows[i];
+				for (var j=0; j<windows.length; j++) {
+					var window = windows[j];
 					if (window.project == self.current_debug_project 
-							&& window.filename == filename) {
-						window.editor.highlight_line(line_number);
+							&& window.filename == filename){
+						if(filepath && window.filepath.search(self.current_debug_project+"/"+filepath+"/") > -1) {
+							window.editor.highlight_line(line_number);
+						}
+						else if (!filepath) {
+							window.editor.highlight_line(line_number);
+						}
 					}
 				}
 			}
@@ -244,7 +303,7 @@ org.goorm.plugin.cpp.prototype = {
 				if(!window.editor) continue;				
 				var breakpoints = window.editor.breakpoints;
 				if(breakpoints.length > 0){
-//					self.terminal.send_command('clear\r');
+					self.terminal.send_command('clear\r', self.prompt);
 					
 					for(var i=0; i < breakpoints.length; i++) {
 						var breakpoint = breakpoints[i];
@@ -263,36 +322,28 @@ org.goorm.plugin.cpp.prototype = {
 	build: function (projectName, projectPath, callback) {
 		var self=this;
 		
-		this.path_project = "";
+		var property = core.property.plugins['org.goorm.plugin.cpp'];
 
-		var buildOptions = "-g";
-//		var buildOptions = $("#buildConfiguration").find('[name=plugin\\.c\\.buildOptions]').val();		
-//		if(buildOptions == undefined){
-//			buildOptions = core.dialogPreference.preference['plugin.c.buildOptions'];
-//		}
-//		
-		var buildSource = "main.c";
-//		var buildSource = $("#buildConfiguration").find('[name=plugin\\.c\\.buildSource]').val();		
-//		if(buildSource == undefined){
-//			buildSource = core.dialogPreference.preference['plugin.c.buildSource'];
-//		}
-//		
-		var buildTarget = "main";
-//		var buildTarget = $("#buildConfiguration").find('[name=plugin\\.c\\.buildTarget]').val();		
-//		if(buildTarget == undefined){
-//			buildTarget = core.dialogPreference.preference['plugin.c.buildTarget'];
-//		}
+		var buildOptions = " "+property['plugin.cpp.build_option'];
+		var buildPath = " -o "+property['plugin.cpp.build_path']+property['plugin.cpp.main'];
 		
-		var cmd1 = "gcc "+buildSource+" -o "+this.path_project+buildTarget+" -Wall"+" "+ buildOptions;
-		console.log(cmd1);
-		core.module.layout.terminal.send_command(cmd1+'\r', null, function(){
-			core.module.layout.project_explorer.refresh();
+		var cmd = 'find '+property['plugin.cpp.source_path']+' -name "*.cpp" -print > file.list';
+		var cmd1 = "g++ @file.list"+buildPath+buildOptions;
+		
+		core.module.layout.terminal.send_command(cmd+'\r', null, function(){
+			core.module.layout.terminal.send_command(cmd1+'\r', null, function(){
+				core.module.layout.project_explorer.refresh();
+			});
 		});
 		
 		if(callback) callback();
 	},
+	
 	clean: function(){
-		console.log("cpp clean");
-		core.module.layout.project_explorer.refresh();
+		var property = core.property.plugins['org.goorm.plugin.cpp'];
+		var buildPath = property['plugin.cpp.build_path'];
+		core.module.layout.terminal.send_command("rm -rf "+buildPath+"* \r", null, function(){
+			core.module.layout.project_explorer.refresh();
+		});
 	}
 };

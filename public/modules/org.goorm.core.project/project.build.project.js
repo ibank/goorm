@@ -27,7 +27,7 @@ org.goorm.core.project.build.project.prototype = {
 				if($(list).is(":checked")){
 				
 					var window_manager = core.module.layout.workspace.window_manager;
-					var did_save = false;
+					var did_save = true;
 					var target_window = -1;
 					var temp_filename = "";
 
@@ -37,9 +37,9 @@ org.goorm.core.project.build.project.prototype = {
 								// temp_filename = this.filename;
 								// did_save = true;
 								// target_window = i;
-														if( $(list).attr("project_path") + '/' ==  this.filepath && !this.isSaved ) {
+														if( $(list).attr("project_path") ==  this.project && !this.is_saved ) {
 								temp_filename = this.filename;
-								did_save = true;
+								did_save = false;
 								target_window = i;
 							}
 						});
@@ -155,15 +155,15 @@ org.goorm.core.project.build.project.prototype = {
 					if(core.module.plugin_manager.plugins["org.goorm.plugin."+project.contents.type].build){
 						var temp = "";
 						temp += "<div id='selector_" + project.name + "' value='" + project.name + "' class='select_div' style='height:14px;'>";
-						temp += "<div style='float:left;'>";
+						temp += "<span class='checkbox'>";
 						temp += "<input type='checkbox' name='"+project.name+"' project_path='"+project.name+"' project_name='"+project.contents.name+"' projectType='"+project.contents.type+"'";
 						
 						if (project.name == core.status.current_project_path) {
-							temp += "checked";
+							temp += "checked='checked'";
 						}
 						
-						temp += "></div> ";
-						temp += "<div style='float:left; padding-top:1px; padding-left:5px;'>" + project.name + "</div>";
+						temp += "id='claean_selector_" + project.name+"' class='claean_selectors'><label data-on data-off></label></span>";
+						temp += "<label for='claean_selector_" + project.name+"' style='margin-left:4px;'>" + project.name + "</label>";
 						temp += "</div>";
 		
 						$("#build_project_list").append(temp);

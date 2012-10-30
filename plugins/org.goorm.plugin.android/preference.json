@@ -1,6 +1,6 @@
 {
-	"plugin.c.version" : 		"1.0.0",
-	"plugin.c.buildOptions" : 	"-o",
-	"plugin.c.buildSource" : 	"main.c",
-	"plugin.c.buildTarget" : 	"main.o"
+	"plugin.android.version" : 		"1.0.0",
+	"plugin.android.buildOptions" : 	"-o",
+	"plugin.android.buildSource" : 	"main.c",
+	"plugin.android.buildTarget" : 	"main.o"
 }

@@ -1,3 +1,5 @@
+package project;
+
 class avcdefdfs
 {
   private int cf;
@@ -8,11 +10,10 @@ class avcdefdfs
   }
 }
  
-  class() {p
+public class main {
 	static public void main(String[] args){
+        int a = 0;
 	    System.out.println("hello world");
-      System.out.println("
-                         
- 
-    // 
+        System.out.println("");         
+	}
 }

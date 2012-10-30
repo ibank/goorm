@@ -151,7 +151,7 @@ org.goorm.core.window.tab.prototype = {
 			var target_index = this.tabview.getTabIndex(this.tab);
 
 			window_manager.decrement_index_in_window(target_index);
-			window_manager.delete_window_in_tab(target_index, 1);
+			window_manager.delete_window_in_tab(target_index);
 			
 			this.tabview.removeTab(this.tab);
 			this.list_menu.removeItem(this.menuitem);

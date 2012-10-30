@@ -1,0 +1,6 @@
+{
+	"plugin.cpp.main" : 		"main",
+	"plugin.cpp.source_path" : 	"src/",
+	"plugin.cpp.build_path" : 	"bin/",
+	"plugin.cpp.build_option" : "-g"
+}

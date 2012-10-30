@@ -53,12 +53,13 @@ org.goorm.core.terminal = function () {
 	this.command_queue = null;
 	
 	this.default_prompt = /bash-\d\.\d\$/;
-	
+	 
 	this.stdout = "";
 	this.prompt = null;
 	this.command_ready = true;
 	this.running_queue = false;
 	this.debug_endstr = null;
+	this.platform = "darwin";
 };
 
 org.goorm.core.terminal.prototype = {
@@ -182,6 +183,17 @@ org.goorm.core.terminal.prototype = {
 			$(self).trigger("terminal_ready");
 		});
 		
+		this.socket.on("platform", function(data) {
+			data = JSON.parse(data);
+			if(data.platform == "darwin") {
+				self.default_prompt = /bash-\d\.\d\$/;
+			}
+			else if (data.platform == "linux") {
+				self.default_prompt = /.*@.*:.*$/;
+			}
+			self.platform = data.platform;
+		});
+		
 		this.socket.on("terminal_index", function (data) {
 			data = JSON.parse(data);
 			
@@ -197,12 +209,12 @@ org.goorm.core.terminal.prototype = {
 			
 			if (msg.terminal_name == self.terminal_name) {
 				var stdout = msg.stdout;
-//				console.log(stdout);
 				temp_stdout += stdout;
 				
 				if (mode == 1 || /\n/.test(stdout) || stdout.indexOf('$') > -1) {
 					if(msg.terminal_name == "debug") {
 						if(self.debug_endstr && self.debug_endstr.test(temp_stdout)) {
+							$(core.module.debug).trigger("debug_end");
 							self.command_queue = [];
 						}
 					}
@@ -217,7 +229,13 @@ org.goorm.core.terminal.prototype = {
 					temp_stdout = "";
 				}
 				
-				$(self.target).find("#prompt_input").appendTo($(self.target).find("#results pre:last"));
+				if(self.platform == "darwin") {
+					$(self.target).find("#prompt_input").appendTo($(self.target).find("#results pre:last"));
+				}
+				else if(self.platform == "linux") {
+					$(self.target).find("#prompt_input").appendTo($(self.target).find("#results"));
+				}
+
 				
 				$(self.target).find("#prompt_input").val("");
 				$(self.target).find("#prompt_input").focus();
@@ -303,6 +321,10 @@ org.goorm.core.terminal.prototype = {
 		}
 	},
 	
+	flush_command_queue: function(){
+		this.command_queue = [];
+	},
+	
 	work_queue: function(stdout){
 		var self = this;
 		
@@ -348,7 +370,7 @@ org.goorm.core.terminal.prototype = {
 		if(this.command_queue.length > 0) {
 			setTimeout(function(){
 				self.work_queue();
-			}, 300);
+			}, 500);
 		}
 	},
 	

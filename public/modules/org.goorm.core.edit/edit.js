@@ -69,6 +69,7 @@ org.goorm.core.edit.prototype = {
 			extraKeys: {
 				"Ctrl-Q": function(cm) {
 					fold_func(cm, cm.getCursor().line);
+					self.reset_breakpoints();
 				},
 				"'>'": function(cm) { 
 					cm.closeTag(cm, '>');
@@ -226,7 +227,7 @@ org.goorm.core.edit.prototype = {
 					var index = self.breakpoints.inArray(n);
 					self.breakpoints.remove(index, index);
 				}
-				else {
+				else if($(self.target).find(".CodeMirror-gutter-text pre:eq(" + n + ")").find('.folding_icon_minus').length == 0){
 					$(self.target).find(".CodeMirror-gutter-text pre:eq(" + n + ")").prepend("<span class='breakpoint'>●</span>");
 					
 					self.breakpoints = self.breakpoints.unique();
@@ -237,6 +238,7 @@ org.goorm.core.edit.prototype = {
 			},
 			onUpdate: function () {
 				self.set_foldable();
+				self.reset_breakpoints();
 			}
 		});
 		
@@ -277,7 +279,7 @@ org.goorm.core.edit.prototype = {
 		});
 		
 		
-		$(document).bind("on_preference_confirmed", function () {
+		$(core).bind("on_preference_confirmed", function () {
 			self.set_option();
 		});
 		
@@ -576,7 +578,9 @@ org.goorm.core.edit.prototype = {
 			
 			self.set_foldable();
 			
-			self.dictionary.init(self.target, self.editor, self.filetype);
+			if (filetype != "url") {
+				self.dictionary.init(self.target, self.editor, self.filetype);
+			}
 			
 			statusbar.stop();
 			
@@ -747,5 +751,20 @@ org.goorm.core.edit.prototype = {
 	uncomment_selection: function () {
 		var range = this.get_selected_range();
 		this.editor.commentRange(false, range.from, range.to);
+	},
+	
+	reset_breakpoints : function(){
+		var self = this;
+		this.breakpoints = this.breakpoints.unique();
+
+		for(var i=0; i<self.breakpoints.length; i++){
+			if($(self.target).find(".CodeMirror-gutter-text pre:eq(" + parseInt(self.breakpoints[i]) + ")").html() == (self.breakpoints[i] + 1).toString())
+				$(self.target).find(".CodeMirror-gutter-text pre:eq(" + parseInt(self.breakpoints[i]) + ")").prepend("<span class='breakpoint'>●</span>");
+		}
+	},
+	
+	line_refresh : function(){
+		this.editor.refresh();
+		this.reset_breakpoints();
 	}
 };

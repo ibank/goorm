@@ -17,20 +17,21 @@ org.goorm.core.file._new.folder.prototype = {
 		var handle_ok = function() {
 		
 			var data = self.dialog_explorer.get_data();
-			
+			console.log("ok");
 			if(data.path=="" || data.name=="") {
 				//alert.show(core.module.localization.msg["alertFileNameEmpty"]);
 				alert.show("Folder Name is empty.");
 				return false;
 			}
 			else {
-				
+				console.log(data);
 				var postdata = {
 					current_path: data.path,
 					folder_name: data.name
 				};
 
 				$.get("file/new_folder", postdata, function (data) {
+					console.log(data);
 					if (data.err_code==0) {
 						core.module.layout.project_explorer.refresh();
 					}

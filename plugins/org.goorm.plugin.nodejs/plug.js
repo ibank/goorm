@@ -7,10 +7,6 @@
 org.goorm.plugin.nodejs = function () {
 	this.name = "nodejs";
 	this.mainmenu = null;
-	this.build_options = null;
-	this.build_source = null;
-	this.build_target = null;
-	this.build_file_type = "o";
 	this.debug_con = null;
 	this.current_debug_project = null;
 	this.terminal = null;
@@ -84,22 +80,25 @@ org.goorm.plugin.nodejs.prototype = {
 	
 	run: function(path) {
 		var self=this;
+		var property = core.property.plugins['org.goorm.plugin.nodejs'];
 		
-		var classpath = "";
-		var classname = "main.js";
+		var source_path = property['plugin.nodejs.source_path'];
+		var main = property['plugin.nodejs.main'];
 
-		var cmd1 = "node "+classpath+" "+classname;
-		console.log(cmd1);
+		var cmd1 = "node "+source_path+main;
 		core.module.layout.terminal.send_command(cmd1+'\r');
 
 	},
 	
 	debug: function (path) {
 		var self = this;
+		var property = core.property.plugins['org.goorm.plugin.nodejs'];
 		var table_variable = core.module.debug.table_variable;
 		var debug_module = core.module.debug;
 		this.terminal = core.module.layout.workspace.window_manager.open("/", "debug", "terminal", "Terminal").terminal;
 		this.current_debug_project = path;
+		this.prompt = /debug>/;
+		this.terminal.debug_endstr = /program terminated/;
 		
 		// debug탭 초기화
 		table_variable.initializeTable();
@@ -123,150 +122,32 @@ org.goorm.plugin.nodejs.prototype = {
 			});
 		}
 		
-		this.debug_port = null;
-		this.status_updated = false;
-		var debug_buffer = null;
-		var timeouts = [];
-
-		var flags = {
-			"started" : 	false,
-			"terminated" : 	false,
-			"connected" :	false,
-			"prompt" :		false
-		}
+//		$(debug_module).off("value_changed");
+//		$(debug_module).on("value_changed",function(e, data){
+//			self.terminal.send_command("set "+data.variable+"="+data.value+"\r", self.prompt);
+//		});
 		
-		// command receive
-		$(core.module.debug).off("terminal_msg");
-		$(core.module.debug).on("terminal_msg", function (e, data) {
-//			var regex_locals = /Local variables:/;
-			var regex_where = /backtrace/;
-			var regex_ndb = /debug>/;
+		$(debug_module).off("debug_end");
+		$(debug_module).on("debug_end",function(){
+			table_variable.initializeTable();
+			table_variable.refreshView();
 			
-			if(/program terminated/.test(data)) {
-				flags.terminated = true;
-			}
-			// ndb ready
-			else if(/connecting[\. ]*ok/.test(data)) {
-				flags.connected = true;
-			}
-			else if(regex_ndb.test(data)) {
-				flags.prompt = true;
-			}
-				
-			if(flags.terminated) {
-				// 커넥션 끊겼을시 처리
-//				self.terminal.send_command("quit\r");
-				table_variable.initializeTable();
-				table_variable.refreshView();
-				
-				// timeout 제거
-				while(timeouts.length > 0) {
-					clearTimeout(timeouts.pop());
+			$.get("/remove_port", {
+				"port": self.debug_port
+			});
+			
+			// clear highlight lines
+			var windows = core.module.layout.workspace.window_manager.window;
+			for (var i in windows) {
+				var window = windows[i];
+				if (window.project == self.current_debug_project) {
+					window.editor && window.editor.clear_highlight();
 				}
-				
-				$.get("/remove_port", {"port":self.debug_port});
-				
-				// highlight 제거
-				var windows = core.module.layout.workspace.window_manager.window;
-				for (var i in windows) {
-					var window = windows[i];
-					if(window.editor)
-						window.editor.clear_highlight();
-				}
-				flags.terminated = false;
-			}
-			else if (!flags.started && flags.connected && flags.prompt) {
-				console.log("nodejs","ready");
-				self.debug_cmd({
-					"mode":"run",
-					"project_path":path
-				});
-				flags.started = true;
-				flags.connected = false;
-				flags.prompt = false;
-			}
-			// 명령어가 실행된 뒤 현재라인과 변수를 불러온다.
-			else if (flags.started && self.status_updated === false && flags.prompt) {
-				self.terminal.send_command("backtrace\r");
-//				var t1 = setTimeout(function(){
-//					
-//				}, 200);
-				
-//				var t2 = setTimeout(function(){
-//					self.terminal.send_command("locals\r");
-//				}, 200);
-				
-//				timeouts.push(t1);
-//				timeouts.push(t2);
-				self.status_updated = true;
-				flags.prompt = false;
 			}
 			
-//			console.log(data);
-			
-			// ndb명령어가 실행되면 다음 ndb명령까지 데이터를 모은다.
-			if(regex_ndb.test(data)) {
-				if(debug_buffer != null) {
-					
-					// 현재 라인 처리하는 부분.
-					var lines = debug_buffer.split('\n');
-					var cmd = null;
-					$.each(lines, function(i, line){
-						if(line == '') return;
-						
-						if(regex_where.test(line)) {
-							// 현재 라인 시작
-							console.log("@catch","where");
-							cmd = 1;
-						}
-						else if(cmd == 1) {
-							// 현재 라인 처리
-							var regex = /#0 (.*):([\d]+):([\d]+)/;
-							if(regex.test(line)) {
-								var match = line.match(regex);
-								console.log(match);
-								var filename = match[1];
-								var line_number = match[2];
-								
-								var windows = core.module.layout.workspace.window_manager.window;
-								for (var j=0; j<windows.length; j++) {
-									var window = windows[j];
-									if (window.project == self.current_debug_project 
-											&& window.filename == filename) {
-										window.editor.highlight_line(line_number);
-									}
-								}
-							}
-						}
-						
-//						if(regex_locals.test(line)) {
-//							// local variable 시작
-//							console.log("@catch","locals");
-//							cmd = 2;
-//							table_variable.initializeTable();
-//						}
-//						else if(cmd == 2) {
-//							// local variable 추가
-//							var variable = line.split(' = ');
-//							table_variable.addRow({"variable":variable[0].trim(),"value":variable[1].trim()});
-//						}
-//						console.log('line',line);
-//						console.log('cmd',cmd);
-					});
-					table_variable.refreshView();
-				}
-				debug_buffer = data;
-//				console.log(2,debug_buffer);
-			}
-			else {
-				debug_buffer += '\n'+data;
-//				console.log(4,data);
-			}
-		});
-		
-		$(debug_module).off("value_changed");
-		$(debug_module).on("value_changed",function(e, data){
-			self.terminal.send_command("set "+data.variable+"="+data.value+"\r");
+			setTimeout(function(){
+				self.debug_cmd({mode:'terminate'});
+			}, 500);
 		});
 	},
 	
@@ -278,99 +159,211 @@ org.goorm.plugin.nodejs.prototype = {
 		 * cmd = { mode, project_path }
 		 */
 		var self=this;
+		var property = core.property.plugins['org.goorm.plugin.nodejs'];
+		var table_variable = core.module.debug.table_variable;
+		
+		var main = property['plugin.nodejs.main'];
+		var buildPath = " "+property['plugin.nodejs.source_path'];
+		
 		if(this.terminal === null) {
 			console.log("no connection!");
 			return ;
 		}
-		
-		this.status_updated = false;
-		
-		if (cmd.mode == "init") {
-			$.getJSON("/alloc_port", {
-				"process_name": "node debug"
-			}, function(result){
-				self.debug_port = result.port;
-				self.terminal.send_command("node debug --port=" + result.port + " main.js\r");
-			})
-		}
-		else {
-			// set break points
-			var windows = core.module.layout.workspace.window_manager.window;
-			for (var i = 0; i < windows.length; i++) {
-				var window = windows[i];
-				var remains = [];
 				
-				if (window.project == this.current_debug_project) {
-					var filename = window.filename;
+		switch (cmd.mode) {
+			case 'init':
+				$.getJSON("/alloc_port", {
+					"process_name": "node debug"
+				}, function(result){
+					self.debug_port = result.port;
+					self.terminal.flush_command_queue();
+					self.terminal.send_command("node debug --port=" + result.port+buildPath+main+"\r", null);
+					setTimeout(function(){
+						self.terminal.send_command("\r", /connecting.*ok/);
+						self.set_breakpoints();
+						self.debug_get_status();
+					}, 1000);
 					
-					if (window.editor === null) 
-						continue;
-					var breakpoints = window.editor.breakpoints;
-					for (var j = 0; j < self.breakpoints.length; j++) {
-						remains.push(self.breakpoints[j]);
+				})
+				break;
+			case 'continue':
+				self.set_breakpoints();
+				self.terminal.send_command("cont\r", self.prompt, function(){
+					setTimeout(function(){
+						self.debug_get_status();
+					}, 500);
+				}); break;
+				break;
+			case 'terminate':
+				self.terminal.flush_command_queue();
+				self.terminal.send_command("quit\r", self.prompt);
+				
+				table_variable.initializeTable();
+				table_variable.refreshView();
+				
+				$.get("/remove_port", {
+					"port": self.debug_port
+				});
+				
+				// clear highlight lines
+				var windows = core.module.layout.workspace.window_manager.window;
+				for (var i in windows) {
+					var window = windows[i];
+					if (window.project == self.current_debug_project) {
+						window.editor && window.editor.clear_highlight();
 					}
-					
-					if (breakpoints.length > 0) {
-						for (var j = 0; j < breakpoints.length; j++) {
-							var breakpoint = breakpoints[j];
-							breakpoint += 1;
-							breakpoint = "'" + filename + "', " + breakpoint;
-							var result = remains.inArray(breakpoint);
-							if (result == -1) {
-								console.log("nodejs", "setBreakpoint(" + breakpoint + ")");
-								self.terminal.send_command("setBreakpoint(" + breakpoint + ")\r");
-								self.breakpoints.push(breakpoint);
-							}
-							else {
-								remains.remove(result);
-							}
-						}
-					}
-					else {
-						// no breakpoints
-//						this.status_updated = true;
-					}
-					
-					for (var j = 0; j < remains.length; j++) {
-						var result = self.breakpoints.inArray(remains[j]);
-						if (result != -1) {
-							self.breakpoints.remove(result);
-							self.terminal.send_command("clearBreakpoint(" + remains[j] + ")\r");
-						}
+				}
+				break;
+			case 'step_over':
+				self.set_breakpoints();
+				self.terminal.send_command("next\r", self.prompt, function(){
+					setTimeout(function(){
+						self.debug_get_status();
+					}, 500);
+				}); break;
+			case 'step_in':
+				self.set_breakpoints();
+				self.terminal.send_command("step\r", self.prompt, function(){
+					setTimeout(function(){
+						self.debug_get_status();
+					}, 500);
+				}); break;
+			case 'step_out':
+				self.set_breakpoints();
+				self.terminal.send_command("out\r", self.prompt, function(){
+					setTimeout(function(){
+						self.debug_get_status();
+					}, 500);
+				}); break;
+			default:
+				break;
+		}		
+	},
+	
+	debug_get_status: function(){
+		var self = this;
+		this.terminal.send_command("backtrace\r", this.prompt, function(terminal_data){
+			self.set_currentline(terminal_data);
+		});
+		
+		// nodejs에서 전체 variable을 볼수있는 명령어가 없음.
+//		this.terminal.send_command("locals\r", this.prompt, function(terminal_data){
+//			self.set_debug_variable(terminal_data);
+//		});
+	},
+	
+	set_currentline: function(terminal_data){
+		var self = this;
+		var lines = terminal_data.split('\n');
+		
+		// clear highlight lines
+		var windows = core.module.layout.workspace.window_manager.window;
+		for (var i in windows) {
+			var window = windows[i];
+			if (window.project == self.current_debug_project) {
+				window.editor && window.editor.clear_highlight();
+			}
+		}
+		
+		$.each(lines, function(i, line){
+			if(line == '') return;
+			
+			// 현재 라인 처리
+			var regex = /#0 (.*):([\d]+):([\d]+)/;
+			if(regex.test(line)) {
+				var match = line.match(regex);
+				var filename = match[1];
+				var line_number = match[2];
+				console.log(filename, line_number);
+				
+				
+				var windows = core.module.layout.workspace.window_manager.window;
+				for (var j=0; j<windows.length; j++) {
+					var window = windows[j];
+					if (window.project == self.current_debug_project 
+							&& window.filename == filename) {
+						window.editor.highlight_line(line_number);
 					}
 				}
 			}
+		});
+	},
+	
+	set_debug_variable: function(terminal_data){
+		var lines = terminal_data.split('\n');
+		var table_variable = core.module.debug.table_variable;
+		
+		table_variable.initializeTable();
+		
+		$.each(lines, function(i, line){
+			if(line == '') return;
 			
-			switch (cmd.mode) {
-				case 'run':
-					//			self.terminal.send_command("run\r"); 
-					break;
-				case 'continue':
-					self.terminal.send_command("cont\r");
-					break;
-				case 'terminate':
-					self.terminal.send_command("quit\r");
-					table_variable.initializeTable();
-					table_variable.refreshView();
-					self.status_updated = true;
-					$.get("/remove_port", {
-						"port": self.debug_port
-					});
-					break;
-				case 'step_over':
-					self.terminal.send_command("next\r");
-					break;
-				case 'step_in':
-					self.terminal.send_command("step\r");
-					break;
-				case 'step_out':
-					self.terminal.send_command("out\r");
-					break;
-				default:
-					break;
+			// local variable 추가
+			var variable = line.split(' = ');
+			if (variable.length == 2) {
+				table_variable.addRow({
+					"variable": variable[0].trim(),
+					"value": variable[1].trim()
+				});
+			}
+		});
+		table_variable.refreshView();
+	},
+	
+	set_breakpoints: function(){
+		var self = this;
+		var property = core.property.plugins['org.goorm.plugin.nodejs'];
+		var windows = core.module.layout.workspace.window_manager.window;
+		var remains = [];
+		var breakpoints = [];
+		for (var i=0; i < windows.length; i++) {
+			var window = windows[i];
+
+			if (window.project == this.current_debug_project) {
+				var filename = window.filename;
+				var filepath = window.filepath;
+				if(window.editor === null) continue;				
+				
+				for (var j = 0; j < window.editor.breakpoints.length; j++) {
+					var breakpoint = window.editor.breakpoints[j];
+					breakpoint += 1;
+					filename = filename.split('.js')[0];
+					breakpoint = "'" + filename + "', " + breakpoint;
+					
+					breakpoints.push(breakpoint);
+				}
 			}
 		}
 		
+		for(var j=0; j < self.breakpoints.length; j++) {
+			remains.push(self.breakpoints[j]);
+		}
+		
+		if(breakpoints.length > 0){
+			for(var j=0; j < breakpoints.length; j++) {
+				var breakpoint = breakpoints[j];
+				var result = remains.inArray(breakpoint);
+				if(result == -1) {
+					self.terminal.send_command("setBreakpoint(" + breakpoint + ")\r", />|(main\[[\d]\][\s\n]*)$/);
+					self.breakpoints.push(breakpoint);
+				}
+				else {
+					remains.remove(result);
+				}
+			}
+		}
+		else {
+			// no breakpoints
+		}
+				
+		for(var j=0; j < remains.length; j++) {
+			var result = self.breakpoints.inArray(remains[j]);
+			if(result != -1) {
+				self.breakpoints.remove(result);
+				self.terminal.send_command("clearBreakpoint(" + remains[j] + ")\r", />|(main\[[\d]\][\s\n]*)$/);
+			}
+		}
+
 	},
 	
 	build: function (projectName, projectPath, callback) {

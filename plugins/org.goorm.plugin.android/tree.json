@@ -1,17 +1,19 @@
 {
-	"label" : "Android",
-	"tab" : [
-				{	"label" : "Info",
-					"html"	: "",
-					"classname" : "org.goorm.core.preferences.info"
-				},
-				{
-					"label" : "Libraries",
-					"html"	: ""
-				},
-				{
-					"label" : "Animations",
-					"html"	: ""
-				}
-			]
+	"preference" :
+	{
+		"label" : "Android",
+		"tab" :	[
+			{	"label" : "Android"
+			}
+		]
+	},
+	
+	"property" : 
+	{
+		"label" : "Android",
+		"tab" :	[
+			{	"label" : "Android"
+			}
+		]
+	}
 }

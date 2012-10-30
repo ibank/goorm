@@ -138,6 +138,11 @@ org.goorm.core.debug.prototype = {
 				self.table_variable.subscribe("editorSaveEvent", self.variable_edit_complete);
 			});
 			
+			// 렌더가 제대로 안불려짐. 타이밍문제인듯. 일단 급한대로 수정-병웅.
+			setTimeout(function(){
+				self.layout.render();
+			},300);
+			
 			$(core).bind("layout_resized", function(){
 				var layout_bottom_height = $(".yui-layout-unit-bottom").find(".yui-layout-wrap").height() - 26;
 				$("#debug_left").css("height", layout_bottom_height);
@@ -145,8 +150,6 @@ org.goorm.core.debug.prototype = {
 				
 				$("#" + self.target).height(layout_bottom_height);
 			});
-			
-			self.layout.render();
 		});
 	},
 	

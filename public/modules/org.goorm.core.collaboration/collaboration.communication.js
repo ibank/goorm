@@ -57,8 +57,9 @@ org.goorm.core.collaboration.communication.prototype = {
 		
  		this.socket.on("communication_message", function (data) {
  			data = decodeURIComponent(data);
- 			$("#" + self.target).find(".communication_message_container").append("<div>" + data + "</div>");
- 			$("#" + self.target).find(".communication_message_container").scrollTop(parseInt($("#" + self.target).find(".communication_message_container").height()));
+ 			$("#" + self.target).find(".communication_message_container").append("<div class='communication_message_content'>" + data + "</div>");
+ 			var length = $("#" + self.target).find(".communication_message_container").find('.communication_message_content').length || 0;
+ 			$("#" + self.target).find(".communication_message_container").scrollTop(parseInt(length) * 16); // 16 = height of communication_message_content
  		});
  		
  		this.socket.on("communication_someone_joined", function (data) {

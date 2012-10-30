@@ -51,7 +51,7 @@ org.goorm.core.preference.prototype = {
 		this.manager.get_default_file("configs/preferences/default.json", function(json){
 			self.preference = json;
 			core.preference = json;
-			self.preference_default = json;
+			self.preference_default = $.extend(true, {}, json);
 			self.load();
 		});
 	},
@@ -66,7 +66,12 @@ org.goorm.core.preference.prototype = {
 	load: function() {
 		$.each(core.preference, function(key, value){
 			if(!$.isEmptyObject(localStorage[key])){
-				core.preference[key] = localStorage[key];
+				if(key != "plugins"){
+					core.preference[key] = localStorage[key];
+				}					
+				else {
+					core.preference[key] = JSON.parse(localStorage[key]);
+				} 
 			}
 		});
 	},
@@ -81,6 +86,8 @@ org.goorm.core.preference.prototype = {
 				localStorage[key] = value;
 			}
 		});
+		
+		localStorage['plugins'] = JSON.stringify(core.preference.plugins);
 	},
 	
 	apply: function(id){
@@ -96,11 +103,11 @@ org.goorm.core.preference.prototype = {
 //		$.post("preference/save", { data: core.filetypes }, function (data) {
 //			
 //		});
-				
+			
 			
 //			self.get_preference(self.xml);
 //			self.get_plugin_preference();
-		$(document).trigger("on_preference_confirmed");
+		$(core).trigger("on_preference_confirmed");
 		
 		$(core.module.layout.workspace.window_manager.window).each(function(i) {
 			if(this.alive && this.designer) {
@@ -182,49 +189,75 @@ org.goorm.core.preference.prototype = {
 	read_dialog: function(preference) {
 		var target="#preference_tabview";
 		
-		$(target).find("input").each(function(){
-			var value;
-			if($(this).attr("type") == "checkbox"){
-				value = ($(this).attr("checked") == "checked") ? true : false;
+		var targets = $(target).children('div');
+		
+		var key = null;
+		$.each(targets, function(index, div){
+			if($(targets[index]).attr('plugin') == 'null') {
+				key = preference;
 			}
 			else {
-				value = $(this).val();
+				key = preference.plugins[$(targets[index]).attr('plugin')];
 			}
-			preference[$(this).attr("name")] = value;
-		});
-		
-		$(target).find("textarea").each(function(){
-			preference[$(this).attr("name")] = $(this).val();
-		});
-		
-		$(target).find("select").each(function(){
-			preference[$(this).attr("name")] = $(this).children("option:selected").val();
+				
+			$(targets[index]).find("input").each(function(){
+				var value;
+				if($(this).attr("type") == "checkbox"){
+					value = ($(this).attr("checked") == "checked") ? true : false;
+				}
+				else {
+					value = $(this).val();
+				}
+				key[$(this).attr("name")] = value;
+			});
+			
+			$(targets[index]).find("textarea").each(function(){
+				key[$(this).attr("name")] = $(this).val();
+			});
+			
+			$(targets[index]).find("select").each(function(){
+				key[$(this).attr("name")] = $(this).children("option:selected").val();
+			});
 		});
 	},
 	
 	fill_dialog: function(preference) {
-		$("#preference_tabview").find("input").each(function(){
-			if(preference[$(this).attr("name")] !== null){
-				if($(this).attr("type") == "checkbox"){
-					if(preference[$(this).attr("name")] == "true")
-						$(this).attr("checked","checked");
-//					else $(this).attr("checked",);
+		var target="#preference_tabview";
+		
+		var targets = $(target).children('div');
+		
+		var key = null;
+		$.each(targets, function(index, div){
+			if($(targets[index]).attr('plugin') == 'null') {
+				key = preference;
+			}
+			else {
+				key = preference.plugins[$(targets[index]).attr('plugin')];
+			}
+			
+			$(targets[index]).find("input").each(function(){
+				if(key[$(this).attr("name")] !== null){
+					if($(this).attr("type") == "checkbox"){
+						if(key[$(this).attr("name")] == "true")
+							$(this).attr("checked","checked");
+//						else $(this).attr("checked",);
+					}
+					else{
+						$(this).val(key[$(this).attr("name")]);
+					}
 				}
-				else{
-					$(this).val(preference[$(this).attr("name")]);
+			});
+			$(targets[index]).find("textarea").each(function(){
+				if(key[$(this).attr("name")] !== null){
+					$(this).val(key[$(this).attr("name")]);
 				}
-			}
-		});
-		$("#preference_tabview").find("textarea").each(function(){
-			if(preference[$(this).attr("name")] !== null){
-				$(this).val(preference[$(this).attr("name")]);
-			}
-		});
-		$("#preference_tabview").find("select").each(function(){
-			if(preference[$(this).attr("name")] !== null){
-				$(this).children("option[value = " + preference[$(this).attr("name")] + "]").attr("selected", "true");
-				$(this).val(preference[$(this).attr("name")]);
-			}
+			});
+			$(targets[index]).find("select").each(function(){
+				if(key[$(this).attr("name")] !== null){
+					$(this).children("option[value = " + key[$(this).attr("name")] + "]").attr("selected", "true");
+					$(this).val(key[$(this).attr("name")]);
+				}
+			});
 		});
 	},
 
@@ -393,12 +426,14 @@ org.goorm.core.preference.prototype = {
 					if (plugin_node === null) {
 						plugin_node = self.manager.treeview.getNodeByProperty("label", "Plugin");
 					}
-					if (!$.isEmptyObject(json)) {
+					if (json && json.preference) {
 						// construct basic tree structure
-						self.manager.add_treeview(plugin_node, json);
-						self.manager.add_tabview(json)
+						self.manager.add_treeview(plugin_node, json.preference);
+						self.manager.add_tabview(json.preference, plugin_name);
 						self.manager.treeview.render();
 						self.manager.treeview.expandAll();
+						
+						self.preference.plugins[plugin_name] || (self.preference.plugins[plugin_name] = {});
 					}
 				}).complete(function(){
 					if(--plugin_count == 0) {
@@ -406,44 +441,6 @@ org.goorm.core.preference.prototype = {
 						set_dialog_button();
 					}
 				});
-				
-//						self.manager.xml_parser('plugins/' + plugin_name + '/config.xml');
-//	
-//						plugin_name = $(self.manager.xml).find("plugin").attr("name");
-//						
-//						self.plugin[plugin_name] = new self.manager.plugin(core.module.plugin_manager.list[i].plugin_name);
-//						self.plugin[plugin_name].xml = self.manager.xml;
-//						
-//	
-//						$(self.manager.xml).find("tree").each(function(){
-//							$(this).find("preference").each(function(){
-//								if(localStorage.getItem($(this).attr("name")) != null){
-//									self.plugin[plugin_name].preference[$(this).attr("name")] = localStorage.getItem($(this).attr("name"));
-//									self.preference[$(this).attr("name")] = localStorage.getItem($(this).attr("name"));
-//								}
-//								else {
-//									self.plugin[plugin_name].preference[$(this).attr("name")] = $(this).attr("default");
-//									self.preference[$(this).attr("name")] = $(this).attr("default");
-//								}
-//							});
-//							
-//							$(this).find("ini").each(function(){
-//								
-//								if(self.ini[$(this).attr("name")] != null){
-//									self.plugin[plugin_name].ini[$(this).attr("name")] = self.ini[$(this).attr("name")];
-//								}
-//								else {
-//									self.plugin[plugin_name].ini[$(this).attr("name")] = $(this).attr("default");
-//									self.ini[$(this).attr("name")] = $(this).attr("default");
-//								}
-//								
-//							});
-//						});
-//						self.plugin[plugin_name].version = $(self.manager.xml).find("version").text();
-//						self.plugin[plugin_name].url = $(self.manager.xml).find("url").text();
-//						
-//						self.manager.add_treeview(plugin_node,self.plugin[plugin_name].xml);
-						
 			});
 		};
 		

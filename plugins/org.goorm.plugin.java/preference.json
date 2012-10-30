@@ -1,0 +1,6 @@
+{
+	"plugin.java.main" : 		"project/main",
+	"plugin.java.source_path" : 	"src/",
+	"plugin.java.build_path" : 	"bin/",
+	"plugin.java.build_option" : "-g"
+}
