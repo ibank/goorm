@@ -1,3 +1,11 @@
+/**
+ * Copyright Sung-tae Ryu. All rights reserved.
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
+ **/
+
 var fs = require("fs");
 var rimraf = require('rimraf');
 
@@ -9,6 +17,7 @@ var g_project = require("../modules/org.goorm.core.project/project");
 var g_terminal = require("../modules/org.goorm.core.terminal/terminal");
 var g_theme = require("../modules/org.goorm.core.theme/theme");
 var g_plugin = require("../modules/org.goorm.plugin/plugin");
+var g_help = require("../modules/org.goorm.help/help");
 /* var g_member_service = require("../modules/org.goorm.core.member/member_service"); */
 
 var EventEmitter = require("events").EventEmitter;
@@ -275,7 +284,7 @@ exports.file.get_nodes = function(req, res){
 		}
 	});
 	
-	g_file.get_nodes(__path + 'workspace/' + path, evt);
+	g_file.get_nodes(__workspace+'/' + path, evt);
 };
 
 exports.file.get_dir_nodes = function(req, res){
@@ -296,7 +305,7 @@ exports.file.get_dir_nodes = function(req, res){
 		}
 	});
 	
-	g_file.get_dir_nodes(__path + 'workspace/' + path, evt);
+	g_file.get_dir_nodes(__workspace+'/' + path, evt);
 };
 
 exports.file.do_move = function(req, res){
@@ -435,14 +444,27 @@ exports.theme.put_contents = function(req, res){
 };
 
 /*
+ * API : Help
+ */
+exports.help = function(req, res){
+	res.send(null);
+};
+
+exports.help.get_readme_markdown = function(req, res){
+	var data = g_help.get_readme_markdown();
+	
+	res.json(data);
+};
+
+/*
  * Download and Upload
  */
  
 exports.download = function(req, res) {
 	
-	res.download(__path+'temp_files/'+req.query.file, function(err) {
+	res.download(__temp_dir+'/'+req.query.file, function(err) {
 		
-		rimraf(__path+'temp_files/'+req.query.file, function(err) {
+		rimraf(__temp_dir+'/'+req.query.file, function(err) {
 			if (err!=null) {
 			}
 			else {

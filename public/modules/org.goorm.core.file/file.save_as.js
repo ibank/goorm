@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.file.save_as = function () {
@@ -22,9 +24,7 @@ org.goorm.core.file.save_as.prototype = {
 			var data = self.dialog_explorer.get_data();
 		
 			if(data.path=="" || data.name=="") {
-				//alert.show(core.module.localization.msg["alertFileNameEmpty"]);
-				alert.show("File Name is Empty.");
-				return false;
+				alert.show(core.module.localization.msg["alert_filename_empty"]);				// alert.show("File name is empty. Please fill it...");				return false;
 			}
 
 			var postdata = {
@@ -38,15 +38,20 @@ org.goorm.core.file.save_as.prototype = {
 				if (data.err_code == 99) {
 					confirmation.init({
 /*
-						title: core.module.localization.msg["confirmationNewTitle"], 
-						message: core.module.localization.msg["confirmationNewMessage"],
+						title: core.module.localization.msg["confirmation_new_title"], 
+						message: core.module.localization.msg["confirmation_new_message"],
 						yes_text: core.module.localization.msg["confirmation_yes"],
 						no_text: core.module.localization.msg["confirmation_no"],
 */
-						title: "Confirmation", 
-						message: "Exist file. Do you want to save anyway?",
-						yes_text: "yes",
-						no_text: "no",
+						// title: "Confirmation", 
+						// message: "Exist file. Do you want to save anyway?",
+						// yes_text: "yes",
+						// no_text: "no",
+						title: Confirmation, 
+						message: "<span localization_key='confirmation_new_message'>Exist file. Do you want to save anyway?</span>",
+						yes_text: "<span localization_key='yes'>Yes</span>",
+						no_text: "<span localization_key='no'>No</span>",
+
 						yes: function () {
 							self.is_save_anyway = true;
 							handle_save();
@@ -71,8 +76,8 @@ org.goorm.core.file.save_as.prototype = {
 			this.hide(); 
 		};
 		
-		this.buttons = [ {text:"Save", handler:handle_save, isDefault:true},
-						 {text:"Cancel",  handler:handle_cancel}];
+		this.buttons = [ {text:"<span localization_key='save'>Save</span>", handler:handle_save, isDefault:true},
+						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}];
 						 
 		this.dialog = new org.goorm.core.file.save_as.dialog();
 		this.dialog.init({
@@ -111,9 +116,7 @@ org.goorm.core.file.save_as.prototype = {
 		var window_manager = core.module.layout.workspace.window_manager;
 
 		if (window_manager.active_window<0) {
-			//alert.show(core.module.localization.msg.alert_file_not_opened);
-			alert.show("file not opened");
-		}
+			alert.show(core.module.localization.msg.alert_file_not_opened);			// alert.show("Could not open this file");		}
 		else {
 			if(window_manager.window[window_manager.active_window].designer != undefined) {
 				self.contents_data = window_manager.window[window_manager.active_window].designer.get_contents();

@@ -1,18 +1,11 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
- * version: 3.0.0
- * This is the module example for YUI_DOCS
- * @module code-generator
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
-
-
-/**
- * This is an goorm code generator.  
- * goorm starts with this code generator.
- * @class code_generator
- **/
+ 
 org.goorm.core.code_generator = function () {
 
 };

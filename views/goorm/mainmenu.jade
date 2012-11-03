@@ -150,7 +150,7 @@
            | Find Next
            em.helptext Ctrl + G
          li.yuimenuitem
-          a.yuimenuitemlabel(action='do_find_previous', localization_key='edit_fine_previous', style='background-image: url(configs/toolbars/org.goorm.core.edit/image/find_previous.png);')
+          a.yuimenuitemlabel(action='do_find_previous', localization_key='edit_find_previous', style='background-image: url(configs/toolbars/org.goorm.core.edit/image/find_previous.png);')
            | Find Previous
            em.helptext Ctrl + Shift + G
         ul
@@ -171,42 +171,42 @@
           a.yuimenuitemlabel(action='preference', localization_key='edit_preference', style='background-image: url(configs/toolbars/org.goorm.core.edit/image/preference.png);')
            | Preference
            em.helptext Alt + P
-    li.yuimenubaritem
-     a.yuimenubaritemlabel(href='#Design', localization_key='design') Design 
-     #Design.yuimenu
-      .bd
-       ul
-        li.yuimenuitem
-         a.yuimenuitemlabel(href='#Alignment', localization_key='design_alignment') Alignment
-         #Alignment.yuimenu
-          .bd
-            ul.first-of-type
-             li.yuimenuitem
-              a.yuimenuitemlabel(action='align_left', style='background-image: url(configs/toolbars/org.goorm.core.design/image/align_left.png);', localization_key='design_align_left') Align Left
-             li.yuimenuitem
-              a.yuimenuitemlabel(action='align_right', style='background-image: url(configs/toolbars/org.goorm.core.design/image/align_right.png);', localization_key='design_align_right') Align Right
-             li.yuimenuitem
-              a.yuimenuitemlabel(action='align_top', style='background-image: url(configs/toolbars/org.goorm.core.design/image/align_top.png);', localization_key='design_align_top') Align Top
-             li.yuimenuitem
-              a.yuimenuitemlabel(action='align_bottom', style='background-image: url(configs/toolbars/org.goorm.core.design/image/align_bottom.png);', localization_key='design_align_bottom') Align Bottom
-            ul
-             li.yuimenuitem
-              a.yuimenuitemlabel(action='align_horizontally_center', style='background-image: url(configs/toolbars/org.goorm.core.design/image/align_horizontally_center.png);', localization_key='design_align_horizontally_center') Align Horizontally Center
-             li.yuimenuitem
-              a.yuimenuitemlabel(action='align_vertically_center', style='background-image: url(configs/toolbars/org.goorm.core.design/image/align_vertically_center.png);', localization_key='design_align_vertically_center') Align Vertically Center
-       ul
-        li.yuimenuitem
-         a.yuimenuitemlabel(action='bring_to_front', localization_key='design_bring_to_front', style='background-image: url(configs/toolbars/org.goorm.core.design/image/bring_to_front.png);') Bring to Front
-        li.yuimenuitem
-         a.yuimenuitemlabel(action='send_to_back', localization_key='design_send_to_back', style='background-image: url(configs/toolbars/org.goorm.core.design/image/send_to_back.png);') Send to Back
-       ul
-        li.yuimenuitem
-         a.yuimenuitemlabel(action='bring_forward', localization_key='design_bring_forward', style='background-image: url(configs/toolbars/org.goorm.core.design/image/bring_forward.png);') Bring Forward
-        li.yuimenuitem
-         a.yuimenuitemlabel(action='send_backward', localization_key='design_send_backward', style='background-image: url(configs/toolbars/org.goorm.core.design/image/send_backward.png);') Send Backward
-       ul
-        li.yuimenuitem
-         a.yuimenuitemlabel(action='canvas_setting', localization_key='design_canvas_setting') Canvas Setting
+    //-li.yuimenubaritem
+     //-a.yuimenubaritemlabel(href='#Design', localization_key='design') Design 
+     //-#Design.yuimenu
+      //-.bd
+       //-ul
+        //-li.yuimenuitem
+         //-a.yuimenuitemlabel(href='#Alignment', localization_key='design_alignment') Alignment
+         //-#Alignment.yuimenu
+          //-.bd
+            //-ul.first-of-type
+             //-li.yuimenuitem
+              //-a.yuimenuitemlabel(action='align_left', style='background-image: url(configs/toolbars/org.goorm.core.design/image/align_left.png);', localization_key='design_align_left') Align Left
+             //-li.yuimenuitem
+              //-a.yuimenuitemlabel(action='align_right', style='background-image: url(configs/toolbars/org.goorm.core.design/image/align_right.png);', localization_key='design_align_right') Align Right
+             //-li.yuimenuitem
+              //-a.yuimenuitemlabel(action='align_top', style='background-image: url(configs/toolbars/org.goorm.core.design/image/align_top.png);', localization_key='design_align_top') Align Top
+             //-li.yuimenuitem
+              //-a.yuimenuitemlabel(action='align_bottom', style='background-image: url(configs/toolbars/org.goorm.core.design/image/align_bottom.png);', localization_key='design_align_bottom') Align Bottom
+            //-ul
+             //-li.yuimenuitem
+              //-a.yuimenuitemlabel(action='align_horizontally_center', style='background-image: url(configs/toolbars/org.goorm.core.design/image/align_horizontally_center.png);', localization_key='design_align_horizontally_center') Align Horizontally Center
+             //-li.yuimenuitem
+              //-a.yuimenuitemlabel(action='align_vertically_center', style='background-image: url(configs/toolbars/org.goorm.core.design/image/align_vertically_center.png);', localization_key='design_align_vertically_center') Align Vertically Center
+       //-ul
+        //-li.yuimenuitem
+         //-a.yuimenuitemlabel(action='bring_to_front', localization_key='design_bring_to_front', style='background-image: url(configs/toolbars/org.goorm.core.design/image/bring_to_front.png);') Bring to Front
+        //-li.yuimenuitem
+         //-a.yuimenuitemlabel(action='send_to_back', localization_key='design_send_to_back', style='background-image: url(configs/toolbars/org.goorm.core.design/image/send_to_back.png);') Send to Back
+       //-ul
+        //-li.yuimenuitem
+         //-a.yuimenuitemlabel(action='bring_forward', localization_key='design_bring_forward', style='background-image: url(configs/toolbars/org.goorm.core.design/image/bring_forward.png);') Bring Forward
+        //-li.yuimenuitem
+         //-a.yuimenuitemlabel(action='send_backward', localization_key='design_send_backward', style='background-image: url(configs/toolbars/org.goorm.core.design/image/send_backward.png);') Send Backward
+       //-ul
+        //-li.yuimenuitem
+         //-a.yuimenuitemlabel(action='canvas_setting', localization_key='design_canvas_setting') Canvas Setting
     li.yuimenubaritem
      a.yuimenubaritemlabel(href='#Project', localization_key='project') Project 
      #Project.yuimenu
@@ -253,14 +253,14 @@
       .bd
         ul
          li.yuimenuitem
-          a.yuimenuitemlabel(action='debug', localization_key='project_debug', style='background-image: url(configs/toolbars/org.goorm.core.debug/image/debug.png);')
+          a.yuimenuitemlabel(action='debug', localization_key='debug_start', style='background-image: url(configs/toolbars/org.goorm.core.debug/image/debug.png);')
            | Debug Start
            em.helptext F7
          li.yuimenuitem
-          a.yuimenuitemlabel(action='debug_continue', localization_key='project_debug', style='background-image: url(configs/toolbars/org.goorm.core.debug/image/continue.png);')
+          a.yuimenuitemlabel(action='debug_continue', localization_key='debug_continue', style='background-image: url(configs/toolbars/org.goorm.core.debug/image/continue.png);')
            | Continue
          li.yuimenuitem
-          a.yuimenuitemlabel(action='debug_terminate', localization_key='project_debug', style='background-image: url(configs/toolbars/org.goorm.core.debug/image/terminate.png);')
+          a.yuimenuitemlabel(action='debug_terminate', localization_key='debug_terminate', style='background-image: url(configs/toolbars/org.goorm.core.debug/image/terminate.png);')
            | Terminate
         ul
          li.yuimenuitem
@@ -313,10 +313,12 @@
         li.yuimenuitem
          a.yuimenuitemlabel(action='previous_window', localization_key='window_previous_window')
           | Previous Window
-          em.helptext Shift + Alt + ��        li.yuimenuitem
+          em.helptext Shift + Alt + Left
+        li.yuimenuitem
          a.yuimenuitemlabel(action='next_window', localization_key='window_next_window')
           | Next Window
-          em.helptext Shift + Alt + ��       ul
+          em.helptext Shift + Alt + Right
+       ul
         li.yuimenuitem
          a.yuimenuitemlabel(href='#submenu_perspectives', action='', style='background-image: url(configs/toolbars/org.goorm.core.layout/image/perspective.png);', localization_key='perspectives') Perspectives
          #submenu_perspectives.yuimenu
@@ -407,13 +409,13 @@
      #Help.yuimenu
       .bd
        ul
-        li.yuimenuitem
-         a.yuimenuitemlabel(action='help_contents', style='background-image: url(configs/toolbars/org.goorm.core.help/image/help_contents.png);', localization_key='help_help_contents') Help Contents
+        li.yuimenuitem.yuimenuitem-disabled
+         a.yuimenuitemlabel-disabled(action='help_contents', style='background-image: url(configs/toolbars/org.goorm.core.help/image/help_contents.png);', localization_key='help_help_contents') Help Contents
        ul
-        li.yuimenuitem
-         a.yuimenuitemlabel(action='help_check_for_updates', style='background-image: url(configs/toolbars/org.goorm.core.help/image/check_for_update.png);', localization_key='help_check_for_updates') Check for Updates
+        li.yuimenuitem.yuimenuitem-disabled
+         a.yuimenuitemlabel-disabled(action='help_check_for_updates', style='background-image: url(configs/toolbars/org.goorm.core.help/image/check_for_update.png);', localization_key='help_check_for_updates') Check for Updates
        ul
+        li.yuimenuitem.yuimenuitem-disabled
+         a.yuimenuitemlabel-disabled(action='help_bug_report', style='background-image: url(configs/toolbars/org.goorm.core.help/image/bug_report.png);', localization_key='help_bug_report') Send Bug Report
         li.yuimenuitem
-         a.yuimenuitemlabel(action='help_bug_report', style='background-image: url(configs/toolbars/org.goorm.core.help/image/bug_report.png);', localization_key='help_bug_report') Send Bug Report
-        li.yuimenuitem
-         a.yuimenuitemlabel(action='help_about', style='background-image: url(configs/toolbars/org.goorm.core.help/image/about.png);', localization_key='help_about_goorm_3') About goorm
+         a.yuimenuitemlabel(action='help_about', style='background-image: url(configs/toolbars/org.goorm.core.help/image/about.png);', localization_key='help_about_goorm') About goorm

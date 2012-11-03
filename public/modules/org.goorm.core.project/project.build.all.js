@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.project.build.all = function () {
@@ -20,11 +22,13 @@ org.goorm.core.project.build.all.prototype = {
 			$("#build_all_list input[type=hidden]").each(function(){
 				var status = $(this).parent().find(".buildStatus");
 				obj[$(this).attr("name")] = status;
-				status.html("<img src='./images/org.goorm.core.utility/loading.gif' width='16' height='16' align='top'>building");
-				console.log($(this).attr("name"));
-				core.module.plugin_manager.plugins["org.goorm.plugin."+$(this).attr("projectType")].build($(this).attr("name"),$(this).attr("project_path"),function(){
-					status.html("<img src='./images/org.goorm.core.dialog/dialog_notice.png' width='16' height='16' align='top'>complete");
-				});
+				var plugin = core.module.plugin_manager.plugins["org.goorm.plugin."+$(this).attr("projectType")];
+				if(plugin.build) {
+					status.html("<img src='./images/org.goorm.core.utility/loading.gif' width='16' height='16' align='top'>building");
+					plugin.build($(this).attr("name"),function(){
+						status.html("<img src='./images/org.goorm.core.dialog/dialog_notice.png' width='16' height='16' align='top'>complete");
+					});
+				}
 			});
 		};
 
@@ -32,8 +36,8 @@ org.goorm.core.project.build.all.prototype = {
 			this.hide(); 
 		};
 		
-		this.buttons = [ {text:"Build", handler:handle_open, isDefault:true},
-						 {text:"Cancel",  handler:handle_cancel}]; 
+		this.buttons = [ {text:"<span localization_key='build'>Build</span>", handler:handle_open, isDefault:true},
+						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
 		this.dialog = new org.goorm.core.project.build.all.dialog();
 		this.dialog.init({
@@ -59,23 +63,20 @@ org.goorm.core.project.build.all.prototype = {
 	project_list: function () {
 		$("#build_all_list").empty();
 			
-		$.get("project/get_list", "", function (data) {
-			
-			var list = eval(data);
-			$.each(list, function(index, project) {
-				if(!$.isEmptyObject(core.module.plugin_manager.plugins["org.goorm.plugin."+project.contents.type])) {
-					if(core.module.plugin_manager.plugins["org.goorm.plugin."+project.contents.type].build){
-						var icon_str = "";
-						icon_str += "<div id='selector_" + project.name + "' value='" + project.name + "'>";
-						icon_str += "<input type='hidden' name='"+project.name+"' project_path='"+project.name+"' project_name='"+project.contents.name+"' projectType='"+project.contents.type+"'>";
-						icon_str += project.name;
-						icon_str += "<div style='float:right' class='buildStatus'></div>";
-						icon_str += "</div>";
-			
-						$("#build_all_list").append(icon_str);
-					}
+		var data = core.workspace; 
+		for(var name in data) {
+			if(!$.isEmptyObject(core.module.plugin_manager.plugins["org.goorm.plugin."+data[name].type])) {
+				if(core.module.plugin_manager.plugins["org.goorm.plugin."+data[name].type].build){
+					var icon_str = "";
+					icon_str += "<div id='selector_" + name + "' value='" + name + "'>";
+					icon_str += "<input type='hidden' name='"+name+"' project_path='"+name+"' project_name='"+data[name].name+"' projectType='"+data[name].type+"'>";
+					icon_str += name;
+					icon_str += "<div style='float:right' class='buildStatus'></div>";
+					icon_str += "</div>";
+		
+					$("#build_all_list").append(icon_str);
 				}
-			});	
-		});
+			}
+		}
 	}
 };

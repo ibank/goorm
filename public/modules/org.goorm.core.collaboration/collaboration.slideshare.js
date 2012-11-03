@@ -1,12 +1,17 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.collaboration.slideshare = function () {
   	this.socket = null;
 	this.current_slide_name = null;
+	this.button_play = null;
+	this.button_prev = null;
+	this.button_next = null;
 };
 
 org.goorm.core.collaboration.slideshare.prototype = {
@@ -14,6 +19,8 @@ org.goorm.core.collaboration.slideshare.prototype = {
 	init: function(){
 		this.socket = io.connect();
 		var self = this;
+		
+		$("#slide_body").append("<div id='slide_url' class='layout_right_slide_tab'>URL <input id='slideshare_url' type='text' value='http://www.slideshare.net/rohitbhargava/rohit-bhargava-invite-me-to-speak'/></div><div id='slide_control'><button id='slide_prev'><img src='images/icons/context/prev.png' style='margin-top:3px;' /></button><button id='slideshare_presentation'><img src='images/icons/context/play.png' style='margin-top:3px;' /></button><button id='slide_next'><img src='images/icons/context/next.png' style='margin-top:3px;' /></button></div><iframe id='iframe_slideshare' src='"+document.baseURI+"lib/slideshare/slide.html' width='100%' frameborder=0 marginwidth=0 marginheight=0 scrolling=no allowfullscreen> </iframe>");
 		
 		if (this.socket.socket.connected) {
 //			this.socket.emit("message", '{"channel": "slideshare", "action":"send_message", "user":"' + core.user.first_name + "_" + core.user.last_name + '", "workspace": "'+ core.status.current_project_name +'", "message":"' + encodedMsg + '"}');
@@ -32,25 +39,39 @@ org.goorm.core.collaboration.slideshare.prototype = {
 				window.slideshare.player.jumpTo(data.page);
 			}
  		});
-		
-		// bind prev button
-		$("#slide_prev").click(function(){
-			window.slideshare.player.previous();
-			self.socket.emit("message", '{"channel": "slideshare", "slide_url":"'+self.current_slide_name+'", "page":'+window.slideshare.player.getCurrentSlide()+'}');
-		});
-		
-		// bind prev button
-		$("#slide_next").click(function(){
-			window.slideshare.player.next();
-			self.socket.emit("message", '{"channel": "slideshare", "slide_url":"'+self.current_slide_name+'", "page":'+window.slideshare.player.getCurrentSlide()+'}');
-		});
-		
-		// bind presentation
-		$("#slideshare_presentation").click(function(){
-			var url = $("#slide_url").val();
-			if(url != ""){
-				self.load_slide(url);
+ 		
+ 		this.button_play = new YAHOO.widget.Button("slideshare_presentation", {
+ 			onclick: {
+ 				fn:function(){
+					var url = $("#slideshare_url").val();
+					if(url != ""){
+						self.load_slide(url);
+					}
+				}
 			}
+		});
+				
+		this.button_prev = new YAHOO.widget.Button("slide_prev", {
+ 			onclick: {
+ 				fn:function(){
+	 				window.slideshare.player.previous();
+					self.socket.emit("message", '{"channel": "slideshare", "slide_url":"'+self.current_slide_name+'", "page":'+window.slideshare.player.getCurrentSlide()+'}');
+				}
+			}
+		});
+		
+		this.button_next = new YAHOO.widget.Button("slide_next", {
+ 			onclick: {
+ 				fn: function(){
+					window.slideshare.player.next();
+					self.socket.emit("message", '{"channel": "slideshare", "slide_url":"'+self.current_slide_name+'", "page":'+window.slideshare.player.getCurrentSlide()+'}');
+				}
+			}
+		});
+		
+		$(core).bind("layout_resized", function () {
+			var layout_right_width = $(".yui-layout-unit-right").find(".yui-layout-wrap").width();
+			$("#slideshare_url").width(layout_right_width - 80);
 		});
 	},
 	

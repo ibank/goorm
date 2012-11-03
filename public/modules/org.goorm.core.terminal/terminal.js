@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 
@@ -99,7 +101,8 @@ org.goorm.core.terminal.prototype = {
 				
 				var msg = {
 					index: self.index,
-					command: $(this).val()
+					command: $(this).val(),
+					special_key: false
 				};
 				
 				self.socket.emit("pty_execute_command", JSON.stringify(msg));
@@ -126,40 +129,44 @@ org.goorm.core.terminal.prototype = {
 				
 				var msg = {
 					index: self.index,
-					command: $(this).val() + '\x09'
+					command: $(this).val() + '\x09',
+					special_key: true
 				};
 				
-				self.socket.emit("pty_execute_command", msg);
+				self.socket.emit("pty_execute_command", JSON.stringify(msg));
 			}
 			else if ((event.keyCode == '99' || event.keyCode == '67') && event.ctrlKey) { //Ctrl + C
 				event.preventDefault();
 				
 				var msg = {
 					index: self.index,
-					command: $(this).val() + '\x03'
+					command: $(this).val() + '\x03',
+					special_key: true
 				};
 				
-				self.socket.emit("pty_execute_command", '\x03');
+				self.socket.emit("pty_execute_command", JSON.stringify(msg));
 			}
 			else if ((event.keyCode == '120' || event.keyCode == '88') && event.ctrlKey) { //Ctrl + X
 				event.preventDefault();
 				
 				var msg = {
 					index: self.index,
-					command: $(this).val() + '\x18'
+					command: $(this).val() + '\x18',
+					special_key: true
 				};
 				
-				self.socket.emit("pty_execute_command", '\x18');
+				self.socket.emit("pty_execute_command", JSON.stringify(msg));
 			}
 			else if ((event.keyCode == '122' || event.keyCode == '90') && event.ctrlKey) { //Ctrl + Z
 				event.preventDefault();
 				
 				var msg = {
 					index: self.index,
-					command: $(this).val() + '\x1A'
+					command: $(this).val() + '\x1A',
+					special_key: true
 				};
 				
-				self.socket.emit("pty_execute_command", '\x1A');
+				self.socket.emit("pty_execute_command", JSON.stringify(msg));
 			}
 		});
 		
@@ -167,7 +174,7 @@ org.goorm.core.terminal.prototype = {
 			$(self.target).find("#prompt_input").focus();
 		});
 		
-		var temp_stdout = "";
+		
 		
 		
 		$(this).bind("got_index", function () {
@@ -205,11 +212,21 @@ org.goorm.core.terminal.prototype = {
 		});
 		
 		var timeout = null;
+		var temp_stdout = "";
+		
 		var result = function (msg, mode) {
 			
 			if (msg.terminal_name == self.terminal_name) {
 				var stdout = msg.stdout;
-				temp_stdout += stdout;
+				
+				if (!(stdout.indexOf('[K') > -1)) {
+					stdout = stdout.replace(/\^/g, "\^");
+					stdout = stdout.replace(/\:/g, "\:");
+					stdout = stdout.replace(/\</g, "&lt;");
+					stdout = stdout.replace(/\</g, "&gt;");
+					
+					temp_stdout += stdout;
+				}
 				
 				if (mode == 1 || /\n/.test(stdout) || stdout.indexOf('$') > -1) {
 					if(msg.terminal_name == "debug") {
@@ -229,13 +246,14 @@ org.goorm.core.terminal.prototype = {
 					temp_stdout = "";
 				}
 				
-				if(self.platform == "darwin") {
-					$(self.target).find("#prompt_input").appendTo($(self.target).find("#results pre:last"));
+				if (!(stdout.indexOf('[K') > -1)) {
+					if(self.platform == "darwin") {
+						$(self.target).find("#prompt_input").appendTo($(self.target).find("#results pre:last"));
+					}
+					else if(self.platform == "linux") {
+						$(self.target).find("#prompt_input").appendTo($(self.target).find("#results"));
+					}
 				}
-				else if(self.platform == "linux") {
-					$(self.target).find("#prompt_input").appendTo($(self.target).find("#results"));
-				}
-
 				
 				$(self.target).find("#prompt_input").val("");
 				$(self.target).find("#prompt_input").focus();
@@ -268,22 +286,75 @@ org.goorm.core.terminal.prototype = {
 			},500);
 		});
 		
-		this.socket.emit("terminal_join", '{"timestamp": "' + this.timestamp + '", "workspace": "'+ core.status.current_project_name +'", "terminal_name":"' + this.terminal_name + '"}');
-		
 		$(core).bind("layout_resized", function () {
 			self.resize_all("layout");
 		});
 		
-		$(this.target).bind("panel_resize", function () {
+		$(core).bind(this.terminal_name + "_resized", function () {
 			self.resize_all("panel");
+			
+			if (self.index > 0) {
+				self.resize_terminal();
+			}
 		});
 		
-		$(this.target).bind("panel_close", function () {
-			self.socket.emit("terminal_leave", '{"workspace": "'+ core.status.current_project_name +'", "terminal_name":"' + self.terminal_name + '"}');
+		console.log(self.terminal_name);
+		
+		$(core).bind(this.terminal_name + "_closed",  function () {
+			console.log(self.terminal_name); 
+		
+			var msg = {
+				index: self.index,
+				workspace: core.status.current_project_name,
+				terminal_name: self.terminal_name
+			};
+			
+			self.socket.emit("terminal_leave", JSON.stringify(msg));
 		});
 		
+		$(window).bind("unload", function () {
+			var msg = {
+				index: self.index,
+				workspace: core.status.current_project_name,
+				terminal_name: self.terminal_name
+			};
+			
+			self.socket.emit("terminal_leave", JSON.stringify(msg));
+		});
 		
 		this.resize_all();
+		
+		var cols = 80;
+		
+		if (this.in_panel) {
+			cols = parseInt(parseInt($(this.target).width() - 10) / 6);
+		}
+		else {
+			cols = parseInt(parseInt($(this.target).parent().parent().width() - 10) / 6);
+		}
+		
+		
+		this.socket.emit("terminal_join", '{"timestamp": "' + this.timestamp + '", "cols": "' + cols + '", "workspace": "'+ core.status.current_project_name +'", "terminal_name":"' + this.terminal_name + '"}');
+	},
+	
+	resize_terminal: function () {
+		var cols = 80;
+		
+		if (this.in_panel) {
+			cols = parseInt(parseInt($(this.target).width() - 10) / 6);
+		}
+		else {
+			cols = parseInt(parseInt($(this.target).parent().parent().width() - 10) / 6);
+		}
+		
+		var msg = {
+			index: this.index,
+			cols: cols
+		};
+		
+		console.log("!");
+		
+		this.socket.emit("terminal_resize", JSON.stringify(msg));
 	},
 	
 	change_project_dir: function () {
@@ -477,23 +548,25 @@ org.goorm.core.terminal.prototype = {
 		return data;
 	},
 	
-	resize_all: function (from) {
-		if (self.in_panel && from == "panel") {
+	resize_all: function (from) {	
+		if (this.in_panel && from == "panel") {
 			var panel_width = $(this.target).parent().width() - 20;
-			var panel_height = $(this.target).parent().height() - 50;
+			var panel_height = $(this.target).parent().height() - 10;
 			var target_height = $(this.target).find("#results").height() + 20;
 			var prompt_width = (this.prompt_length + 2) * 9;
 			
 			$(this.target).find("#prompt_input").width(panel_width - prompt_width);
 			
-			if (target_height < panel_height) {
+			/*
+
+			if (target_height > panel_height) {
 				$(this.target).height(panel_height);
 			}
 			else {
 				$(this.target).height(target_height);
 			}
+*/
 		}
-
 		else if (from == "layout" && this.terminal_name != "debug") {
 			var layout_bottom_width = $(".yui-layout-unit-bottom").find(".yui-layout-wrap").width() - 20;
 			var layout_bottom_height = $(".yui-layout-unit-bottom").find(".yui-layout-wrap").height() - 36;

@@ -29,16 +29,6 @@
 					}
 				]
 			},
-			{	"label" : "Designer",
-				"tab" : [
-					{	"label" : "Setting",
-						"html"	: "configs/preferences/org.goorm.core.design/design.setting.html"
-					},
-					{	"label" : "Theme",
-						"html"	: "configs/preferences/org.goorm.core.design/design.theme.html"
-					}
-				]
-			},
 			{	"label" : "Theme",
 				"tab" : [
 					{	"label" : "Theme",

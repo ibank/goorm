@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.file.save_as = function () {
@@ -22,8 +24,8 @@ org.goorm.core.file.save_as.prototype = {
 			this.hide(); 
 		};
 		
-		this.buttons = [ {text:"Save", handler:handle_save, isDefault:true},
-						 {text:"Cancel",  handler:handle_cancel}];
+		this.buttons = [ {text:"<span localization_key='save'>Save</span>", handler:handle_save, isDefault:true},
+						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}];
 						 
 		this.dialog = new org.goorm.core.file.save_as.dialog();
 		this.dialog.init({

@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.help.bug_report = function () {
@@ -19,27 +21,27 @@ org.goorm.core.help.bug_report.prototype = {
 			var pan = this;
 			
 			if($("#bug_reports_title").val()=="") {
-				alert.show(core.module.localization.msg["alertTitleEmpty"]);
+				alert.show(core.module.localization.msg["alert_title_empty"]);
 				return false;
 			}
 			else if($("#bug_reports_author").val()=="") {
-				alert.show(core.module.localization.msg["alertAuthorEmpty"]);
+				alert.show(core.module.localization.msg["alert_author_empty"]);
 				return false;
 			}
 			else if($("#bug_reports_email").val()=="") {
-				alert.show(core.module.localization.msg["alertEmailEmpty"]);
+				alert.show(core.module.localization.msg["alert_email_empty"]);
 				return false;
 			}
 			else if($("#bug_reports_version").val()=="") {
-				alert.show(core.module.localization.msg["alertVersionEmpty"]);
+				alert.show(core.module.localization.msg["alert_version_empty"]);
 				return false;
 			}
 			else if($("#bug_reports_module").val()=="") {
-				alert.show(core.module.localization.msg["alertModuleEmpty"]);
+				alert.show(core.module.localization.msg["alert_module_empty"]);
 				return false;
 			}
 			else if($("#bug_reports_content").val()=="") {
-				alert.show(core.module.localization.msg["alertContentsEmpty"]);
+				alert.show(core.module.localization.msg["alert_contents_empty"]);
 				return false;
 			}
 			
@@ -59,7 +61,7 @@ org.goorm.core.help.bug_report.prototype = {
 				extra_vars1: $("#bug_reports_version").val(),
 				extra_vars2: $("#bug_reports_module").val(),
 				content: $("#bug_reports_content").val()
-			};
+			};"OK"
 			
 			$.post("", postdata, function (data) {
 				if($(data).find("h1").text()=="success") {
@@ -73,14 +75,14 @@ org.goorm.core.help.bug_report.prototype = {
 			});		
 		};
 		
-		this.buttons = [ {text:"Send", handler:handle_ok, isDefault:true}]; 
+		this.buttons = [ {text:"<span localization_key='send'>Send</span>", handler:handle_ok, isDefault:true}]; 
 						 
 		this.dialog = new org.goorm.core.help.about.dialog();
 		this.dialog.init({
 			title:"Send Bug Report", 
 			path:"configs/dialogs/org.goorm.core.help/help.bug_report.html",
 			width:620,
-			height:550,
+			height:520,
 			modal:true,
 			buttons:this.buttons,
 			success: function () {

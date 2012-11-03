@@ -20,7 +20,7 @@ for (var i = 0; i<core.filetypes.length; i++) {
 		$(".filetype_contents").find(".filetype_detail").children().each(function() { 
 			$(this).remove(); 
 		});	
-		$(".filetype_contents").find(".filetype_detail").append("<div style='width:100%;'>Extention Name</div>");
+		$(".filetype_contents").find(".filetype_detail").append("<div style='width:100%;'>Extension Name</div>");
 		$(".filetype_contents").find(".filetype_detail").append("<div style='width:100%;'><input class='file_extension' style='width:200px;' value='"+$(this).attr("id")+"'></input></div>");
 		$(".filetype_contents").find(".filetype_detail").append("<div style='width:100%;'>Editor</div>");
 		$(".filetype_contents").find(".filetype_detail").append("<div style='width:100%;'><input class='editor' style='width:200px;' value='"+self.get_filetype_info($(this).attr("id"), "editor")+"'></input></div>");

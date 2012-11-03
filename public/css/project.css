@@ -1,6 +1,6 @@
 .project_wizard_first_button {
 	height:64px; 
-	padding:8px; 
+	padding:2px; 
 	cursor:pointer;
 	margin:2px;
 }
@@ -9,7 +9,7 @@
 	width:64px;
 	height:64px;
 	vertical-align:middle;
-	margin-right:8px;
+	margin-right:2px;
 }
 
 .project_wizard_first_button .project_type_icon {
@@ -33,6 +33,7 @@
 	margin-left:3px;
 	color:gray;
 	line-height:13px;
+	word-wrap: break-word;
 }
 
 .project_wizard_second_button {

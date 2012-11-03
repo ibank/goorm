@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.file.move = function () {
@@ -20,9 +22,7 @@ org.goorm.core.file.move.prototype = {
 			var data = self.dialog_explorer.get_data();
 		
 			if(data.path=="" || data.name=="") {
-				//alert.show(core.module.localization.msg["alertFileNameEmpty"]);
-				alert.show("File Name is Empty.");
-				return false;
+				alert.show(core.module.localization.msg["alert_filename_empty"]);				// alert.show("File name is empty. Please fill it...");				return false;
 			}
 			
 			var postdata = {
@@ -37,7 +37,8 @@ org.goorm.core.file.move.prototype = {
 					if(self.is_alive_window) {
 						var window_manager = core.module.layout.workspace.window_manager;
 						var filetype = window_manager.window[window_manager.active_window].filetype;
-						
+						console.log(window_manager.window[window_manager.active_window]);
+						console.log(data.path+" //// "+data.file);
 						window_manager.window[window_manager.active_window].close();
 						window_manager.open(data.path, data.file, filetype);						
 					}
@@ -45,7 +46,7 @@ org.goorm.core.file.move.prototype = {
 					core.module.layout.project_explorer.refresh();
 				}
 				else {
-					//alert.show(core.module.localization.msg["alertError"] + received_data.message);
+					//alert.show(core.module.localization.msg["alert_error"] + received_data.message);
 					alert.show(data.message);
 				}
 			});
@@ -58,8 +59,8 @@ org.goorm.core.file.move.prototype = {
 			this.hide(); 
 		};
 		
-		this.buttons = [ {text:"OK", handler:handle_ok, isDefault:true},
-						 {text:"Cancel",  handler:handle_cancel}]; 
+		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
+						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 
 		this.dialog = new org.goorm.core.file.move.dialog();
 		this.dialog.init({

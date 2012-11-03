@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.help.check_for_updates = function () {
@@ -21,7 +23,7 @@ org.goorm.core.help.check_for_updates.prototype = {
 			this.hide(); 
 		};
 		
-		this.buttons = [ {text:"OK",  handler:handle_ok}]; 
+		this.buttons = [ {text:"<span localization_key='ok'>OK</span>",  handler:handle_ok}]; 
 						 
 		this.dialog = new org.goorm.core.help.check_for_updates.dialog();
 		this.dialog.init({
@@ -30,8 +32,8 @@ org.goorm.core.help.check_for_updates.prototype = {
 			width:500,
 			height:300,
 			modal:true,
-			yes_text: "OK",
-			no_text: "Close",
+			yes_text: "<span localization_key='ok'>OK</span>",
+			no_text: "<span localization_key='close'>Close</span>",
 			buttons:this.buttons,
 			success: function () {
 			}			
@@ -110,14 +112,14 @@ org.goorm.core.help.check_for_updates.prototype = {
 //								    	$(self).trigger("cursorLoadingComplete");
 //								    }
 //								}
-//								, error: function(xhr, status, error) {alert.show(core.module.localization.msg["alertError"] + error);}
+//								, error: function(xhr, status, error) {alert.show(core.module.localization.msg["alert_error"] + error);}
 //							});
 						}
 					}
-					, error: function(xhr, status, error) {alert.show(core.module.localization.msg["alertError"] + error); }
+					, error: function(xhr, status, error) {alert.show(core.module.localization.msg["alert_error"] + error); }
 				});
 			}
-			, error: function(xhr, status, error) {alert.show(core.module.localization.msg["alertError"] + error); }
+			, error: function(xhr, status, error) {alert.show(core.module.localization.msg["alert_error"] + error); }
 		});
 		
 

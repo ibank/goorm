@@ -1,9 +1,9 @@
 {
 	"preference" :
 	{
-		"label" : "Cpp",
+		"label" : "CPP",
 		"tab" :	[
-			{	"label" : "Cpp",
+			{	"label" : "CPP",
 				"html"	: "/org.goorm.plugin.cpp/preference.html"
 			}
 		]
@@ -11,9 +11,9 @@
 	
 	"property" : 
 	{
-		"label" : "Cpp",
+		"label" : "CPP",
 		"tab" :	[
-			{	"label" : "Cpp",
+			{	"label" : "CPP",
 				"html"	: "/org.goorm.plugin.cpp/property.html"
 			}
 		]

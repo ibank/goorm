@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.edit.find_and_replace = function() {
@@ -21,32 +23,32 @@ org.goorm.core.edit.find_and_replace.prototype = {
 	init : function() {
 		var self = this;
 		this.buttons = [{
-			text : "Find",
+			text : "<span localization_key='find'>Find</span>",
 			handler : function() {
 				self.find();
 			}
 		}, {
-			text : "Find All",
+			text : "<span localization_key='find_all'>Find All</span>",
 			handler : function() {
 				self.find_all();
 			}
 		}, {
-			text : "Replace/Find",
+			text : "<span localization_key='replace_and_find'>Replace/Find</span>",
 			handler : function() {
 				self.handle_replace_and_find();
 			}
 		}, {
-			text : "Replace",
+			text : "<span localization_key='replace'>Replace</span>",
 			handler : function() {
 				self.handle_replace();
 			}
 		}, {
-			text : "Replace All",
+			text : "<span localization_key='replace_all'>Replace All</span>",
 			handler : function() {
 				self.handle_replace_all();
 			}
 		}, {
-			text : "Close",
+			text : "<span localization_key='close'>Close</span>",
 			handler : function() {
 				self.hide();
 			}
@@ -152,7 +154,7 @@ org.goorm.core.edit.find_and_replace.prototype = {
 			var editor = window_manager.window[window_manager.active_window].editor.editor;
 			// Get input query of this dialog
 			var keyword = $("#find_query_inputbox").val();
-			// Call search function of org.goorm.core.file.findReplace with keyword and editor
+			// Call search function of org.goorm.core.file.findReplace with keyword and editor			
 			this.search(keyword, editor, direction);
 		}
 	},
@@ -199,6 +201,7 @@ org.goorm.core.edit.find_and_replace.prototype = {
 			var keyword1 = $("#find_query_inputbox").val();
 			var keyword2 = $("#replace_query_inputbox").val();
 			// Call search function of org.goorm.core.file.findReplace with keyword and editor
+			
 			this.replace(keyword1, keyword2, editor);
 		}
 	},
@@ -235,21 +238,17 @@ org.goorm.core.edit.find_and_replace.prototype = {
 
 		this.unmark();
 
-		for(var cursor = editor.getSearchCursor(text, null, caseFold); cursor.findNext(); ) {
-			this.marked.push(editor.markText(cursor.from(), cursor.to(), "searched"));
-		}
-
 		if(this.last_query != text)
 			this.last_pos = null;
 
 		var cursor = editor.getSearchCursor(text, this.last_pos ? this.last_pos : editor.getCursor(), caseFold);
 
 		if(direction == "previous") {
-			cursor.find_previous();
-			if(cursor.find_previous() == false) {
+			cursor.findPrevious();
+			if(cursor.findPrevious() == false) {
 				for( cursor = editor.getSearchCursor(text, null, caseFold); cursor.findNext(); ) {
 				}
-				cursor.find_previous();
+				cursor.findPrevious();
 				if(!editor.getSearchCursor(text, null, caseFold).findNext()) {
 					return;
 				}
@@ -309,11 +308,10 @@ org.goorm.core.edit.find_and_replace.prototype = {
 			core.module.search.m(searchedWords[i].fline, searchedWords[i].fch, searchedWords[i].tline, searchedWords[i].tch, editor.getLine(searchedWords[i].fline));
 		}
 
-		this.dialog.panel.hide();
+		// this.dialog.panel.hide();
 
 		// highlight the selected word on the editor with gray background
 		$(".search_message").click(function() {
-
 			$(".search_message").css("background-color", "");
 			$(this).css("background-color", "#fff8dc");
 
@@ -391,8 +389,10 @@ org.goorm.core.edit.find_and_replace.prototype = {
 		}
 
 		this.unmark();
+		
 		var cursor = editor.getSearchCursor(text, this.last_pos, caseFold);
-		cursor.find_previous();
+		
+		cursor.findPrevious();
 		editor.replaceRange(replace, cursor.from(), cursor.to());
 	},
 
@@ -419,7 +419,7 @@ org.goorm.core.edit.find_and_replace.prototype = {
 		this.unmark();
 		for(var cursor = editor.getSearchCursor(text, null, caseFold); cursor.findNext(); ) {
 			editor.replaceRange(replace, cursor.from(), cursor.to());
-			core.module.search.mreplace_all(cursor.from().line, cursor.from().ch, cursor.to().line, cursor.to().ch, text, replace);
+			core.module.search.replace_all(cursor.from().line, cursor.from().ch, cursor.to().line, cursor.to().ch, text, replace);
 		}
 
 		this.dialog.panel.hide();

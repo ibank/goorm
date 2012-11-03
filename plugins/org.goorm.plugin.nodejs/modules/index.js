@@ -1,3 +1,11 @@
+/**
+ * Copyright Sung-tae Ryu. All rights reserved.
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
+ **/
+
 var common = require(__path+"plugins/org.goorm.plugin.nodejs/modules/common.js");
 var EventEmitter = require("events").EventEmitter
 
@@ -11,7 +19,7 @@ module.exports = {
 			project_detailed_type,
 			project_author,
 			project_name,
-			project_about,
+			project_desc,
 			use_collaboration
 		   }
 		*/

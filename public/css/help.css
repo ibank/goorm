@@ -65,3 +65,60 @@
 	width: 100%;
 	height: 100%;
 }
+
+#help_contents_middle {
+	float:right; 
+	padding:10px; 
+	width:640px; 
+	height:490px; 
+	text-align:left; 
+	border-width:1px; 
+	border-style:solid; 
+	border-color:#ccc; 
+	background-color:#fff; 
+	overflow:auto;
+	
+	font-size: 11px;
+	font-family: Helvetica, arial, freesans, clean, sans-serif;
+	
+	letter-spacing: normal;
+	word-wrap: break-word;
+	
+	position: relative;
+}
+
+#help_contents_middle h1 {
+	font-size: 25px;
+	margin-bottom: 10px; 
+	letter-spacing: normal;
+}
+
+#help_contents_middle h2 {
+	font-size: 18px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-bottom: 5px;
+	border-bottom: 1px solid #ccc;
+	letter-spacing: normal;
+}
+
+#help_contents_middle p {
+	line-height: 150%;
+	margin-bottom: 10px;
+}
+
+#help_contents_middle li {
+	list-style: disc;
+	margin-left: 20px;
+	font-size: 12px;
+}
+
+#help_contents_middle strong {
+	font-weight: bold;
+}
+
+#help_contents_middle pre {
+	border: 1px solid #ccc;
+	margin-bottom: 10px;
+	word-wrap: break-word;
+}

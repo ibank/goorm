@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.help.contents = function () {
@@ -25,8 +27,8 @@ org.goorm.core.help.contents.prototype = {
 			this.hide(); 
 		};
 		
-		this.buttons = [ {text:"OK", handler:handle_ok, isDefault:true},
-						 {text:"Cancel",  handler:handle_cancel}]; 
+		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
+						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
 		this.dialog = new org.goorm.core.help.contents.dialog();
 		this.dialog.init({
@@ -35,8 +37,8 @@ org.goorm.core.help.contents.prototype = {
 			width:900,
 			height:600,
 			modal:true,
-			yes_text: "OK",
-			no_text: "Close",
+			yes_text: "<span localization_key='ok'>OK</span>",
+			no_text: "<span localization_key='close'>Close</span>",
 			buttons:this.buttons,
 			success: function () {
 				//TabView Init
@@ -51,6 +53,11 @@ org.goorm.core.help.contents.prototype = {
 					// data: "path="+self.path,
 					// success: function(data) {
 						//var sorting_data = eval(data);
+						
+						$.getJSON("help/get_readme_markdown", function (data) {
+							$("#help_contents_middle").html(data.html);
+						});
+						
 						var resize = new YAHOO.util.Resize("help_contents_left", {
 				            handles: ['r'],
 				            minWidth: 150,

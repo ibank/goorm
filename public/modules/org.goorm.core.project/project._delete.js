@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.project._delete = function () {
@@ -22,8 +24,7 @@ org.goorm.core.project._delete.prototype = {
 
 			// project delete
 			if (data.path=="") {
-				//alert.show(core.module.localization.msg["alertProjectNotSelected"]);
-				alert.show("Not selected");
+				// alert.show("Project is not selected");				alert.show(core.module.localization.msg['project_not_selected']);
 				return false;
 			}
 
@@ -35,6 +36,7 @@ org.goorm.core.project._delete.prototype = {
 				var received_data = data;
 				
 				if(received_data.err_code==0) {
+					notice.show("Project is deleted.");
 					if ( postdata.project_path == core.status.current_project_path ) {
 						core.status.current_project_path = "";
 						core.status.current_project_name = "";
@@ -43,8 +45,8 @@ org.goorm.core.project._delete.prototype = {
 					}
 				}
 				else {
-					//alert.show(core.module.localization.msg["alertError"] + received_data.message);
-					alert.show("Can not delete project");
+					//alert.show(core.module.localization.msg["alert_error"] + received_data.message);
+					alert.show(core.module.localization['alert_cannot_project_delete']);
 				}
 				
 				core.module.layout.project_explorer.refresh();
@@ -59,8 +61,8 @@ org.goorm.core.project._delete.prototype = {
 			this.hide(); 
 		};
 		
-		this.buttons = [ {text:"Delete", handler:handle_delete, isDefault:true},
-						 {text:"Cancel",  handler:handle_cancel}]; 
+		this.buttons = [ {text:"<span localization_key='delete'>Delete</span>", handler:handle_delete, isDefault:true},
+						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
 		this.dialog = new org.goorm.core.project._delete.dialog();
 		this.dialog.init({

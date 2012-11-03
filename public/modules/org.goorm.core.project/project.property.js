@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.project.property = function () {
@@ -27,53 +29,63 @@ org.goorm.core.project.property.prototype = {
 		this.init_dialog();
 		
 		$(core).on("on_project_open", function(){
-				
+			self.firstShow = true;
 			// property 로드
 			self.load_property(core.status.current_project_path, function(contents){
-				self.property = contents;
+				self.property = contents || {};
 				core.property = self.property;
 				self.property.plugins || (self.property.plugins = {});
 				
-				// 프로젝트에 사용하는 플러그인만 출력.
-				var node = self.manager.treeview.getNodeByProperty("label", "Plugin");
-				var last_node;
-				for (var i=0; i < node.children.length; i++) {
-					var plugin = node.children[i];
-					if(plugin.label.toLowerCase() == contents.type.toLowerCase()) {
-						$("#"+plugin.contentElId).prev().removeClass("ygtvln").addClass("ygtvtn")
-						.parent().show();
-						last_node = $("#"+plugin.contentElId);
-						
-						// 플러그인 프로퍼티가 지정되지 않은경우 프리퍼런스에서 자동으로 가져온다.
-						for(var name in core.preference.plugins) {
-							if(self.property.plugins[name] === undefined && name.search("org.goorm.plugin."+contents.type.toLowerCase()) != -1) {
-								self.property.plugins[name] = core.preference.plugins[name];
+				if(contents){
+					// 프로젝트에 사용하는 플러그인만 출력.
+					var node = self.manager.treeview.getNodeByProperty("label", "Plugin");
+					var last_node;
+					for (var i=0; i < node.children.length; i++) {
+						var plugin = node.children[i];
+						if(plugin.label.toLowerCase() == contents.type.toLowerCase()) {
+							$("#"+plugin.contentElId).prev().removeClass("ygtvln").addClass("ygtvtn")
+							.parent().show();
+							last_node = $("#"+plugin.contentElId);
+							
+							// 플러그인 프로퍼티가 지정되지 않은경우 프리퍼런스에서 자동으로 가져온다.
+							for(var name in core.preference.plugins) {
+								if(self.property.plugins[name] === undefined && name.search("org.goorm.plugin."+contents.type.toLowerCase()) != -1) {
+									self.property.plugins[name] = core.preference.plugins[name];
+								}
 							}
 						}
+						else {
+							$("#"+plugin.contentElId).prev().removeClass("ygtvln").addClass("ygtvtn")
+							.parent().hide();
+						}
 					}
-					else {
-						$("#"+plugin.contentElId).prev().removeClass("ygtvln").addClass("ygtvtn")
-						.parent().hide();
-					}
+					last_node && last_node.prev().removeClass("ygtvtn").addClass("ygtvln");
+					
+					self.fill_dialog();
+					
+					$("#property_tabview > *").hide();
+					$("#property_tabview #property_Information").show();
 				}
-				last_node.prev().removeClass("ygtvtn").addClass("ygtvln");
-				
-				self.fill_dialog();
-				
-				$("#property_tabview > *").hide();
-				$("#property_tabview #property_Information").show();
 			});
+			
+			$("#property_tabview .yui-navset").hide();
 		});
 	},
 	
 	show: function () {
 		var self = this;
-		this.dialog.panel.show();
-//		this.set_before();
-		if(this.firstShow){
-			$("#property_tabview #property_Information").show();
-			this.firstShow=false;
+		if(core.status.current_project_path != ""){
+			this.dialog.panel.show();
+//			this.set_before();
+			if(this.firstShow){
+				$("#property_tabview > div").hide();
+				$("#property_tabview #property_Information").show();
+				this.firstShow=false;
+			}
 		}
+		else {
+			alert.show(core.module.localization.msg["alert_project_not_opened"]);
+			// alert.show("Project is not opened");		}
 	},
 	
 	refresh_toolbox: function () {
@@ -123,10 +135,11 @@ org.goorm.core.project.property.prototype = {
 	// save current property(core.property) to project.json
 	save: function(callback) {
 		var path = core.status.current_project_path, 
-			data = core.property;
+			property = core.property;
 		
-		$.get("project/set_property", {project_path: path, data:JSON.stringify(data)}, function (data) {
+		$.get("project/set_property", {project_path: path, data:JSON.stringify(property)}, function (data) {
 			if (data.err_code == 0) {
+				$.extend(true, core.workspace[path], property);
 				callback && callback();
 			}
 			else {
@@ -208,7 +221,7 @@ org.goorm.core.project.property.prototype = {
 				if(key[$(this).attr("name")] !== null){
 					if($(this).attr("type") == "checkbox"){
 						if(key[$(this).attr("name")] == "true")
-							$(this).attr("checked","checked");
+							$(this).attr("checked",true);
 //						else $(this).attr("checked",);
 					}
 					else{
@@ -284,8 +297,8 @@ org.goorm.core.project.property.prototype = {
 			this.hide();
 		};
 		
-		this.buttons = [ {text:"OK", handler:handle_ok, isDefault:true},
-						 {text:"Cancel",  handler:handle_cancel}]; 
+		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
+						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
 		this.dialog = new org.goorm.core.project.property.dialog();
 		this.dialog.init({
@@ -327,22 +340,19 @@ org.goorm.core.project.property.prototype = {
 		
 		var set_dialog_button = function(){
 			// set Apply, restore_default Button
-			setTimeout(function(){
-				$("#property_tabview").find(".apply").each(function(i){
-				$(this).attr("id","applyBt_"+i);
-				new YAHOO.widget.Button("applyBt_"+i,{onclick:{fn:function(){
-					self.apply($("#property_tabview #applyBt_"+i).parents(".yui-navset").attr("id"));
+			$("#property_tabview").find(".apply").each(function(i){
+				$(this).attr("id","property_applyBt_"+i);
+				new YAHOO.widget.Button("property_applyBt_"+i,{onclick:{fn:function(){
+					self.apply($("#property_tabview #property_applyBt_"+i).parents(".yui-navset").attr("id"));
 				}}});
 			});
 			
 			$("#property_tabview").find(".restore_default").each(function(i){
-				$(this).attr("id","restore_defaultBt_"+i);
-				new YAHOO.widget.Button("restore_defaultBt_"+i,{onclick:{fn:function(){
-					self.restore_default($("#property_tabview #restore_defaultBt_"+i).parents(".yui-navset").attr("id"));
+				$(this).attr("id","property_restore_defaultBt_"+i);
+				new YAHOO.widget.Button("property_restore_defaultBt_"+i,{onclick:{fn:function(){
+					self.restore_default($("#property_tabview #property_restore_defaultBt_"+i).parents(".yui-navset").attr("id"));
 				}}});
 			});
-			}, 500);
-			
 		};
 		
 		var load_plugin_tree = function(){
@@ -367,7 +377,6 @@ org.goorm.core.project.property.prototype = {
 				}).complete(function(){
 					if(--plugin_count == 0) {
 						// when all plugin tree loaded, render dialog buttons.
-						console.log("set_dialogBT");
 						set_dialog_button();
 					}
 				});

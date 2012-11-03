@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.file._new.folder = function () {
@@ -19,9 +21,7 @@ org.goorm.core.file._new.folder.prototype = {
 			var data = self.dialog_explorer.get_data();
 			console.log("ok");
 			if(data.path=="" || data.name=="") {
-				//alert.show(core.module.localization.msg["alertFileNameEmpty"]);
-				alert.show("Folder Name is empty.");
-				return false;
+				alert.show(core.module.localization.msg["alert_filename_empty"]);				// alert.show("Folder name is empty. Please fill it...");				return false;
 			}
 			else {
 				console.log(data);
@@ -49,8 +49,8 @@ org.goorm.core.file._new.folder.prototype = {
 			this.hide(); 
 		};
 		
-		this.buttons = [ {text:"OK", handler:handle_ok, isDefault:true},
-						 {text:"Cancel",  handler:handle_cancel}]; 
+		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
+						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 
 		this.dialog = new org.goorm.core.file._new.folder.dialog();
 		this.dialog.init({

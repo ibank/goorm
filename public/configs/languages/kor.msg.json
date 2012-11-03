@@ -1,83 +1,170 @@
 {
-	"alertFolderNameEmpty": { "value": "Folder name is empty"},
-	"alertFileNameEmpty": { "value": "File name is empty"},
-	"alertFileNotSelect": { "value": "Please, select a file to open"},
-	"alertFileNotOpened": { "value": "cannot find opened file"},
-	"alertProjectNotSelected": { "value": "Please, select the project"},
-	"alertOnlyZipAllowed": { "value": "zip파일만 허용 합니다"},
-	"alertProjectNotOpend": { "value": "cannot find opened project"},
-	"alertError": { "value": "Error : "},
-	"confirmationYes": { "value": "네"},
-	"confirmationCancel": { "value": "취소"},
-	"confirmationNo": { "value": "아니오"},
-	
-
-	"confirmationSaveTitle": { "value": "닫기..."},
-	"confirmationSaveTitle2": { "value": "빌드..."},
-	"confirmationSaveMessage": { "value": " 는 수정되었습니다. 저장 하시겠습니까?"},
-	"confirmationSaveMessage2": { "value": " 는 수정되었습니다. 저장 후 빌드 하시겠습니까?"},
-	
-
-	"confirmationLanguageTitle": { "value": "언어 자동 변환"},
-	"confirmationLanguageMessage": { "value": "언어설정을 한국어로 변경하시겠습니까?"},
-	
-
-	"alertValidateRequired": { "value": " : required"},
-	"alertValidateAlpha": { "value": " : only alphabet is needed"},
-	"alertValidateAlphaNum": { "value": " : only alpha + number is needed"},
-	"alertValidateDigit": { "value": " : only digit number is needed"},
-	"alertValidateNoDigit": { "value": " : digit number is not needed"},
-	"alertValidateNum": { "value": " : only number is needed"},
-	"alertValidateEmail": { "value": " : email is not valid"},
-	"alertValidateUrl": { "value": " : url is not valid"},
-	
-
-	"alertDialogMissing": { "value": "선택하지 않거나, 입력되지 않은 항목이 있습니다"},
-	
-
-	"alertProjectType": { "value": "프로젝트 타입을 선택 해 주세요"},
-	"alertProjectSource": { "value": "프로젝트 대상을 선택 해 주세요"},
-	"alertProjectDetailedType": { "value": "세부 프로젝트 타입을 선택 해 주세요"},
-	"alertProjectAuthor": { "value": "프로젝트 작성자를 작성 해 주세요"},
-	"alertProjectName": { "value": "프로젝트 이름을 작성 해 주세요"},
-	"alertProjectAbout": { "value": "프로젝트 설명을 작성 해 주세요"},
-	"alertAllowCharacter": { "value": "알파벳과 숫자, _, -만 입력 가능합니다"},
-	
-
-	"alertProjectCannotOpen": { "value": "Can not open project"},
-	
-
-	"noticeProjectImportDone": { "value": "Project import process is done"},
-	
-
-	"noticeFileImportDone": { "value": "File import process is done"},
-	
-
-	"confirmationNewTitle": { "value": "New ..."},
-	"confirmationNewMessage": { "value": "Same file name is exist. Do you create any way?"},
-	
-
-	"confirmationNewOtherTitle": { "value": "New Other ..."},
-	"confirmationNewOtherMessage": { "value": "Same file name is exist. Do you create any way?"},
-	
-
-	"confirmationSaveAsTitle": { "value": "saveAs ..."},
-	"confirmationSaveAsMessage": { "value": "Same file name is exist. Do you save any way?"},
-	
-
-	"alertCollaborationSelect": { "value": "Select project to join"},
-	
-
-	"alertTitleEmpty": { "value": "Please, input the title."},
-	"alertAuthorEmpty": { "value": "Please, input the author."},
-	"alertEmailEmpty": { "value": "Please, input the e-mail."},
-	"alertVersionEmpty": { "value": "Please, input the version."},
-	"alertModuleEmpty": { "value": "Please, input the module."},
-	"alertContentsEmpty": { "value": "Please, input the content."},
-	"alertCannotWrite": { "value": "can not write"},
-	"noticeWriteDone": { "value": "Wirte is done"},
-	
-
-	"alertNaming": { "value": "Area name can not be overlapped"},
-	"alertvalue": { "value": "Area name can not contain white space"}
+    "alert_folder_name_empty": {
+        "value": "폴더 이름이 비어 있습니다."
+    },
+    "alert_filename_empty": {
+        "value": "파일 이름이 비어 있습니다."
+    },
+    "alert_file_not_select": {
+        "value": "파일을 선택하지 않으셨습니다."
+    },
+    "alert_file_not_opened": {
+        "value": "해당 파일을 오픈되어 있지 않습니다."
+    },
+    "alert_project_not_selected": {
+        "value": "프로젝트를 선택해주세요."
+    },
+    "alert_only_zip_allowed": {
+        "value": "ZIP형식의 압축파일만 지원합니다."
+    },
+    "alert_project_not_opened": {
+        "value": "해당 프로젝트는 오픈되어 있지 않습니다."
+    },
+    "alert_error": {
+        "value": "에러 : "
+    },
+    "confirmation_yes": {
+        "value": "네"
+    },
+    "confirmation_cancel": {
+        "value": "취소"
+    },
+    "confirmation_no": {
+        "value": "아니오"
+    },
+    "confirmation_save": {
+        "value": "저장 여부"
+    },
+    "confirmation_build": {
+        "value": "빌드"
+    },
+    "confirmation_save_message": {
+        "value": " 는 수정되었습니다. 저장 하시겠습니까?"
+    },
+    "confirmation_build_message": {
+        "value": " 는 수정되었습니다. 저장 후 빌드 하시겠습니까?"
+    },
+    "confirmation_language_title": {
+        "value": "Language automatic chanage"
+    },
+    "confirmation_language_message": {
+        "value": "Are you sure you want to change the language setting to Korean?"
+    },
+    "alertValidateRequired": {
+        "value": " : required"
+    },
+    "alert_validate_alpha": {
+        "value": " : 알파벳 영문자만 입력 가능합니다."
+    },
+    "alert_validate_alpha_num": {
+        "value": " : 알파벳 영문자 + 숫자 조합만 입력 가능합니다."
+    },
+    "alert_validate_digit": {
+        "value": " : 숫자만 입력 가능합니다."
+    },
+    "alert_validate_no_digit": {
+        "value": " : 숫자는 입력 불가능합니다."
+    },
+    "alert_validate_num": {
+        "value": " : 숫자만 입력 가능합니다."
+    },
+    "alert_validate_email": {
+        "value": " : 이메일 형식이 맞지 않습니다."
+    },
+    "alert_validate_url": {
+        "value": " : URL 형식이 맞지 않습니다."
+    },
+    "alert_dialog_missing": {
+        "value": "선택하지 않거나, 입력되지 않은 항목이 있습니다"
+    },
+    "alert_project_type": {
+        "value": "프로젝트 타입을 선택해 주세요"
+    },
+    "alert_project_source": {
+        "value": "프로젝트 대상을 선택해 주세요"
+    },
+    "alert_project_detailed_type": {
+        "value": "프로젝트 세부 타입을 선택 해 주세요"
+    },
+    "alert_project_author": {
+        "value": "프로젝트 작성자를 작성 해 주세요"
+    },
+    "alert_project_name": {
+        "value": "프로젝트 이름을 작성 해 주세요"
+    },
+    "alert_project_about": {
+        "value": "프로젝트 설명을 작성 해 주세요"
+    },
+    "alert_allow_character": {
+        "value": "알파벳과 숫자, _, -만 입력 가능합니다"
+    },
+    "alert_project_cannot_open": {
+        "value": "프로젝트를 열 수 없습니다."
+    },
+    "notice_project_import_done": {
+        "value": "프로젝트 가져오기 완료"
+    },
+    "notice_file_import_done": {
+        "value": "파일 가져오기 완료"
+    },
+    "confirmation_new_title": {
+        "value": "새로 만들기"
+    },
+    "confirmation_new_message": {
+        "value": "같은 파일의 이름이 이미 존재합니다. 그냥 진행하시겠습니까?"
+    },
+    "confirmation_new_other_title": {
+        "value": "기타 파일 새로 만들기"
+    },
+    "confirmation_new_other_message": {
+        "value": "같은 파일의 이름이 이미 존재합니다. 그냥 진행하시겠습니까?"
+    },
+    "confirmation_save_as_title": {
+        "value": "다른 이름으로 저장"
+    },
+    "confirmation_save_as_message": {
+        "value": "같은 파일의 이름이 이미 존재합니다. 그냥 진행하시겠습니까?"
+    },
+    "alert_collaboration_select": {
+        "value": "협업할 프로젝트를 선택해주세요."
+    },
+    "alert_title_empty": {
+        "value": "타이틀을 입력해주세요."
+    },
+    "alert_author_empty": {
+        "value": "제작자를 입력해주세요."
+    },
+    "alert_email_empty": {
+        "value": "이메일을 입력해주세요."
+    },
+    "alert_version_empty": {
+        "value": "버전을 입력해주세요."
+    },
+    "alert_module_empty": {
+        "value": "모듈을 입력해주세요."
+    },
+    "alert_contents_empty": {
+        "value": "컨텐츠를 입력해주세요."
+    },
+    "alert_cannot_write": {
+        "value": "쓰기 작업을 수행할 수 없습니다."
+    },
+    "alert_cannot_project_delete": {
+        "value": "프로젝트의 삭제를 수행할 수 없습니다."
+    },
+    "notice_write_done": {
+        "value": "쓰기 작업을 완료했습니다."
+    },
+    "alert_naming": {
+        "value": "영역 이름을 겹칠 수 없습니다."
+    },
+    "alert_value": {
+        "value": "영역 이름은 공백을 포함할 수 없습니다."
+    },
+    "alert_collaboration_server_notconnected": {
+        "value": "협업 서버에 접속할 수 없습니다."
+    },
+    "alert_select_project_item": {
+        "value": "반드시 프로젝트를 1개 이상 선택하여야 합니다."
+    }
 }

@@ -1,3 +1,11 @@
+/**
+ * Copyright Sung-tae Ryu. All rights reserved.
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
+ **/
+
 var fs = require('fs');
 var walk = require('walk');
 var rimraf = require('rimraf');

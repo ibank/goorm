@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.plugin.web = function () {
@@ -16,7 +18,7 @@ org.goorm.plugin.web = function () {
 org.goorm.plugin.web.prototype = {
 	init: function () {
 		
-		this.addProjectItem();
+		this.add_project_item();
 		
 		this.mainmenu = core.module.layout.mainmenu;
 		
@@ -29,16 +31,18 @@ org.goorm.plugin.web.prototype = {
 		
 		this.add_mainmenu();
 		
+		this.add_menu_action();
+		
 		//core.dictionary.loadDictionary("plugins/org.uizard.plugin.c/dictionary.json");
 	},
 	
 	
-	addProjectItem: function () {
-		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='webp'><div class='project_type_icon'><img src='/org.goorm.plugin.web/images/web.png' class='project_icon' /></div><div class='project_type_title'>web Project</div><div class='project_type_description'>web Project using GNU Compiler Collection</div></div>");
+	add_project_item: function () {
+		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='webp'><div class='project_type_icon'><img src='/org.goorm.plugin.web/images/web.png' class='project_icon' /></div><div class='project_type_title'>web Project</div><div class='project_type_description'>Web Project (HTML5/Javascript)</div></div>");
 		
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all webp' description='  Create New Project for web' projecttype='web'><img src='/org.goorm.plugin.web/images/web.png' class='project_item_icon' /><br /><a>web Project</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all webp' description='  Create New Project for web' projecttype='web' plugin_name='org.goorm.plugin.web'><img src='/org.goorm.plugin.web/images/web.png' class='project_item_icon' /><br /><a>web Project</a></div>");
 		
-		$(".project_dialog_type").append("<option value='c'>web Projects</option>");
+		$(".project_dialog_type").append("<option value='c'>Web Projects</option>").attr("selected", "");
 		
 	},
 
@@ -65,7 +69,7 @@ org.goorm.plugin.web.prototype = {
 			project_detailed_type,
 			project_author,
 			project_name,
-			project_about,
+			project_desc,
 			use_collaboration
 		   }
 		*/

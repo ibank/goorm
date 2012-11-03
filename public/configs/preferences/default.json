@@ -10,8 +10,6 @@
 	"preference.editor.first_line_number" : 1,
 	"preference.editor.undo_depth" : 		40,
 	"preference.editor.highlight_current_cursor_line" :	true,
-	"preference.editor.tab_mode" :			"classic",
-	"preference.editor.enter_mode" :		"indent",
 	"preference.editor.use_clipboard" : 	false,
 	
 	"preference.editor.theme" : 			"default",

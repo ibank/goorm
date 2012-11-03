@@ -48,6 +48,8 @@
 				return;
 			}
 			
+			// console.log(event.type, jQuery.hotkeys.specialKeys[ event.which ], event.which);
+			
 			// Keypress represents characters, not special keys
 			var special = event.type !== "keypress" && jQuery.hotkeys.specialKeys[ event.which ],
 				character = String.fromCharCode( event.which ).toLowerCase(),

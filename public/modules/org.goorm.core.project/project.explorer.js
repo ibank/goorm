@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.project.explorer = function () {
@@ -27,7 +29,11 @@ org.goorm.core.project.explorer.prototype = {
 		});
 
 		$.get("project/get_list", "", function (data) {
-			self.project_data = data
+			core.workspace = {};
+			for(var i in data) {
+				data[i].name && (core.workspace[data[i].name] = data[i].contents)
+			}
+			self.project_data=data;
 //			self.make_project_selectbox();
 		});
 		
@@ -106,8 +112,14 @@ org.goorm.core.project.explorer.prototype = {
 			
 		$.get("project/get_list", "", function (data) {
 			self.project_data = data		
-			self.make_project_selectbox();			
+			self.make_project_selectbox();	
+			
+			core.workspace = {};
+			for(var i in data) {
+				data[i].name && (core.workspace[data[i].name] = data[i].contents)
+			}
 		});
+		
 
 		var temp_project_path = core.status.current_project_path;
 		

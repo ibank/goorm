@@ -1,254 +1,590 @@
 {
-	"file": {
-		"value": "파일",
-		"children": {
-			"file_new": {
-				"value": "새로만들기",
-				"children": {
-					"file_new_project": { "value": "프로젝트"},
-					"file_new_web_project": { "value": "Web 프로젝트"},
-					"file_new_php_project": { "value": "PHP 프로젝트"},
-					"file_new_javascript_project": { "value": "Javascript 프로젝트"},
-					"file_new_mobile_project": { "value": "모바일 프로젝트"},
-					"file_new_ios_project": { "value": "iOS 프로젝트"},
-					"file_new_android_project": { "value": "Android 프로젝트"},
-					"file_new_uml_project": { "value": "UML 프로젝트"},
-					"file_new_uizard_plugin_project": { "value": "goorm 플러그인 프로젝트"},
-					"file_new_uizard_customization_project": { "value": "goorm Customization 프로젝트"},
-					"file_new_file": { "value": "파일"},
-					"file_new_folder": { "value": "폴더"},
-					"file_new_untitled_text_file": { "value": "텍스트 파일"},
-					"file_new_other": { "value": "기타..."}
-				}
-			},
-			"file_open_project": { "value": "프로젝트 열기..."},
-			"file_open_file": { "value": "파일 열기..."},
-			"file_open_url": { "value": "Url 열기..."},
-			"file_close": { "value": "닫기"},
-			"file_close_all": { "value": "모두 닫기"},
-			"file_save": { "value": "저장..."},
-			"file_save_as": { "value": "다른 이름으로 저장..."},
-			"file_save_all": { "value": "모두 저장"},
-			"file_revert": { "value": "되돌리기"},
-			"file_move": { "value": "이동"},
-			"file_rename": { "value": "이름 변경"},
-			"file_delete": { "value": "삭제"},
-			"file_refresh": { "value": "새로고침"},
-			"file_print": { "value": "인쇄"},
-			"file_swich_workspace": { "value": "워크스페이스 변경"},
-			"file_restart": { "value": "재시작"},
-			"file_import": { "value": "가져오기..."},
-			"file_export": { "value": "내보내기..."},
-			"file_properties": { "value": "속성"},
-			"file_exit": { "value": "종료"}
-		}
-	},	
-	
-	"edit": {
-		"value": "편집",
-		"children": {
-			"edit_undo": {"value": "되돌리기"},
-			"edit_redo": { "value": "다시 적용"},
-			"edit_cut": { "value": "잘라내기"},
-			"edit_copy": { "value": "복사"},
-			"edit_paste": { "value": "붙여넣기"},
-			"edit_delete": { "value": "삭제"},
-			"edit_select_all": { "value": "모두 선택"},
-			"edit_find_replace": { "value": "찾기/바꾸기"},
-			"edit_find_next": { "value": "다음 찾기"},
-			"edit_fine_previous": { "value": "이전 찾기"},
-			"edit_preference": { "value": "속성"}
-		}
-	},
-	
-	"design": {
-		"value": "디자인",
-		"children": {
-			"design_alignment": { 
-				"value": "정렬",
-				"children": {
-					"design_align_left": { "value": "왼쪽 정렬"},
-					"design_align_right": { "value": "오른쪽 정렬"},
-					"design_align_top": { "value": "위쪽 정렬"},
-					"design_align_bottom": { "value": "아래쪽 정렬"},
-					"design_align_horizontally_center": { "value": "수평 정렬"},
-					"design_align_vertically_center": { "value": "수직 정렬"}
-				}
-			},
-			
-			"design_bring_to_front": { "value": "맨 앞으로 가져오기"},
-			"design_send_to_back": { "value": "맨 뒤로 보내기"},
-			"design_bring_forward": { "value": "앞으로 가져오기"},
-			"design_send_backward": { "value": "뒤로 보내기"},
-			"design_canvas_setting": { "value": "캔바스 설정"}
-		}
-	},
-	
-	"project": {
-		"value": "프로젝트",
-		"children": {
-		"project_generate": { "value": "생성"},
-			"project_run": { "value": "실행"},
-			"project_debug": { "value": "디버그"},
-			"project_remoteRun": { "value": "원격 실행"},
-			"project_generate_all": { "value": "모두 생성"},
-			"project_build_project": { "value": "프로젝트 빌드"},
-			"project_build_all": { "value": "모두 빌드"},
-			"project_clean": { "value": "비우기"},
-			"project_build_configuration": { "value": "빌드 설정"},
-			"project_import": { "value": "프로젝트 가져오기"},
-			"project_export": { "value": "프로젝트 내보내기"},
-			"project_delete": { "value": "프로젝트 제거"},
-			"project_properties": { "value": "속성"}
-		}
-	},
-	
-	"collaboration": {
-		"value": "협업",
-		"children": {
-			"collaboration_join_the_project": { "value": "프로젝트 참여"},
-			"collaboration_enable_chat": { "value": "채팅 활성화"},
-			"collaboration_enable_real_time_editing": { "value": "실시간 편집 활성화"},
-			"collaboration_enable_real_time_drawing": { "value": "실시간 그리기 활성화"},
-			"collaboration_settings": { "value": "설정..."}
-		}
-	},
-	
-	"window":{
-		"value": "창",
-		"children": {
-			"window_new_main_window" : { "value": "새 메인 창"}, 
-			"window_previous_window" : { "value": "이전 창"},
-			"window_next_window" : { "value": "이전 창"},
-			"window_previous_tab" : { "value": "이전 탭"},
-			"window_next_tab" : { "value": "다음 탭"},
-			"perspectives": { 
-				"value": "배치",
-				"children": {
-					"window_left_layout" : { "value": "왼쪽 레이아웃"},
-					"window_left_layout_show_hide" : { "value": "보이기/숨기기"},
-					"window_left_layout_toggle_project_explorer" : { "value": "프로젝트 탐색기 보기"},
-					"window_left_layout_toggle_toolbox" : { "value": "도구상자 보기"},
-					"window_right_layout" : { "value": "오른쪽 레이아웃"},
-					"window_right_layout_show_hide" : { "value": "보이기/숨기기"},
-					"window_right_layout_toggle_properties" : { "value": "속성 보기"},
-					"window_right_layout_toggle_object_explorer" : { "value": "객체 탐색기 보기"},
-					"window_right_layout_toggle_chat" : { "value": "채팅 보기"},
-					"window_bottom_layout" : {"value": "아래쪽 레이아웃"},
-					"window_bottom_layout_show_hide" : { "value": "보이기/숨기기"},
-					"window_bottom_layout_toggle_messages" : { "value": "메시지 보기"},
-					"window_bottom_layout_debug" : { "value": "디버그 보기"},
-					"window_bottom_layout_console" : { "value": "콘솔 보기"},
-					"window_bottom_layout_search" : { "value": "찾기 보기"},
-				}
-			},
-			"window_toggle_full_workspace" : { "value": "전체 작업 화면 전환"},
-			"window_hide_all_window" : { "value": "모든 창 숨기기"},
-			"window_show_all_window" : { "value": "모든 창 보이기"},
-			"window_cascade" : { "value": "계단식 정렬"},
-			"window_tile_vertically" : { "value": "세로 정렬"},
-			"window_tile_horizontally" : { "value": "가로 정렬"}
-		}
-	},
-	
-	"plugins": {
-		"value": "플러그인",
-		"children": {
-			"plugin_install_new_plugin": { "value": "새 플러그인 설치…"},
-		}
-	},
-	
-	"help": {
-		"value": "도움말",
-		"children": {
-			"help_help_contents": { "value": "도움말 컨텐츠"},
-			"help_search": { "value": "검색"},
-			"help_tips_and_tricks": { "value": "Tips and Tricks..."},
-			"help_check_for_updates": { "value": "업데이트 확인"},
-			"help_bug_report": { "value": "버그 리포트 전송"},
-			"help_about_uizard_3": { "value": "goorm 3 대하여"}
-		}
-	},
-	
-	"design_zoom_in": { "value": "확대하기"},
-	"design_zoom_out": { "value": "축소하기"},
-	"design_snap_to_grid": { "value": "Snap To Grid"},
-	"design_canvas_size": { "value": "캔버스 크기"},
-	
-	"design_show_ruler": { "value": "눈금자 보기"},
-	"design_hide_ruler": { "value": "눈금자 숨기기"},
-	"design_setting": { "value": "속성"},
-
-	"object_cut": { "value": "오려내기"},
-	"object_copy": { "value": "복사하기"},
-	"object_paste": { "value": "붙이기"},
-	"object_delete": { "value": "지우기"},
-	"object_order": { 
-		"value": "Order",
-		"children": {
-			"object_order_bring_to_front": { "value": "맨 앞으로 보내기"},
-			"object_order_send_to_back": { "value": "맨 뒤로 보내기"},
-			"object_order_bring_forward": { "value": "앞으로 보내기"},
-			"object_order_send_backward": { "value": "뒤로 보내기"}
-		}
-	},
-	"object_properties": { "value": "속성"},
-	
-	"file_open_context": { "value": "열기"},
-	"file_open_as_context": { 
-		"value": "다음으로 열기",
-		"children": {
-			"file_open_as_default_editor_context": { "value": "기본 에디터"},
-			"file_open_as_text_editor_context": { "value": "텍스트 에디터"},
-			"file_open_as_code_editor_context": { "value": "코드 에디터"},
-			"file_open_as_ui_designer_context": { "value": "UI 디자이너"},
-			"file_open_as_uml_designer_context": { "value": "UML 디자이너"}
-		}
-	},
-	"file_rename_context": { "value": "이름 수정"},
-	"file_move_context": { "value": "이동"},
-	"file_delete_context": { "value": "삭제"},
-	"file_property_context": { "value": "속성"},
-	
-	"file_new_project_context": { "value": "새 프로젝트"},
-	"file_open_project_context": { "value": "프로젝트 열기"},
-	"file_save_all_context": { "value": "모두 저장"},
-	"file_import_context": { "value": "가져오기"},
-	"file_export_context": { "value": "내보내기"},
-	"file_refresh_context": { "value": "새로고침"},
-	
-	"file_new_context": {
-		"value": "새로 만들기",
-		"children": {
-			"file_new_context_new_file": { "value": "파일"},
-			"file_new_context_new_folder": { "value": "폴더"},
-			"file_new_context_untitled_text_file": { "value": "텍스트 파일"}
-		}	
-	},
-	
-	"folder_open_context": { "value": "열기"},	
-	
-	"project_properties_context": { "value": "프로젝트 속성"},
-	
-	"add_toolbar": { "value": "툴바 추가하기"},
-	"remove_toolbar": { "value": "툴바 제거하기"},
-	"edit_toolbar": { "value": "툴바 수정하기"},
-	
-	"file_new_file_context": { "value": "새 파일"},
-	"file_open_file_context": { "value": "파일 열기"},
-	"file_close_all_context": { "value": "모두 닫기"},
-	"window_toggle_full_workspace_context": { "value": "토글 전체 워크스페이스"},
-	"window_hide_all_window_context": { "value": "모든 창 숨기기"},
-	"window_show_all_window_context": { "value": "모든 창 보여주기"},
-	"window_cascade_context": { "value": "케스케이드"},
-	"window_tile_vertically_context": { "value": "타일 수직정렬"},
-	"window_tile_horizontally_context": { "value": "타일 수평정렬"},
-	"settings": { "value": "속성..."},
-	
-	"window_previous_window_context": { "value": "이전 창"},
-	"window_next_window_context": { "value": "다음 창"},
-	
-	"maximize": { "value": "최대화" },
-	"minimize": {	"value": "최소화" },
-	"close": { "value": "닫기" }
+    "file": {
+        "value": "파일",
+        "children": {
+            "file_new": {
+                "value": "새로 만들기",
+                "children": {
+                    "file_new_project": {
+                        "value": "새 프로젝트"
+                    },
+                    "file_new_web_project": {
+                        "value": "Web 프로젝트"
+                    },
+                    "file_new_php_project": {
+                        "value": "PHP 프로젝트"
+                    },
+                    "file_new_javascript_project": {
+                        "value": "Javascript 프로젝트"
+                    },
+                    "file_new_mobile_project": {
+                        "value": "모바일 프로젝트"
+                    },
+                    "file_new_ios_project": {
+                        "value": "iOS 프로젝트"
+                    },
+                    "file_new_android_project": {
+                        "value": "Android 프로젝트"
+                    },
+                    "file_new_uml_project": {
+                        "value": "UML 프로젝트"
+                    },
+                    "file_new_uizard_plugin_project": {
+                        "value": "goorm 플러그인 프로젝트"
+                    },
+                    "file_new_uizard_customization_project": {
+                        "value": "goorm Customization 프로젝트"
+                    },
+                    "file_new_file": {
+                        "value": "파일"
+                    },
+                    "file_new_folder": {
+                        "value": "폴더"
+                    },
+                    "file_new_untitled_text_file": {
+                        "value": "텍스트 파일"
+                    },
+                    "file_new_other": {
+                        "value": "기타"
+                    }
+                }
+            },
+            "file_open_project": {
+                "value": "프로젝트 열기"
+            },
+            "file_open_file": {
+                "value": "파일 열기"
+            },
+            "file_open_url": {
+                "value": "URL 열기"
+            },
+            "file_close": {
+                "value": "닫기"
+            },
+            "file_close_all": {
+                "value": "모두 닫기"
+            },
+            "file_save": {
+                "value": "저장"
+            },
+            "file_save_as": {
+                "value": "다른 이름으로 저장"
+            },
+            "file_save_all": {
+                "value": "모두 저장"
+            },
+            "file_revert": {
+                "value": "되돌리기"
+            },
+            "file_move": {
+                "value": "이동"
+            },
+            "file_rename": {
+                "value": "이름 변경"
+            },
+            "file_delete": {
+                "value": "삭제"
+            },
+            "file_refresh": {
+                "value": "새로 고침"
+            },
+            "file_print": {
+                "value": "인쇄"
+            },
+            "file_swich_workspace": {
+                "value": "워크스페이스 변경"
+            },
+            "file_restart": {
+                "value": "재시작"
+            },
+            "file_import": {
+                "value": "가져오기"
+            },
+            "file_export": {
+                "value": "내보내기"
+            },
+            "file_properties": {
+                "value": "속성"
+            },
+            "file_exit": {
+                "value": "종료"
+            }
+        }
+    },
+    "edit": {
+        "value": "편집",
+        "children": {
+            "edit_undo": {
+                "value": "되돌리기"
+            },
+            "edit_redo": {
+                "value": "다시 적용"
+            },
+            "edit_cut": {
+                "value": "잘라내기"
+            },
+            "edit_copy": {
+                "value": "복사"
+            },
+            "edit_paste": {
+                "value": "붙여넣기"
+            },
+            "edit_delete": {
+                "value": "삭제"
+            },
+            "edit_select_all": {
+                "value": "모두 선택"
+            },
+            "edit_find_and_replace": {
+                "value": "찾기/바꾸기"
+            },
+            "edit_find_next": {
+                "value": "다음 찾기"
+            },
+            "edit_find_previous": {
+                "value": "이전 찾기"
+            },
+            "edit_auto_formatting": {
+                "value": "오토 포맷팅"
+            },
+            "edit_comment_selected": {
+                "value": "선택 영역을 주석으로 설정"
+            },
+            "edit_uncomment_selected": {
+                "value": "선택 영역의 주석을 해제"
+            },
+            "edit_preference": {
+                "value": "기본 설정"
+            }
+        }
+    },
+    "design": {
+        "value": "디자인",
+        "children": {
+            "design_alignment": {
+                "value": "정렬",
+                "children": {
+                    "design_align_left": {
+                        "value": "왼쪽 정렬"
+                    },
+                    "design_align_right": {
+                        "value": "오른쪽 정렬"
+                    },
+                    "design_align_top": {
+                        "value": "위쪽 정렬"
+                    },
+                    "design_align_bottom": {
+                        "value": "아래쪽 정렬"
+                    },
+                    "design_align_horizontally_center": {
+                        "value": "수평 정렬"
+                    },
+                    "design_align_vertically_center": {
+                        "value": "수직 정렬"
+                    }
+                }
+            },
+            "design_bring_to_front": {
+                "value": "맨 앞으로 가져오기"
+            },
+            "design_send_to_back": {
+                "value": "맨 뒤로 보내기"
+            },
+            "design_bring_forward": {
+                "value": "앞으로 가져오기"
+            },
+            "design_send_backward": {
+                "value": "뒤로 보내기"
+            },
+            "design_canvas_setting": {
+                "value": "캔바스 설정"
+            }
+        }
+    },
+    "project": {
+        "value": "프로젝트",
+        "children": {
+            "project_generate": {
+                "value": "생성"
+            },
+            "project_run": {
+                "value": "실행"
+            },
+            "project_remoteRun": {
+                "value": "원격 실행"
+            },
+            "project_generate_all": {
+                "value": "모두 생성"
+            },
+            "project_build_project": {
+                "value": "프로젝트 빌드"
+            },
+            "project_build_all": {
+                "value": "모두 빌드"
+            },
+            "project_clean": {
+                "value": "비우기"
+            },
+            "project_build_configuration": {
+                "value": "빌드 설정"
+            },
+            "project_import": {
+                "value": "프로젝트 가져오기"
+            },
+            "project_export": {
+                "value": "프로젝트 내보내기"
+            },
+            "project_delete": {
+                "value": "프로젝트 제거"
+            },
+            "project_properties": {
+                "value": "속성"
+            }
+        }
+    },
+    "debug": {
+        "value": "디버그",
+        "children": {
+        	"debug_start": {
+                "value": "디버그 시작"
+            },
+            "debug_continue": {
+                "value": "디버그 계속"
+            },
+            "debug_terminate": {
+                "value": "디버그 종료"
+            },
+            "debug_step_over": {
+                "value": "스텝 오버"
+            },
+            "debug_step_in": {
+                "value": "스텝 인"
+            },
+            "debug_step_out": {
+                "value": "스텝 아웃"
+            }
+        }
+    },
+    "collaboration": {
+        "value": "협업",
+        "children": {
+            "collaboration_join_the_project": {
+                "value": "프로젝트 참여"
+            },
+            "collaboration_enable_chat": {
+                "value": "채팅 활성화"
+            },
+            "collaboration_enable_real_time_editing": {
+                "value": "실시간 편집 활성화"
+            },
+            "collaboration_enable_real_time_drawing": {
+                "value": "실시간 그리기 활성화"
+            },
+            "collaboration_settings": {
+                "value": "설정..."
+            }
+        }
+    },
+    "window": {
+        "value": "창",
+        "children": {
+            "window_new_main_window": {
+                "value": "새 메인 창"
+            },
+            "window_new_terminal_window": {
+            	"value": "새 터미널 윈도우"
+            },
+            "window_previous_window": {
+                "value": "이전 창"
+            },
+            "window_next_window": {
+                "value": "이전 창"
+            },
+            "window_previous_tab": {
+                "value": "이전 탭"
+            },
+            "window_next_tab": {
+                "value": "다음 탭"
+            },
+            "perspectives": {
+                "value": "화면 구성",
+                "children": {
+                    "window_left_layout": {
+                        "value": "왼쪽 레이아웃"
+                    },
+                    "window_left_layout_show_hide": {
+                        "value": "보이기/숨기기"
+                    },
+                    "window_left_layout_toggle_project_explorer": {
+                        "value": "프로젝트 탐색기 보기"
+                    },
+                    "window_left_layout_toggle_toolbox": {
+                        "value": "도구상자 보기"
+                    },
+                    "window_right_layout": {
+                        "value": "오른쪽 레이아웃"
+                    },
+                    "window_right_layout_show_hide": {
+                        "value": "보이기/숨기기"
+                    },
+                    "window_right_layout_toggle_properties": {
+                        "value": "속성 보기"
+                    },
+                    "window_right_layout_toggle_object_explorer": {
+                        "value": "객체 탐색기 보기"
+                    },
+                    "window_right_layout_toggle_chat": {
+                        "value": "채팅 보기"
+                    },
+                    "window_bottom_layout": {
+                        "value": "아래쪽 레이아웃"
+                    },
+                    "window_bottom_layout_show_hide": {
+                        "value": "보이기/숨기기"
+                    },
+                    "window_bottom_layout_toggle_messages": {
+                        "value": "메시지 보기"
+                    },
+                    "window_bottom_layout_debug": {
+                        "value": "디버그 보기"
+                    },
+                    "window_bottom_layout_console": {
+                        "value": "콘솔 보기"
+                    },
+                    "window_bottom_layout_search": {
+                        "value": "찾기 보기"
+                    }
+                }
+            },
+            "window_toggle_full_workspace": {
+                "value": "작업 공간을 전체 화면으로 전환"
+            },
+            "window_hide_all_window": {
+                "value": "모든 창 숨기기"
+            },
+            "window_show_all_window": {
+                "value": "모든 창 보이기"
+            },
+            "window_cascade": {
+                "value": "계단식 정렬"
+            },
+            "window_tile_vertically": {
+                "value": "세로 정렬"
+            },
+            "window_tile_horizontally": {
+                "value": "가로 정렬"
+            }
+        }
+    },
+    "plugins": {
+        "value": "플러그인",
+        "children": {
+            "plugin_install_new_plugin": {
+                "value": "새 플러그인 설치…"
+            }
+        }
+    },
+    "help": {
+        "value": "도움말",
+        "children": {
+            "help_help_contents": {
+                "value": "도움말 컨텐츠"
+            },
+            "help_search": {
+                "value": "검색"
+            },
+            "help_tips_and_tricks": {
+                "value": "팁/트릭"
+            },
+            "help_check_for_updates": {
+                "value": "업데이트 확인"
+            },
+            "help_bug_report": {
+                "value": "버그 리포트 전송"
+            },
+            "help_about_goorm": {
+                "value": "goorm에 대하여"
+            }
+        }
+    },
+    "design_zoom_in": {
+        "value": "확대하기"
+    },
+    "design_zoom_out": {
+        "value": "축소하기"
+    },
+    "design_snap_to_grid": {
+        "value": "Snap To Grid"
+    },
+    "design_canvas_size": {
+        "value": "캔버스 크기"
+    },
+    "design_show_ruler": {
+        "value": "눈금자 보기"
+    },
+    "design_hide_ruler": {
+        "value": "눈금자 숨기기"
+    },
+    "design_setting": {
+        "value": "속성"
+    },
+    "object_cut": {
+        "value": "오려내기"
+    },
+    "object_copy": {
+        "value": "복사하기"
+    },
+    "object_paste": {
+        "value": "붙이기"
+    },
+    "object_delete": {
+        "value": "지우기"
+    },
+    "object_order": {
+        "value": "Order",
+        "children": {
+            "object_order_bring_to_front": {
+                "value": "맨 앞으로 보내기"
+            },
+            "object_order_send_to_back": {
+                "value": "맨 뒤로 보내기"
+            },
+            "object_order_bring_forward": {
+                "value": "앞으로 보내기"
+            },
+            "object_order_send_backward": {
+                "value": "뒤로 보내기"
+            }
+        }
+    },
+    "object_properties": {
+        "value": "속성"
+    },
+    "file_open_context": {
+        "value": "열기"
+    },
+    "file_open_as_context": {
+        "value": "다음으로 열기",
+        "children": {
+            "file_open_as_default_editor_context": {
+                "value": "기본 에디터"
+            },
+            "file_open_as_text_editor_context": {
+                "value": "텍스트 에디터"
+            },
+            "file_open_as_code_editor_context": {
+                "value": "코드 에디터"
+            },
+            "file_open_as_ui_designer_context": {
+                "value": "UI 디자이너"
+            },
+            "file_open_as_uml_designer_context": {
+                "value": "UML 디자이너"
+            }
+        }
+    },
+    "file_rename_context": {
+        "value": "이름 수정"
+    },
+    "file_move_context": {
+        "value": "이동"
+    },
+    "file_delete_context": {
+        "value": "삭제"
+    },
+    "file_property_context": {
+        "value": "속성"
+    },
+    "file_new_project_context": {
+        "value": "새 프로젝트"
+    },
+    "file_open_project_context": {
+        "value": "프로젝트 열기"
+    },
+    "file_save_all_context": {
+        "value": "모두 저장"
+    },
+    "file_import_context": {
+        "value": "가져오기"
+    },
+    "file_export_context": {
+        "value": "내보내기"
+    },
+    "file_refresh_context": {
+        "value": "새로 고침"
+    },
+    "file_new_context": {
+        "value": "새로 만들기",
+        "children": {
+            "file_new_context_new_file": {
+                "value": "파일"
+            },
+            "file_new_context_new_folder": {
+                "value": "폴더"
+            },
+            "file_new_context_untitled_text_file": {
+                "value": "텍스트 파일"
+            }
+        }
+    },
+    "folder_open_context": {
+        "value": "열기"
+    },
+    "project_properties_context": {
+        "value": "프로젝트 속성"
+    },
+    "add_toolbar": {
+        "value": "툴바 추가하기"
+    },
+    "remove_toolbar": {
+        "value": "툴바 제거하기"
+    },
+    "edit_toolbar": {
+        "value": "툴바 수정하기"
+    },
+    "file_new_file_context": {
+        "value": "새 파일"
+    },
+    "file_open_file_context": {
+        "value": "파일 열기"
+    },
+    "file_close_all_context": {
+        "value": "모두 닫기"
+    },
+    "window_toggle_full_workspace_context": {
+        "value": "토글 전체 워크스페이스"
+    },
+    "window_hide_all_window_context": {
+        "value": "모든 창 숨기기"
+    },
+    "window_show_all_window_context": {
+        "value": "모든 창 보여주기"
+    },
+    "window_cascade_context": {
+        "value": "케스케이드"
+    },
+    "window_tile_vertically_context": {
+        "value": "타일 수직정렬"
+    },
+    "window_tile_horizontally_context": {
+        "value": "타일 수평정렬"
+    },
+    "settings": {
+        "value": "속성..."
+    },
+    "window_previous_window_context": {
+        "value": "이전 창"
+    },
+    "window_next_window_context": {
+        "value": "다음 창"
+    },
+    "maximize": {
+        "value": "최대화"
+    },
+    "minimize": {
+        "value": "최소화"
+    },
+    "close": {
+        "value": "닫기"
+    }
 }

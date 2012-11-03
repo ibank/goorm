@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.edit = function () {
@@ -154,8 +156,6 @@ org.goorm.core.edit.prototype = {
 							ev.to.ch = 99999;
 							ev.from.ch = 0;
 							
-							
-							
 							// var indent = self.editor.getCursor().ch;
 // 							
 							// for(var i=0; i < indent; i++){
@@ -173,6 +173,8 @@ org.goorm.core.edit.prototype = {
 				else{
 					dont_update_first = true;
 				}
+				
+				self.monitoring_breakpoints(e);
 			  
 			  	var window_manager = core.module.layout.workspace.window_manager;
 			  
@@ -297,12 +299,11 @@ org.goorm.core.edit.prototype = {
 	},
 	
 	highlight_line: function (line) {
-		//var cursor = this.editor.getCursor();
 		var cursor_pos = this.editor.charCoords({line:(line-1), ch:0}, "local");
-		
-		console.log(cursor_pos);
+		var height = $(this.target).find(".CodeMirror-lines div:first").find(".highlight_line").prev().find("pre:eq(" + (line-1) + ") span.cm-string").height();
 		
 		$(this.target).find('.highlight_line').css("top", cursor_pos.y);
+		$(this.target).find('.highlight_line').css("height", height);
 		$(this.target).find('.highlight_line').show();
 		
 		
@@ -493,14 +494,16 @@ org.goorm.core.edit.prototype = {
 		if (this.indent_with_tabs != undefined) {
 			this.editor.setOption("indentWithTabs", this.indent_with_tabs);
 		}
-		if (this.tab_mode != undefined) {
-			this.editor.setOption("tabMode", this.tab_mode);		
-		}
-		if (this.enter_mode != undefined) {
-			this.editor.setOption("enterMode", this.enter_mode);
-		}
+//		deprecated tabMode
+//		if (this.tab_mode != undefined) {
+//			this.editor.setOption("tabMode", this.tab_mode);		
+//		}
+//		deprecated enterMode
+//		if (this.enter_mode != undefined) {
+//			this.editor.setOption("enterMode", this.enter_mode);
+//		}
 		if (this.show_line_numbers != undefined) {
-			this.editor.setOption("showLineNumbers", this.show_line_numbers);
+			this.editor.setOption("lineNumbers", this.show_line_numbers);
 		}
 		if (this.first_line_number != undefined || this.first_line_number != NaN) {
 			console.log(this.preference["preference.editor.first_line_number"]);
@@ -518,7 +521,7 @@ org.goorm.core.edit.prototype = {
 		var self = this;
 
 		var url = "file/get_contents";
-				
+
 		if (filetype == "url"){
 			filename = "";
 			url = "file/get_url_contents";
@@ -557,7 +560,6 @@ org.goorm.core.edit.prototype = {
 
 		$.get(url, postdata, function (data) {
 			self.editor.setValue(data);
-			
 			//self.collaboration.init(self.target,self);
 			
 			/*
@@ -661,6 +663,7 @@ org.goorm.core.edit.prototype = {
 	},
 	
 	set_mode: function (mode) {
+		this.mode = mode;
 		this.editor.setOption("mode", mode);
 	},
 	
@@ -753,12 +756,58 @@ org.goorm.core.edit.prototype = {
 		this.editor.commentRange(false, range.from, range.to);
 	},
 	
+	monitoring_breakpoints: function(e){
+		var self = this;
+		
+		var is_line_deleted = false;
+		var is_line_added = false;
+		
+		if(e.text.length == 1 && e.text[0] == "") is_line_deleted = true;
+		if(e.text.length == 2 && e.text[1] == "") is_line_added = true;
+		
+		if(is_line_deleted){
+			var delete_line;
+			
+			if((e.to.line - e.from.line) == 1){ // 1 line deleted
+				var target_line_position = self.breakpoints.indexOf(e.to.line);
+				delete_line = 1;
+
+				if(target_line_position != -1){
+					self.breakpoints.splice(target_line_position, 1);
+				}
+			}
+			else{ // multi line deleted
+				var start_line = e.to.line - 1;
+				var end_line = e.from.line;
+				delete_line = end_line - start_line;
+				
+				for(var target_line=start_line; target_line>end_line; target_line--)
+					self.breakpoints.splice(self.breakpoints.indexOf(target_line), 1);
+			}
+			
+			for(var target_line = 0; target_line<self.breakpoints.length; target_line++)
+				if(self.breakpoints[target_line] >=  e.to.line) self.breakpoints.splice(i, 1, (parseInt(self.breakpoints[target_line]) - delete_line))
+		}
+		else if(is_line_added){
+			var start_line
+			
+			if(e.text[0] == "") start_line = e.to.line - 2;
+			else start_line = e.to.line - 1;
+			
+			for(var i=0; i<self.breakpoints.length; i++){
+				var line = self.breakpoints[i];
+				
+				if(line >= start_line) self.breakpoints.splice( i, 1, (parseInt(line)+1) );
+			}
+		}
+	},
+	
 	reset_breakpoints : function(){
 		var self = this;
 		this.breakpoints = this.breakpoints.unique();
 
 		for(var i=0; i<self.breakpoints.length; i++){
-			if($(self.target).find(".CodeMirror-gutter-text pre:eq(" + parseInt(self.breakpoints[i]) + ")").html() == (self.breakpoints[i] + 1).toString())
+			if(($(self.target).find(".CodeMirror-gutter-text pre:eq(" + parseInt(self.breakpoints[i]) + ")").html())[0] == (self.breakpoints[i] + 1).toString())
 				$(self.target).find(".CodeMirror-gutter-text pre:eq(" + parseInt(self.breakpoints[i]) + ")").prepend("<span class='breakpoint'>●</span>");
 		}
 	},

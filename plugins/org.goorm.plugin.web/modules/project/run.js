@@ -5,19 +5,19 @@ var fs = require('fs'),
 
 module.exports = {
 	run : function(req, evt) {
-		var workspace = __path + "workspace/" + req.data.project_path;
+		var workspace = __workspace + "/" + req.data.project_path;
 		var target_path = common.run_path + req.data.project_path;
 		var run_path = target_path.split("temp_files").pop();
 		console.log("runProject "+run_path);
 		
-		if(!fs.existsSync(__path+"temp_files")) {
-			fs.mkdirSync(__path+"temp_files");
+		if(!fs.existsSync(__temp_dir)) {
+			fs.mkdirSync(__temp_dir);
 		}
-		if(!fs.existsSync(__path+"temp_files/plugins")) {
-			fs.mkdirSync(__path+"temp_files/plugins");
+		if(!fs.existsSync(__temp_dir + "/plugins")) {
+			fs.mkdirSync(__temp_dir + "/plugins");
 		}
-		if(!fs.existsSync(__path+"temp_files/plugins/web")) {
-			fs.mkdirSync(__path+"temp_files/plugins/web");
+		if(!fs.existsSync(__temp_dir + "/plugins/web")) {
+			fs.mkdirSync(__temp_dir + "/plugins/web");
 		}
 		if(!fs.existsSync(target_path)) {
 			fs.mkdirSync(target_path);
@@ -26,7 +26,7 @@ module.exports = {
 		emittor = walk.walk(workspace);
 		
 		emittor.on('file', function (path, stat, next){
-			var abs_path = (path+"/"+stat.name).replace(workspace,"");
+			var abs_path = (path + "/"+stat.name).replace(workspace,"");
 			fs.readFile(path + "/" + stat.name, "utf-8" , function(err, data) {
 				if (err) throw err;
 				fs.writeFile(target_path + abs_path, data, function(err) {

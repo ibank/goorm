@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.file.property = function () {
@@ -24,8 +26,8 @@ org.goorm.core.file.property.prototype = {
 			this.hide(); 
 		};
 		
-		this.buttons = [ {text:"OK", handler:handle_ok, isDefault:true},
-						 {text:"Cancel",  handler:handle_cancel}]; 
+		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
+						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 		
 		
 		this.dialog = new org.goorm.core.file.property.dialog();
@@ -33,7 +35,7 @@ org.goorm.core.file.property.prototype = {
 			title:"Property", 
 			path:"configs/dialogs/org.goorm.core.file/file.property.html",
 			width:480,
-			height:500,
+			height:400,
 			modal:true,
 			buttons:this.buttons,
 			success: function () {
@@ -59,7 +61,7 @@ org.goorm.core.file.property.prototype = {
 					$("#property_file_contents #filename").html(data.filename);
 					$("#property_file_contents #fileType").html(data.filetype);
 					$("#property_file_contents #fileLocation").html(data.path);
-					$("#property_file_contents #fileSize").html(data.size+" byte");
+					$("#property_file_contents #fileSize").html(data.size+" bytes");
 					$("#property_file_contents #aTime").html(data.atime);
 					$("#property_file_contents #mTime").html(data.mtime);
 					self.dialog.panel.show();
@@ -76,7 +78,7 @@ org.goorm.core.file.property.prototype = {
 			});			
 		}
 		else {
-			alert.show("Not Selected");
+			// alert.show("Not Selected");			alert.show(core.module.localization.msg['alert_project_not_selected'])
 		}
 	}	
 };

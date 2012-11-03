@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.help.search = function () {
@@ -19,7 +21,7 @@ org.goorm.core.help.search.prototype = {
 			this.hide(); 
 		};
 		
-		this.buttons = [ {text:"Close", handler:handle_close, isDefault:true},
+		this.buttons = [ {text:"<span localization_key='close'>Close</span>", handler:handle_close, isDefault:true},
 						 ]; 
 
 		this.dialog = new org.goorm.core.help.search.dialog();

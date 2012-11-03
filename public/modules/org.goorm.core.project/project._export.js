@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.project._export = function () {
@@ -21,9 +23,7 @@ org.goorm.core.project._export.prototype = {
 			var data = self.project_list.get_data();
 
 			if(data.path=="" || data.name=="") {
-				//alert.show(core.module.localization.msg["alertFileNameEmpty"]);
-				alert.show("Not Selected.");
-				return false;
+				alert.show(core.module.localization.msg["alert_filename_empty"]);				// alert.show("Project item is not selected");				return false;
 			}
 
 			var postdata = {
@@ -54,8 +54,8 @@ org.goorm.core.project._export.prototype = {
 			this.hide(); 
 		};
 		
-		this.buttons = [ {text:"OK", handler:handle_ok, isDefault:true},
-						 {text:"Cancel",  handler:handle_cancel}]; 
+		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
+						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
 		this.dialog = new org.goorm.core.project._export.dialog();
 		this.dialog.init({
@@ -64,8 +64,8 @@ org.goorm.core.project._export.prototype = {
 			width:800,
 			height:500,
 			modal:true,
-			yes_text:"Open",
-			no_text:"Cancel",
+			yes_text:"<span localization_key='open'>Open</span>",
+			no_text:"<span localization_key='cancel'>Cancel</span>",
 			buttons:this.buttons,
 			success: function () {
 				var resize = new YAHOO.util.Resize("project_export_dialog_left", {

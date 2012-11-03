@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.help.about = function () {
@@ -20,14 +22,14 @@ org.goorm.core.help.about.prototype = {
 			this.hide(); 
 		};
 		
-		this.buttons = [ {text:"OK", handler:handle_ok, isDefault:true}]; 
+		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true}]; 
 						 
 		this.dialog = new org.goorm.core.help.about.dialog();
 		this.dialog.init({
 			title:"About goorm",
 			path:"configs/dialogs/org.goorm.core.help/help.about.html",
-			width:650,
-			height:600,
+			width:660,
+			height:580,
 			modal:true,
 			buttons:this.buttons,
 			success: function () {

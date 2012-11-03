@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.window.panel = function () {
@@ -33,7 +35,6 @@ org.goorm.core.window.panel = function () {
 
 org.goorm.core.window.panel.prototype = {
 	init: function(container, title, workspace_container, filepath, filename, filetype, editor) {
-		
 		var self = this;
 		
 		this.is_saved = true;
@@ -41,29 +42,47 @@ org.goorm.core.window.panel.prototype = {
 		this.container = container;
 		this.workspace_container = workspace_container;
 		
-		this.filepath = filepath;
-		this.filename = filename;
-		this.filetype = filetype;
-		
-		this.project = core.status.current_project_path;
-		
-		this.alive = true;
-		this.is_first_maximize = true;
-		console.log(filetype);
 		if(filetype == "" || filetype == "etc") {
 			filetype = "txt";
 		}
 		else if(filetype == "url"){
 			this.type = "codemirror_editor";
-			this.filename = filepath;
+			filename = filepath;
 		}
-		console.log(filetype);
+		
+		this.filepath = filepath;
+		this.filename = filename;
+		this.filetype = filetype;
+
+		if(!editor) editor = 'Editor';
+		
+		this.project = core.status.current_project_path;
+		
+		this.alive = true;
+		this.is_first_maximize = true;
+
 		var window_count = core.module.layout.workspace.window_manager.window.length;
-				
+		var target_active_window = core.module.layout.workspace.window_manager.active_window - 1;
+		
+		var new_x;
+		var new_y;
+		
+		if(target_active_window == -1){
+			new_x = $(".yui-layout-unit-center").position().left + 5;
+			new_y = $(".yui-layout-unit-center").position().top + 30;
+		}
+		else{
+			var target_container = core.module.layout.workspace.window_manager.window[target_active_window].container;
+			new_x = $('#'+target_container).offset().left + 30;
+			new_y = $('#'+target_container).offset().top + 30;
+		}
+		
 		this.panel = new YAHOO.widget.Panel(
 			container, { 
-				x: $(".yui-layout-unit-center").position().left + 5 + window_count * 24, 
-				y: $(".yui-layout-unit-center").position().top + 30 + window_count * 24, 
+				// x: $(".yui-layout-unit-center").position().left + 5 + window_count * 24, 
+				// y: $(".yui-layout-unit-center").position().top + 30 + window_count * 24, 
+				x : new_x,
+				y : new_y,
 				width: parseInt($("#" + self.workspace_container).width()/2),
 				height: parseInt($("#" + self.workspace_container).height()/2), 
 				visible: true, 
@@ -95,12 +114,19 @@ org.goorm.core.window.panel.prototype = {
 
 		$("#" + this.container).width(this.width);
 		$("#" + this.container).height(this.height);
-		
+
 		// Due to file type, create proper tool.
 		if (editor == "Editor") {
 			this.type = "Editor";
 			//var mode = core.filetypes[this.inArray(this.filetype)].mode;
-			var mode = core.filetypes[this.inArray("html")].mode;
+			var mode;
+			if (this.filetype=="url") {
+				mode = core.filetypes[this.inArray("html")].mode;
+			}
+			else {
+				mode = core.filetypes[this.inArray(this.filetype)].mode;
+			}
+
 			this.editor = new org.goorm.core.edit();
 			this.editor.init($("#"+container).find(".window_container"));
 			this.editor.load(this.filepath, this.filename, this.filetype);
@@ -146,20 +172,16 @@ org.goorm.core.window.panel.prototype = {
 				this.rule_editor.load(this.filepath, this.filename, this.filetype);
 			}
 		}
-/*
-		else {
-			this.type = "Editor";
+		else { // default txt
+			var mode = 'text/javascript';
 			
 			this.editor = new org.goorm.core.edit();
-			
 			this.editor.init($("#"+container).find(".window_container"));
-						
-			this.editor.load(this.filepath, this.filename, this.filetype);
-			
-			var mode = "javascript";
+			this.editor.load(this.filepath, this.filename, 'txt');
 			this.editor.set_mode(mode);
 		}
-*/
+
+
 		
 		this.set_footer(); //native function to call the this.panel.setFooter()		
 		
@@ -215,6 +237,8 @@ org.goorm.core.window.panel.prototype = {
 		
 			self.resize_all();
 			self.refresh();
+			
+			$(core).trigger(self.filename + "_resized");
 		}, this.panel, true);
 		
 		
@@ -392,6 +416,10 @@ org.goorm.core.window.panel.prototype = {
 		
 		var window_manager = core.module.layout.workspace.window_manager;
 		if(this.is_saved) {
+			
+			console.log(this.filename + "_closed");
+			$(core).trigger(this.filename + "_closed");		
+		
 			this.alive = false;
 			//delete core.module.layout.workspace.window_manager.window_list.windows[this.filepath+this.filename];
 
@@ -443,16 +471,23 @@ org.goorm.core.window.panel.prototype = {
 			else {
 				$(".tab_max_buttons").hide();
 			}
+
 			
 			delete this;
 		}
 		else {
 			confirmation_save.init({
-				title: core.module.localization.msg["confirmationSaveTitle"].value, 
-				message: "\""+this.filename+"\" "+core.module.localization.msg["confirmationSaveMessage"].value,
-				yes_text: core.module.localization.msg["confirmationYes"].value,
-				cancel_text: core.module.localization.msg["confirmationCancel"].value,
-				no_text: core.module.localization.msg["confirmationNo"].value,
+				// title: core.module.localization.msg["confirmation_save"].value,
+				message: "\""+this.filename+"\" "+core.module.localization.msg["confirmation_save_message"],
+				yes_text: core.module.localization.msg["confirmation_yes"],
+				cancel_text: core.module.localization.msg["confirmation_cancel"],
+				no_text: core.module.localization.msg["confirmation_no"],
+
+				title: "Close...", 
+				// message: "<span localization_key='confirmation_save_message'> has been modified. Save changes?</span>",
+				// yes_text: "<span localization_key='yes'>Yes</span>",
+				// cancel_text: "<span localization_key='cancel'>Cancel</span>",
+				// no_text: "<span localization_key='no'>No</span>",
 				yes: function () {
 					self.editor.save("close");
 				}, cancel: function () {

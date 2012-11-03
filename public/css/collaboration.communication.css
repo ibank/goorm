@@ -46,3 +46,23 @@
 	margin-right: 5px;
 	color: #CCC;
 }
+
+#slide_url {
+	text-align: center;
+	padding: 5px;
+	font-size: 11px;
+	background-color: #EEE;
+}
+
+#slide_url input {
+	width: 250px;
+	border-bottom: 1px solid #DDD;
+}
+
+#slide_control {
+	text-align: center;
+	font-size: 11px;
+	background-color: #EEE;
+	border-bottom: 1px solid #DDD;
+	padding-bottom: 2px;
+}

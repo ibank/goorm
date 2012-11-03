@@ -1,3 +1,11 @@
+/**
+ * Copyright Sung-tae Ryu. All rights reserved.
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
+ **/
+
 var pty = require('../../libs/pty/pty.js');
 
 var os = require('os');
@@ -28,7 +36,7 @@ module.exports = {
 				
 				term.push(pty.spawn('bash', [], {
 					name: 'xterm-color',
-					cols: 80,
+					cols: parseInt(msg.cols),
 					rows: 30,
 					cwd: process.env.HOME,
 					env: process.env
@@ -44,9 +52,7 @@ module.exports = {
 					socket.emit("pty_command_result", result);
 					//io.sockets.in(msg.workspace + '/' + msg.terminal_name).emit("pty_command_result", result);
 				});
-				
-				console.log("Terminal Count: " + term.length);
-				
+
 				var data = {
 					index: term.length - 1,
 					timestamp: msg.timestamp
@@ -56,25 +62,37 @@ module.exports = {
 				socket.to().emit("platform", JSON.stringify({"platform":platform}));
 			});
 			
+			socket.on('terminal_resize', function (msg) {
+				msg = JSON.parse(msg);
+
+				if (term[msg.index] != undefined) {
+					term[msg.index].resize(parseInt(msg.cols), 30);
+				}
+			});
+			
 			socket.on('terminal_leave', function (msg) {
 				msg = JSON.parse(msg);
 				
 				socket.leave(msg.workspace + '/' + msg.terminal_name);
+				
+				if (term[msg.index] != undefined) {
+					term[msg.index].destroy();
+					term[msg.index].kill('SIGTERM');
+					
+					console.log('terminal is killed');
+				}
 			});
 
 			socket.on('pty_execute_command', function (msg) {
-				console.log("#execute command");
-				console.log(msg);
 				msg = JSON.parse(msg);
 				
-				self.exec(term[msg.index], msg.command);
+				self.exec(term[msg.index], msg.command, msg.special_key);
 			});
 			
 			socket.on('change_project_dir', function (msg) {
-				console.log(msg);
 				msg = JSON.parse(msg);
 				
-				term[msg.index].write("cd " + global.__path + "workspace/" + msg.project_path  + "\r");
+				term[msg.index].write("cd " + global.__workspace + "/" + msg.project_path  + "\r");
 				socket.to().emit("on_change_project_dir", msg);
 			});
 			
@@ -84,9 +102,9 @@ module.exports = {
 		});
 	},
 	
-	exec: function (term, command) {
+	exec: function (term, command, special_key) {
 		if (term != undefined && term != null) {
-			if (command.indexOf('\t') > -1) { //TAB
+			if (special_key) { //Special Key
 				term.write(command);
 			}
 			else {

@@ -1,69 +1,170 @@
 {
-	"alertFolderNameEmpty": { "value": "Folder name is empty"},
-	"alertFileNameEmpty": { "value": "File name is empty"},
-	"alertFileNotSelect": { "value": "Please, select the file"},
-	"alertFileNotOpened": { "value": "Cannot find opened file"},
-	"alertProjectNotSelected": { "value": "Please select the project"},
-	"alertOnlyZipAllowed": { "value": "Only zip file is allowed"},
-	"alertProjectNotOpend": { "value": "Cannot find opened project"},
-	"alertError": { "value": "Error : "},
-	"confirmationYes": { "value": "Yes"},
-	"confirmationCancel": { "value": "Cancel"},
-	"confirmationNo": { "value": "No"},
-	
-	"confirmationSaveTitle": { "value": "Close..."},
-	"confirmationSaveTitle2": { "value": "Build..."},
-	"confirmationSaveMessage": { "value": " has been modified. Save changes?"},
-	"confirmationSaveMessage2": { "value": " has been modified. Save and build?"},
-	
-	"confirmationLanguageTitle": { "value": "언어 자동 변환"},
-	"confirmationLanguageMessage": { "value": "언어설정을 한국어로 변경하시겠습니까?"},
-	
-	"alertValidateRequired": { "value": "required"},
-	"alertValidateAlpha": { "value": "only alphabets allowed"},
-	"alertValidateAlphaNum": { "value": "only alphabet + numbers allowed"},
-	"alertValidateDigit": { "value": " : only digit numbers allowed"},
-	"alertValidateNoDigit": { "value":  "digit numbers are not allowed"},
-	"alertValidateNum": { "value":  "only numbers needed"},
-	"alertValidateEmail": { "value": "invalid email"},
-	"alertValidateUrl": { "value": "invalid url"},
-		
-	"alertDialogMissing": { "value": "Select project type or insert values"},
-	
-	"alertProjectType": { "value": "Select the project type"},
-	"alertProjectSource": { "value": "Select the project source"},
-	"alertProjectDetailedType": { "value": "Select the project detailed type"},
-	"alertProjectAuthor": { "value": "Insert the project author"},
-	"alertProjectName": { "value": "Insert the project name"},
-	"alertProjectAbout": { "value": "Insert project about"},
-	"alertAllowCharacter": { "value": "Only alphabets, numbers and _, - are allowed"},
-	
-	"alertProjectCannotOpen": { "value": "Cannot open the project"},
-	
-	"noticeProjectImportDone": { "value": "Project import done"},
-	
-	"noticeFileImportDone": { "value": "File import done"},
-	
-	"confirmationNewTitle": { "value": "New ..."},
-	"confirmationNewMessage": { "value": "Same file name already exists. Do you want to create anyway?"},
-	
-	"confirmationNewOtherTitle": { "value": "New Other ..."},
-	"confirmationNewOtherMessage": { "value": "Same file name already exists. Do you want to create anyway?"},
-	
-	"confirmationSaveAsTitle": { "value": "saveAs ..."},
-	"confirmationSaveAsMessage": { "value": "Same file name already exists. Do you want to save anyway?"},
-	
-	"alertCollaborationSelect": { "value": "Select the project to join"},
-	
-	"alertTitleEmpty": { "value": "Insert the title"},
-	"alertAuthorEmpty": { "value": "Insert the author"},
-	"alertEmailEmpty": { "value": "Insert the e-mail"},
-	"alertVersionEmpty": { "value": "Insert the version"},
-	"alertModuleEmpty": { "value": "Insert the module"},
-	"alertContentsEmpty": { "value": "Insert the content"},
-	"alertCannotWrite": { "value": "cannot write"},
-	"noticeWriteDone": { "value": "Bug report successfully sent. Thank you"},
-	
-	"alertNaming": { "value": "Same area name already exists"},
-	"alertValue": { "value": "Area name cannot contain blank"}
+    "alert_folder_name_empty": {
+        "value": "Folder name is empty"
+    },
+    "alert_filename_empty": {
+        "value": "File name is empty"
+    },
+    "alert_file_not_select": {
+        "value": "Please, select the file"
+    },
+    "alert_file_not_opened": {
+        "value": "Cannot find opened file"
+    },
+    "alert_project_not_selected": {
+        "value": "Please select the project"
+    },
+    "alert_only_zip_allowed": {
+        "value": "Only zip file is allowed"
+    },
+    "alert_project_not_opened": {
+        "value": "Cannot find opened project"
+    },
+    "alert_error": {
+        "value": "Error : "
+    },
+    "confirmation_yes": {
+        "value": "Yes"
+    },
+    "confirmation_cancel": {
+        "value": "Cancel"
+    },
+    "confirmation_no": {
+        "value": "No"
+    },
+    "confirmation_save": {
+        "value": "Close..."
+    },
+    "confirmation_build": {
+        "value": "Build..."
+    },
+    "confirmation_save_message": {
+        "value": " has been modified. Save changes?"
+    },
+    "confirmation_build_message": {
+        "value": " has been modified. Save and build?"
+    },
+    "confirmation_language_title": {
+        "value": "언어 자동 변환"
+    },
+    "confirmation_language_message": {
+        "value": "언어설정을 한국어로 변경하시겠습니까?"
+    },
+    "alertValidateRequired": {
+        "value": "required"
+    },
+    "alert_validate_alpha": {
+        "value": "only alphabets allowed"
+    },
+    "alert_validate_alpha_num": {
+        "value": "only alphabet + numbers allowed"
+    },
+    "alert_validate_digit": {
+        "value": " : only digit numbers allowed"
+    },
+    "alert_validate_no_digit": {
+        "value": "digit numbers are not allowed"
+    },
+    "alert_validate_num": {
+        "value": "only numbers needed"
+    },
+    "alert_validate_email": {
+        "value": "invalid email"
+    },
+    "alert_validate_url": {
+        "value": "invalid url"
+    },
+    "alert_dialog_missing": {
+        "value": "Select project type or insert values"
+    },
+    "alert_project_type": {
+        "value": "Select the project type"
+    },
+    "alert_project_source": {
+        "value": "Select the project source"
+    },
+    "alert_project_detailed_type": {
+        "value": "Select the project detailed type"
+    },
+    "alert_project_author": {
+        "value": "Insert the project author"
+    },
+    "alert_project_name": {
+        "value": "Insert the project name"
+    },
+    "alert_project_about": {
+        "value": "Insert project about"
+    },
+    "alert_allow_character": {
+        "value": "Only alphabets, numbers and _, - are allowed"
+    },
+    "alert_project_cannot_open": {
+        "value": "Cannot open the project"
+    },
+    "notice_project_import_done": {
+        "value": "Project import done"
+    },
+    "notice_file_import_done": {
+        "value": "File import done"
+    },
+    "confirmation_new_title": {
+        "value": "New ..."
+    },
+    "confirmation_new_message": {
+        "value": "Same file name already exists. Do you want to create anyway?"
+    },
+    "confirmation_new_other_title": {
+        "value": "New Other ..."
+    },
+    "confirmation_new_other_message": {
+        "value": "Same file name already exists. Do you want to create anyway?"
+    },
+    "confirmation_save_as_title": {
+        "value": "saveAs ..."
+    },
+    "confirmation_save_as_message": {
+        "value": "Same file name already exists. Do you want to save anyway?"
+    },
+    "alert_collaboration_select": {
+        "value": "Select the project to join"
+    },
+    "alert_title_empty": {
+        "value": "Insert the title"
+    },
+    "alert_author_empty": {
+        "value": "Insert the author"
+    },
+    "alert_email_empty": {
+        "value": "Insert the e-mail"
+    },
+    "alert_version_empty": {
+        "value": "Insert the version"
+    },
+    "alert_module_empty": {
+        "value": "Insert the module"
+    },
+    "alert_contents_empty": {
+        "value": "Insert the content"
+    },
+    "alert_cannot_write": {
+        "value": "cannot write"
+    },
+    "alert_cannot_project_delete": {
+        "value": "Can not delete project"
+    },
+    "notice_write_done": {
+        "value": "Bug report successfully sent. Thank you"
+    },
+    "alert_naming": {
+        "value": "Same area name already exists"
+    },
+    "alertValue": {
+        "value": "Area name cannot contain blank"
+    },
+    "alert_collaboration_server_notconnected": {
+        "value": "Could not connect to collaboration server"
+    },
+    "alert_select_project_item": {
+        "value": "You must select at least one project item"
+    }
 }

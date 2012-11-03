@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.project._new = function () {
@@ -17,51 +19,35 @@ org.goorm.core.project._new.prototype = {
 		var handle_ok = function() {
 			// project create
 			if ($("#input_project_type").attr("value")=="") {
-				//alert.show(core.module.localization.msg["alertProjectType"]);
-				alert.show("error");
+				//alert.show(core.module.localization.msg["alert_project_type"]);
+				alert.show(core.module.localization.msg['alert_project_detailed_type']);
 				return false;
 			}
 			else if ($("#inputProjectSource").attr("value")=="") {
-				//alert.show(core.module.localization.msg["alertProjectSource"]);
-				alert.show("error");
-				return false;
+				alert.show(core.module.localization.msg["alert_project_source"]);				// alert.show("error");				return false;
 			}
 			else if ($("#input_project_detailed_type").attr("value")=="") {
-				//alert.show(core.module.localization.msg["alertProjectDetailedType"]);
-				alert.show("error");
-				return false;
+				alert.show(core.module.localization.msg["alert_project_detailed_type"]);				// alert.show("You must select a project detail type.");				return false;
 			}
 			else if ($("#input_project_author").attr("value")=="") {
-				//alert.show(core.module.localization.msg["alertProjectAuthor"]);
-				alert.show("error");
-				return false;
+				alert.show(core.module.localization.msg["alert_project_author"]);				// alert.show("You must input author name");				return false;
 			}
 			else if ($("#input_project_name").attr("value")=="") {
-				//alert.show(core.module.localization.msg["alertProjectName"]);
-				alert.show("error");
-				return false;
+				alert.show(core.module.localization.msg["alert_project_name"]);				// alert.show("You must input project name");				return false;
 			}
-			else if ($("#input_project_about").attr("value")=="") {
-				//alert.show(core.module.localization.msg["alertProjectAbout"]);
-				alert.show("error");
-				return false;
+			else if ($("#input_project_desc").attr("value")=="") {
+				alert.show(core.module.localization.msg["alert_project_about"]);				// alert.show("You must input a description of this project");				return false;
 			}
 			else if ($("#check_project_new_import").is(":checked")) {
 				if($("#project_new_import_file").attr("value").substr($("#project_new_import_file").attr("value").length-3,3).toLowerCase()!="zip") {
-					//alert.show(core.module.localization.msg["alertOnlyZipAllowed"]);
-					alert.show("error");
-					return false;
+					alert.show(core.module.localization.msg["alert_only_zip_allowed"]);					// alert.show("error");					return false;
 				}
 			}
 			else if (!/^[\w-]*$/.test($("#input_project_author").attr("value"))) {
-				//alert.show(core.module.localization.msg["alertAllowCharacter"]);
-				alert.show("error");
-				return false;
+				alert.show(core.module.localization.msg["alert_allow_character"]);				// alert.show("error");				return false;
 			}
 			else if (!/^[\w-]*$/.test($("#input_project_name").attr("value"))) {
-				//alert.show(core.module.localization.msg["alertAllowCharacter"]);
-				alert.show("error");
-				return false;
+				alert.show(core.module.localization.msg["alert_allow_character"]);				// alert.show("error");				return false;
 			}
 			
 			if ($("#new_projectUsingPlugin").val() == "yes") {			
@@ -89,20 +75,23 @@ org.goorm.core.project._new.prototype = {
 				if (use_collaboration==undefined || use_collaboration=="undefined") {
 					use_collaboration = "not checked";
 				}
-
+				
+				var plugin_name = $("#input_project_plugin").attr("value");
+				var plugin = {};
+				core.preference.plugins[plugin_name] && (plugin[plugin_name] = core.preference.plugins[plugin_name])
+				 
 				var senddata = {
 					project_type: $("#input_project_type").attr("value"),
 					project_detailed_type: $("#input_project_detailed_type").attr("value"),
 					project_author: $("#input_project_author").attr("value"),
 					project_name: $("#input_project_name").attr("value"),
-					project_about: $("#input_project_about").attr("value"),
-					use_collaboration: use_collaboration
+					project_desc: $("#input_project_desc").attr("value"),
+					use_collaboration: use_collaboration,
+					plugins: plugin
 				};
 
 				$.get("project/new", senddata, function (data) {
 					if(data.err_code==0) {
-						
-
 						/*
 						 * for plugin, moyara 12.8.6
 						 */
@@ -110,7 +99,6 @@ org.goorm.core.project._new.prototype = {
 						core.status.current_project_name = data.project_name;
 						core.status.current_project_type = data.project_type;
 						core.module.plugin_manager.new_project(senddata);
-						
 						
 						// new project with import						
 						if($("#check_project_new_import").is(":checked")) {
@@ -124,8 +112,8 @@ org.goorm.core.project._new.prototype = {
 						// core.module.layout.show_chat(str);
 					}
 					else {
-						//alert.show(core.module.localization.msg["alertError"] + data.message);
-						alert.show("error");
+						//alert.show(core.module.localization.msg["alert_error"] + data.message);
+						alert.show(data.message);
 						return false;
 					}
 				});				
@@ -139,8 +127,8 @@ org.goorm.core.project._new.prototype = {
 			this.hide(); 
 		};
 		
-		this.buttons = [ {text:"OK", handler:handle_ok, isDefault:true},
-						 {text:"Cancel",  handler:handle_cancel}]; 
+		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
+						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
 		this.dialog = new org.goorm.core.project._new.dialog();
 		this.dialog.init({
@@ -176,7 +164,7 @@ org.goorm.core.project._new.prototype = {
 						else {
 							alert.show(data.message);
 						}
-						//notice.show(core.module.localization.msg["noticeProjectImportDone"]);
+						//notice.show(core.module.localization.msg["notice_project_import_done"]);
 						
 					}
 				}
@@ -197,7 +185,17 @@ org.goorm.core.project._new.prototype = {
 				});
 				
 			},		
-			kind:"new_project"
+			kind:"new_project",
+			next:function() {
+				var stop_next = false;
+				if ($("#project_new .project_items .selected_button").length!=1) {
+					alert.show(core.module.localization.msg['alert_project_detailed_type']);
+					return false;
+				}
+				else {
+					return true;
+				}
+			}
 		});
 				
 		this.dialog = this.dialog.dialog;
@@ -213,7 +211,8 @@ org.goorm.core.project._new.prototype = {
 			
 			$("#input_project_type").attr("value", "");
 			$("#input_project_detailed_type").attr("value", "");
-			
+			$("#input_project_plugin").attr("value", "");
+						
 			$("#text_project_description").empty();
 		
 			$(".project_wizard_first_button").removeClass("selected_button");
@@ -229,9 +228,11 @@ org.goorm.core.project._new.prototype = {
 			
 			$("#input_project_type").attr("value", "");
 			$("#input_project_detailed_type").attr("value", "");
+			$("#input_project_plugin").attr("value", "");
 			
 			$("#input_project_type").attr("value", $(this).attr("projecttype"));
 			$("#input_project_detailed_type").attr("value", $(this).text());
+			$("#input_project_plugin").attr("value", $(this).attr("plugin_name"));
 			
 			$("#text_project_description").empty();
 			$("#text_project_description").append($(this).attr('description'));
@@ -253,9 +254,10 @@ org.goorm.core.project._new.prototype = {
 		$(".project_wizard_second_button").removeClass("selected_button");
 		$("#input_project_type").attr("value","");
 		$("#input_project_detailed_type").val("");
+		$("#input_project_plugin").val("");
 		$("#input_project_author").val("");
 		$("#input_project_name").val("");
-		$("#input_project_about").val("");
+		$("#input_project_desc").val("");
 		$("#project_new_import_upload_output").empty();
 		$("#project_new_import_file").val("");
 		$("#check_project_new_import").attr('checked', false);
@@ -271,9 +273,9 @@ org.goorm.core.project._new.prototype = {
 	
 	add_project_item: function () {
 		// for step 1
-		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='all'><div class='project_type_icon'><img src='images/org.goorm.core.project/project.png' class='project_icon' /></div><div class='project_type_title'>All</div><div class='project_type_description'>View all available project items (including plugins)</div></div>");
+		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='all'><div class='project_type_icon'><img src='images/org.goorm.core.project/project.png' class='project_icon' /></div><div class='project_type_title'>All</div><div class='project_type_description'>View all available<br />project items</div></div>");
 
-		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='goormp'><div class='project_type_icon'><img src='images/org.goorm.core.project/goorm_project.png' class='project_icon' /></div><div class='project_type_title'>goorm Project</div><div class='project_type_description'>goorm3 Project Customization/Plugin/Theme</div></div>");
+		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='goormp'><div class='project_type_icon'><img src='images/org.goorm.core.project/goorm_project.png' class='project_icon' /></div><div class='project_type_title'>goorm Project</div><div class='project_type_description'>Customization/Plugin<br />/Theme</div></div>");
 		
 		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all goormp' description=' Create New goorm Customization Project' projecttype='goorm'><img src='images/org.goorm.core.project/customization.png' class='project_item_icon' /><br /><a>goorm Customization</a></div>");
 		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all goormp' description=' Create New goorm Plugin' projecttype='goorm'><img src='images/org.goorm.core.project/plugin.png' class='project_item_icon' /><br /><a>goorm Plugin</a></div>");

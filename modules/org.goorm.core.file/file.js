@@ -1,3 +1,11 @@
+/**
+ * Copyright Sung-tae Ryu. All rights reserved.
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
+ **/
+
 var fs = require('fs');
 var walk = require('walk');
 var EventEmitter = require("events").EventEmitter;
@@ -24,7 +32,7 @@ module.exports = {
 				path += "."+query.type;
 			}
 			
-			fs.exists(__path+'workspace/'+path, function(exists) {
+			fs.exists(__workspace+'/'+path, function(exists) {
 
 				if (exists && query.new_anyway=="false") {
 					data.err_code = 99;
@@ -32,7 +40,7 @@ module.exports = {
 					evt.emit("file_do_new", data);					
 				}
 				else {
-					fs.writeFile(__path+'workspace/'+path, "", function(err) {
+					fs.writeFile(__workspace+'/'+path, "", function(err) {
 						if (err!=null) {
 							data.err_code = 40;
 							data.message = "Can not make project file";
@@ -61,7 +69,7 @@ module.exports = {
 		data.message = "process done";
 
 		if ( query.current_path!=null && query.folder_name!=null ) {
-			fs.exists(__path+'workspace/'+query.path, function(exists) {
+			fs.exists(__workspace+'/'+query.path, function(exists) {
 				if (exists) {
 					data.err_code = 20;
 					data.message = "Exist folder";
@@ -69,7 +77,7 @@ module.exports = {
 					evt.emit("file_do_new_folder", data);
 				}
 				else {
-					fs.mkdir(__path+'workspace/'+query.current_path+'/'+query.folder_name, '0777', function(err) {
+					fs.mkdir(__workspace+'/'+query.current_path+'/'+query.folder_name, '0777', function(err) {
 
 						if (err!=null) {
 							data.err_code = 30;
@@ -99,7 +107,7 @@ module.exports = {
 		data.message = "process done";
 		
 		if ( query.current_path!=null ) {
-			fs.readdir(__path+'workspace/'+query.current_path, function(err, files) {
+			fs.readdir(__workspace+'/'+query.current_path, function(err, files) {
 				if (err!=null) {
 					data.err_code = 10;
 					data.message = "Server can not response";
@@ -119,7 +127,7 @@ module.exports = {
 						i++;
 					}
 					
-					fs.writeFile(__path+'workspace/'+query.current_path+'/'+temp_file_name+i+'.txt', "", function(err) {
+					fs.writeFile(__workspace+'/'+query.current_path+'/'+temp_file_name+i+'.txt', "", function(err) {
 						if (err!=null) {
 							data.err_code = 40;
 							data.message = "Can not make project file";
@@ -150,7 +158,7 @@ module.exports = {
 		data.message = "process done";
 
 		if ( query.current_path!=null && query.file_name!=null ) {
-			fs.exists(__path+'workspace/'+query.path, function(exists) {
+			fs.exists(__workspace+'/'+query.path, function(exists) {
 				if (exists) {
 					data.err_code = 20;
 					data.message = "Exist file";
@@ -158,7 +166,7 @@ module.exports = {
 					evt.emit("file_do_new_other", data);
 				}
 				else {
-					fs.writeFile(__path+'workspace/'+query.current_path+'/'+query.file_name, "", function(err) {
+					fs.writeFile(__workspace+'/'+query.current_path+'/'+query.file_name, "", function(err) {
 						if (err!=null) {
 							data.err_code = 40;
 							data.message = "Can not make file";
@@ -183,7 +191,7 @@ module.exports = {
 
 		var data = {};
 
-		fs.writeFile(__path+'/workspace/'+query.path, query.data, function(err) {
+		fs.writeFile(__workspace+'/'+query.path, query.data, function(err) {
 			if (err!=null) {
 				data.err_code = 10;
 				data.message = "Can not save";
@@ -206,7 +214,7 @@ module.exports = {
 				
 		var nodes = [];
 		
-		root_dir = path.replace(__path + "workspace/", "") + "/";
+		root_dir = path.replace(__workspace+'/', "") + "/";
 
 		evt_dir.on("got_dir_nodes_for_get_nodes", function (dirs) {
 			var options = {
@@ -220,7 +228,7 @@ module.exports = {
 					for (var i=0; i < file_stats.length; i++) {
 						if (file_stats[i].name.indexOf("\.") != 0 ) {
 							var node = {};
-							node.root = root.replace(__path + "workspace/", "") + "/";
+							node.root = root.replace(__workspace+'/', "") + "/";
 							node.filename = file_stats[i].name;
 							node.parent_label = node.root;
 							node.project_path = root_dir;
@@ -274,7 +282,7 @@ module.exports = {
 				for (var i=0; i < dir_stats_array.length; i++) {
 					if (dir_stats_array[i].name.indexOf("\.") != 0 ) {				
 						var dir = {};
-						dir.root = root.replace(__path + "workspace/", "") + "/";
+						dir.root = root.replace(__workspace+'/', "") + "/";
 						dir.name = dir_stats_array[i].name;
 						dir.parent_label = dir.root;
 						dir.cls = "dir";
@@ -394,7 +402,7 @@ module.exports = {
 		data.message = "process done";
 		
 		if (query.filename != null) {
-			rimraf(__path+"workspace/"+query.filename, function(err) {
+			rimraf(__workspace+'/'+query.filename, function(err) {
 				if (err!=null) {
 					data.err_code = 20;
 					data.message = "Can not delete file";
@@ -427,7 +435,7 @@ module.exports = {
 		data.message = "process done";
 				
 		if (query.ori_path != null && query.ori_name != null && query.dst_name != null) {
-			var path = __path+"workspace/"+query.ori_path;
+			var path = __workspace+'/'+query.ori_path;
 			fs.rename(path+query.ori_name, path+query.dst_name, function (err) {
 
 				data.path = query.ori_path;
@@ -450,8 +458,8 @@ module.exports = {
 		data.message = "process done";
 
 		if (query.ori_path != null && query.ori_file != null && query.dst_path != null && query.dst_file != null) {
-			var ori_full = __path+"workspace/"+query.ori_path+"/"+query.ori_file;
-			var dst_full = __path+"workspace/"+query.dst_path+"/"+query.dst_file;
+			var ori_full = __workspace+'/'+query.ori_path+"/"+query.ori_file;
+			var dst_full = __workspace+'/'+query.dst_path+"/"+query.dst_file;
 			fs.rename(ori_full, dst_full, function (err) {
 
 				if (err!=null) {
@@ -463,7 +471,7 @@ module.exports = {
 				else {
 					
 					data.path = query.dst_path;
-					data.file = query.dst_name;
+					data.file = query.dst_file;
 	
 					evt.emit("file_do_move", data);
 				}
@@ -484,7 +492,7 @@ module.exports = {
 
 		if (query.file_import_location_path!=null && file!=null) {
 
-			fs.rename(file.path, __path+"workspace/"+query.file_import_location_path+"/"+file.name, function (err) {
+			fs.rename(file.path, __workspace+'/'+query.file_import_location_path+"/"+file.name, function (err) {
 				if (err==null) {
 					evt.emit("file_do_import", data);
 				}
@@ -511,9 +519,9 @@ module.exports = {
 		data.message = "process done";
 		
 		if ( query.user!=null && query.path!=null && query.file!=null ) {
-			fs.mkdir(__path+'temp_files/'+query.user, '0777', function(err) {
+			fs.mkdir(__temp_dir+'/'+query.user, '0777', function(err) {
 				if (err==null || err.errno == 47) {		//errno 47 is exist folder error
-					fs.readFile(__path + 'workspace/'+query.path+'/'+query.file, "utf8", function(err, contents) {
+					fs.readFile(__workspace+'/'+query.path+'/'+query.file, "utf8", function(err, contents) {
 						if (err!=null) {
 							data.err_code = 40;
 							data.message = "Cannot find target file";
@@ -521,7 +529,7 @@ module.exports = {
 							evt.emit("file_do_export", data);
 						}
 						else {
-							fs.writeFile(__path+'temp_files/'+query.user+'/'+query.file, contents, function(err) {
+							fs.writeFile(__temp_dir+'/'+query.user+'/'+query.file, contents, function(err) {
 								if (err!=null) {
 									data.err_code = 10;
 									data.message = "Can not save";
@@ -577,7 +585,7 @@ module.exports = {
 
 		if ( query.path!=null ) {
 			
-			fs.stat(__path+"workspace/"+query.path, function (err, stats) {
+			fs.stat(__workspace+'/'+query.path, function (err, stats) {
 				if ( err == null ) {
 				
 					var temp_path = query.path.split("/");
@@ -624,14 +632,14 @@ module.exports = {
 				path += "."+query.type;
 			}
 			
-			fs.exists(__path+'workspace/'+path, function(exists) {
+			fs.exists(__workspace+'/'+path, function(exists) {
 				if (exists && query.save_anyway=="false") {
 					data.err_code = 99;
 					data.message = "exist file";
 					evt.emit("file_do_save_as", data);					
 				}
 				else {
-					fs.writeFile(__path+'workspace/'+path, query.data, function(err) {
+					fs.writeFile(__workspace+'/'+path, query.data, function(err) {
 						if (err!=null) {
 							data.err_code = 40;
 							data.message = "Can not save file";

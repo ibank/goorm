@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.collaboration.communication = function () {
@@ -43,7 +45,7 @@ org.goorm.core.collaboration.communication.prototype = {
 					self.socket.emit("message", '{"channel": "communication", "action":"send_message", "user":"' + core.user.first_name + "_" + core.user.last_name + '", "workspace": "'+ core.status.current_project_name +'", "message":"' + encodedMsg + '"}');
 				} 
 				else {
-					alert.show("Collaboration server is not opened!");
+					// alert.show("Could not connect to collaboration server");					alert.show(core.module.localization.msg['alert_collaboration_server_notconnected']);
 				}
 
 				$(this).val("");

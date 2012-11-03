@@ -1,27 +1,16 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
- * version: 3.0.0
- * This is the module example for YUI_DOCS
- * @module collaboration
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
-/**
- * This is an goorm code generator.  
- * goorm starts with this code generator.
- * @class collaboration
- **/
 org.goorm.core.collaboration = function () {
 
 };
 
 org.goorm.core.collaboration.prototype = {
-
-	/**
-	 * This function is an goorm core initializating function.  
-	 * @constructor
-	 **/
 	init: function () {
 
 	}

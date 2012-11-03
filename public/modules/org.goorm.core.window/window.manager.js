@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.window.manager = function () {
@@ -50,7 +52,7 @@ org.goorm.core.window.manager.prototype = {
 		});
 		
 		$(".tab_list_left").click(function () {
-			if(self.active_window>0) {
+			if(self.active_window > 0) {
 				self.active_window--;
 				self.window[self.active_window].activate();
 			}
@@ -310,7 +312,10 @@ org.goorm.core.window.manager.prototype = {
 	},
 		
 	previous_window: function () {	
+/*
 		if (this.window[this.active_window-1]) {
+			console.log(this.window);
+			console.log("active_window: " + this.active_window);
 			this.window[this.active_window-1].activate();
 			this.active_window--;
 		  
@@ -318,10 +323,18 @@ org.goorm.core.window.manager.prototype = {
 				this.window[this.active_window].editor.editor.focus();
 			}
 		}
+*/
+			if(this.active_window > 0) {
+				this.active_window--;
+				this.window[this.active_window].activate();
+			}
 	},
 
 	next_window: function () {
+/*
 		if (this.window[this.active_window+1]) {
+			console.log(this.window);
+			console.log("active_window: " + this.active_window);
 			this.window[this.active_window+1].activate();
 			this.active_window++;
 		  
@@ -329,6 +342,11 @@ org.goorm.core.window.manager.prototype = {
 				this.window[this.active_window].editor.editor.focus();
 			}			  
 		}
+*/
+			if(this.active_window < this.index-1) {
+				this.active_window++;
+				this.window[this.active_window].activate();
+			}
 	},
 	
 	hide_all_windows: function () {
@@ -347,8 +365,7 @@ org.goorm.core.window.manager.prototype = {
 	},
 	
 	save_all: function() {
-
-		for (var i = 0; i < this.index; i++) {
+		for (var i = 0; i < this.window.length; i++) {
 			if(this.window[i].alive) {
 				if (this.window[i].designer) {
 					this.window[i].designer.save();
@@ -357,7 +374,8 @@ org.goorm.core.window.manager.prototype = {
 					this.window[i].editor.save();
 				}
 				
-				var window_manager = core.module.layout.workspace_window_manager;
+				var window_manager = core.module.layout.workspace.window_manager;
+				
 				window_manager.window[i].set_saved();
 				window_manager.tab[i].set_saved();
 			}
@@ -404,6 +422,7 @@ org.goorm.core.window.manager.prototype = {
 				$('#filewindow'+i+'_c').css('height', this.window[i].panel.height + 'px');
 				$('#filewindow'+i).children(".bd").height(this.window[i].panel.height - 50);
 				$('#filewindow'+i).css('width', this.window[i].panel.width + 'px');
+				$('#filewindow'+i).css('height', (this.window[i].panel.height - 2) + 'px');
 				$('#filewindow'+i+'_c').children(".window_container").height(this.window[i].panel.height - 50);
 				this.window[i].resize_all();
 				count++;
@@ -455,6 +474,9 @@ org.goorm.core.window.manager.prototype = {
 				$('#filewindow'+i+'_c').find(".window_container").find(".CodeMirror").height(this.window[i].panel.height - 50);
 				this.window[i].resize_all();
 				count++;
+				
+				$('#filewindow'+i).css('width', this.window[i].panel.width + 'px');
+				$('#filewindow'+i).css('height', (this.window[i].panel.height - 2) + 'px');
 			}
 		}
 		
@@ -502,6 +524,9 @@ org.goorm.core.window.manager.prototype = {
 				$('#filewindow'+i+'_c').find(".window_container").find(".CodeMirror").height(this.window[i].panel.height - 50);
 				this.window[i].resize_all();
 				count++;
+				
+				$('#filewindow'+i).css('width', this.window[i].panel.width + 'px');
+				$('#filewindow'+i).css('height', (this.window[i].panel.height - 2) + 'px');
 			}
 		}
 			

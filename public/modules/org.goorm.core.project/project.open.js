@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.project.open = function () {
@@ -20,9 +22,7 @@ org.goorm.core.project.open.prototype = {
 			var data = self.project_list.get_data();
 
 			if (data.path=="" || data.name=="" || data.type=="") {
-				//alert.show(core.module.localization.msg["alertProjectNotSelected"]);
-				alert.show("not selected");
-				return false;
+				alert.show(core.module.localization.msg["alert_project_not_selected"]);				// alert.show("Project item is not selected");				return false;
 			}
 			else {
 				self.open(data.path, data.name, data.type);
@@ -35,8 +35,8 @@ org.goorm.core.project.open.prototype = {
 			this.hide(); 
 		};
 		
-		this.buttons = [ {text:"Open", handler:handle_open, isDefault:true},
-						 {text:"Cancel",  handler:handle_cancel}]; 
+		this.buttons = [ {text:"<span localization_key='open'>Open</span>", handler:handle_open, isDefault:true},
+						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
 		this.dialog = new org.goorm.core.project.open.dialog();
 		this.dialog.init({
@@ -62,7 +62,7 @@ org.goorm.core.project.open.prototype = {
 		});
 		this.dialog = this.dialog.dialog;
 		
-		this.project_list = new org.goorm.core.project.list;
+		this.project_list = new org.goorm.core.project.list();
 	},
 	
 	show: function () {
@@ -71,7 +71,6 @@ org.goorm.core.project.open.prototype = {
 	},
 	
 	open: function (current_project_path, current_project_name, current_project_type) {
-		console.log(current_project_type);
 		core.module.layout.communication.leave();
 		core.status.current_project_path = current_project_path;
 		core.status.current_project_name = current_project_name;
@@ -89,7 +88,7 @@ org.goorm.core.project.open.prototype = {
 		
 		core.module.layout.communication.join();
 		core.module.layout.terminal.change_project_dir();
-		
+
 		$(core).trigger("on_project_open");
 	}
 };

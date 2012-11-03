@@ -98,9 +98,7 @@ org.goorm.core.menu.action.prototype = {
 			var window_manager = core.module.layout.workspace.window_manager;
 
 			if (window_manager.active_window<0) {
-				//alert.show(core.module.localization.msg.alert_file_not_opened);
-				alert.show("file not opened");
-			}
+				alert.show(core.module.localization.msg['alert_file_not_opened']);				// alert.show("file not opened");			}
 			else {
 				if(window_manager.window[window_manager.active_window].designer != undefined) {
 					window_manager.window[window_manager.active_window].designer.save();
@@ -140,9 +138,9 @@ org.goorm.core.menu.action.prototype = {
 					no_text : "No",
 					yes : function() {
 						var postdata = {
-							file_path : core.status.selected_file
+							filename : core.status.selected_file
 						};
-	
+						console.log(postdata);
 						$.get("file/delete", postdata, function(data) {
 							m.s("delete: " + core.status.selected_file);
 							core.module.layout.project_explorer.refresh();
@@ -460,7 +458,7 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=run]").click(function() {
 			if(core.module.plugin_manager.plugins["org.goorm.plugin." + core.status.current_project_type] != undefined
 			&& !$(this).hasClass('yuimenuitemlabel-disabled')) {
-				core.module.layout.inner_bottom_tabview.selectTab(2);
+				core.module.layout.inner_bottom_tabview.selectTab(1);
 				core.module.plugin_manager.plugins["org.goorm.plugin." + core.status.current_project_type].run(core.status.current_project_path);
 			}
 		});
@@ -491,7 +489,7 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=build_project]").unbind("click");
 		$("a[action=build_project]").click(function() {
 			if(!$(this).hasClass('yuimenuitemlabel-disabled')) {
-				core.module.layout.inner_bottom_tabview.selectTab(2);
+				core.module.layout.inner_bottom_tabview.selectTab(1);
 				core.dialog.build_project.show();
 			}
 			// if(core.module.plugin_manager.plugins["org.goorm.plugin."+core.status.current_project_type]!=undefined) {
@@ -505,7 +503,7 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=build_all]").unbind("click");
 		$("a[action=build_all]").click(function() {
 			if(!$(this).hasClass('yuimenuitemlabel-disabled')) {
-				core.module.layout.inner_bottom_tabview.selectTab(2);
+				core.module.layout.inner_bottom_tabview.selectTab(1);
 				core.dialog.build_all.show();
 			}
 		});
@@ -513,7 +511,7 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=build_clean]").unbind("click");
 		$("a[action=build_clean]").click(function() {
 			if(!$(this).hasClass('yuimenuitemlabel-disabled')) {
-				core.module.layout.inner_bottom_tabview.selectTab(2);
+				core.module.layout.inner_bottom_tabview.selectTab(1);
 				core.dialog.build_clean.show();
 			}
 		});
@@ -550,7 +548,7 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=debug]").click(function() {
 			if(core.module.plugin_manager.plugins["org.goorm.plugin." + core.status.current_project_type] != undefined
 			&& !$(this).hasClass('yuimenuitemlabel-disabled')) {
-				core.module.layout.inner_bottom_tabview.selectTab(1);
+				core.module.layout.inner_bottom_tabview.selectTab(0);
 				core.module.plugin_manager.plugins["org.goorm.plugin." + core.status.current_project_type].debug(core.status.current_project_path);
 			}
 		});
@@ -559,7 +557,7 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=debug_continue]").click(function() {
 			if(core.module.plugin_manager.plugins["org.goorm.plugin." + core.status.current_project_type] != undefined
 			&& !$(this).hasClass('yuimenuitemlabel-disabled')) {
-				core.module.layout.inner_bottom_tabview.selectTab(1);
+				core.module.layout.inner_bottom_tabview.selectTab(0);
 				var cmd = {
 						mode : "continue",
 						project_path : core.status.current_project_path
@@ -572,7 +570,7 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=debug_terminate]").click(function() {
 			if(core.module.plugin_manager.plugins["org.goorm.plugin." + core.status.current_project_type] != undefined
 			&& !$(this).hasClass('yuimenuitemlabel-disabled')) {
-				core.module.layout.inner_bottom_tabview.selectTab(1);
+				core.module.layout.inner_bottom_tabview.selectTab(0);
 				var cmd = {
 						mode : "terminate",
 						project_path : core.status.current_project_path
@@ -585,7 +583,7 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=debug_step_over]").click(function() {
 			if(core.module.plugin_manager.plugins["org.goorm.plugin." + core.status.current_project_type] != undefined
 			&& !$(this).hasClass('yuimenuitemlabel-disabled')) {
-				core.module.layout.inner_bottom_tabview.selectTab(1);
+				core.module.layout.inner_bottom_tabview.selectTab(0);
 				var cmd = {
 						mode : "step_over",
 						project_path : core.status.current_project_path
@@ -598,7 +596,7 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=debug_step_in]").click(function() {
 			if(core.module.plugin_manager.plugins["org.goorm.plugin." + core.status.current_project_type] != undefined
 			&& !$(this).hasClass('yuimenuitemlabel-disabled')) {
-				core.module.layout.inner_bottom_tabview.selectTab(1);
+				core.module.layout.inner_bottom_tabview.selectTab(0);
 				var cmd = {
 						mode : "step_in",
 						project_path : core.status.current_project_path
@@ -611,7 +609,7 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=debug_step_out]").click(function() {
 			if(core.module.plugin_manager.plugins["org.goorm.plugin." + core.status.current_project_type] != undefined
 			&& !$(this).hasClass('yuimenuitemlabel-disabled')) {
-				core.module.layout.inner_bottom_tabview.selectTab(1);
+				core.module.layout.inner_bottom_tabview.selectTab(0);
 				var cmd = {
 						mode : "step_out",
 						project_path : core.status.current_project_path
@@ -856,12 +854,12 @@ org.goorm.core.menu.action.prototype = {
 
 		$("a[action=bottom_console_show]").unbind("click");
 		$("a[action=bottom_console_show]").click(function() {
-			core.module.layout.inner_bottom_tabview.selectTab(2);
+			core.module.layout.inner_bottom_tabview.selectTab(1);
 		});
 
 		$("a[action=bottom_search_show]").unbind("click");
 		$("a[action=bottom_search_show]").click(function() {
-			core.module.layout.inner_bottom_tabview.selectTab(3);
+			core.module.layout.inner_bottom_tabview.selectTab(2);
 		});
 
 		$("a[action=toggle_full_workspace]").unbind("click");

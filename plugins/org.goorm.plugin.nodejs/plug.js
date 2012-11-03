@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.plugin.nodejs = function () {
@@ -16,7 +18,7 @@ org.goorm.plugin.nodejs = function () {
 org.goorm.plugin.nodejs.prototype = {
 	init: function () {
 		
-		this.addProjectItem();
+		this.add_project_item();
 		
 		this.mainmenu = core.module.layout.mainmenu;
 		
@@ -29,15 +31,17 @@ org.goorm.plugin.nodejs.prototype = {
 		
 		this.add_mainmenu();
 		
+		this.add_menu_action();
+		
 		//core.dictionary.loadDictionary("plugins/org.uizard.plugin.c/dictionary.json");
 	},
 	
-	addProjectItem: function () {
-		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='nodejsp'><div class='project_type_icon'><img src='/org.goorm.plugin.nodejs/images/nodejs.png' class='project_icon' /></div><div class='project_type_title'>nodejs Project</div><div class='project_type_description'>nodejs Project using GNU Compiler Collection</div></div>");
+	add_project_item: function () {
+		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='nodejsp'><div class='project_type_icon'><img src='/org.goorm.plugin.nodejs/images/nodejs.png' class='project_icon' /></div><div class='project_type_title'>nodejs Project</div><div class='project_type_description'>Server-side Javascript Project with node.js</div></div>");
 		
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all nodejsp' description='  Create New Project for nodejs' projecttype='nodejs'><img src='/org.goorm.plugin.nodejs/images/nodejs_console.png' class='project_item_icon' /><br /><a>nodejs Project</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all nodejsp' description='  Create New Project for nodejs' projecttype='nodejs'  plugin_name='org.goorm.plugin.nodejs'><img src='/org.goorm.plugin.nodejs/images/nodejs_console.png' class='project_item_icon' /><br /><a>nodejs Project</a></div>");
 		
-		$(".project_dialog_type").append("<option value='c'>nodejs Projects</option>");
+		$(".project_dialog_type").append("<option value='c'>nodejs Projects</option>").attr("selected", "");
 		
 	},
 	
@@ -64,7 +68,7 @@ org.goorm.plugin.nodejs.prototype = {
 			project_detailed_type,
 			project_author,
 			project_name,
-			project_about,
+			project_desc,
 			use_collaboration
 		   }
 		*/
@@ -366,7 +370,7 @@ org.goorm.plugin.nodejs.prototype = {
 
 	},
 	
-	build: function (projectName, projectPath, callback) {
+	build: function (projectName, callback) {
 		var self=this;
 		
 		console.log("build not needed for nodejs.");

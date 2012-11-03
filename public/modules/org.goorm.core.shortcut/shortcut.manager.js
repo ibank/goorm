@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.shortcut.manager = function () {
@@ -155,8 +157,7 @@ org.goorm.core.shortcut.manager.prototype = {
 		
 		//Save All
 		$(document).bind('keydown', 'Alt+Ctrl+S', function (e) {
-		
-			core.module.layout.workspace.window_manager.saveAll();
+			core.module.layout.workspace.window_manager.save_all();
 
 			core.module.layout.mainmenu.blur();
 
@@ -168,6 +169,10 @@ org.goorm.core.shortcut.manager.prototype = {
 		//Move
 		$(document).bind('keydown', 'Ctrl+Shift+M', function (e) {
 
+			if(core.status.selected_file){
+				core.dialog.move_file.show("context");
+			}
+
 			e.stopPropagation();
 			e.preventDefault();
 			return false;
@@ -175,8 +180,10 @@ org.goorm.core.shortcut.manager.prototype = {
 	
 		//Rename
 		$(document).bind('keydown', 'Ctrl+Shift+R', function (e) {
-
-			core.dialog.rename_file.show("");
+			
+			if(core.status.selected_file){
+				core.dialog.rename_file.show("context");
+			}
 			
 			e.stopPropagation();
 			e.preventDefault();
@@ -195,6 +202,8 @@ org.goorm.core.shortcut.manager.prototype = {
 		
 		//Print
 		$(document).bind('keydown', 'Ctrl+P', function (e) {
+			
+			core.dialog.print.show();
 
 			e.stopPropagation();
 			e.preventDefault();
@@ -306,8 +315,8 @@ org.goorm.core.shortcut.manager.prototype = {
 		$(document).bind('keydown', 'Del', function (e) {
 
 			var window_manager = core.module.layout.workspace.window_manager;
-			
-			if (window_manager.window[window_manager.active_window].designer) {
+
+			if (typeof window_manager.window[window_manager.active_window]!="undefined" && typeof window_manager.window[window_manager.active_window].designer!="undefined") {
 				window_manager.window[window_manager.active_window].designer.canvas._delete();
 				
 				e.stopPropagation();
@@ -315,7 +324,7 @@ org.goorm.core.shortcut.manager.prototype = {
 				return false;	
 			}
 			else {
-				$("a[action=do_delete]").trigger("click");
+				$("a[action=delete_file]").trigger("click");
 				e.stopPropagation();
 				e.preventDefault();
 				return false;		
@@ -353,7 +362,6 @@ org.goorm.core.shortcut.manager.prototype = {
 			if (window_manager.window[window_manager.active_window].editor&&!core.status.keydown) {
 				core.dialog.find_and_replace.find("next");
 				core.status.keydown=true;
-
 			}
 			
 			
@@ -395,7 +403,6 @@ org.goorm.core.shortcut.manager.prototype = {
 		
 		//Run
 		$(document).bind('keydown', 'Ctrl+F5', function (e) {
-
 			if(core.module.plugin_manager.plugins["org.goorm.plugin."+core.status.current_project_type]!=undefined) {
 				core.module.plugin_manager.plugins["org.goorm.plugin."+core.status.current_project_type].run(core.status.current_project_path);
 			}
@@ -407,7 +414,6 @@ org.goorm.core.shortcut.manager.prototype = {
 		
 		//Debug
 		$(document).bind('keydown', 'F7', function (e) {
-
 			if(core.module.plugin_manager.plugins["org.goorm.plugin."+core.status.current_project_type]!=undefined) {
 				core.module.layout.inner_bottom_tabview.selectTab(1);
 				core.module.plugin_manager.plugins["org.goorm.plugin."+core.status.current_project_type].debug(core.status.current_project_path);
@@ -418,17 +424,18 @@ org.goorm.core.shortcut.manager.prototype = {
 			return false;
 		});
 		
-		/*
+		
 		//Build Project
 		$(document).bind('keydown', 'F5', function (e) {
-
-			core.dialogBuildProject.show();
-
+			if(core.module.plugin_manager.plugins["org.goorm.plugin."+core.status.current_project_type]!=undefined) {
+				core.module.plugin_manager.plugins["org.goorm.plugin."+core.status.current_project_type].build(core.status.current_project_path);
+			}
+			
 			e.stopPropagation();
 			e.preventDefault();
 			return false;
 		});
-		*/
+		
 		
 		//Clean
 		$(document).bind('keydown', 'Ctrl+Del', function (e) {
@@ -446,7 +453,7 @@ org.goorm.core.shortcut.manager.prototype = {
 		//////////////////////////////////////////////////
 		
 		//Open Join the Project
-		$(document).bind('keydown', 'Ctrl+J', function (e) {
+		$(document).bind('keydown', 'Ctrl+J', function (e) { // core에서 init 안되어있음
 
 			core.dialog.join_project.show();
 			
@@ -550,7 +557,7 @@ org.goorm.core.shortcut.manager.prototype = {
 			return false;
 		});	
 		
-		//Left Layout Toggle Toolbox
+		//Right Layout Toggle Toolbox
 		$(document).bind('keydown', 'Alt+Shift+3', function (e) {
 			if (!core.status.keydown) {
 				core.module.layout.inner_right_tabview.selectTab(0);
@@ -589,7 +596,7 @@ org.goorm.core.shortcut.manager.prototype = {
 			return false;
 		});
 		
-		//Left Layout Show/Hide
+		//Bottom Layout Show/Hide
 		$(document).bind('keydown', 'Alt+Shift+B', function (e) {
 			if (!core.status.keydown) {
 				if (core.module.layout.inner_layout.getUnitByPosition("bottom")._collapsed) {

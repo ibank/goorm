@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.help.install_new_plugin = function () {
@@ -24,8 +26,8 @@ org.goorm.core.help.install_new_plugin.prototype = {
 			this.hide(); 
 		};
 		
-		this.buttons = [ {text:"OK", handler:handle_ok, isDefault:true},
-						 {text:"Cancel",  handler:handle_cancel}]; 
+		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
+						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
 		this.dialog = new org.goorm.core.help.install_new_plugin.dialog();
 		this.dialog.init({
@@ -34,8 +36,8 @@ org.goorm.core.help.install_new_plugin.prototype = {
 			width:600,
 			height:400,
 			modal:true,
-			yes_text: "OK",
-			no_text: "Close",
+			yes_text: "<span localization_key='ok'>OK</span>",
+			no_text: "<span localization_key='close'>Close</span>",
 			buttons:this.buttons,
 			success: function () {
 				self.plugins_add_button = new YAHOO.widget.Button("plugins_add_button");
@@ -190,11 +192,11 @@ org.goorm.core.help.install_new_plugin.prototype = {
 							core.module.loading_bar.stop();
 						}
 					}
-					, error: function(xhr, status, error) {alert.show(core.module.localization.msg["alertError"] + error); }
+					, error: function(xhr, status, error) {alert.show(core.module.localization.msg["alert_error"] + error); }
 				});
 //			    
 //			}
-//			, error: function(xhr, status, error) {alert.show(core.module.localization.msg["alertError"] + error); }
+//			, error: function(xhr, status, error) {alert.show(core.module.localization.msg["alert_error"] + error); }
 //		});
 	}
 };

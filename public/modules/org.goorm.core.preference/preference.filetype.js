@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.preference.filetype = function () {
@@ -21,7 +23,7 @@ org.goorm.core.preference.filetype.prototype = {
 		// Buttons on dialog
 		this.add_button =  new YAHOO.widget.Button("filetype_add", { onclick: { fn: this.add } });
 		this.del_button =  new YAHOO.widget.Button("filetype_delete", { onclick: { fn: this.del } });
-		this.save_button =  new YAHOO.widget.Button("filetypesave", { onclick: { fn: this.save } });
+		this.save_button =  new YAHOO.widget.Button("filetype_save", { onclick: { fn: this.save } });
 		
 	},
 	

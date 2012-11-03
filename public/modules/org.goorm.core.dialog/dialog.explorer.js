@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.dialog.explorer = function () {
@@ -69,7 +71,17 @@ org.goorm.core.dialog.explorer.prototype = {
 			data.name = $(self.target_name).val();
 			data.type = $(self.file_type).val();
 		}
-
+		
+		if (typeof data.path == "undefined") {
+			data.path="";
+		}
+		if (typeof data.name == "undefined") {
+			data.name="";
+		}
+		if (typeof data.type == "undefined") {
+			data.type="";
+		}
+		
 		if (data.path=="") {
 			data.path="/";
 		}
@@ -155,7 +167,7 @@ org.goorm.core.dialog.explorer.prototype = {
 			}
 		});
 
-		this.treeview.getNodeByElement($(self.dir_tree).find(".ygtvfocus")[0]).expand();
+		//this.treeview.getNodeByElement($(self.dir_tree).find(".ygtvfocus")[0]).expand();
 	},
 	
 	tree_expand_complete: function () {

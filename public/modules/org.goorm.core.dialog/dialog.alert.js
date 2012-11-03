@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.dialog.alert = function () {
@@ -52,7 +54,7 @@ org.goorm.core.dialog.alert.prototype = {
 				fixedcenter: true,
 				effect:{effect:YAHOO.widget.ContainerEffect.FADE,duration:0.2},
 				buttons: [ 
-					{ text:"OK", handler:handle_yes, isDefault:true }
+					{ text:"<span localization_key='button_ok'>OK</span>", handler:handle_yes, isDefault:true }
 				] 
 			} 
 		);

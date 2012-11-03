@@ -1,6 +1,6 @@
 {
-	"version" : "3.0.0",
-	"url" : "http://www.goorm.org",
+	"version" : "1.0.2",
+	"url" : "http://www.goorm.io",
 	"lib" :[
 		{ "name" : "YUI",
 		  "version" : "2"

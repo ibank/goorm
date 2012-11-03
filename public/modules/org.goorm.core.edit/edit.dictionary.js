@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.edit.dictionary = function () {
@@ -85,11 +87,24 @@ org.goorm.core.edit.dictionary.prototype = {
 		
 		$(this.target).find(".dictionary_list").empty();
 		
-		if (filetype != null) {
-			$.getJSON("configs/dictionary/" + filetype + ".json", function(data) {
-				self.contents = eval(data);
-			});
-		}
+		$.getJSON("configs/dictionary/dictionary_list.json", function(list_data) {
+			if (filetype && list_data[filetype] != null) {
+				$.getJSON(list_data[filetype].path, function(data) {
+					self.contents = eval(data);
+				});
+			}
+			else{
+				$.getJSON(list_data['etc'].path, function(data) {
+					self.contents = eval(data);
+				});
+			}
+		});
+		
+		// if (filetype != null) {
+			// $.getJSON("configs/dictionary/" + filetype + ".json", function(data) {
+				// self.contents = eval(data);
+			// });
+		// }
 	},
 	
 	set: function () {

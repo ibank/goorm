@@ -1,3 +1,11 @@
+/**
+ * Copyright Sung-tae Ryu. All rights reserved.
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
+ **/
+
 var fs = require('fs'),
 	walk = require('walk'),
 	emitter;
@@ -5,7 +13,7 @@ var common = require(__path + "plugins/org.goorm.plugin.cpp/modules/common.js");
 
 module.exports = {
 	do_new : function(req, evt) {
-		var workspace = __path + "workspace/" + req.data.project_author + "_" + req.data.project_name;
+		var workspace = __workspace + "/" + req.data.project_author + "_" + req.data.project_name;
 		var template = common.path + "template";
 		
 		emittor = walk.walk(template);

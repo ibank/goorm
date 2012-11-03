@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.printer = function () {
@@ -9,6 +11,7 @@ org.goorm.core.printer = function () {
 	this.buttons = null;
 	this.tabview = null;
 	this.treeview = null;
+	this.print_window = null;
 };
 
 org.goorm.core.printer.prototype = {
@@ -16,10 +19,32 @@ org.goorm.core.printer.prototype = {
 		var self = this;
 		
 		var handle_print = function() { 
-			var print_window = window.open("", "", "width=1000, height=700, scrollbars=yes");
-			print_window.document.write("<div id='print_contents'></div>");
-			self.set_contents(print_window);
-			print_window.focus();
+			self.print_window = window.open("", "", "width=800, height=600, scrollbars=yes");
+
+			self.print_window.document.write("<script src='../lib/codemirror.js'></script>");
+			self.print_window.document.write("<script src='../lib/util/runmode.js'></script>");
+			self.print_window.document.write("<script src='../mode/xml/xml.js'></script>");
+			
+			self.print_window.document.write("<link rel='stylesheet' href='/lib/net.codemirror.code/lib/codemirror.css'>");
+			self.print_window.document.write("<link rel='stylesheet' href='/lib/net.codemirror.code/theme/default.css'>");
+			self.print_window.document.write("<link rel='stylesheet' href='/lib/net.codemirror.code/theme/neat.css'>");
+			self.print_window.document.write("<link rel='stylesheet' href='/lib/net.codemirror.code/theme/elegant.css'>");
+			self.print_window.document.write("<link rel='stylesheet' href='/lib/net.codemirror.code/theme/night.css'>");
+			self.print_window.document.write("<link rel='stylesheet' href='/lib/net.codemirror.code/css/docs.css'>");
+	
+			self.print_window.document.write("<link rel='stylesheet' href='/lib/net.codemirror.code/mode/clike/clike.css'>");
+			self.print_window.document.write("<link rel='stylesheet' href='/lib/net.codemirror.code/mode/css/css.css'>");
+			self.print_window.document.write("<link rel='stylesheet' href='/lib/net.codemirror.code/mode/diff/diff.css'>");
+			self.print_window.document.write("<link rel='stylesheet' href='/lib/net.codemirror.code/mode/haskell/haskell.css'>");
+			self.print_window.document.write("<link rel='stylesheet' href='/lib/net.codemirror.code/mode/javascript/javascript.css'>");
+			self.print_window.document.write("<link rel='stylesheet' href='/lib/net.codemirror.code/mode/rst/rst.css'>");
+			self.print_window.document.write("<link rel='stylesheet' href='/lib/net.codemirror.code/mode/stex/stex.css'>");
+			self.print_window.document.write("<link rel='stylesheet' href='/lib/net.codemirror.code/mode/xml/xml.css'>");
+
+			self.print_window.document.write("<pre id='print_contents' class='cm-s-default'></pre>");
+			
+			self.set_contents(self.print_window);
+			self.print_window.focus();
 			
 			this.hide(); 
 		};
@@ -30,16 +55,16 @@ org.goorm.core.printer.prototype = {
 		};		
 		
 		this.buttons = [
-						{text:"Print", handler:handle_print, isDefault:true},
-						{text:"Cancel", handler:handle_cancel}
-						]; 
+						{text:"<span localization_key='print'>Print</span>", handler:handle_print, isDefault:true},
+						{text:"<span localization_key='cancel'>Cancel</span>", handler:handle_cancel}
+						];
 						 
 		this.dialog = new org.goorm.core.printer.dialog();
 		this.dialog.init({
 			title:"Print", 
 			path:"configs/dialogs/org.goorm.core.printer/printer.html",
-			width:620,
-			height:450,
+			width:300,
+			height:200,
 			modal:true,
 			buttons:this.buttons,
 			success: function () {
@@ -60,16 +85,12 @@ org.goorm.core.printer.prototype = {
 		var window_manager = core.module.layout.workspace.window_manager;
 		
 		if (window_manager.window[window_manager.active_window].editor) {
-			/*
-			var ContentsText = $(opener.document).find(".activated").parent().find(".CodeMirror-lines").html();
-		  
-			if(ContentsText != "") {
-				document.body.innerHTML = ContentsText;
-				window.print();
-			}
-			else {
-			}
-			*/
+			var code = window_manager.window[window_manager.active_window].editor.editor.getValue();
+			var mode = window_manager.window[window_manager.active_window].editor.mode;
+			
+			CodeMirror.runMode(code, mode, target.document.getElementById("print_contents"));
+			
+			target.print();
 		}
 		else if (window_manager.window[window_manager.active_window].designer) {
 			var design_print = new org.goorm.core.printer.design();
@@ -84,6 +105,9 @@ org.goorm.core.printer.prototype = {
 	
 	set_preview_contents: function (target) {
 		var window_manager = core.module.layout.workspace.window_manager;
+		
+		if(window_manager.active_window == -1)
+			return;
 		
 		if (window_manager.window[window_manager.active_window].editor) {
 			/*

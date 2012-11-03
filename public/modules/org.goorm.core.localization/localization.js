@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.localization = function () {
@@ -9,6 +11,7 @@ org.goorm.core.localization = function () {
 	this.data1 = null;
 	this.data2 = null;
 	this.data3 = null;
+	this.data4 = null;
 	this.before_language = null;
 	this.msg = null;
 };
@@ -16,16 +19,10 @@ org.goorm.core.localization = function () {
 org.goorm.core.localization.prototype = {
 	init: function () {
 		var self = this;
-		var language = localStorage.getItem("language");
-		if(!language) language = "us";
-		$.getJSON("configs/languages/"+language+".msg.json", function(data){
-			self.msg=data;
-		});
 	},
 
-	change_language: function (language) {
+	change_language: function (language) {	
 		var self = this;
-		
 		var is_first = false;
 		
 		if (localStorage.getItem("language")==null && core.server_language=="client") {
@@ -35,7 +32,6 @@ org.goorm.core.localization.prototype = {
 		localStorage.setItem("language", language);
 
 		var current = "";
-
 		if(language=="us") {
 			current = "English";
 		}
@@ -44,25 +40,27 @@ org.goorm.core.localization.prototype = {
 		}
 		$("#language_button-button").text(current);
 
-//		//Get a stencil and adapt it to div
-//		var url = "file/get_contents";
-		
-		$.getJSON("configs/language/"+language+".menu.json", function(data){
+		$.getJSON("configs/languages/"+language+".menu.json", function (data) {
 			self.data1 = data;
+
+			self.apply(data);
 		});
 		
-		$.getJSON("configs/language/"+language+".dialog.json", function(data){
+		$.getJSON("configs/languages/"+language+".dialog.json", function (data) {
 			self.data2 = data;
+			
+			self.apply(data);
 		});
 		
-		$.getJSON("configs/language/"+language+".msg.json", function(data){
+		$.getJSON("configs/languages/"+language+".msg.json", function (data) {
 			self.msg = data;
+			
 			if (is_first && language=="kor") {
 				confirmation.init({
-					title: core.module.localization.msg["confirmationLanguageTitle"].value, 
-					message: core.module.localization.msg["confirmationLanguageMessage"].value,
-					yes_text: core.module.localization.msg["confirmationYes"].value,
-					no_text: core.module.localization.msg["confirmationNo"].value,
+					title: core.module.localization.msg["confirmation_language_title"].value, 
+					message: core.module.localization.msg["confirmation_language_message"].value,
+					yes_text: core.module.localization.msg["confirmation_yes"].value,
+					no_text: core.module.localization.msg["confirmation_no"].value,
 					yes: function () {
 						core.module.localization.change_language(language);
 						core.module.localization.before_language=language;
@@ -74,10 +72,17 @@ org.goorm.core.localization.prototype = {
 				
 				confirmation.panel.show();
 			}
+			
+			self.apply_message(data);
+		});
+		
+		$.getJSON("configs/languages/"+language+".dict.json", function (data) {
+			self.data4 = data;
+			self.apply(data);
 		});
 
 /*
-		$.getScript('config/language/' + language + '.msg.js', function () {
+		$.getScript('config/languages/' + language + '.msg.js', function () {
 
 			delete self.msg;	
 			eval("self.msg = new org.goorm.core.module.localization."+language+"();");
@@ -85,8 +90,8 @@ org.goorm.core.localization.prototype = {
 			
 			if (is_first && language=="kor") {
 				confirmation.init({
-					title: core.module.localization.msg["confirmationLanguageTitle"], 
-					message: core.module.localization.msg["confirmationLanguageMessage"],
+					title: core.module.localization.msg["confirmation_language_title"], 
+					message: core.module.localization.msg["confirmation_language_message"],
 					yes_text: core.module.localization.msg["confirmation_yes"],
 					no_text: core.module.localization.msg["confirmation_no"],
 					yes: function () {
@@ -103,6 +108,7 @@ org.goorm.core.localization.prototype = {
 		});	
 */
 
+		
 	},
 
 	apply: function (data) {

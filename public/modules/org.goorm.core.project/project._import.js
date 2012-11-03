@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.project._import = function () {
@@ -18,9 +20,7 @@ org.goorm.core.project._import.prototype = {
 		var handle_ok = function() {
 			var file_name = $("#project_import_file").val();
 			if(file_name.substr(file_name.length-3,3).toLowerCase()!="zip") {
-				//alert.show(core.module.localization.msg["alertOnlyZipAllowed"]);
-				alert.show("Zip file only");
-				return false;
+				alert.show(core.module.localization.msg["alert_only_zip_allowed"]);				// alert.show("Sorry, you can import only zip file");				return false;
 			}
 		
 			core.module.loading_bar.start("Import processing...");
@@ -32,8 +32,8 @@ org.goorm.core.project._import.prototype = {
 			this.hide(); 
 		};
 		
-		this.buttons = [ {text:"OK", handler:handle_ok, isDefault:true},
-						 {text:"Cancel",  handler:handle_cancel}]; 
+		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
+						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
 		this.dialog = new org.goorm.core.project._import.dialog();
 		this.dialog.init({
@@ -63,14 +63,12 @@ org.goorm.core.project._import.prototype = {
 						self.dialog.panel.hide();
 						core.module.loading_bar.stop();
 						if (data.err_code==0) {
-							notice.show(data.message);
+							notice.show("Project is imported.");
 							core.module.layout.project_explorer.refresh();
 						}
 						else {
 							alert.show(data.message);
 						}
-						//notice.show(core.module.localization.msg["noticeProjectImportDone"]);
-						
 					}
 				}
 	            $('#project_import_my_form').ajaxForm(form_options);

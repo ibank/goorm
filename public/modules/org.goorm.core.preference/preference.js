@@ -1,8 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
- * version: 3.0.0
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.preference = function () {
@@ -53,6 +54,10 @@ org.goorm.core.preference.prototype = {
 			core.preference = json;
 			self.preference_default = $.extend(true, {}, json);
 			self.load();
+			
+			$.get('/preference/workspace_path', function(data){
+				self.preference.workspace_path = data.path;
+			});
 		});
 	},
 	
@@ -238,8 +243,9 @@ org.goorm.core.preference.prototype = {
 			$(targets[index]).find("input").each(function(){
 				if(key[$(this).attr("name")] !== null){
 					if($(this).attr("type") == "checkbox"){
-						if(key[$(this).attr("name")] == "true")
-							$(this).attr("checked","checked");
+						if(key[$(this).attr("name")] == "true") {
+							$(this).attr("checked",true);
+						}
 //						else $(this).attr("checked",);
 					}
 					else{
@@ -326,8 +332,8 @@ org.goorm.core.preference.prototype = {
 			this.hide();
 		};
 		
-		this.buttons = [ {text:"OK", handler:handle_ok, isDefault:true},
-						 {text:"Cancel",  handler:handle_cancel}];
+		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
+						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}];
 		
 		this.dialog.init({
 			title:"Preference", 
@@ -379,6 +385,9 @@ org.goorm.core.preference.prototype = {
 					
 					var filetype = new org.goorm.core.preference.filetype();
 					filetype.init();
+					
+					var language = new org.goorm.core.preference.language();
+					language.init();
 					
 					$(core).trigger("preference_loading_complete");
 					console.log("preference dialog loaded");

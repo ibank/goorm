@@ -1,8 +1,11 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
+ 
 org.goorm.plugin.cpp = function () {
 	this.name = "cpp";
 	this.mainmenu = null;
@@ -14,7 +17,7 @@ org.goorm.plugin.cpp = function () {
 
 org.goorm.plugin.cpp.prototype = {
 	init: function () {
-		this.addProjectItem();
+		this.add_project_item();
 		
 		this.mainmenu = core.module.layout.mainmenu;
 		
@@ -27,18 +30,21 @@ org.goorm.plugin.cpp.prototype = {
 		
 		this.add_mainmenu();
 		
+		this.add_menu_action();
+		
 		//core.dictionary.loadDictionary("plugins/org.uizard.plugin.c/dictionary.json");
 		
 		this.preference = core.preference.plugins['org.goorm.plugin.cpp'];
 	},
 	
-	addProjectItem: function () {
+	add_project_item: function () {
 		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='cpp'><div class='project_type_icon'><img src='/org.goorm.plugin.cpp/images/cpp.png' class='project_icon' /></div><div class='project_type_title'>C/C++ Project</div><div class='project_type_description'>C/C++ Project using GNU Compiler Collection</div></div>");
 		
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all cpp' description='  Create New Project for C' projecttype='cpp'><img src='/org.goorm.plugin.cpp/images/cpp_console.png' class='project_item_icon' /><br /><a>C/C++ Console Project</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all cpp' description='  Create New Project for C' projecttype='cpp' plugin_name='org.goorm.plugin.cpp'><img src='/org.goorm.plugin.cpp/images/cpp_console.png' class='project_item_icon' /><br /><a>C/C++ Console Project</a></div>");
 		
-		$(".project_dialog_type").append("<option value='cpp'>C/C++ Projects</option>");
-		
+		$(".project_dialog_type").append("<option value='cpp'>C/C++ Projects</option>").attr("selected", "");
+
+
 	},
 	
 	add_mainmenu: function () {
@@ -64,7 +70,7 @@ org.goorm.plugin.cpp.prototype = {
 			project_detailed_type,
 			project_author,
 			project_name,
-			project_about,
+			project_desc,
 			use_collaboration
 		   }
 		*/
@@ -319,16 +325,22 @@ org.goorm.plugin.cpp.prototype = {
 		}
 	},
 	
-	build: function (projectName, projectPath, callback) {
+	build: function (projectName, callback) {
 		var self=this;
+		var workspace = core.preference.workspace_path;
+		var property = core.property;
+		if(projectName) {
+			core.workspace[projectName] && (property = core.workspace[projectName])
+		}
+		else {
+			var projectName = core.status.current_project_path;
+		}
+		var plugin = property.plugins['org.goorm.plugin.cpp'];
+		var buildOptions = " "+plugin['plugin.cpp.build_option'];
+		var buildPath = " -o "+workspace+projectName+"/"+plugin['plugin.cpp.build_path']+plugin['plugin.cpp.main'];
 		
-		var property = core.property.plugins['org.goorm.plugin.cpp'];
-
-		var buildOptions = " "+property['plugin.cpp.build_option'];
-		var buildPath = " -o "+property['plugin.cpp.build_path']+property['plugin.cpp.main'];
-		
-		var cmd = 'find '+property['plugin.cpp.source_path']+' -name "*.cpp" -print > file.list';
-		var cmd1 = "g++ @file.list"+buildPath+buildOptions;
+		var cmd = 'find '+workspace+projectName+"/"+plugin['plugin.cpp.source_path']+' -name "*.cpp" -print > '+workspace+projectName+"/"+'file.list';
+		var cmd1 = "g++ @"+workspace+projectName+"/"+"file.list"+buildPath+buildOptions;
 		
 		core.module.layout.terminal.send_command(cmd+'\r', null, function(){
 			core.module.layout.terminal.send_command(cmd1+'\r', null, function(){
@@ -339,10 +351,18 @@ org.goorm.plugin.cpp.prototype = {
 		if(callback) callback();
 	},
 	
-	clean: function(){
-		var property = core.property.plugins['org.goorm.plugin.cpp'];
-		var buildPath = property['plugin.cpp.build_path'];
-		core.module.layout.terminal.send_command("rm -rf "+buildPath+"* \r", null, function(){
+	clean: function(project_name){
+		var workspace = core.preference.workspace_path;
+		var property = core.property;
+		if(project_name) {
+			core.workspace[project_name] && (property = core.workspace[project_name])
+		}
+		else {
+			var project_name = core.status.current_project_path;
+		}
+		var plugin = property.plugins['org.goorm.plugin.cpp'];
+		var buildPath = plugin['plugin.cpp.build_path'];
+		core.module.layout.terminal.send_command("rm -rf "+workspace+project_name+"/"+buildPath+"* \r", null, function(){
 			core.module.layout.project_explorer.refresh();
 		});
 	}

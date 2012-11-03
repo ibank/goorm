@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.dialog = function () {
@@ -100,12 +102,11 @@ org.goorm.core.dialog.prototype = {
 			
 			if (self.buttons && self.panel.cfg.config.visible.value && !core.status.keydown && !alert.panel.cfg.config.visible.value && !notice.panel.cfg.config.visible.value && !confirmation.panel.cfg.config.visible.value) {
 				$(self.buttons).each(function (i) { 
-					if (this.text == "Cancel") {
+					if ( /cancel/.test(this.text) || /close/.test(this.text)) {
 						this.hide = function(){};
 						this.handler();
 						
 						core.status.keydown = true;
-				
 						self.panel.hide();
 					}
 				});

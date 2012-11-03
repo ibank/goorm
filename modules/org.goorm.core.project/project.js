@@ -1,3 +1,11 @@
+/**
+ * Copyright Sung-tae Ryu. All rights reserved.
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
+ **/
+
 var fs = require('fs');
 var walk = require('walk');
 var rimraf = require('rimraf');
@@ -13,8 +21,8 @@ module.exports = {
 		data.err_code = 0;
 		data.message = "process done";
 
-		if ( query.project_type!=null && query.project_detailed_type !=null && query.project_author!=null && query.project_name!=null && query.project_about!=null && query.use_collaboration ) {
-			fs.readdir(__path+'workspace/', function(err, files) {
+		if ( query.project_type!=null && query.project_detailed_type !=null && query.project_author!=null && query.project_name!=null && query.project_desc!=null && query.use_collaboration ) {
+			fs.readdir(__workspace+'/', function(err, files) {
 				if (err!=null) {
 					data.err_code = 10;
 					data.message = "Server can not response";
@@ -25,12 +33,12 @@ module.exports = {
 					var project_dir = query.project_author+'_'+query.project_name;
 					if (files.hasObject(project_dir)) {
 						data.err_code = 20;
-						data.message = "Exist project";
+						data.message = "Same project name is exist.";
 
 						evt.emit("project_do_new", data);
 					}
 					else {
-						fs.mkdir(__path+'/workspace/'+project_dir, '0777', function(err) {
+						fs.mkdir(__workspace+'/'+project_dir, '0777', function(err) {
 							if (err!=null) {
 								data.err_code = 30;
 								data.message = "Cannot make directory";
@@ -41,9 +49,18 @@ module.exports = {
 								var today = new Date();
 								var date_string = today.getFullYear()+'/'+today.getMonth()+'/'+today.getDate()+' '+today.getHours()+':'+today.getMinutes()+':'+today.getSeconds();
 							
-								var file_contents = '{"type": "'+query.project_type+'", "detailedtype": "'+query.project_detailed_type+'", "author": "'+query.project_author+'", "name": "'+query.project_name+'", "about": "'+query.project_about+'", "date": "'+date_string+'", "collaboration": "'+query.use_collaboration+'"}';
-
-								fs.writeFile(__path+'workspace/'+project_dir+'/project.json', file_contents, function(err) {
+								var file_contents = {
+									type: query.project_type,
+									detailedtype: query.project_detailed_type,
+									author: query.project_author,
+									name: query.project_name,
+									about: query.project_desc,
+									date: date_string,
+									collaboration: query.use_collaboration,
+									plugins: query.plugins
+								};
+													 
+								fs.writeFile(__workspace+'/'+project_dir+'/project.json', JSON.stringify(file_contents), function(err) {
 									if (err!=null) {
 										data.err_code = 40;
 										data.message = "Can not make project file";
@@ -78,7 +95,7 @@ module.exports = {
 		data.message = "process done";
 		
 		if (query.project_path != null) {
-			rimraf(__path+"workspace/"+query.project_path, function(err) {
+			rimraf(__workspace+'/'+query.project_path, function(err) {
 				if (err!=null) {
 					data.err_code = 20;
 					data.message = "Can not delete project";
@@ -111,7 +128,7 @@ module.exports = {
 		data.message = "process done";	
 
 		if (query.project_import_location!=null && file!=null) {
-			var command = exec("unzip -o "+file.path+" -d workspace/"+query.project_import_location, function (error, stdout, stderr) {
+			var command = exec("unzip -o "+file.path+" -d " + __workspace + "/"+query.project_import_location, function (error, stdout, stderr) {
 				if (error == null) {
 				
 					rimraf(file.path, function(err) {
@@ -148,11 +165,11 @@ module.exports = {
 
 		if ( query.user!=null && query.project_path!=null && query.project_name!=null ) {
 				
-			fs.mkdir(__path+"temp_files/"+query.user, '0777', function(err) {
+			fs.mkdir(__temp_dir+'/'+query.user, '0777', function(err) {
 
 				if (err==null || err.errno == 47) {		//errno 47 is exist folder error
 
-					var command = exec("cd workspace; zip -r ../temp_files/"+query.user+"/"+query.project_name+".zip ./"+query.project_path, function (error, stdout, stderr) {
+					var command = exec("cd " + __workspace +"; zip -r " + __temp_dir + "/"+query.user+"/"+query.project_name+".zip ./"+query.project_path, function (error, stdout, stderr) {
 						if (error == null) {
 							data.path = query.user+'/'+query.project_name+".zip";
 							evt.emit("project_do_export", data);
@@ -191,12 +208,12 @@ module.exports = {
 			followLinks: false
 		};
 				
-		var walker = walk.walk(__path+"workspace", options);
+		var walker = walk.walk(__workspace+'/', options);
 
 		walker.on("directories", function (root, dirStatsArray, next) {
 
 			var count = dirStatsArray.length;
-			if (root==__path+"workspace" ) {
+			if (root==__workspace+'/' ) {
 				var dir_count = 0;
 
 				var evt_dir = new EventEmitter();
@@ -225,7 +242,7 @@ module.exports = {
 		var project = {};
 		project.name = dirStatsArray.name;
 
-		fs.readFile(__path+"workspace/"+project.name+"/project.json", 'utf-8', function (err, data) {
+		fs.readFile(__workspace+'/'+project.name+"/project.json", 'utf-8', function (err, data) {
 			if (err==null) {
 				project.contents = JSON.parse(data);
 
@@ -241,7 +258,7 @@ module.exports = {
 		data.message = "process done";
 
 		if (query.project_path != null) {
-			fs.writeFile(__path+"workspace/"+query.project_path+"/project.json", query.data, 'utf-8', function (err) {
+			fs.writeFile(__workspace+'/'+query.project_path+"/project.json", query.data, 'utf-8', function (err) {
 				if (err==null) {
 					evt.emit("set_property", data);
 				}
@@ -265,17 +282,21 @@ module.exports = {
 		data.message = "process done";
 
 		if (query.project_path != null) {
-			fs.readFile(__path+"workspace/"+query.project_path+"/project.json", 'utf-8', function (err, file_data) {
-				if (err==null) {
-					data.contents = JSON.parse(file_data);
-					evt.emit("get_property", data);
-				}
-				else {
-					data.err_code = 20;
-					data.message = "Can not read project file.";
-					evt.emit("get_property", data);
-				}
-			});
+			if(query.project_path == ""){
+				evt.emit("get_property", data);
+			}else{
+				fs.readFile(__workspace+'/'+query.project_path+"/project.json", 'utf-8', function (err, file_data) {
+					if (err==null) {
+						data.contents = JSON.parse(file_data);
+						evt.emit("get_property", data);
+					}
+					else {
+						data.err_code = 20;
+						data.message = "Can not open project.";
+						evt.emit("get_property", data);
+					}
+				});
+			}
 		}
 		else {
 			data.err_code = 10;
@@ -319,7 +340,7 @@ console.log(total_count+" "+clean_count);
 	
 	do_delete_for_clean: function (project_path, evt_clean) {
 		console.log(project_path+"pre");
-		rimraf(__path+"workspace/"+project_path+"/build", function(err) {
+		rimraf(__workspace+'/'+project_path+"/build", function(err) {
 			console.log(project_path+"post");
 			evt_clean.emit("do_delete_for_clean");
 		});

@@ -5,7 +5,7 @@ var fs = require('fs'),
 
 module.exports = {
 	do_new : function(req, evt) {
-		var workspace = __path + "workspace/" + req.data.project_author + "_" + req.data.project_name;
+		var workspace = __workspace + "/" + req.data.project_author + "_" + req.data.project_name;
 		var template = common.path + "template";
 		
 		emittor = walk.walk(template);

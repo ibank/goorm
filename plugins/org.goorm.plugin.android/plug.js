@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.plugin.android = function () {
@@ -17,7 +19,7 @@ org.goorm.plugin.android = function () {
 
 org.goorm.plugin.android.prototype = {
 	init: function () {
-		//this.addProjectItem();
+		//this.add_project_item();
 		
 		this.mainmenu = core.module.layout.mainmenu;
 		
@@ -30,7 +32,7 @@ org.goorm.plugin.android.prototype = {
 		this.cWarningFilter = /[A-Za-z]* warning: [A-Za-z0-9 '",:_\\\/\.\+\-\*\#\@]*/;
 		this.lineFilter = /:[0-9]*:/;
 		
-		this.add_mainmenu();
+		//this.add_mainmenu();
 		
 		//core.dictionary.loadDictionary("plugins/org.uizard.plugin.c/dictionary.json");
 	},

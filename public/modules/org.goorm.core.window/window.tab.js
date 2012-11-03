@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.window.tab = function () {
@@ -48,7 +50,10 @@ org.goorm.core.window.tab.prototype = {
 		this.list_menu.render();
 		
 		this.context_menu = new org.goorm.core.menu.context();
-		this.context_menu.init("configs/menu/org.goorm.core.window/window.tab.html", "window.tab", this.tab.get("labelEl"), this.title, null, function () { self.set_event(); });
+		this.context_menu.init("configs/menu/org.goorm.core.window/window.tab.html", "window.tab", this.tab.get("labelEl"), this.title, null
+		, function () {
+			self.set_event(); 
+		});
 	},
 
 	set_event: function(){
@@ -74,7 +79,7 @@ org.goorm.core.window.tab.prototype = {
 		    		$("#"+str).find(".minimize").parent().removeClass('yuimenuitem-disabled');
 		    	}
 
-				return false;
+				//return false;
 		    }
 		});
 
@@ -166,11 +171,17 @@ org.goorm.core.window.tab.prototype = {
 		}
 		else {
 			confirmation_save.init({
-				title: core.module.localization.msg["confirmation_save_title"], 
+				// title: core.module.localization.msg["confirmation_save_title"], 
 				message: "\""+this.window.filename+"\" "+core.module.localization.msg["confirmation_save_message"],
 				yes_text: core.module.localization.msg["confirmation_yes"],
 				cancel_text: core.module.localization.msg["confirmation_cancel"],
 				no_text: core.module.localization.msg["confirmation_no"],
+
+				title: "Close...", 
+				// message: "<span localization_key='confirmation_save_message'> has been modified. Save changes?</span>",
+				// yes_text: "<span localization_key='yes'>Yes</span>",
+				// cancel_text: "<span localization_key='cancel'>Cancel</span>",
+				// no_text: "<span localization_key='no'>No</span>",
 				yes: function () {
 					self.window.editor.save("close");
 				}, cancel: function () {

@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.layout = function () {
@@ -172,12 +174,6 @@ org.goorm.core.layout.prototype = {
 		//Right TabView
 		this.inner_right_tabview = new YAHOO.widget.TabView(container+'_inner_layout_right');
 		
-		//Properties Tab
-		this.attach_properties(this.inner_right_tabview);
-		
-		//Object Explorer Tab
-		this.attach_object_explorer(this.inner_right_tabview);
-		
 		//Communication Tab
 		this.attach_communication(this.inner_right_tabview);
 		
@@ -187,15 +183,18 @@ org.goorm.core.layout.prototype = {
 		//Slide Show Tab
 		this.attach_slide(this.inner_right_tabview);
 		
+		//Properties Tab
+		this.attach_properties(this.inner_right_tabview);
+		
+		//Object Explorer Tab
+		this.attach_object_explorer(this.inner_right_tabview);
+				
 		//////////////////////////////////////////////////////////////////////////////////////////
 		// Bottom
 		//////////////////////////////////////////////////////////////////////////////////////////
 				
 		//Bottom TabView
 		this.inner_bottom_tabview = new YAHOO.widget.TabView(container+'_inner_layout_bottom');
-		
-		//Message Tab
-		this.attach_message(this.inner_bottom_tabview);
 		
 		//Debug Tab
 		this.attach_debug(this.inner_bottom_tabview);
@@ -205,6 +204,9 @@ org.goorm.core.layout.prototype = {
 		
 		//Search Tab
 		this.attach_search(this.inner_bottom_tabview);
+		
+		//Message Tab
+		this.attach_message(this.inner_bottom_tabview);
 		
 		//////////////////////////////////////////////////////////////////////////////////////////
 		// Center
@@ -221,13 +223,9 @@ org.goorm.core.layout.prototype = {
 		//////////////////////////////////////////////////////////////////////////////////////////
 
 		this.layout.render();
-		
-		
+	
 		$(window).resize(function(){
-			self.resize_all();
-			self.layout.getUnitByPosition("top").set("height", $("#goorm_mainmenu").height() + $("#goorm_main_toolbar").height() + 7);
-			
-			$(core).trigger("layout_resized");
+			self.refresh();
 		});
 	},
 
@@ -250,7 +248,7 @@ org.goorm.core.layout.prototype = {
 		var self = this;
 		
 		//this.tab_project = new YAHOO.widget.Tab({ label: "Project" +"&nbsp;"+ " <img src='images/icons/context/closebutton.png' class='close button' />", content: "<div id='project_explorer' class='directory_treeview'></div>" });
-		this.tab_project = new YAHOO.widget.Tab({ label: "Project", content: "<div id='project_explorer' class='directory_treeview'></div>" });
+		this.tab_project = new YAHOO.widget.Tab({ label: "<span localization_key='project'>Project</span>", content: "<div id='project_explorer' class='directory_treeview'></div>" });
 
 		//attaching tab element
 		target.addTab(this.tab_project);
@@ -278,11 +276,12 @@ org.goorm.core.layout.prototype = {
 		var self = this;
 		
 		//this.tab_toolbox = new YAHOO.widget.Tab({ label: "Tool Box" +"&nbsp;"+ " <img src='images/icons/context/closebutton.png' class='close button' />", content: "<div id='toolbox'></div>" });
-		this.tab_toolbox = new YAHOO.widget.Tab({ label: "Tool Box", content: "<div id='toolbox'></div>" });
+		this.tab_toolbox = new YAHOO.widget.Tab({ label: "<span localization_key='toolbox'>Tool Box</span>", content: "<div id='toolbox'></div>", disabled: true });
 
 		//attaching tab element
 		target.addTab(this.tab_toolbox);
-
+		
+		
 /*
 		//For Test Codes
 		$("#toolbox").append("<div id='toolLine' style='cursor:pointer; width:100%; height:20px; border-bottom:1px solid #ccc;'>Line Tool</div>");
@@ -307,12 +306,12 @@ org.goorm.core.layout.prototype = {
 	
 	attach_object_explorer: function(target) {
 		//attaching tab element
-		target.addTab(new YAHOO.widget.Tab({ label: "Object", content: "<div id='object_explorer'><div id='object_tree'></div></div>" }));
+		target.addTab(new YAHOO.widget.Tab({ label: "<span localization_key='object'>Object</span>", content: "<div id='object_explorer'><div id='object_tree'></div></div>", disabled: true }));
 	},
 	
 	attach_properties: function(target) {
 		//attaching tab element
-		target.addTab(new YAHOO.widget.Tab({ label: "Properties", content: "<div id='properties'></div>" }));
+		target.addTab(new YAHOO.widget.Tab({ label: "<span localization_key='properties'>Properties</span>", content: "<div id='properties'></div>", disabled: true }));
 		
 		var properties = new org.goorm.core.object.properties();
 		
@@ -321,7 +320,7 @@ org.goorm.core.layout.prototype = {
 	
 	attach_message: function(target) {
 		//attaching tab element
-		target.addTab(new YAHOO.widget.Tab({ label: "Message", content: "<div id='message'></div>" }));
+		target.addTab(new YAHOO.widget.Tab({ label: "<span localization_key='message'>Message</span>", content: "<div id='message'></div>", disabled: true }));
 	},
 	
 	attach_toolbar: function(target) {
@@ -341,7 +340,7 @@ org.goorm.core.layout.prototype = {
 	
 	attach_debug: function(target) {
 		//attaching tab element
-		target.addTab(new YAHOO.widget.Tab({ label: "Debug", content: "<div id='debug'></div>" }));
+		target.addTab(new YAHOO.widget.Tab({ label: "<span localization_key='debug'>Debug</span>", content: "<div id='debug'></div>" }));
 		
 		this.debug = new org.goorm.core.debug();
 		this.debug.init();
@@ -350,7 +349,7 @@ org.goorm.core.layout.prototype = {
 	
 	attach_communication: function(target) {
 		//attaching tab element
-		target.addTab(new YAHOO.widget.Tab({ label: "Communication", content: "<div id='communication' class='layout_right_communication_tab'></div>" }));
+		target.addTab(new YAHOO.widget.Tab({ label: "<span localization_key='communication'>Communication</span>", content: "<div id='communication' class='layout_right_communication_tab'></div>" }));
 
 /*
 		$("#communication").append("<div class='communication_user_container' style='height:100px; border-bottom:1px #CCC solid; padding:5px;'></div>");		
@@ -376,26 +375,31 @@ org.goorm.core.layout.prototype = {
 	
 	attach_slide: function(target) {
 		//attaching tab element
-		target.addTab(new YAHOO.widget.Tab({ label: "Slide", content: "<div id='slide' class='layout_right_slide_tab'>Slide URL <input id='slide_url' type='text' value='http://www.slideshare.net/rohitbhargava/rohit-bhargava-invite-me-to-speak'/><button id='slideshare_presentation'>Presentation</button> <button id='slide_prev'>prev</button> <button id='slide_next'>next</button><iframe name='slideshare' src='"+document.baseURI+"lib/slideshare/slide.html' width=100% height='90%' frameborder=0 marginwidth=0 marginheight=0 scrolling=no allowfullscreen> </iframe></div>" }));
+		target.addTab(new YAHOO.widget.Tab({ label: "<span localization_key='slide'>Slide</span>", content: "<div id='slide_body'></div>" }));
 		this.slideshare = new org.goorm.core.collaboration.slideshare();
 		this.slideshare.init();
-				
+		
+		
 	},
 	
 	attach_terminal: function(target) {
+		var self = this;
 		//attaching tab element
 		//$(core).bind("preference_loading_complete", function () {
 			
-			target.addTab(new YAHOO.widget.Tab({ label: "Terminal", content: "<div id='terminal' width='100%'></div>" }));
+			target.addTab(new YAHOO.widget.Tab({ label: "<span localization_key='terminal'>Terminal</span>", content: "<div id='terminal' width='100%'></div>" }));
 		//});
 		
 		this.terminal = new org.goorm.core.terminal();
-		this.terminal.init($("#terminal"), "default_terminal", false);
+		
+		$(core).bind("layout_loaded", function () {
+			self.terminal.init($("#terminal"), "default_terminal", false);
+		});
 	},
 	
 	attach_search: function(target) {
 		//attaching tab element
-		target.addTab(new YAHOO.widget.Tab({ label: "Search", content: "<div id='search' width='100%'></div>" }));
+		target.addTab(new YAHOO.widget.Tab({ label: "<span localization_key='search'>Search</span>", content: "<div id='search' width='100%'></div>" }));
 	},
 	
 	refresh_terminal: function() {
@@ -422,6 +426,7 @@ org.goorm.core.layout.prototype = {
 		
 		var layout_right_height = $(".yui-layout-unit-right").find(".yui-layout-wrap").height() - 25;
 		$("#goorm_inner_layout_right").find(".yui-content").height(layout_right_height);
+		$("#goorm_inner_layout_right").find("#iframe_slideshare").height(layout_right_height-70);
 		
 		var layout_bottom_height = $(".yui-layout-unit-bottom").find(".yui-layout-wrap").height() - 26;
 		$("#goorm_inner_layout_bottom").find(".yui-content").height(layout_bottom_height);
@@ -461,5 +466,14 @@ org.goorm.core.layout.prototype = {
 			}
 		});
 		*/
+	},
+	
+	refresh : function(){
+		var self = this;
+		
+		self.resize_all();
+		self.layout.getUnitByPosition("top").set("height", $("#goorm_mainmenu").height() + $("#goorm_main_toolbar").height() + 7);
+		
+		$(core).trigger("layout_resized");
 	}
 };

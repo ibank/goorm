@@ -1,13 +1,15 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.dialog.wizard = function () {
 	this.total_step = null;
 	this.step = null;
-	this.panel = null;
+	this.panel = null; 
 	this.context_menu = null;
 	this.path = null;
 	this.title = null;
@@ -21,6 +23,7 @@ org.goorm.core.dialog.wizard = function () {
 	this.buttons = null;
 	this.success = null;
 	this.kind = null;
+	this.next = null;
 };
 
 org.goorm.core.dialog.wizard.prototype = {
@@ -46,6 +49,8 @@ org.goorm.core.dialog.wizard.prototype = {
 	
 		this.title = this.title.split(" ").join("_");
 		this.kind = option["kind"];		
+		
+		this.next = option["next"];
 
 		
 		if ($("#goorm_dialog_container").find("#panelContainer_" + this.title)) {
@@ -55,21 +60,10 @@ org.goorm.core.dialog.wizard.prototype = {
 		$("#goorm_dialog_container").append("<div id='panelContainer_" + this.title + "'></div>");
 		
 		var handle_next = function() { 
-			var stop_next = false;
-			$("#goorm_dialog_container").find("#panelContainer_" + self.title).find(".bd").find(".wizard_step").each(function (i){
-				if(i==self.step-1) {
-					$(this).find("input[checkField=yes]").each(function (i){
-						if($(this).attr("value")=="") {
-							stop_next = true;
-						}
-					});
-				}
-			});
-			if (stop_next) {
-				alert.show(core.module.localization.msg["alertDialogMissing"]);
+			if ( !self.next() ) {
 				return false;
 			}
-			
+
 			if (self.step < self.total_step) {
 				self.show_previous_button(true);
 			
@@ -99,10 +93,8 @@ org.goorm.core.dialog.wizard.prototype = {
 			}
 		};
 
-		this.buttons.unshift({ text:"Next", handler:handle_next });
-		this.buttons.unshift({ text:"Previous", handler:handle_prev });
-		
-		
+		this.buttons.unshift({ text:"<span localization_key='next'>Next</span>", handler:handle_next });
+		this.buttons.unshift({ text:"<span localization_key='previous'>Previous</span>", handler:handle_prev });	
 		
 		this.panel = new YAHOO.widget.Dialog(
 			"panelContainer_" + this.title, { 
@@ -138,7 +130,7 @@ org.goorm.core.dialog.wizard.prototype = {
 			
 			if (self.buttons && self.panel.cfg.config.visible.value && !core.status.keydown && !alert.panel.cfg.config.visible.value && !notice.panel.cfg.config.visible.value && !confirmation.panel.cfg.config.visible.value) {
 				$(self.buttons).each(function (i) { 
-					if (this.text == "Cancel") {
+					if (/cancel/.test(this.text) || /close/.test(this.text)) {
 						this.hide = function(){};
 						this.handler();
 						

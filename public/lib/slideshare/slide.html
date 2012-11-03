@@ -1,7 +1,9 @@
 <html>
         <head>
                 <title>Slideshare</title>
-                <script type="text/javascript" src="swfobject_playerapi.js"></script>    
+                <script type="text/javascript" src="swfobject_playerapi.js"></script>
+                <link rel="stylesheet" type="text/css" href="slideshare.css" />
+                
                 <script type="text/javascript">
                         var flashMovie;
 
@@ -34,12 +36,20 @@
                         function updateSlideNumber(){
                                 document.getElementById("slidenumber").value = flashMovie.getCurrentSlide();
                         }
+                        
+
                 </script>
         </head>
-        <body bgcolor="#ffffff">
-                <div id="player">
-                        Press presentation button.
-                </div>
+        <body oncontextmenu="return false;">
+        	<div id="main">  
+                <div id="container">
+				    <div id="dummy"></div>
+				    <div id="player">
+				    	<br /><br /><br /><br /><br />
+				        Press presentation button.
+				    </div>
+				</div>
+        	</div>
                 <!--div style="margin-left: 150px; margin-top: 10px;">
                        <button onclick="flashMovie.first();updateSlideNumber();" type="button" value="First">First</button>
                        <button onclick="flashMovie.previous();updateSlideNumber();" type="button" value="Previous">Previous</button>

@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.theme.details = function () {
@@ -24,8 +26,8 @@ org.goorm.core.theme.details.prototype = {
 		var handle_cancel = function() { 
 			this.hide(); 
 		};
-		this.buttons = [ {text:"Save", handler:handle_apply, isDefault:true},
-						 {text:"Cancel",  handler:handle_cancel}]; 
+		this.buttons = [ {text:"<span localization_key='save'>Save</span>", handler:handle_apply, isDefault:true},
+						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 
 		this.manager = new org.goorm.core.theme.manager();
 		this.manager.init(parent);

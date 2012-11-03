@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.collaboration.editing = function () {
@@ -128,7 +130,7 @@ org.goorm.core.collaboration.editing.prototype = {
 				},5000);
 			}
 			else {
-				alert.show("Collaboration server is disconnected!");
+				// alert.show("Disconnected to collaboration server");				alert.show(core.module.localization.msg['alert_collaboration_server_notconnected']);
 				return false;
 			}
 		}
@@ -142,7 +144,7 @@ org.goorm.core.collaboration.editing.prototype = {
 				self.socket.emit("message", '{"channel": "editing", "action":"cursor", "user":"' + core.user.first_name + "_" + core.user.last_name + '", "workspace": "'+ core.status.current_project_name +'", "filepath":"' + self.filepath + '", "message":' + JSON.stringify(data) + '}');
 			}
 			else {
-				alert.show("Collaboration server is disconnected!");
+				// alert.show("Disconnected to collaboration server");				alert.show(core.module.localization.msg['alert_collaboration_server_notconnected']);
 				return false;
 			}
 		}

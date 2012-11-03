@@ -1,19 +1,2 @@
-<script> function (s,e){
-  for(var i=0; i < 1; i++) test("test();a=1");
-} </script>
-  <script>
-  function test(c){
-    for (var i = 0; i < 10; i++){
-      process("a.b();c = null;", 300);pars
-  }
-  </script>
-    }
-    <table><tr><td>test 1</td></tr><tr><td>test 2</td></tr></table>
-      <script> function test() {
-        return 1;
-      } </script>
-        <style> .test {
-          font-size: medium;
-          font-family: monospace;
-        }
-</style>
+for (var i=0; i<100; i++)
+	console.log("!");

@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.theme.area = function () {
@@ -52,9 +54,9 @@ org.goorm.core.theme.area.prototype = {
 			
 			else{
 				if(errCode==1)
-					alert.show(core.module.localization.msg["alertNaming"]);
+					alert.show(core.module.localization.msg["alert_naming"]);
 				else
-					alert.show(core.module.localization.msg["alertValue"]);
+					alert.show(core.module.localization.msg["alert_value"]);
 			}
 			this.hide();  
 		};
@@ -65,8 +67,8 @@ org.goorm.core.theme.area.prototype = {
 
 		};
 		
-		this.buttons = [ {text:"OK", handler:handle_ok, isDefault:true},
-						 {text:"Cancel",  handler:handle_cancel}];
+		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
+						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}];
 						 
 						 
 		this.dialog = new org.goorm.core.theme._css.dialog();

@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.project.property.manager = function () {
@@ -234,49 +236,49 @@ org.goorm.core.project.property.manager.prototype = {
 			}
 			case "alpha" : {
 				if(!$(input).val().match(/^[a-z ._-]+$/i)) {
-					alert.show($(input).attr("name")+core.module.localization.msg["alertValidateAlpha"]);
+					alert.show($(input).attr("name")+core.module.localization.msg["alert_validate_alpha"]);
 				     valid=0;
 				}
 				break;
 			}
 			case "alphanum" : {
 				if(!$(input).val().match(/^[a-z0-9 ._-]+$/i)) {
-					alert.show($(input).attr("name")+core.module.localization.msg["alertValidateAlphaNum"]);
+					alert.show($(input).attr("name")+core.module.localization.msg["alert_validate_alpha_num"]);
 				     valid=0;
 				}
 				break;
 			}
 			case "digit" : {
 				if(!$(input).val().match(/^[-+]?[0-9]+$/)) {
-					alert.show($(input).attr("name")+core.module.localization.msg["alertValidateDigit"]);
+					alert.show($(input).attr("name")+core.module.localization.msg["alert_validate_digit"]);
 				     valid=0;
 				}
 				break;
 			}
 			case "nodigit" : {
 				if(!$(input).val().match( /^[^0-9]+$/)) {
-					alert.show($(input).attr("name")+core.module.localization.msg["alertValidateNoDigit"]);
+					alert.show($(input).attr("name")+core.module.localization.msg["alert_validate_no_digit"]);
 				     valid=0;
 				}
 				break;
 			}
 			case "number" : {
 				if(!$(input).val().match(/^[-+]?\d*\.?\d+$/)) {
-					alert.show($(input).attr("name")+core.module.localization.msg["alertValidateNum"]);
+					alert.show($(input).attr("name")+core.module.localization.msg["alert_validate_num"]);
 				     valid=0;
 				}
 				break;
 			}
 			case "email" : {
 				if(!$(input).val().match(/^([a-zA-Z0-9_\.\-\+%])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/)) {
-					alert.show($(input).attr("name")+core.module.localization.msg["alertValidateEmail"]);
+					alert.show($(input).attr("name")+core.module.localization.msg["alert_validate_email"]);
 				     valid=0;
 				}
 				break;
 			}
 			case "url" : {
 				if(!$(input).val().match(/^(http|https|ftp)\:\/\/[a-z0-9\-\.]+\.[a-z]{2,3}(:[a-z0-9]*)?\/?([a-z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*$/i)) {
-					alert.show($(input).attr("name")+core.module.localization.msg["alertValidateUrl"]);
+					alert.show($(input).attr("name")+core.module.localization.msg["alert_validate_url"]);
 				     valid=0;
 				}
 				break;

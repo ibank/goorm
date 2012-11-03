@@ -2,7 +2,7 @@
   "name": "goorm",
   "author": "xenoz0718 <xenoz0718@gmail.com> (http://www.goorm.org/)",
   "description": "Cloud based Integrated Development Enviroment.",
-  "version": "1.0.0-alpha2",
+  "version": "1.0.2-r192",
   "dependencies": {
     "express": ">= 3.0.0rc5",
     "jade": ">= 0.25.0",
@@ -26,5 +26,7 @@
   "license": "GPLv3",
   "directories": {
     "test": "test"
-  }
+  },
+  "preferGlobal": "true",
+  "bin": { "goorm": "./goorm.js" }
 }

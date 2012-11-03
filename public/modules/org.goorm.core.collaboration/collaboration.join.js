@@ -1,68 +1,20 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
+ * Code licensed under the GPL v3 License:
  * http://www.goorm.org/License
- * version: 3.0.0
- * This is the module example for YUI_DOCS
- * @module collaboration
+ * version: 1.0.0
  **/
 
-/**
- * This is an goorm code generator.  
- * goorm starts with this code generator.
- * @class join_project
- * @extends collaboration
- **/
 org.goorm.core.collaboration.join = function () {
-	/**
-	 * This presents the current browser version
-	 * @property dialog
-	 * @type Object
-	 * @default null
-	 **/
-	
 	this.dialog = null;
-	
-	/**
-	 * The array object that contains the information about buttons on the bottom of a dialog 
-	 * @property buttons
-	 * @type Object
-	 * @default null
-	 **/
-	this.buttons = null;
-	
-	/**
-	 * This presents the current browser version
-	 * @property tabview
-	 * @type Object
-	 * @default null
-	 **/
-	
+	this.buttons = null;	
 	this.tabview = null;
-	
-	/**
-	 * This presents the current browser version
-	 * @property treeview
-	 * @type Object
-	 * @default null
-	 **/
 	this.treeview = null;
-	
-	/**
-	 * This presents the current browser version
-	 * @property chat
-	 * @type Object
-	 * @default null
-	 **/
 	this.chat = null;
 };
 
 org.goorm.core.collaboration.join.prototype = {
 	
-	/**
-	 * This function is an goorm core initializating function.  
-	 * @constructor 
-	 **/
 	init: function () { 
 		var self = this;
 		var handleJoin = function() { 
@@ -80,7 +32,7 @@ org.goorm.core.collaboration.join.prototype = {
 					self2.hide();
 				});
 			}else{
-				alert.show(core.module.localization.msg["alertCollaborationSelect"]);
+				alert.show(core.module.localization.msg["alert_collaboration_select"]);
 			}
 		};
 
@@ -89,9 +41,9 @@ org.goorm.core.collaboration.join.prototype = {
 			if(self.chat) self.chat.set_chat_off();
 		};
 		
-		this.buttons = [ {text:"Join", handler:handleJoin, isDefault:true},
-						 {text:"Cancel",  handler:handle_cancel}]; 
-						 
+		this.buttons = [ {text:"<span localization_key='join'>Join</span>", handler:handleJoin, isDefault:true},
+						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}];
+							 
 		this.dialog = new org.goorm.core.collaboration.join.dialog();
 		this.dialog.init({
 			title:"Join Online Project", 
@@ -116,10 +68,6 @@ org.goorm.core.collaboration.join.prototype = {
 		//this.dialog.panel.setBody("AA");
 	},
 	
-	/**
-	 * This function is an goorm core initializating function.  
-	 * @method show 
-	 **/
 	show: function () {
 		var self=this;
 		this.dialog.panel.show();
@@ -132,11 +80,7 @@ org.goorm.core.collaboration.join.prototype = {
 			this.chat.set_chat_on();
 		}	
 	},
-	
-	/**
-	 * This function is an goorm core initializating function.  
-	 * @method add_project_list 
-	 **/	
+		
 	add_project_list: function () {
 		var postdata = {
 			kind: "project",

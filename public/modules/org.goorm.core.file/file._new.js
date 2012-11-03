@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.core.file._new = function () {
@@ -20,9 +22,7 @@ org.goorm.core.file._new.prototype = {
 			var data = self.dialog_explorer.get_data();
 		
 			if(data.path=="" || data.name=="") {
-				//alert.show(core.module.localization.msg["alertFileNameEmpty"]);
-				alert.show("File Name is Empty.");
-				return false;
+				alert.show(core.module.localization.msg["alert_filename_empty"]);				// alert.show("File name is empty. Please fill it...");				return false;
 			}
 
 			var postdata = {
@@ -34,14 +34,20 @@ org.goorm.core.file._new.prototype = {
 			$.get("file/new", postdata, function (data) {
 				if (data.err_code == 99) {
 					confirmation.init({
-						title: core.module.localization.msg["confirmationNewTitle"], 
-						message: core.module.localization.msg["confirmationNewMessage"],
-						yes_text: core.module.localization.msg["confirmation_yes"],
-						no_text: core.module.localization.msg["confirmation_no"],
+						// title: core.module.localization.msg["confirmation_new_title"], 
+						// message: core.module.localization.msg["confirmation_new_message"],
+						// yes_text: core.module.localization.msg["confirmation_yes"],
+						// no_text: core.module.localization.msg["confirmation_no"],
 //						title: "Confirmation", 
 //						message: "Exist file. Do you want to make anyway?",
 //						yes_text: "yes",
 //						no_text: "no",
+
+						title: "Confirmation", 
+						message: "<span localization_key='confirmation_new_message'>Exist file. Do you want to make anyway?</span>",
+						yes_text: "<span localization_key='yes'>Yes</span>",
+						no_text: "<span localization_key='no'>No</span>",
+
 						yes: function () {
 							self.is_new_anyway = true;
 							handle_ok();
@@ -66,8 +72,8 @@ org.goorm.core.file._new.prototype = {
 			this.hide(); 
 		};
 		
-		this.buttons = [ {text:"OK", handler:handle_ok, isDefault:true},
-						 {text:"Cancel",  handler:handle_cancel}]; 
+		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
+						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 
 		this.dialog = new org.goorm.core.file._new.dialog();
 		this.dialog.init({

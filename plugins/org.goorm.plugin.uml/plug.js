@@ -1,7 +1,9 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the GPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
 org.goorm.plugin.uml = function () {
@@ -39,22 +41,22 @@ org.goorm.plugin.uml.prototype = {
 		});
 		*/
 		
-		this.add_toolbox();
+		//this.add_toolbox();
 		
 		//Loading CSS
-		this.load_css();
+		//this.load_css();
 		
 		//Add Project Item
-		this.add_project_item();
+		//this.add_project_item();
 		
 		//Add Toolbar
-		this.add_toolbar();
+		//this.add_toolbar();
 		
 		//Add Main Menu
-		this.add_mainmenu();
+		//this.add_mainmenu();
 		
 		//Add Context Menu
-		this.add_context_menu();
+		//this.add_context_menu();
 	},
 	
 	new_project : function(project_name, project_author, project_type, project_detailed_type, project_path) {
@@ -101,7 +103,7 @@ org.goorm.plugin.uml.prototype = {
 		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all umlp' description='  Create New UML Project for Activity Diagram' project_type='uml'><img src='org.goorm.plugin.uml/images/state_diagram.png' class='project_item_icon' /><br /><a>Activity Diagram</a></div>");
 		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all umlp' description='  Create New UML Project for UseCase Diagram' project_type='uml'><img src='org.goorm.plugin.uml/images/state_diagram.png' class='project_item_icon' /><br /><a>UseCase Diagram</a></div>");	
 	
-		$(".project_dialog_type").append("<option value='UML'>UML Project</option>");
+		$(".project_dialog_type").append("<option value='UML'>UML Project</option>").attr("selected", "");
 	},
 	
 	add_toolbar: function () {

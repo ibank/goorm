@@ -109,6 +109,7 @@ html
 	
 		//JS : codemirror 
 		script(type='text/javascript', src='/lib/net.codemirror.code/lib/codemirror.js')
+		script(type='text/javascript', src='/lib/net.codemirror.code/lib/util/runmode.js')
 		script(type='text/javascript', src='/lib/net.codemirror.code/lib/util/searchcursor.js')
 		script(type='text/javascript', src='/lib/net.codemirror.code/lib/util/match-highlighter.js')
 		script(type='text/javascript', src='/lib/net.codemirror.code/lib/util/foldcode.js')
@@ -297,18 +298,6 @@ html
 		title goorm1
 		
 		script(type='text/javascript')
-			//Please Do Not Remove This Code...
-			var _gaq = _gaq || [];
-			_gaq.push(['_setAccount', 'UA-34417418-1']);
-			_gaq.push(['_setDomainName', 'example.com']);
-			_gaq.push(['_trackPageview']);
-
-			(function() {
-				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-			})();
-		
 			var goorm_loading_start_time = new Date().getTime();
 			var core = new org.goorm.core();
 			var m = new org.goorm.core.utility.message();

@@ -74,7 +74,7 @@
         "editor": "Editor",
         "description": "Text Source Code File",
         "type": "Code",
-        "mode": "text/javascript"
+        "mode": "text/html"
     },
     {
         "file_extension": "h",
