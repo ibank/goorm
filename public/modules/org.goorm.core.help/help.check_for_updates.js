@@ -48,47 +48,48 @@ org.goorm.core.help.check_for_updates.prototype = {
 	
 	check_update : function (){
 		var self=this;
-		var url = "file/get_contents";
-		var path = "http://skima.skku.edu/~moyara/goorm.xml";
-		var index=0;
-		$("#div_check_for_update").html("");
+		var url = "http://goorm.io/api/get_goorm_info";
+		var current_version = core.env.version;
+//		var index=0;
 		core.module.loading_bar.start("Loading updates...");
-		
-		$(this).bind("cursorLoadingComplete", function () {
-			core.module.loading_bar.stop();
-		});
+		$("#div_check_for_update").html("goorm IDE Current Version : "+current_version+"<br>");
 		
 		// Get official version
 		$.ajax({
 			url: url,			
 			type: "GET",
-			data: "path="+path,
-			success: function(data) {
-			    var xml = $.parseXML(data);
-			    self.official_version =  $(xml).find("version").text();
-			    self.official_url =  $(xml).find("url").text();
-			    
+			dataType: "jsonp",
+			timeout: 5000,
+			success: function(json) {
+				console.log(json);
+				json = JSON.parse(json);
+				console.log(json);
+			    var official_version =  json.version;
+			    if(official_version) {
+					$("#div_check_for_update").append(
+							"Official Version : <span style='color:red;'>"+official_version+"</span>"
+							);
+					if(current_version != official_version){
+						$("#div_check_for_update").append("<p>Update : <a href='http://goorm.io' target='_blank'>http://goorm.io</a></p>");
+					}
+			    }
+			    else {
+			    	alert.show(core.module.localization.msg["alert_error"] + "unknown version");
+			    }
+				
 			    // Get current version
-			    $.ajax({
-					type: "POST",
-					dataType: "xml",
-					url: "configs/goorm.xml",
-					success: function(xml) {
-						self.current_version = $(xml).find("version").text();
-						$("#div_check_for_update").append(
-								"&lt;goorm&gt; Current Version : "+self.current_version+" / "
-								+"Official Version : <span style='color:red;'>"+self.official_version+"</span><br>"
-								);
-						if(self.current_version != self.official_version){
-							$("#div_check_for_update").append("Update : <a href="+self.official_url+">"+self.official_url+"<br>");
-						}
-						var numberOfPlugins = 0;
-						for (var i in core.dialog.preference.plugin){
-							numberOfPlugins++;
-						}
-						// Get plugin version
-						for (var name in core.dialog.preference.plugin){
-							var plugin = core.dialog.preference.plugin[name];
+//			    $.ajax({
+//					type: "POST",
+//					dataType: "xml",
+//					url: "configs/goorm.xml",
+//					success: function(xml) {
+//						var numberOfPlugins = 0;
+//						for (var i in core.dialog.preference.plugin){
+//							numberOfPlugins++;
+//						}
+//						// Get plugin version
+//						for (var name in core.dialog.preference.plugin){
+//							var plugin = core.dialog.preference.plugin[name];
 //							$.ajax({
 //								url: url,		
 //								type: "POST",
@@ -114,12 +115,15 @@ org.goorm.core.help.check_for_updates.prototype = {
 //								}
 //								, error: function(xhr, status, error) {alert.show(core.module.localization.msg["alert_error"] + error);}
 //							});
-						}
-					}
-					, error: function(xhr, status, error) {alert.show(core.module.localization.msg["alert_error"] + error); }
-				});
+//						}
+//					}
+//					, error: function(xhr, status, error) {alert.show(core.module.localization.msg["alert_error"] + error); }
+//				});
 			}
 			, error: function(xhr, status, error) {alert.show(core.module.localization.msg["alert_error"] + error); }
+			, complete: function(){
+				core.module.loading_bar.stop();
+			}
 		});
 		
 

@@ -66,7 +66,8 @@ org.goorm.core.edit.dictionary.prototype = {
 	complete: function () {
 		var cursor = this.editor.getCursor();
 		var token = this.editor.getTokenAt(cursor);
-		
+
+		if(this.result[0].is_not_data) this.result.pop();
 		if (this.result.length > 0) {
 			var string = this.result[this.index].keyword;
 			
@@ -77,9 +78,10 @@ org.goorm.core.edit.dictionary.prototype = {
 				to.ch += 1;
 			}
 			
-			this.hide();
 			this.editor.replaceRange(string, from, to);
 		}
+		
+		this.hide();
 	},
 	
 	load: function (filetype) {
@@ -112,6 +114,14 @@ org.goorm.core.edit.dictionary.prototype = {
 		
 		$(this.target).find(".dictionary_list").empty();
 		
+		if(this.result.length == 0){
+			var not_data = {
+				'is_not_data' : true,
+				'keyword' : core.module.localization.msg['alert_no_have_data']
+			}
+			this.result.push(not_data);
+		}
+		
 		$(this.result).each(function (i) {
 			$(self.target).find(".dictionary_list").append("<div class='dictionary_element'>" + this.keyword + "</div>");
 		});
@@ -127,10 +137,12 @@ org.goorm.core.edit.dictionary.prototype = {
 		);
 		
 		$(this.target).find(".dictionary_list .dictionary_element").each(function (i) {
-			$(this).click(function () {
-				self.index = i;
-				self.complete();
-			});
+			if($(this).attr('filter')!='not_data'){
+				$(this).click(function () {
+					self.index = i;
+					self.complete();
+				});
+			}
 		});
 	},
 	

@@ -42,7 +42,6 @@ org.goorm.core.localization.prototype = {
 
 		$.getJSON("configs/languages/"+language+".menu.json", function (data) {
 			self.data1 = data;
-
 			self.apply(data);
 		});
 		
@@ -57,10 +56,13 @@ org.goorm.core.localization.prototype = {
 			
 			if (is_first && language=="kor") {
 				confirmation.init({
-					title: core.module.localization.msg["confirmation_language_title"].value, 
+					// title: core.module.localization.msg["confirmation_language_title"].value, 
 					message: core.module.localization.msg["confirmation_language_message"].value,
-					yes_text: core.module.localization.msg["confirmation_yes"].value,
-					no_text: core.module.localization.msg["confirmation_no"].value,
+					yes_text: core.module.localization.msg["confirmation_language_message_yes"].value,
+					no_text: core.module.localization.msg["confirmation_language_message_no"].value,					title: "Language automatic chanage", 
+					// message: "<span localization_key='confirmation_language_message'>Are you sure you want to change the language setting to Korean?</span>",
+					// yes_text: "Yes",
+					// no_text: "No",					
 					yes: function () {
 						core.module.localization.change_language(language);
 						core.module.localization.before_language=language;
@@ -73,6 +75,7 @@ org.goorm.core.localization.prototype = {
 				confirmation.panel.show();
 			}
 			
+			self.apply(data);
 			self.apply_message(data);
 		});
 		
@@ -125,13 +128,16 @@ org.goorm.core.localization.prototype = {
 					$("[localization_key='" + key + "']").append("<em class='helptext'>" + helptext + "</em>");
 				}
 				
+				// attach tooltip
+				$("[tooltip="+key+"]").attr("title", this.value);
+				
 				if(this.children) {
 					self.apply(this.children);
 				}
 			});
 		}
 	},
-
+	
 	apply_message: function (data) {
 		var self = this;
 		

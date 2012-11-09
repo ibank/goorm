@@ -28,6 +28,7 @@ org.goorm.core.collaboration.editing = function () {
 	this.auto_save_timer=null;
 	this.status = 0;
 	this.timer = null;
+	this.cursor_location = [];
 };
 
 org.goorm.core.collaboration.editing.prototype = {
@@ -64,8 +65,7 @@ org.goorm.core.collaboration.editing.prototype = {
 			var received_msg = JSON.parse(data);
 			
 			if(received_msg.channel == "editing" && 
-			   received_msg.user != core.user.first_name + "_" + core.user.last_name &&
-			   received_msg.filepath == self.filepath) {
+			   // received_msg.user != core.user.first_name + "_" + core.user.last_name &&			   received_msg.filepath == self.filepath) {
 				switch(received_msg.action){
 					case "change":
 						self.task_queue.push(received_msg);
@@ -81,6 +81,7 @@ org.goorm.core.collaboration.editing.prototype = {
 		
 		this.socket.on("editing_someone_leaved", function (name) {
 			console.log(name + " leaved...");
+			
 			$(self.target).find(".CodeMirror-scroll").find(".user_name_" + name).remove();
 			$(self.target).find(".CodeMirror-scroll").find(".user_cursor_" + name).remove();
 		});
@@ -93,7 +94,7 @@ org.goorm.core.collaboration.editing.prototype = {
 					$(editing_lines[0]).html("&nbsp;");
 					return false; 
 				}
-			} 
+			}
 		});
 		
 		setInterval(function() {
@@ -130,21 +131,26 @@ org.goorm.core.collaboration.editing.prototype = {
 				},5000);
 			}
 			else {
-				// alert.show("Disconnected to collaboration server");				alert.show(core.module.localization.msg['alert_collaboration_server_notconnected']);
+				// alert.show("Disconnected to collaboration server");
+				alert.show(core.module.localization.msg['alert_collaboration_server_notconnected']);
 				return false;
 			}
 		}
 	},
 	
 	update_cursor: function(data) {
+		
 		var self = this;
 		if(this.socket != null){
 			if (self.socket.socket.connected) {
 				data.user = core.user.first_name + "_" + core.user.last_name;
 				self.socket.emit("message", '{"channel": "editing", "action":"cursor", "user":"' + core.user.first_name + "_" + core.user.last_name + '", "workspace": "'+ core.status.current_project_name +'", "filepath":"' + self.filepath + '", "message":' + JSON.stringify(data) + '}');
+
+				self.check_other_cursor(data);
 			}
 			else {
-				// alert.show("Disconnected to collaboration server");				alert.show(core.module.localization.msg['alert_collaboration_server_notconnected']);
+				// alert.show("Disconnected to collaboration server");
+				alert.show(core.module.localization.msg['alert_collaboration_server_notconnected']);
 				return false;
 			}
 		}
@@ -163,11 +169,53 @@ org.goorm.core.collaboration.editing.prototype = {
 		};
 	},
 	
+	check_other_cursor : function(message){
+		var self = this;
+		
+		var coords = this.editor.charCoords({line:message.line, ch:message.ch});
+		var top = parseInt(coords.y) - parseInt($(this.target).find(".CodeMirror-scroll").offset().top);
+		var left = parseInt(coords.x) - parseInt($(this.target).find(".CodeMirror-scroll").offset().left);
+		
+		// console.log(parseInt(coords.y), parseInt($(this.target).find(".CodeMirror-scroll").offset().top), top);
+		
+		for(var i=0; i<self.cursor_location.length; i++){
+			
+		}
+	},
+	
+	set_cursor_info : function(data){
+		var self = this;
+
+		var get_cursor_location_position = function(user){
+			for(var i=0; i<self.cursor_location.length; i++){
+				if(self.cursor_location[i].user == user) return i;
+			}
+			return self.cursor_location.length;
+		}
+
+		var location_data = {
+			user : data.user,
+			line : data.line,
+			top : data.top,
+			left : data.left
+		};
+		
+		this.cursor_location[get_cursor_location_position(data.user)] = location_data;
+	},
+	
 	set_cursor: function(message) {
-		if (message.user != core.user.first_name + "_" + core.user.last_name) {
+		if(message.user != core.user.first_name + "_" + core.user.last_name){
+			
 			var coords = this.editor.charCoords({line:message.line, ch:message.ch});
 			var top = parseInt(coords.y) - parseInt($(this.target).find(".CodeMirror-scroll").offset().top);
 			var left = parseInt(coords.x) - parseInt($(this.target).find(".CodeMirror-scroll").offset().left);
+
+			this.set_cursor_info({
+				user : message.user,
+				line : message.line,
+				top : top,
+				left : left
+			});
 			
 			if ($(this.target).find(".CodeMirror-scroll").find(".user_name_" + message.user).length > 0) {
 				$(this.target).find(".CodeMirror-scroll").find(".user_name_" + message.user).css("top", top - 8);
@@ -220,35 +268,6 @@ org.goorm.core.collaboration.editing.prototype = {
 				message.next.user = message.user;
 				self.change(message.next);
 			}
-
-			/*
-			var from_coords = this.editor.charCoords({line:message.from.line, ch:message.from.ch});
-			var from_top = parseInt(from_coords.y) - parseInt($(this.target).find(".CodeMirror-scroll").offset().top);
-			var from_left = parseInt(from_coords.x) - parseInt($(this.target).find(".CodeMirror-scroll").offset().left);
-			
-			var to_coords = this.editor.charCoords({line:message.to.line, ch:message.to.ch});
-			var to_top = parseInt(to_coords.y) - parseInt($(this.target).find(".CodeMirror-scroll").offset().top);
-			var to_left = parseInt(to_coords.x) - parseInt($(this.target).find(".CodeMirror-scroll").offset().left);
-			
-			var color = $(this.target).find(".CodeMirror-scroll").find(".user_name_" + message.user).css("color");
-			var width = from_left - to_left;
-			var height = from_top - to_top;
-			
-			console.log("--------------------------------------");
-			console.log(from_top);
-			console.log(from_left);
-			console.log(to_top);
-			console.log(to_left);
-			console.log(color);
-			console.log(width);
-			console.log(height);
-			
-			$(this.target).find(".CodeMirror-scroll").prepend("<span class='user_modifying_" + message.user + " user_modifying' style='top:" + from_top + "px; left:" + from_left + "px; width:" + width + "px; height:" + height + "px; background-color: " + color  +";'></span>");
-			
-			$(this.target).find(".CodeMirror-scroll").find(".user_modifying_" + message.user).hide("fast", function () {
-				$(self.target).find(".CodeMirror-scroll").find(".user_modifying_" + message.user).remove();
-			});
-			*/
 		}
 		
 		this.updating_process_running = false;

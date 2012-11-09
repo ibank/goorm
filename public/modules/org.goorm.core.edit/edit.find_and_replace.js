@@ -462,7 +462,10 @@ org.goorm.core.edit.find_and_replace.prototype = {
 		if(window_manager.window[window_manager.active_window].editor) {
 			// Get current active_window's CodeMirror editor
 			var editor = window_manager.window[window_manager.active_window].editor.editor;
-			$("#find_query_inputbox").val(editor.getSelection());
+			
+			if (editor.getSelection()!="") {
+				$("#find_query_inputbox").val(editor.getSelection());
+			}
 		}
 
 		//$("#find_query_inputbox").focus();

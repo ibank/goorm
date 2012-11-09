@@ -19,11 +19,12 @@ org.goorm.core = function() {
 	this.user = {
 		first_name: null,
 		last_name: null,
-		email: null
+		email: null,
+		img: null
 	};
 	
 	this.env = {
-		version: "1.0.2.r192",
+		version: null,
 		browser: null,
 		browser_version: 0,
 		os: null,
@@ -57,7 +58,8 @@ org.goorm.core = function() {
 		fn: null,
 		loading_bar: null,
 		theme: null,
-		theme_details: null
+		theme_details: null,
+		auth: null
 	};
 		
 	this.container = "";
@@ -140,29 +142,33 @@ org.goorm.core = function() {
 org.goorm.core.prototype = {
 	init: function(container) {
 		
-		this.start();
+		this.start();		
 		
 		var self = this;
 		this.filetypes = [];
 		this.workspace = {};
 		
 		$(this).bind("layout_loaded", function () {
-			console.log("layout Loaded");
+			console.log("layout load complete");
 
 			this.module.plugin_manager.get();
 		});	
 		
 		$(this).bind("preference_load_complete", function () {
-			console.log("preference Loading Complete");
+			console.log("preference load complete");
 		});
 		
 		$(this).bind("plugin_loaded", function () {
-			console.log("plugin Loaded");
+			console.log("plugin load complete");
 			
 			this.module.plugin_manager.load(0);
 			
 			this.main();
 		});
+		
+		//auth
+		this.module.auth = new org.goorm.core.auth();
+		this.module.auth.get_info();		
 		
 		this.load_complete_flag = false;
 		
@@ -180,8 +186,6 @@ org.goorm.core.prototype = {
 			}
 			else {
 				if(!self.load_complete_flag){
-					console.log("complete: " + self.loading_count);
-					
 					$(self).trigger("goorm_load_complete");
 					self.load_complete_flag = true;
 				}
@@ -228,6 +232,8 @@ org.goorm.core.prototype = {
 			//theme
 			self.module.theme = new org.goorm.core.theme();
 			self.module.theme.init();
+
+		
 /*
 			self.module.theme_details = new org.goorm.core.theme.details();
 			self.modile.theme_details.init();
@@ -478,6 +484,7 @@ org.goorm.core.prototype = {
 	},
 	
 	login: function () {
+/*
 		var self = this;
 		var user_id = $("#goorm_id").val();
 		var user_pw = $("#goorm_pw").val();
@@ -520,6 +527,7 @@ org.goorm.core.prototype = {
 				console.log(status, err, '서버와의 통신이 실패했습니다.'); 
 			}
 		});
+*/
 
 
 	},
@@ -528,7 +536,7 @@ org.goorm.core.prototype = {
 		$("#goorm").show();
 		$("#goorm").show();
 		
-		$('.goorm_version').html("goorm IDE " + this.env.version);
+		//$('.goorm_version').html("goorm IDE " + this.env.version);
 		
 		$("#goorm_loading_status_bar").fadeOut(1000);
 		

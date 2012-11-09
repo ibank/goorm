@@ -60,9 +60,12 @@ org.goorm.core.menu.action.prototype = {
 
 			confirmation.init({
 				title : "Do you want exit?",
-				message : "Do you want exit?",
-				yes_text : "Yes",
-				no_text : "No",
+				// message : "<span localization_key='confirmation_exit'>Do you want exit?</span>",
+				// yes_text : "<span localization_key='yes'>Yes</span>",
+				// no_text : "<span localization_key='no'>No</span>",
+				message : core.module.localization.msg['confirmation_exit'],
+				yes_text : core.module.localization.msg['confirmation_yes'],
+				no_text : core.module.localization.msg['confirmation_no'],
 				yes : function() {
 
 				},
@@ -98,7 +101,9 @@ org.goorm.core.menu.action.prototype = {
 			var window_manager = core.module.layout.workspace.window_manager;
 
 			if (window_manager.active_window<0) {
-				alert.show(core.module.localization.msg['alert_file_not_opened']);				// alert.show("file not opened");			}
+				alert.show(core.module.localization.msg['alert_file_not_opened']);
+				// alert.show("file not opened");
+			}
 			else {
 				if(window_manager.window[window_manager.active_window].designer != undefined) {
 					window_manager.window[window_manager.active_window].designer.save();
@@ -133,9 +138,12 @@ org.goorm.core.menu.action.prototype = {
 			if(core.status.selected_file) {
 				confirmation.init({
 					title : "Delete",
-					message : "Do you want to delete this file?",
-					yes_text : "Yes",
-					no_text : "No",
+					// message : "<span localization_key='confirmation_delete_file'>Do you want to delete this file?</span>",
+					// yes_text : "<span localization_key='yes'>Yes</span>",
+					// no_text : "<span localization_key='no'>No</span>",
+					message : core.module.localization.msg['confirmation_delete_file'],
+					yes_text : core.module.localization.msg['confirmation_yes'],
+					no_text : core.module.localization.msg['confirmation_no'],
 					yes : function() {
 						var postdata = {
 							filename : core.status.selected_file
@@ -1012,9 +1020,9 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=delete_context]").click(function() {
 			confirmation.init({
 				title : "Delete",
-				message : "Do you want to delete this file?",
-				yes_text : "Yes",
-				no_text : "No",
+				message : core.module.localization.msg['confirmation_delete_file'],
+				yes_text : core.module.localization.msg['confirmation_yes'],
+				no_text : core.module.localization.msg['confirmation_no'],
 				yes : function() {
 					var postdata = {
 						filename : core.status.selected_file

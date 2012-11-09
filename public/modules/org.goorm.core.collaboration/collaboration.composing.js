@@ -199,8 +199,6 @@ org.goorm.core.collaboration.composing.prototype = {
 			};
 		
 			self.socket.emit("message", '{"channel": "composing", "action":"remove_object", "user":"' + core.user.first_name + "_" + core.user.last_name + '", "workspace": "'+ core.status.current_project_name +'", "filepath":"' + self.filepath + '", "message": { "object": ' + JSON.stringify(object_data) + ' }}');
-			
-			console.log("A");
 		});
 		
 		this.timer = window.setInterval(check_for_updates, 500);
@@ -421,8 +419,6 @@ org.goorm.core.collaboration.composing.prototype = {
 	},
 	
 	remove_object: function (data) {
-		console.log("remove_object");
-		
 		var self = this;
 		
 		var id = data.message.object.properties.id;
@@ -437,7 +433,5 @@ org.goorm.core.collaboration.composing.prototype = {
 		});
 		
 		this.updating_process_running = false;
-		
-		console.log("remove_object_complete");
 	}
 };

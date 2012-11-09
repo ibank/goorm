@@ -31,7 +31,7 @@ org.goorm.core.preference.prototype = {
 		
 		this.load_default();
 		
-		console.log("default Preference loaded");
+		console.log("default preference load complete");
 //		this.manager.ini_parser();
 //		this.ini = this.manager.ini;
 //		
@@ -104,10 +104,12 @@ org.goorm.core.preference.prototype = {
 		
 		this.read_dialog(core.preference);
 			
-//		// Save changes of the information about file types into filetype.json
-//		$.post("preference/save", { data: core.filetypes }, function (data) {
-//			
-//		});
+		// Save changes of the information about file types into filetype.json
+/*
+		$.get("preference/put_filetypes", { data: core.filetypes }, function (data) {
+			
+		});
+*/
 			
 			
 //			self.get_preference(self.xml);
@@ -243,7 +245,8 @@ org.goorm.core.preference.prototype = {
 			$(targets[index]).find("input").each(function(){
 				if(key[$(this).attr("name")] !== null){
 					if($(this).attr("type") == "checkbox"){
-						if(key[$(this).attr("name")] == "true") {
+						
+						if(key[$(this).attr("name")] == "true" || key[$(this).attr("name")] == true) {
 							$(this).attr("checked",true);
 						}
 //						else $(this).attr("checked",);
@@ -390,7 +393,7 @@ org.goorm.core.preference.prototype = {
 					language.init();
 					
 					$(core).trigger("preference_loading_complete");
-					console.log("preference dialog loaded");
+					console.log("preference dialogs load complete");
 					
 				});
 				

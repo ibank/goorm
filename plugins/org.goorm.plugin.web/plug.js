@@ -42,7 +42,7 @@ org.goorm.plugin.web.prototype = {
 		
 		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all webp' description='  Create New Project for web' projecttype='web' plugin_name='org.goorm.plugin.web'><img src='/org.goorm.plugin.web/images/web.png' class='project_item_icon' /><br /><a>web Project</a></div>");
 		
-		$(".project_dialog_type").append("<option value='c'>Web Projects</option>").attr("selected", "");
+		$(".project_dialog_type").append("<option value='web'>Web Projects</option>").attr("selected", "");
 		
 	},
 
@@ -57,8 +57,8 @@ org.goorm.plugin.web.prototype = {
 		$("a[action=new_file_web]").unbind("click");
 		$("a[action=new_file_web]").click(function () {
 			core.dialog.new_project.show();
-			$(".project_wizard_first_button[project-type=web]").trigger("click");
-			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project-type=web]").position().top - 100);
+			$(".project_wizard_first_button[project-type=webp]").trigger("click");
+			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project-type=webp]").position().top - 100);
 		});
 	},
 	

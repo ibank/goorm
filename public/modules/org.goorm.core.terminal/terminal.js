@@ -54,7 +54,7 @@ org.goorm.core.terminal = function () {
 	
 	this.command_queue = null;
 	
-	this.default_prompt = /bash-\d\.\d\$/;
+	this.default_prompt = /bash-\d\.\d(\#|\$)/;
 	 
 	this.stdout = "";
 	this.prompt = null;
@@ -78,7 +78,7 @@ org.goorm.core.terminal.prototype = {
 		
 		$(target).addClass('terminal');
 		$(target).append("<div id='welcome'>welcome to goorm terminal :)</div>");
-		$(target).append("<div id='results'></div>");
+		$(target).append("<div id='results' style='word-wrap:break-word'></div>");
 		$(target).append("<span id='prompt'><input id='prompt_input' class='prompt_input' /></div></span>");
 		
 		self.timestamp = (new Date()).getTime();
@@ -108,14 +108,17 @@ org.goorm.core.terminal.prototype = {
 				self.socket.emit("pty_execute_command", JSON.stringify(msg));
 				
 				self.history.push(msg.command);
-				self.history_count = self.history.length - 1;
+				self.history_count = self.history.length;
 			}
 			else if (event.keyCode == '40') { //Down Arrow
 				if (self.history_count < self.history.length - 1) {
 					self.history_count++;
+					$(self.target).find("#prompt_input").val(self.history[self.history_count]);
 				}
-				
-				$(self.target).find("#prompt_input").val(self.history[self.history_count]);
+				else {
+					self.history_count++;
+					$(self.target).find("#prompt_input").val("");
+				}
 			}
 			else if (event.keyCode == '38') { //Up Arrow
 				if (self.history_count > 0) {
@@ -193,10 +196,10 @@ org.goorm.core.terminal.prototype = {
 		this.socket.on("platform", function(data) {
 			data = JSON.parse(data);
 			if(data.platform == "darwin") {
-				self.default_prompt = /bash-\d\.\d\$/;
+				self.default_prompt = /bash-\d\.\d(\#|\$)/;
 			}
 			else if (data.platform == "linux") {
-				self.default_prompt = /.*@.*:.*$/;
+				self.default_prompt = /.*@.*:.*(\#|\$)/;
 			}
 			self.platform = data.platform;
 		});
@@ -290,19 +293,15 @@ org.goorm.core.terminal.prototype = {
 			self.resize_all("layout");
 		});
 		
-		$(core).bind(this.terminal_name + "_resized", function () {
+		$(document).bind(this.terminal_name + "_resized", function () {
 			self.resize_all("panel");
 			
 			if (self.index > 0) {
 				self.resize_terminal();
 			}
 		});
-		
-		console.log(self.terminal_name);
-		
-		$(core).bind(this.terminal_name + "_closed",  function () {
-			console.log(self.terminal_name); 
-		
+
+		$(document).bind(this.terminal_name + "_closed",  function () {
 			var msg = {
 				index: self.index,
 				workspace: core.status.current_project_name,
@@ -310,6 +309,8 @@ org.goorm.core.terminal.prototype = {
 			};
 			
 			self.socket.emit("terminal_leave", JSON.stringify(msg));
+			
+			console.log("dddd!");
 		});
 		
 		$(window).bind("unload", function () {
@@ -351,9 +352,7 @@ org.goorm.core.terminal.prototype = {
 			index: this.index,
 			cols: cols
 		};
-		
-		console.log("!");
-		
+
 		this.socket.emit("terminal_resize", JSON.stringify(msg));
 	},
 	
@@ -384,8 +383,7 @@ org.goorm.core.terminal.prototype = {
 				"callback": callback
 			});
 		}
-		
-//		console.log("cmd length:", this.command_queue.length);
+
 		core.test = this.command_queue;
 		if (this.command_queue.length < 3 ) {
 			this.work_queue();
@@ -407,7 +405,6 @@ org.goorm.core.terminal.prototype = {
 			this.command_queue = [];
 			return;
 		}
-		
 		if (this.running_queue) return;
 		else this.running_queue = true;
 		
@@ -418,20 +415,16 @@ org.goorm.core.terminal.prototype = {
 		if(this.prompt.test(this.stdout)){
 			this.command_ready = true;
 		}
-//		console.log('#', this.command_queue.length, this.command_ready, this.prompt, this.prompt.test(this.stdout));
 		
 		if(this.command_ready == true) {
 			this.command_ready = false;
 			var item = this.command_queue.shift();
 			if(item) {
-//				console.log(this.prompt);
 				if (item.command) {
-//					console.log("##", item.command);
 					this.socket.emit("pty_execute_command", JSON.stringify(item.command));
 					this.stdout = "";
 				}
 				else if (item.callback) {
-//					console.log(this.stdout);
 					item.callback(this.stdout);
 				}
 			}
@@ -481,8 +474,7 @@ org.goorm.core.terminal.prototype = {
 				for (var j=0; j<words.length; j++) {
 				
 					var spaces = "";
-					
-					//console.log(words[j] + " / " + this.ansi_color_code_regexp.test(words[j]));
+
 					if (this.ansi_color_code_regexp.test(words[j])) {
 						var ansi_color_code = words[j].match(this.ansi_color_code_regexp);
 						
@@ -500,7 +492,7 @@ org.goorm.core.terminal.prototype = {
 						//spaces = word.join('&nbsp;');
 						
 						var value = word.split(' ').join('&nbsp;');
-						//console.log(value);
+
 						new_word += "'>" + value + "</span>" + '&nbsp;';
 						
 						/*

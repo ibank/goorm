@@ -359,6 +359,9 @@ var CodeMirror = (function() {
       compoundChange: function(f){return compoundChange(f);},
       refresh: function(){
         updateDisplay(true, null, lastScrollTop);
+        
+        console.log(scrollbar.scrollTop, scrollbar.scrollHeight, lastScrollTop)
+        
         if (scrollbar.scrollHeight > lastScrollTop)
           scrollbar.scrollTop = lastScrollTop;
       },

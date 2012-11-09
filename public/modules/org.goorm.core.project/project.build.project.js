@@ -81,7 +81,6 @@ org.goorm.core.project.build.project.prototype = {
 					
 					if(!self.is_onclick){
 						if(!$.isEmptyObject(core.module.plugin_manager.plugins["org.goorm.plugin."+$(list).attr("projectType")])) {
-							console.log($(list).val());
 							core.module.plugin_manager.plugins["org.goorm.plugin."+$(list).attr("projectType")].build($(list).val());
 							// self.is_onclick = true;
 

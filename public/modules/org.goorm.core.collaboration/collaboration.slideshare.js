@@ -20,7 +20,7 @@ org.goorm.core.collaboration.slideshare.prototype = {
 		this.socket = io.connect();
 		var self = this;
 		
-		$("#slide_body").append("<div id='slide_url' class='layout_right_slide_tab'>URL <input id='slideshare_url' type='text' value='http://www.slideshare.net/rohitbhargava/rohit-bhargava-invite-me-to-speak'/></div><div id='slide_control'><button id='slide_prev'><img src='images/icons/context/prev.png' style='margin-top:3px;' /></button><button id='slideshare_presentation'><img src='images/icons/context/play.png' style='margin-top:3px;' /></button><button id='slide_next'><img src='images/icons/context/next.png' style='margin-top:3px;' /></button></div><iframe id='iframe_slideshare' src='"+document.baseURI+"lib/slideshare/slide.html' width='100%' frameborder=0 marginwidth=0 marginheight=0 scrolling=no allowfullscreen> </iframe>");
+		$("#slide_body").append("<div id='slide_url' class='layout_right_slide_tab'>URL <input id='slideshare_url' type='text' value='http://www.slideshare.net/jeg0330/goorm-15035830'/></div><div id='slide_control'><button id='slide_prev'><img src='images/icons/context/prev.png' style='margin-top:3px;' /></button><button id='slideshare_presentation'><img src='images/icons/context/play.png' style='margin-top:3px;' /></button><button id='slide_next'><img src='images/icons/context/next.png' style='margin-top:3px;' /></button></div><iframe id='iframe_slideshare' src='"+document.baseURI+"lib/slideshare/slide.html' width='100%' frameborder=0 marginwidth=0 marginheight=0 scrolling=no allowfullscreen> </iframe>");
 		
 		if (this.socket.socket.connected) {
 //			this.socket.emit("message", '{"channel": "slideshare", "action":"send_message", "user":"' + core.user.first_name + "_" + core.user.last_name + '", "workspace": "'+ core.status.current_project_name +'", "message":"' + encodedMsg + '"}');
@@ -32,11 +32,11 @@ org.goorm.core.collaboration.slideshare.prototype = {
 			 */
 			
 			if(data.slide_url != self.current_slide_name) {
-				window.slideshare.loadPlayer(data.slide_url, data.page);
+				iframe_slideshare.loadPlayer(data.slide_url, data.page);
 				self.current_slide_name = data.slide_url;
 			}
-			if(window.slideshare.player && window.slideshare.player.jumpTo) {
-				window.slideshare.player.jumpTo(data.page);
+			if(iframe_slideshare.player && iframe_slideshare.player.jumpTo) {
+				iframe_slideshare.player.jumpTo(data.page);
 			}
  		});
  		
@@ -54,8 +54,8 @@ org.goorm.core.collaboration.slideshare.prototype = {
 		this.button_prev = new YAHOO.widget.Button("slide_prev", {
  			onclick: {
  				fn:function(){
-	 				window.slideshare.player.previous();
-					self.socket.emit("message", '{"channel": "slideshare", "slide_url":"'+self.current_slide_name+'", "page":'+window.slideshare.player.getCurrentSlide()+'}');
+	 				iframe_slideshare.player.previous();
+					self.socket.emit("message", '{"channel": "slideshare", "slide_url":"'+self.current_slide_name+'", "page":'+iframe_slideshare.player.getCurrentSlide()+'}');
 				}
 			}
 		});
@@ -63,8 +63,8 @@ org.goorm.core.collaboration.slideshare.prototype = {
 		this.button_next = new YAHOO.widget.Button("slide_next", {
  			onclick: {
  				fn: function(){
-					window.slideshare.player.next();
-					self.socket.emit("message", '{"channel": "slideshare", "slide_url":"'+self.current_slide_name+'", "page":'+window.slideshare.player.getCurrentSlide()+'}');
+					iframe_slideshare.player.next();
+					self.socket.emit("message", '{"channel": "slideshare", "slide_url":"'+self.current_slide_name+'", "page":'+iframe_slideshare.player.getCurrentSlide()+'}');
 				}
 			}
 		});
@@ -91,8 +91,8 @@ org.goorm.core.collaboration.slideshare.prototype = {
 				var slide_url = json.slide_image_baseurl.match(/.com\/([^/]*)\//);
 				
 				// this.slideshare.loadPlayer() 에러남.
-				window.slideshare.loadPlayer(slide_url[1]);
-//						window.slideshare.player.getCurrentSlide()
+				iframe_slideshare.loadPlayer(slide_url[1]);
+//						iframe_slideshare.player.getCurrentSlide()
 				self.current_slide_name = slide_url[1];
 				self.socket.emit("message", '{"channel":"slideshare", "slide_url":"'+slide_url[1]+'", "page":1}');
 			}

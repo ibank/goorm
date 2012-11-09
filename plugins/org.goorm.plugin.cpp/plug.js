@@ -262,11 +262,13 @@ org.goorm.plugin.cpp.prototype = {
 				var line_number = match[4];
 
 				var windows = core.module.layout.workspace.window_manager.window;
+								
 				for (var j=0; j<windows.length; j++) {
 					var window = windows[j];
 					if (window.project == self.current_debug_project 
 							&& window.filename == filename){
-						if(filepath && window.filepath.search(self.current_debug_project+"/"+filepath+"/") > -1) {
+						
+						if(filepath && filepath.search(window.filepath.substring(0, window.filepath.length-1)) > -1) {
 							window.editor.highlight_line(line_number);
 						}
 						else if (!filepath) {

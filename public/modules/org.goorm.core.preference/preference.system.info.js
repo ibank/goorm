@@ -17,30 +17,26 @@ org.goorm.core.preference.info = function (){
 org.goorm.core.preference.info.prototype = {
 	init : function() {
 		var self = this;
-		$.ajax({
-			type: 'get', 
-			dataType: "json",
-			url: "configs/server.json", 
-			success: function(json) {
-				$("#server_os").append(json.OS_version);
-				$("#apache_version").append(json.Apache_version);
-				$("#php_version").append(json.PHP_version);
-				$("#redis_version").append(json.Redis_version);
-				$("#node_version").append(json.Node_version);
+		
+		$.get("/preference/get_server_info", null, function(data) {
+			if(data.err_code==0) {
+				$("#server_os").append(data.info.os_version);
+				$("#node_version").append(data.info.node_version);
+				$("#mongodb_version").append(data.info.mongodb_version);
 			}
 		});
 		
-		$.ajax({
-			type: 'get', 
-			dataType: "json",
-			url: "configs/goorm.json", 
-			success: function(json) {
-				$("#core_version").append(json.version);
-				$.each(json.lib, function(index, lib){
+		$.get("/preference/get_goorm_info", null, function(data) {
+			if(data.err_code==0) {
+				core.env.version = data.info.version;
+				$('.goorm_version').html("goorm IDE " + core.env.version);
+				$("#core_version").append(data.info.version);
+				$.each(data.info.lib, function(index, lib){
 					var version = lib.version;
 					switch(lib.name) {
 					case "YUI" : $("#yui_version").append(version);break;
 					case "jQuery" : $("#jquery_version").append(version);break;
+					case "jQuery UI" : $("#jqueryui_version").append(version);break;
 					case "CodeMirror" : $("#codemirror_version").append(version);break;
 					}
 				});

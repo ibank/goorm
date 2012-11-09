@@ -126,8 +126,6 @@ org.goorm.core.dialog.prototype = {
 			if (self.buttons && self.panel.cfg.config.visible.value && !core.status.keydown && !alert.panel.cfg.config.visible.value && !notice.panel.cfg.config.visible.value && !confirmation.panel.cfg.config.visible.value) {
 				$(self.buttons).each(function (i) {
 					if (this.isDefault) {
-						console.log("!");
-						
 						this.hide = function(){};
 						this.handler();
 												

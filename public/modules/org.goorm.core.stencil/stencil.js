@@ -114,16 +114,12 @@ org.goorm.core.stencil.prototype = {
 		var url = "file/get_contents";
 		
 		if (this.type == "square") {
-		
-			//console.log(this.shape);
 			
 			$.ajax({
 				url: url,			
 				type: "GET",
 				data: "path=stencils/"+this.shape+".json",
 				success: function(data) {
-					//console.log(data);
-					
 					self.properties = eval("(" + data + ")");
 
 					if (typeof callback == "function") {

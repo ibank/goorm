@@ -17,19 +17,19 @@ org.goorm.core.file._new.other.prototype = {
 		
 		var handle_ok = function() {
 			var file_type = $("#new_other_file_list .selected_div").attr("value");
-			console.log("1");
+			
 			var postdata = {
 				current_path: core.status.current_project_path,
 				file_name: $("#new_other_file_target").val()+"."+file_type
 			};
-			console.log(postdata);
+
 			if(postdata.file_name=="") {
-				alert.show(core.module.localization.msg["alert_filename_empty"]);				// alert.show("File name is empty. Please fill it...");				return false;
+				alert.show(core.module.localization.msg["alert_filename_empty"]);
+				// alert.show("File name is empty. Please fill it...");
+				return false;
 			}
-			console.log("2");
 
 			$.get("file/new_other", postdata, function (data) {
-				console.log(data);
 				if (data.err_code==0) {
 					core.module.layout.project_explorer.refresh();
 					self.dialog.panel.hide();
@@ -38,7 +38,6 @@ org.goorm.core.file._new.other.prototype = {
 					alert.show(data.message);
 				}
 			});
-			console.log("end");
 		};
 
 		var handle_cancel = function() { 

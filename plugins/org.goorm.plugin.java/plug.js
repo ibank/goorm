@@ -58,8 +58,8 @@ org.goorm.plugin.java.prototype = {
 		$("a[action=new_file_java]").unbind("click");
 		$("a[action=new_file_java]").click(function () {
 			core.dialog.new_project.show();
-			$(".project_wizard_first_button[project-type=java]").trigger("click");
-			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project-type=java]").position().top - 100);
+			$(".project_wizard_first_button[project-type=javap]").trigger("click");
+			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project-type=javap]").position().top - 100);
 		});
 	},
 	

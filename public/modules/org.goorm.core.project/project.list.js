@@ -56,7 +56,6 @@ org.goorm.core.project.list.prototype = {
 		var self = this;
 
 		$.getJSON("project/get_list", null, function (data) {
-			console.log(data);
 			$(data).each(function (i) {		
 			//for(var project_idx=0; project_idx<sorting_data.length; project_idx++) {
 				var icon_str = "";
@@ -65,8 +64,6 @@ org.goorm.core.project.list.prototype = {
 				icon_str += this.contents.name;
 				icon_str += "</div>";
 				icon_str += "</div>";
-				
-				console.log(this.contents.name);
 
 				$(self.list).append(icon_str);
 			});

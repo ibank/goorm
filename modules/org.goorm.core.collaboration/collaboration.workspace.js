@@ -6,16 +6,16 @@
  * version: 1.0.0
  **/
 
+var updating = require('./collaboration.updating.js');
+
 module.exports = {
-	workspaces: new Array(),
-	users: new Array(),
+	workspaces: new Array(), // workspace : [ ws1, ws2, ... ]
+	users: new Array(), // users : [ {ws1, list: [user1, user2]}, {ws2, list: [user1]} ]
 	
 	join: function (socket, msg) {
-		console.log(msg.workspace);
-		
 		socket.join(msg.workspace);
 		socket.set('workspace', msg.workspace);
-	
+		updating.init(msg.workspace);
 		
 		var index = 0;
 		

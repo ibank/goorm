@@ -11,7 +11,7 @@ Installation
 
   install using npm :
 
-          $ npm install goorm -g
+          $ npm install goorm
 
 Official Site
 -------------
@@ -79,24 +79,36 @@ Getting Started
 
   checkout goorm (svn) :
   
-          $ svn checkout svn://svn.code.sf.net/p/goorm/code/trunk goorm                
+          $ svn checkout svn://svn.code.sf.net/p/goorm/code/trunk goorm 
+
+  or using npm :
+
+          $ npm install goorm
+                 
 
 * **Run**
-        
-  run goorm:
-          
-          $ goorm
-          
-  if you download goorm from git or svn, run goorm as follow :
-  
-          $ node goorm.js
 
+  run mongodb:
+    
+          $ mongod
+          
+  if mongodb installed successfully, it prints information as below:
+
+          ...
+          Thu Oct  4 23:26:15 [websvr] admin web console waiting for connections on port 28017
+          Thu Oct  4 23:26:15 [initandlisten] waiting for connections on port 27017
+          ...
+        
+  run goorm.js:
+          
+          $ node goorm.js
+          
   if goorm runned successfully, it prints information as below:
   
           info  - socket.io started
           { port: 9999, process_name: 'goorm' }
           goorm IDE server listening on port 9999 in development mode
-
+          
   you can run the goorm as below URL in your web-browser (google chrome is hardly recommended)
   
           http://localhost:9999

@@ -7,7 +7,7 @@
  **/
 
 module.exports = {
-	users: [],
+	users: {},
 	
 	join: function () {
 		

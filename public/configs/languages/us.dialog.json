@@ -264,6 +264,9 @@
             },
             "dialog_help_install_new_plugins_install": {
                 "value": "Install"
+            },
+            "dialog_help_install_new_plugins_add": {
+                "value": "Add..."
             }
         }
     },
@@ -396,6 +399,14 @@
              },
             "dialog_project_use_regular_expression_guide": {
                 "value": "Use regular expression"
+             }
+        }
+    },
+    "dialog_collaboration_notification": {
+        "value": "Notification",
+        "children": {
+            "dialog_notification_partner_guide": {
+                "value": "Message : "
              }
         }
     }

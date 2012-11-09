@@ -53,9 +53,8 @@ org.goorm.core.project.build.configuration.prototype = {
 	show: function () {
 		if(core.status.current_project_path != ""){
 			var dialog = core.dialog.project_property.dialog;
-			console.log(dialog);
+
 			$("#property_tabview > div").each(function(){
-				console.log($(this).attr("plugin"));
 				if($(this).attr("plugin") == "org.goorm.plugin."+core.property.type) {
 					$("#property_tabview > div").hide();
 					$(this).show();
@@ -64,7 +63,9 @@ org.goorm.core.project.build.configuration.prototype = {
 			dialog.panel.show();
 		}
 		else {
-			alert.show(core.module.localization.msg["alert_project_not_opened"]);			// alert.show("Project is not opened");		}
+			alert.show(core.module.localization.msg["alert_project_not_opened"]);
+			// alert.show("Project is not opened");
+		}
 	},
 	
 	init_dialog: function(path,callback){

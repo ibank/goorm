@@ -36,7 +36,8 @@ org.goorm.core.project._delete.prototype = {
 				var received_data = data;
 				
 				if(received_data.err_code==0) {
-					notice.show("Project is deleted.");
+					// notice.show("Project is deleted.");
+					notice.show(core.module.localization.msg['notice_project_delete_done']);
 					if ( postdata.project_path == core.status.current_project_path ) {
 						core.status.current_project_path = "";
 						core.status.current_project_name = "";

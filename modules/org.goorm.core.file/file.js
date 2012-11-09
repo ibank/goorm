@@ -13,10 +13,17 @@ var rimraf = require('rimraf');
 var http = require('http');
 
 var root_dir = "";
+var file_type = [];
 
 module.exports = {
 	init: function () {
-	
+		fs.readdir(__path+"public/images/icons/filetype/", function(err, files) {
+			for(var i=0; i<files.length; i++) {
+				if (files[i].indexOf("filetype")>-1) {
+					file_type.push(files[i]);
+				}
+			}
+		});
 	},
 	
 	do_new: function (query, evt) {
@@ -209,7 +216,7 @@ module.exports = {
 		
 	get_nodes: function (path, evt) {
 		var self = this;
-		
+	
 		var evt_dir = new EventEmitter();
 				
 		var nodes = [];
@@ -227,20 +234,28 @@ module.exports = {
 				if (root.indexOf("\/\.")==-1) {			
 					for (var i=0; i < file_stats.length; i++) {
 						if (file_stats[i].name.indexOf("\.") != 0 ) {
+							
+							var temp_filename = file_stats[i].name;
+							var file_path = file_stats[i].name.split('.').pop() + ".filetype.png";
+
+							var extension;
+
+							if (file_type.indexOf(file_path)==-1) {
+								extension = "etc";
+							}
+							else {
+								extension = temp_filename.split('.').pop();
+							}
+
 							var node = {};
+							node.filename = temp_filename;
 							node.root = root.replace(__workspace+'/', "") + "/";
-							node.filename = file_stats[i].name;
 							node.parent_label = node.root;
 							node.project_path = root_dir;
 							node.cls = "file";
 							node.expanded = false;
 							node.sortkey = 1 + node.filename;
-							node.type = "html";
-							
-							var extension = node.filename.split('.').pop();
-							if (extension == node.filename) {
-								extension = "etc";
-							}
+							node.type = "html";	
 							node.html = "<div class='node'>" 
 										+ "<img src=images/icons/filetype/" + extension + ".filetype.png class=\"directory_icon file\" />"
 										+ node.filename
@@ -248,6 +263,7 @@ module.exports = {
 									  + "</div>";
 							node.children = [];
 							node.filetype = extension;
+							
 							nodes.push(node);
 						}
 					}
@@ -257,7 +273,8 @@ module.exports = {
 			
 			walker.on("end", function () {
 				tree = self.make_dir_tree(root_dir, dirs);
-				tree = self.make_file_tree(tree, nodes);				
+				tree = self.make_file_tree(tree, nodes);
+
 				evt.emit("got_nodes", tree);
 			});
 		
@@ -396,7 +413,6 @@ module.exports = {
 	},
 	
 	do_delete: function (query, evt) {
-		console.log(query);
 		var data = {};
 		data.err_code = 0;
 		data.message = "process done";

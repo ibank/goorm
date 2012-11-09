@@ -19,6 +19,7 @@ org.goorm.core.collaboration.communication = function () {
   	this.timer = null;
   	
   	this.socket = null;
+  	this.notification = null;
 };
 
 org.goorm.core.collaboration.communication.prototype = {
@@ -45,7 +46,8 @@ org.goorm.core.collaboration.communication.prototype = {
 					self.socket.emit("message", '{"channel": "communication", "action":"send_message", "user":"' + core.user.first_name + "_" + core.user.last_name + '", "workspace": "'+ core.status.current_project_name +'", "message":"' + encodedMsg + '"}');
 				} 
 				else {
-					// alert.show("Could not connect to collaboration server");					alert.show(core.module.localization.msg['alert_collaboration_server_notconnected']);
+					// alert.show("Could not connect to collaboration server");
+					alert.show(core.module.localization.msg['alert_collaboration_server_notconnected']);
 				}
 
 				$(this).val("");
@@ -59,6 +61,11 @@ org.goorm.core.collaboration.communication.prototype = {
 		
  		this.socket.on("communication_message", function (data) {
  			data = decodeURIComponent(data);
+ 			
+ 			if(core.module.layout.inner_layout.getUnitByPosition("right")._collapsed){
+ 				self.notification.notify(data);
+ 			}
+
  			$("#" + self.target).find(".communication_message_container").append("<div class='communication_message_content'>" + data + "</div>");
  			var length = $("#" + self.target).find(".communication_message_container").find('.communication_message_content').length || 0;
  			$("#" + self.target).find(".communication_message_container").scrollTop(parseInt(length) * 16); // 16 = height of communication_message_content
@@ -85,7 +92,9 @@ org.goorm.core.collaboration.communication.prototype = {
  		$(window).unload(function() {
  			self.leave();
  		});
-	},
+ 		
+ 		this.notification = new org.goorm.core.collaboration.notification();
+ 		this.notification.init();	},
 	
 	clear: function () {
 		$("#" + this.target).find(".communication_user_container").empty();

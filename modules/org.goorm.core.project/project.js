@@ -168,10 +168,23 @@ module.exports = {
 			fs.mkdir(__temp_dir+'/'+query.user, '0777', function(err) {
 
 				if (err==null || err.errno == 47) {		//errno 47 is exist folder error
+					//$tar cvzf filename.tar.gz file1
+					var export_terminal_command;
+					var export_file_extension;
 
-					var command = exec("cd " + __workspace +"; zip -r " + __temp_dir + "/"+query.user+"/"+query.project_name+".zip ./"+query.project_path, function (error, stdout, stderr) {
+					if(query.export_type == "zip"){
+						export_terminal_command = "zip -r ";
+						export_file_extension = ".zip";
+					}
+					else if(query.export_type == "tar"){
+
+						export_terminal_command = "tar cvzf ";
+						export_file_extension = ".tar";
+					}
+					
+					var command = exec("cd " + __workspace +"; " + export_terminal_command + __temp_dir + "/"+query.user+"/"+query.project_name + export_file_extension + " ./"+query.project_path, function (error, stdout, stderr) {
 						if (error == null) {
-							data.path = query.user+'/'+query.project_name+".zip";
+							data.path = query.user+'/'+query.project_name+export_file_extension;
 							evt.emit("project_do_export", data);
 						}
 						else {
@@ -207,18 +220,21 @@ module.exports = {
 		var options = {
 			followLinks: false
 		};
-				
+
+
+		var is_empty = true;
 		var walker = walk.walk(__workspace+'/', options);
 
 		walker.on("directories", function (root, dirStatsArray, next) {
-
-			var count = dirStatsArray.length;
+			is_empty = false;
 			if (root==__workspace+'/' ) {
+
 				var dir_count = 0;
 
 				var evt_dir = new EventEmitter();
 	
 				evt_dir.on("get_list", function () {
+
 					dir_count++;
 					if (dir_count<dirStatsArray.length) {
 						self.get_project_info(dirStatsArray[dir_count], evt_dir);						
@@ -227,7 +243,7 @@ module.exports = {
 						evt.emit("project_get_list", projects);
 					}
 				});
-				
+
 				self.get_project_info(dirStatsArray[dir_count], evt_dir);
 			}
 			
@@ -235,6 +251,9 @@ module.exports = {
 		});
 		
 		walker.on("end", function () {
+			if (is_empty) {
+				evt.emit("project_get_list", projects);
+			}
 		});
 	},
 	
@@ -310,13 +329,13 @@ module.exports = {
 		var data = {};
 		data.err_code = 0;
 		data.message = "process done";
-		console.log(query.project_list);
+
 		if (query.project_list != null) {
 
 			var total_count = query.project_list.length;
 			var clean_count = 0;
 			var evt_clean = new EventEmitter();
-console.log(total_count+" "+clean_count);
+
 			evt_clean.on("do_delete_for_clean", function () {
 				
 				clean_count++;
@@ -339,9 +358,7 @@ console.log(total_count+" "+clean_count);
 	},
 	
 	do_delete_for_clean: function (project_path, evt_clean) {
-		console.log(project_path+"pre");
 		rimraf(__workspace+'/'+project_path+"/build", function(err) {
-			console.log(project_path+"post");
 			evt_clean.emit("do_delete_for_clean");
 		});
 	}

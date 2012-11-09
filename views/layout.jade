@@ -269,6 +269,8 @@ html
 		script(type='text/javascript', src='/modules/org.goorm.core.collaboration/collaboration.join.dialog.js')
 		script(type='text/javascript', src='/modules/org.goorm.core.collaboration/collaboration.settings.js')
 		script(type='text/javascript', src='/modules/org.goorm.core.collaboration/collaboration.settings.dialog.js')
+		script(type='text/javascript', src='/modules/org.goorm.core.collaboration/collaboration.notification.js')
+		script(type='text/javascript', src='/modules/org.goorm.core.collaboration/collaboration.notification.dialog.js')
 		script(type='text/javascript', src='/modules/org.goorm.core.code_generator/code_generator.js')
 		script(type='text/javascript', src='/modules/org.goorm.core.help/help.js')
 		script(type='text/javascript', src='/modules/org.goorm.core.help/help.contents.js')
@@ -289,13 +291,14 @@ html
 		script(type='text/javascript', src='/modules/org.goorm.core.help/help.bug_report.dialog.js')
 		script(type='text/javascript', src='/modules/org.goorm.core.stencil/stencil.js')
 		script(type='text/javascript', src='/modules/org.goorm.core.localization/localization.js')
+		script(type='text/javascript', src='/modules/org.goorm.core.auth/auth.js')
 		script(type='text/javascript', src='/modules/org.goorm.plugin/plugin.js')
 		script(type='text/javascript', src='/modules/org.goorm.plugin/plugin.manager.js')
 		script(type='text/javascript', src='/modules/org.goorm.plugin/plugin.loader.js')
 		
 		script(type='text/javascript', src='/socket.io/socket.io.js')
 
-		title goorm1
+		title goorm
 		
 		script(type='text/javascript')
 			var goorm_loading_start_time = new Date().getTime();
@@ -316,26 +319,9 @@ html
 				//goorm initialize
 				core.init("goorm");
 				
-				var email = "";
-				var first_name = "";
-				var last_name = "";
-				
-				for (var i=0; i < Math.random() * 4 + 2; i++) {
-					first_name += String.fromCharCode(97 + Math.round(Math.random() * 25));
-				}
-				
-				for (var j=0; j < Math.random() * 4 + 2; j++) {
-					last_name += String.fromCharCode(97 + Math.round(Math.random() * 25));
-				}
-				
-				core.user.email = email;
-				core.user.first_name = first_name;
-				core.user.last_name = last_name;
-				
-				
 				//console.log("initialized!");
 				$(core).bind("goorm_load_complete", function () {
-					console.log("goormIDE Load Complete");
+					console.log("goormIDE load complete");
 				});
 			});
 		

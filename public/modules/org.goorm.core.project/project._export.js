@@ -23,13 +23,16 @@ org.goorm.core.project._export.prototype = {
 			var data = self.project_list.get_data();
 
 			if(data.path=="" || data.name=="") {
-				alert.show(core.module.localization.msg["alert_filename_empty"]);				// alert.show("Project item is not selected");				return false;
+				alert.show(core.module.localization.msg["alert_filename_empty"]);
+				// alert.show("Project item is not selected");
+				return false;
 			}
 
 			var postdata = {
 				user: core.user.first_name+"_"+core.user.last_name,
 				project_path: data.path,
-				project_name: data.name
+				project_name: data.name,
+				export_type: $("#project_export_datatype option:selected").text()
 			};
 								
 			$.get("project/export", postdata, function (data) {

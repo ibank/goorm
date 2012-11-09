@@ -23,7 +23,7 @@ org.goorm.core.debug.message.prototype = {
 			var filename = $(this).attr("filename");
 			
 			if (line_no != "" && filename != "") {
-				self.highlight(line_no, filename);			
+				self.highlight(line_no, filename);
 			}
 		});		
 	},

@@ -92,8 +92,10 @@ module.exports = {
 			socket.on('change_project_dir', function (msg) {
 				msg = JSON.parse(msg);
 				
-				term[msg.index].write("cd " + global.__workspace + "/" + msg.project_path  + "\r");
-				socket.to().emit("on_change_project_dir", msg);
+				if (term[msg.index] != undefined) {
+					term[msg.index].write("cd " + __workspace + msg.project_path  + "\r");
+					socket.to().emit("on_change_project_dir", msg);
+				}
 			});
 			
 

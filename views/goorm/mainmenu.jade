@@ -333,10 +333,6 @@
              a.yuimenuitemlabel(action='left_project_explorer_show', localization_key='window_left_layout_toggle_project_explorer')
               | Show Project Explorer
               em.helptext Shift + Alt + 1
-            li.yuimenuitem
-             a.yuimenuitemlabel(action='left_toolbox_show', localization_key='window_left_layout_toggle_toolbox')
-              | Show Toolbox
-              em.helptext Shift + Alt + 2
            h6.first-of-type(localization_key='window_right_layout') Right Layout
            ul
             li.yuimenuitem
@@ -345,16 +341,12 @@
               em.helptext Shift + Alt + R
             li.yuimenuitem
              a.yuimenuitemlabel(action='right_properties_show', localization_key='window_right_layout_toggle_properties')
-              | Show Properties
+              | Show Communication
               em.helptext Shift + Alt + 3
             li.yuimenuitem
              a.yuimenuitemlabel(action='right_object_explorer_show', localization_key='window_right_layout_toggle_object_explorer')
-              | Show Object Explorer
+              | Show Slide
               em.helptext Shift + Alt + 4
-            li.yuimenuitem
-             a.yuimenuitemlabel(action='right_chat_show', localization_key='window_right_layout_toggle_chat')
-              | Show Communication
-              em.helptext Shift + Alt + 5
            h6.first-of-type(localization_key='window_bottom_layout') Bottom Layout
            ul
             li.yuimenuitem
@@ -363,20 +355,16 @@
               em.helptext Shift + Alt + B
             li.yuimenuitem
              a.yuimenuitemlabel(action='bottom_message_show', localization_key='window_bottom_layout_toggle_messages')
-              | Show Message
+              | Show Debug
               em.helptext Shift + Alt + 6
             li.yuimenuitem
              a.yuimenuitemlabel(action='bottom_debug_show', localization_key='window_bottom_layout_debug')
-              | Show Debug
+              | Show Search
               em.helptext Shift + Alt + 7
             li.yuimenuitem
              a.yuimenuitemlabel(action='bottom_console_show', localization_key='window_bottom_layout_console')
               | Show Terminal
               em.helptext Shift + Alt + 8
-            li.yuimenuitem
-             a.yuimenuitemlabel(action='bottom_search_show', localization_key='window_bottom_layout_search')
-              | Show Search
-              em.helptext Shift + Alt + 9
        ul
         li.yuimenuitem
          a.yuimenuitemlabel(action='toggle_full_workspace', localization_key='window_toggle_full_workspace')
@@ -412,8 +400,8 @@
         li.yuimenuitem
          a.yuimenuitemlabel(action='help_contents', style='background-image: url(configs/toolbars/org.goorm.core.help/image/help_contents.png);', localization_key='help_help_contents') Help Contents
        ul
-        li.yuimenuitem.yuimenuitem-disabled
-         a.yuimenuitemlabel-disabled(action='help_check_for_updates', style='background-image: url(configs/toolbars/org.goorm.core.help/image/check_for_update.png);', localization_key='help_check_for_updates') Check for Updates
+        li.yuimenuitem
+         a.yuimenuitemlabel(action='help_check_for_updates', style='background-image: url(configs/toolbars/org.goorm.core.help/image/check_for_update.png);', localization_key='help_check_for_updates') Check for Updates
        ul
         li.yuimenuitem.yuimenuitem-disabled
          a.yuimenuitemlabel-disabled(action='help_bug_report', style='background-image: url(configs/toolbars/org.goorm.core.help/image/bug_report.png);', localization_key='help_bug_report') Send Bug Report

@@ -221,7 +221,6 @@ org.goorm.core.theme.prototype = {
 	},
 	//create new theme
 	create_new_theme: function() {
-		console.log("create new theme");
 		$(".theme_info").empty();
 	}
 };

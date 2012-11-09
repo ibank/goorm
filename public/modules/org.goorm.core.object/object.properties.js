@@ -43,9 +43,7 @@ org.goorm.core.object.properties.prototype = {
 		var edit_complete = function (object) {
 			var attribute = $(object.editor.getTdEl()).parent().find(".yui-dt-col-attribute").find(".yui-dt-liner").html();
 			var value = object.newData;
-			
-			console.log(object);
-			
+
 			if (eval("self.object.properties." + attribute)) {
 				eval("self.object.properties." + attribute + "='" + value + "';");
 			}

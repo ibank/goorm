@@ -65,11 +65,11 @@ org.goorm.core.help.bug_report.prototype = {
 			
 			$.post("", postdata, function (data) {
 				if($(data).find("h1").text()=="success") {
-					notice.show(core.module.localization.msg["noticeWriteDone"]);
+					notice.show(core.module.localization.msg["notice_write_done"]);
 					pan.hide(); 
 				}
 				else {
-					alert.show(core.module.localization.msg["alertCannotWrite"]);
+					alert.show(core.module.localization.msg["alert_cannot_write"]);
 					pan.hide(); 
 				}
 			});		

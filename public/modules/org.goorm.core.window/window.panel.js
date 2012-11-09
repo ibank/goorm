@@ -41,7 +41,7 @@ org.goorm.core.window.panel.prototype = {
 		
 		this.container = container;
 		this.workspace_container = workspace_container;
-		
+
 		if(filetype == "" || filetype == "etc") {
 			filetype = "txt";
 		}
@@ -117,9 +117,12 @@ org.goorm.core.window.panel.prototype = {
 
 		// Due to file type, create proper tool.
 		if (editor == "Editor") {
+
 			this.type = "Editor";
+
 			//var mode = core.filetypes[this.inArray(this.filetype)].mode;
 			var mode;
+
 			if (this.filetype=="url") {
 				mode = core.filetypes[this.inArray("html")].mode;
 			}
@@ -238,7 +241,7 @@ org.goorm.core.window.panel.prototype = {
 			self.resize_all();
 			self.refresh();
 			
-			$(core).trigger(self.filename + "_resized");
+			$(document).trigger(self.filename + "_resized");
 		}, this.panel, true);
 		
 		
@@ -417,8 +420,7 @@ org.goorm.core.window.panel.prototype = {
 		var window_manager = core.module.layout.workspace.window_manager;
 		if(this.is_saved) {
 			
-			console.log(this.filename + "_closed");
-			$(core).trigger(this.filename + "_closed");		
+			$(document).trigger(this.filename + "_closed");		
 		
 			this.alive = false;
 			//delete core.module.layout.workspace.window_manager.window_list.windows[this.filepath+this.filename];
@@ -604,7 +606,14 @@ org.goorm.core.window.panel.prototype = {
 				return i;
 			}
 		}
-		return -1;
+		
+		for (var i = 0; i < core.filetypes.length; i++) {
+			if (core.filetypes[i].file_extension == "txt"){
+				return i;
+			}
+		}
+		
+		return 12;
 	},
 	
 	plug: function() {

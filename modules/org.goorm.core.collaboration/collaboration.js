@@ -13,13 +13,11 @@ var editing = require('./collaboration.editing.js');
 var composing = require('./collaboration.composing.js');
 var drawing = require('./collaboration.drawing.js');
 var slideshare = require('./collaboration.slideshare.js');
-
+var updating = require('./collaboration.updating.js');
 
 module.exports = {
 	start: function (io) {
 		var self = this;
-		
-		
 		
 		io.set('log level', 0);
 		io.sockets.on('connection', function (socket) {
@@ -45,11 +43,12 @@ module.exports = {
 				if(msg_obj["channel"] != undefined) {
 					channel = msg_obj["channel"];
 				}
-
+				
 				if (channel == "communication") {
 					communication.msg(socket, msg_obj);
 				}
 				else if (channel == "editing") {
+					updating.push(msg_obj.workspace, msg_obj);
 					editing.msg(socket, msg_obj);
 				}
 				else if (channel == "composing") {

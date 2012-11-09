@@ -93,7 +93,6 @@ org.goorm.core.theme.manager.prototype = {
 	},
 	
 	create_datatable: function() {
-		console.log("create datatable");
 		var self = this;
 
 		self.table_variable_array = [];
@@ -139,7 +138,6 @@ org.goorm.core.theme.manager.prototype = {
 	},
 
 	set_datatable: function() {
-		console.log("set datatable");
 		var self = this;
 		self.clear_datatable();
 
@@ -175,7 +173,6 @@ org.goorm.core.theme.manager.prototype = {
 	},
 
 	clear_datatable: function() {
-		console.log("clear datatable");
 		var self = this;
 
 		for(var i=0; i<self.table_variable_array.length; i++){			

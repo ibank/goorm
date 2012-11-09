@@ -22,7 +22,9 @@ org.goorm.core.project.open.prototype = {
 			var data = self.project_list.get_data();
 
 			if (data.path=="" || data.name=="" || data.type=="") {
-				alert.show(core.module.localization.msg["alert_project_not_selected"]);				// alert.show("Project item is not selected");				return false;
+				alert.show(core.module.localization.msg["alert_project_not_selected"]);
+				// alert.show("Project item is not selected");
+				return false;
 			}
 			else {
 				self.open(data.path, data.name, data.type);
@@ -88,7 +90,6 @@ org.goorm.core.project.open.prototype = {
 		
 		core.module.layout.communication.join();
 		core.module.layout.terminal.change_project_dir();
-
 		$(core).trigger("on_project_open");
 	}
 };

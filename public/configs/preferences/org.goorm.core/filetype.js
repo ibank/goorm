@@ -87,7 +87,7 @@ $("#del").click(function () {
 
 
 $("#save").click(function () {
-	
+	console.log("save in preferences");
 	var finded = false;
 	
 	if ($(".filetype_contents").find(".filetype_detail").find(".file_extension").length != 0){

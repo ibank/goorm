@@ -107,6 +107,31 @@ org.goorm.core.window.manager.prototype = {
 			return false;
 		});
 		
+		$(core).bind("edit_file_open", function(evt, data){
+			var postdata = {
+				workspace : data.workspace
+			}
+			
+			$.post("/file/update_data", postdata, function(logs){
+				var index = -1;
+				if(logs.length > 0){
+					for(var i=0; i<self.window.length; i++){
+						var filepath = self.window[i].filepath + self.window[i].filename;
+						if(filepath == logs[0].filepath){
+							index = i;
+							break;
+						}
+					}
+					
+					if(index != -1){
+						for(var i=0; i<logs.length; i++){
+							self.window[index].editor.collaboration.set_cursor(logs[i].message);
+						}
+					}
+				}
+			});
+		});
+		
 		$(core).bind("goorm_load_complete", function () {
 			if(!$.isEmptyObject(localStorage["workspace_window"])){
 				var temp_window_list = $.parseJSON(localStorage["workspace_window"]);
@@ -155,7 +180,7 @@ org.goorm.core.window.manager.prototype = {
 						$("#" + current_window.container).height(this.height);
 						
 						current_window.panel.cfg.setProperty("width", this.width + "px");
-			            current_window.panel.cfg.setProperty("height", this.height - 3 + "px");
+			          current_window.panel.cfg.setProperty("height", this.height - 3 + "px");
 						
 						current_window.status = null;
 						
@@ -181,8 +206,6 @@ org.goorm.core.window.manager.prototype = {
 	},
 	
 	save_workspace: function() {
-		console.log("save_workspace");
-	
 		var window_data = [];
 		var self = this;
 		$(this.window).each(function (i) {
@@ -208,11 +231,17 @@ org.goorm.core.window.manager.prototype = {
 	open: function(filepath, filename, filetype, editor) {
 		var i = this.is_opened(filepath, filename);
 		
+		var project_name = filepath.split('/')[1];
+		if(filepath[0] != '/') project_name = filepath.split('/')[0]
+		var workspace = project_name.substring(parseInt(project_name.indexOf('_'))+1);
+		
 		if(i >= 0) {
 			this.active_window = i;
 			this.window[i].activate();
 			
-			return this.window[i]
+			// $(core).trigger('edit_file_open', {'workspace':workspace});
+			
+			return this.window[i];
 		}
 		else {
 			this.add(filepath, filename, filetype, editor);
@@ -220,6 +249,8 @@ org.goorm.core.window.manager.prototype = {
 			if (this.maximized) {
 				this.window[this.window.length - 1].maximize();
 			}
+			
+			//$(core).trigger('edit_file_open', {'workspace':workspace});
 			
 			return this.window[this.window.length - 1];
 		}
@@ -254,7 +285,17 @@ org.goorm.core.window.manager.prototype = {
 		});
 		
 		$(this.window).each(function (i) {
-			if (this.filepath == filepath && this.filename == filename) {
+			var base = this.filepath;
+			var target = filepath;
+			
+			if(filepath.length > this.filepath.length){
+				base = filepath;
+				target = this.filepath;
+			}
+			
+			console.log(base, target);
+			
+			if ( base.indexOf(target) != -1 && this.filename == filename) {
 				window_index = i;
 			}
 		});
@@ -314,8 +355,6 @@ org.goorm.core.window.manager.prototype = {
 	previous_window: function () {	
 /*
 		if (this.window[this.active_window-1]) {
-			console.log(this.window);
-			console.log("active_window: " + this.active_window);
 			this.window[this.active_window-1].activate();
 			this.active_window--;
 		  
@@ -333,8 +372,6 @@ org.goorm.core.window.manager.prototype = {
 	next_window: function () {
 /*
 		if (this.window[this.active_window+1]) {
-			console.log(this.window);
-			console.log("active_window: " + this.active_window);
 			this.window[this.active_window+1].activate();
 			this.active_window++;
 		  

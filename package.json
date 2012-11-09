@@ -4,14 +4,16 @@
   "description": "Cloud based Integrated Development Enviroment.",
   "version": "1.0.2-r192",
   "dependencies": {
-    "express": ">= 3.0.0rc5",
-    "jade": ">= 0.25.0",
-    "socket.io": ">= 0.9.10",
-    "walk": ">= 2.2.1",
     "connect": ">= 2.3.6",
-    "rimraf": ">= 2.0.2",
+    "connect-mongodb": ">= 1.1.5",
+    "everyauth": ">= 0.3.1",
+    "express": ">= 3.0.0rc5",
+    "forever": "0.10.0",
+    "jade": ">= 0.25.0",
     "mongoose": ">= 3.3.0",
-    "connect-mongodb": ">= 1.1.5"
+    "rimraf": ">= 2.0.2",
+    "socket.io": ">= 0.9.10",
+    "walk": ">= 2.2.1"
   },
   "main": "goorm.js",
   "devDependencies": {},

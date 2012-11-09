@@ -42,6 +42,20 @@
         "mode": "text/x-java"
     },
     {
+        "file_extension": "go",
+        "editor": "Editor",
+        "description": "undefined",
+        "type": "Code",
+        "mode": "text/x-go"
+    },
+    {
+        "file_extension": "dart",
+        "editor": "Editor",
+        "description": "undefined",
+        "type": "Code",
+        "mode": "text/x-dart"
+    },
+    {
         "file_extension": "asp",
         "editor": "Editor",
         "description": "undefined",

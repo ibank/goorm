@@ -135,18 +135,27 @@
             "edit_select_all": {
                 "value": "Select All"
             },
-            "edit_find_replace": {
+            "edit_find_and_replace": {
                 "value": "Find/Replace"
             },
             "edit_find_next": {
                 "value": "Find Next"
             },
-            "edit_fine_previous": {
+            "edit_find_previous": {
                 "value": "Find Previous"
             },
             "edit_preference": {
                 "value": "Preference"
-            }
+            },
+			"edit_auto_formatting": { 
+				"value": "Auto Formatting"
+			},
+			"edit_comment_selected": { 
+				"value": "Comment_Selected"
+			},
+			"edit_uncomment_selected": { 
+				"value": "Uncomment_Selected"
+			}
         }
     },
     "design": {
@@ -282,6 +291,9 @@
             "window_new_main_window": {
                 "value": "New Main Window"
             },
+            "window_new_terminal_window": {
+                "value": "New Terminal Window"
+            },
             "window_previous_window": {
                 "value": "Previous Window"
             },
@@ -393,7 +405,7 @@
             "help_bug_report": {
                 "value": "Send Bug Report"
             },
-            "help_about_uizard_3": {
+            "help_about_goorm": {
                 "value": "About goorm 3"
             }
         }

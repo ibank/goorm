@@ -224,6 +224,7 @@ org.goorm.core.layout.prototype = {
 
 		this.layout.render();
 	
+		self.refresh();
 		$(window).resize(function(){
 			self.refresh();
 		});

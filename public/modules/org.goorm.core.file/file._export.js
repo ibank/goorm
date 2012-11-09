@@ -22,7 +22,9 @@ org.goorm.core.file._export.prototype = {
 			var data = self.dialog_explorer.get_data();
 
 			if(data.path=="" || data.name=="") {
-				alert.show(core.module.localization.msg["alert_filename_empty"]);				// alert.show("Not Selected.");				return false;
+				alert.show(core.module.localization.msg["alert_filename_empty"]);
+				// alert.show("Not Selected.");
+				return false;
 			}
 
 			var postdata = {

@@ -3,7 +3,7 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
-	cout << "Hello, Goorsdssdsdasfsadasdfasdfasdfasfasdfasdfasdfasdfasdfasdfsadfsadfsadfsadfsadfsadfasdfsadfsadfasdfsafasdfsafm!";
+	cout << "Hello, goorm!";
 	
 	
 	return 0;

@@ -39,7 +39,8 @@ org.goorm.plugin.nodejs.prototype = {
 	add_project_item: function () {
 		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='nodejsp'><div class='project_type_icon'><img src='/org.goorm.plugin.nodejs/images/nodejs.png' class='project_icon' /></div><div class='project_type_title'>nodejs Project</div><div class='project_type_description'>Server-side Javascript Project with node.js</div></div>");
 		
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all nodejsp' description='  Create New Project for nodejs' projecttype='nodejs'  plugin_name='org.goorm.plugin.nodejs'><img src='/org.goorm.plugin.nodejs/images/nodejs_console.png' class='project_item_icon' /><br /><a>nodejs Project</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all nodejsp' description='  Create New Project for nodejs' projecttype='nodejs'  plugin_name='org.goorm.plugin.nodejs'><img src='/org.goorm.plugin.nodejs/images/nodejs_console.png' class='project_item_icon' /><br /><a>Nodejs Project</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all nodejsp' description='  Create New Express Project for nodejs' projecttype='nodejs'  plugin_name='org.goorm.plugin.nodejs'><img src='/org.goorm.plugin.nodejs/images/nodejs_console.png' class='project_item_icon' /><br /><a>Express Project</a></div>");
 		
 		$(".project_dialog_type").append("<option value='c'>nodejs Projects</option>").attr("selected", "");
 		
@@ -56,8 +57,8 @@ org.goorm.plugin.nodejs.prototype = {
 		$("a[action=new_file_nodejs]").unbind("click");
 		$("a[action=new_file_nodejs]").click(function () {
 			core.dialog.new_project.show();
-			$(".project_wizard_first_button[project-type=nodejs]").trigger("click");
-			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project-type=nodejs]").position().top - 100);
+			$(".project_wizard_first_button[project-type=nodejsp]").trigger("click");
+			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project-type=nodejsp]").position().top - 100);
 		});
 	},
 	
@@ -72,12 +73,25 @@ org.goorm.plugin.nodejs.prototype = {
 			use_collaboration
 		   }
 		*/
+		
+		switch(data.project_detailed_type) {
+		case "Express Project": 
+			data.project_detailed_type="express";
+			data.plugins["org.goorm.plugin.nodejs"]["plugin.nodejs.main"] = "app";
+			break;
+		case "Nodejs Project":
+		default:
+			data.project_detailed_type="default";
+			data.plugins["org.goorm.plugin.nodejs"]["plugin.nodejs.main"] = "main";
+		}
+		
 		var send_data = {
 				"plugin" : "org.goorm.plugin.nodejs",
 				"data" : data
 		};
 		
 		$.get('/plugin/new', send_data, function(result){
+			$(core).trigger("on_project_open");
 			core.module.layout.project_explorer.refresh();
 		});
 	},
@@ -278,8 +292,6 @@ org.goorm.plugin.nodejs.prototype = {
 				var match = line.match(regex);
 				var filename = match[1];
 				var line_number = match[2];
-				console.log(filename, line_number);
-				
 				
 				var windows = core.module.layout.workspace.window_manager.window;
 				for (var j=0; j<windows.length; j++) {

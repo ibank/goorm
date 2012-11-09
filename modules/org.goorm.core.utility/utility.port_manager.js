@@ -13,7 +13,6 @@ var port_init = 10001;
 
 module.exports = {
 	alloc_port: function(portItem){
-		console.log(portItem);
 		// port, process_name
 		if(!portItem.process_name) portItem.process_name = "goorm_unknown";
 		if(!portItem.port) portItem.port = port_init;

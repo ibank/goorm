@@ -63,8 +63,8 @@ org.goorm.core.project._import.prototype = {
 						self.dialog.panel.hide();
 						core.module.loading_bar.stop();
 						if (data.err_code==0) {
-							notice.show("Project is imported.");
-							core.module.layout.project_explorer.refresh();
+							// notice.show("Project is imported.");
+							notice.show(core.module.localization.msg['notice_file_import_done']);							core.module.layout.project_explorer.refresh();
 						}
 						else {
 							alert.show(data.message);

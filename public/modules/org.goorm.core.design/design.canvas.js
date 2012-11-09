@@ -269,8 +269,6 @@ org.goorm.core.design.canvas.prototype = {
 									if (code == 13) {
 										var value = $(this).val();
 										
-										console.log(shape_properties);
-										
 										eval("shape_properties." + $(this).parent().attr("class") + "='" + value + "';");
 
 										$(selected_object_key).empty();
@@ -893,9 +891,6 @@ if  ( ( (sx - 5 <= x && x <= ex + 5) || (ex - 5 <= x && x <= sx + 5) ) && ( (sy 
 				}
 				else if (self.is_adding > -1 && self.objects[self.is_adding] != undefined) {
 					var properties = {};
-					
-					console.log(self.objects);
-					console.log(self.is_adding);
 					
 					properties.sx = self.objects[self.is_adding].properties.sx;
 					properties.sy = self.objects[self.is_adding].properties.sy;

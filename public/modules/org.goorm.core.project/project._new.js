@@ -24,30 +24,46 @@ org.goorm.core.project._new.prototype = {
 				return false;
 			}
 			else if ($("#inputProjectSource").attr("value")=="") {
-				alert.show(core.module.localization.msg["alert_project_source"]);				// alert.show("error");				return false;
+				alert.show(core.module.localization.msg["alert_project_source"]);
+				// alert.show("error");
+				return false;
 			}
 			else if ($("#input_project_detailed_type").attr("value")=="") {
-				alert.show(core.module.localization.msg["alert_project_detailed_type"]);				// alert.show("You must select a project detail type.");				return false;
+				alert.show(core.module.localization.msg["alert_project_detailed_type"]);
+				// alert.show("You must select a project detail type.");
+				return false;
 			}
 			else if ($("#input_project_author").attr("value")=="") {
-				alert.show(core.module.localization.msg["alert_project_author"]);				// alert.show("You must input author name");				return false;
+				alert.show(core.module.localization.msg["alert_project_author"]);
+				// alert.show("You must input author name");
+				return false;
 			}
 			else if ($("#input_project_name").attr("value")=="") {
-				alert.show(core.module.localization.msg["alert_project_name"]);				// alert.show("You must input project name");				return false;
+				alert.show(core.module.localization.msg["alert_project_name"]);
+				// alert.show("You must input project name");
+				return false;
 			}
 			else if ($("#input_project_desc").attr("value")=="") {
-				alert.show(core.module.localization.msg["alert_project_about"]);				// alert.show("You must input a description of this project");				return false;
+				alert.show(core.module.localization.msg["alert_project_about"]);
+				// alert.show("You must input a description of this project");
+				return false;
 			}
 			else if ($("#check_project_new_import").is(":checked")) {
 				if($("#project_new_import_file").attr("value").substr($("#project_new_import_file").attr("value").length-3,3).toLowerCase()!="zip") {
-					alert.show(core.module.localization.msg["alert_only_zip_allowed"]);					// alert.show("error");					return false;
+					alert.show(core.module.localization.msg["alert_only_zip_allowed"]);
+					// alert.show("error");
+					return false;
 				}
 			}
 			else if (!/^[\w-]*$/.test($("#input_project_author").attr("value"))) {
-				alert.show(core.module.localization.msg["alert_allow_character"]);				// alert.show("error");				return false;
+				alert.show(core.module.localization.msg["alert_allow_character"]);
+				// alert.show("error");
+				return false;
 			}
 			else if (!/^[\w-]*$/.test($("#input_project_name").attr("value"))) {
-				alert.show(core.module.localization.msg["alert_allow_character"]);				// alert.show("error");				return false;
+				alert.show(core.module.localization.msg["alert_allow_character"]);
+				// alert.show("error");
+				return false;
 			}
 			
 			if ($("#new_projectUsingPlugin").val() == "yes") {			
@@ -103,7 +119,7 @@ org.goorm.core.project._new.prototype = {
 						// new project with import						
 						if($("#check_project_new_import").is(":checked")) {
 							core.module.loading_bar.start("Import processing...");
-							console.log(core.status.current_project_path);
+
 							$("#project_new_location").val(core.status.current_project_path);
 							$('#project_new_import_form').submit();
 						}

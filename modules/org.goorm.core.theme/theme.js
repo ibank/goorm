@@ -84,5 +84,5 @@ module.exports = {
 				evt.emit("theme_put_contents", data);
 			}
 		});
-	},
+	}
 };

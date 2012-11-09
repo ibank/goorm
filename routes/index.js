@@ -18,6 +18,7 @@ var g_terminal = require("../modules/org.goorm.core.terminal/terminal");
 var g_theme = require("../modules/org.goorm.core.theme/theme");
 var g_plugin = require("../modules/org.goorm.plugin/plugin");
 var g_help = require("../modules/org.goorm.help/help");
+var g_auth_list = require("../modules/org.goorm.auth/list");
 /* var g_member_service = require("../modules/org.goorm.core.member/member_service"); */
 
 var EventEmitter = require("events").EventEmitter;
@@ -28,6 +29,7 @@ var EventEmitter = require("events").EventEmitter;
 
 exports.index = function(req, res){
 	res.render('index', { title: 'goormIDE' });
+	g_file.init();
 };
 
 
@@ -268,16 +270,19 @@ exports.file.put_contents = function(req, res){
 };
 
 exports.file.get_nodes = function(req, res){
+	console.log("session : %s", req.loggedIn);
+
 	var evt = new EventEmitter();
 	var path = req.query.path;
 	path = path.replace(/\/\//g, "/");
 
-	res.setHeader("Content-Type", "application/json");
+	//res.setHeader("Content-Type", "application/json");
 	
 	evt.on("got_nodes", function (data) {
 		try {
-			res.send(JSON.stringify(data));
-			res.end();
+			res.json(data);
+			//res.send(JSON.stringify(data));
+			//res.end();
 		}
 		catch (exception) {
 			throw exception;
@@ -292,13 +297,15 @@ exports.file.get_dir_nodes = function(req, res){
 	var path = req.query.path;
 	path = path.replace(/\/\//g, "/");
 
-	res.setHeader("Content-Type", "application/json");
+	//res.setHeader("Content-Type", "application/json");
 	
 	evt.on("got_dir_nodes", function (data) {
 		try {
 			//console.log(JSON.stringify(data));
-			res.send(JSON.stringify(data));
-			res.end();
+			res.json(data);
+			
+			//res.send(JSON.stringify(data));
+			//res.end();
 		}
 		catch (exception) {
 			throw exception;
@@ -372,12 +379,10 @@ exports.terminal.exec = function(req, res){
 	var command = req.query.command;
 	
 	console.log(command);
-	res.setHeader("Content-Type", "application/json");
-	
+		
 	evt.on("executed_command", function (data) {
 		try {
-			res.send(JSON.stringify(data));
-			res.end();
+			res.json(data);
 		}
 		catch (exception) {
 			throw exception;
@@ -406,6 +411,36 @@ exports.preference.ini_parser = function(req, res){
 exports.preference.ini_maker = function(req, res){
 	res.send(null);
 };
+
+exports.preference.get_server_info = function(req, res){
+	var evt = new EventEmitter();
+
+	evt.on("preference_get_server_info", function (data) {
+		res.json(data);
+	});
+
+	g_preference.get_server_info(req.query, evt);
+};
+
+exports.preference.get_goorm_info = function(req, res){
+	var evt = new EventEmitter();
+
+	evt.on("preference_get_goorm_info", function (data) {
+		res.json(data);
+	});
+
+	g_preference.get_goorm_info(req.query, evt);
+};
+exports.preference.put_filetypes = function(req, res){
+	var evt = new EventEmitter();
+
+	evt.on("preference_put_filetypes", function (data) {
+		res.json(data);
+	});
+
+	g_preference.put_filetypes(req.query, evt);
+};
+
 
 /*
  * API : Theme
@@ -454,6 +489,31 @@ exports.help.get_readme_markdown = function(req, res){
 	var data = g_help.get_readme_markdown();
 	
 	res.json(data);
+};
+
+/*
+ * API : Auth
+ */
+exports.auth = function(req, res){
+	res.send(null);
+};
+ 
+exports.auth.get_info = function(req, res){
+	//console.log(req.session.auth.google.user);
+	var available_list = g_auth_list.get_list();
+
+	if (req.session.auth && req.session.auth.loggedIn) {
+		for(var type in req.session.auth){
+			if(available_list.indexOf(type) != -1){
+				res.json(req.session.auth[type].user);
+			}
+		}
+		// res.json(req.session.auth[type].user);
+		// res.json(req.session.auth.google.user);
+	}
+	else {
+		res.json({});
+	}	
 };
 
 /*

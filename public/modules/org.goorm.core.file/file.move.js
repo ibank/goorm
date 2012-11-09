@@ -22,7 +22,9 @@ org.goorm.core.file.move.prototype = {
 			var data = self.dialog_explorer.get_data();
 		
 			if(data.path=="" || data.name=="") {
-				alert.show(core.module.localization.msg["alert_filename_empty"]);				// alert.show("File name is empty. Please fill it...");				return false;
+				alert.show(core.module.localization.msg["alert_filename_empty"]);
+				// alert.show("File name is empty. Please fill it...");
+				return false;
 			}
 			
 			var postdata = {
@@ -37,8 +39,7 @@ org.goorm.core.file.move.prototype = {
 					if(self.is_alive_window) {
 						var window_manager = core.module.layout.workspace.window_manager;
 						var filetype = window_manager.window[window_manager.active_window].filetype;
-						console.log(window_manager.window[window_manager.active_window]);
-						console.log(data.path+" //// "+data.file);
+
 						window_manager.window[window_manager.active_window].close();
 						window_manager.open(data.path, data.file, filetype);						
 					}

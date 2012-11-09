@@ -162,8 +162,7 @@ org.goorm.core.debug.prototype = {
 	variable_edit_complete: function(object){
 		var variable = $(object.editor.getTdEl()).parent().find(".yui-dt-col-variable").find(".yui-dt-liner").html();
 		var value = object.newData;
-		
-		console.log(variable + ": " + value);
+
 		$(core.module.debug).trigger("value_changed", {
 			"variable": variable,
 			"value": value

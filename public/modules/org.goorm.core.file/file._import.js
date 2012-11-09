@@ -60,7 +60,7 @@ org.goorm.core.file._import.prototype = {
 						self.dialog.panel.hide();
 						core.module.loading_bar.stop();
 						if (data.err_code==0) {
-							notice.show("File is imported.");
+							notice.show(core.module.localization.msg['notice_file_import_done']);
 							core.module.layout.project_explorer.refresh();
 						}
 						else {

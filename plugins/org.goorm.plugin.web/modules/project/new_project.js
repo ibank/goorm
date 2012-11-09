@@ -31,7 +31,9 @@ module.exports = {
 		  // * name
 			var abs_path = (path+"/"+stat.name).replace(template,"");
 			fs.exists(workspace+abs_path, function(exists) {
-				fs.mkdirSync(workspace+abs_path);
+				if(!exists) {
+					fs.mkdirSync(workspace+abs_path);
+				}
 				next();
 			});
 			

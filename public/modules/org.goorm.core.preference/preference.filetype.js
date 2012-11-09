@@ -28,7 +28,7 @@ org.goorm.core.preference.filetype.prototype = {
 	},
 	
 	add: function () {
-		
+		self.update();
 		// Temporary type element is added to file type list.
 		$(".filetype_contents").find(".filetype_list").append("<div style='padding:3px;' class='newExt'>New Extention</div>");
 		$(".filetype_contents").find(".filetype_list").scrollTop(9999999);
@@ -53,7 +53,7 @@ org.goorm.core.preference.filetype.prototype = {
 	},
 
 	del: function () {
-		
+		self.update();
 		// This part find file type is viewing in filetype detail view from filetype list and remove it.
 		$(".filetype_contents").find(".filetype_list").children().each(function() {
 			if ($(this).attr("class") == $(".filetype_contents").find(".file_extension").val()){
@@ -79,18 +79,30 @@ org.goorm.core.preference.filetype.prototype = {
 			$(this).remove();
 		});
 	},
+	save: function() {
+		self.update();
 
-	save: function () {
+		var filedata = JSON.stringify(core.filetypes,null,'\t');
+
+		$.ajax({
+			url: "preference/put_filetypes",
+			type: "GET",
+			data: { data: filedata },
+			success: function(data) {
+				m.s("Save complete! ( filetypes.json )", "org.goorm.core.preference");
+			}
+		});
 		
+	},
+	update: function () {
 		var finded = false;
-		
-		
+
 		if ($(".filetype_contents").find(".filetype_detail").find(".file_extension").length != 0){
-			
 			// If the file type of current information is already exist, update the information
 			for (var i = 0; i < core.filetypes.length; i++) {
 				if (core.filetypes[i].file_extension == $(".filetype_contents").find(".filetype_detail").find(".file_extension").val()) {
 					finded = true;
+					console.log($(".filetype_contents").find(".filetype_detail"));
 					core.filetypes[i].editor = $(".filetype_contents").find(".filetype_detail").find(".editor").attr("value");
 					core.filetypes[i].type = $(".filetype_contents").find(".filetype_detail").find(".type").attr("value");
 					core.filetypes[i].mode = $(".filetype_contents").find(".filetype_detail").find(".mode").attr("value");
@@ -115,7 +127,7 @@ org.goorm.core.preference.filetype.prototype = {
 				
 				$(".filetype_contents").find("."+ext).click(function () {
 					
-					self.save();
+					self.update();
 					// highlight refresh
 					$(".filetype_contents").find(".filetype_list").children().each(function () {
 						$(this).css('background-color', '#fff');
@@ -136,6 +148,7 @@ org.goorm.core.preference.filetype.prototype = {
 				});
 			}
 		}		
+
 	},
 
 	get_filetype_info: function (ext, attr) {
@@ -179,7 +192,7 @@ org.goorm.core.preference.filetype.prototype = {
 				// And register event handler.
 				$(".filetype_contents").find("."+extName).click(function () {
 					
-					self.save();
+					self.update();
 					// highlight refresh
 					$(".filetype_contents").find(".filetype_list").children().each(function () {
 						$(this).css('background-color', '#fff');
@@ -203,7 +216,6 @@ org.goorm.core.preference.filetype.prototype = {
 	},
 	
 	create_filetype_detail: function (extName, editor, description, type, mode) {
-		
 		// Creating name field.
 		$(".filetype_contents").find(".filetype_detail").append("<div style='width:100%;'>Extention Name</div>");
 		$(".filetype_contents").find(".filetype_detail").append("<div style='width:100%; margin-top:4px;'><input class='file_extension' style='width:280px;' value='"+ extName +"' /></div>");
@@ -250,6 +262,8 @@ org.goorm.core.preference.filetype.prototype = {
 															"<option value='text/x-csrc'>text/x-csrc</option>"+
 															"<option value='text/x-c++src'>text/x-c++src</option>"+
 															"<option value='text/x-java'>text/x-java</option>"+
+															"<option value='text/x-go'>text/x-go</option>"+
+															"<option value='text/x-dart'>text/x-dart</option>"+
 															"<option value='text/x-groovy'>text/x-groovy</option>"+
 															"<option value='text/stex'>text/stex</option>"+
 															"<option value='text/x-haskell'>text/x-haskell</option>"+
@@ -275,5 +289,6 @@ org.goorm.core.preference.filetype.prototype = {
 		// Creating description field.
 		$(".filetype_contents").find(".filetype_detail").append("<div style='width:100%; margin-top:7px;'>Description</div>");
 		$(".filetype_contents").find(".filetype_detail").append("<div style='width:100%; margin-top:4px;'><textarea class='description' style='resize: none; width:280px; height:90px; overflow:auto;'>" + description + "</textarea></div>");
+
 	}
 };

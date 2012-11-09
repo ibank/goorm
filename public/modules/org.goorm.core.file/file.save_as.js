@@ -37,20 +37,20 @@ org.goorm.core.file.save_as.prototype = {
 			$.get("file/save_as", postdata, function (data) {
 				if (data.err_code == 99) {
 					confirmation.init({
-/*
-						title: core.module.localization.msg["confirmation_new_title"], 
+
+						// title: core.module.localization.msg["confirmation_new_title"], 
 						message: core.module.localization.msg["confirmation_new_message"],
 						yes_text: core.module.localization.msg["confirmation_yes"],
 						no_text: core.module.localization.msg["confirmation_no"],
-*/
+
 						// title: "Confirmation", 
 						// message: "Exist file. Do you want to save anyway?",
 						// yes_text: "yes",
 						// no_text: "no",
-						title: Confirmation, 
-						message: "<span localization_key='confirmation_new_message'>Exist file. Do you want to save anyway?</span>",
-						yes_text: "<span localization_key='yes'>Yes</span>",
-						no_text: "<span localization_key='no'>No</span>",
+						title: "Confirmation", 
+						// message: "<span localization_key='confirmation_new_message'>Exist file. Do you want to save anyway?</span>",
+						// yes_text: "<span localization_key='yes'>Yes</span>",
+						// no_text: "<span localization_key='no'>No</span>",
 
 						yes: function () {
 							self.is_save_anyway = true;

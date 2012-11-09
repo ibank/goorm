@@ -15,8 +15,6 @@ org.goorm.core.collaboration.join.dialog.prototype = {
 		this.dialog = new org.goorm.core.dialog();
 		this.dialog.init(option);
 		
-		
-		
 		return this;
 	}
 };

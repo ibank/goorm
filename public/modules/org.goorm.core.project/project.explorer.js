@@ -33,21 +33,19 @@ org.goorm.core.project.explorer.prototype = {
 			for(var i in data) {
 				data[i].name && (core.workspace[data[i].name] = data[i].contents)
 			}
-			self.project_data=data;
+			self.project_data = data;
 //			self.make_project_selectbox();
 		});
 		
 		$("#project_explorer").append("<div id='project_treeview' style='overflow-x:hidden'></div>");
-		
+				
 		var postdata = {
 			kind: "project",
 			path: "" + core.status.current_project_path
 		};
-
+		
 		$.get("file/get_nodes", postdata, function (data) {
-			
 			if (data != null) {
-			
 				var sorting_data = eval(data);
 				
 				self.sort_project_treeview(sorting_data);
@@ -111,12 +109,12 @@ org.goorm.core.project.explorer.prototype = {
 		var self = this;
 			
 		$.get("project/get_list", "", function (data) {
-			self.project_data = data		
-			self.make_project_selectbox();	
-			
+			self.project_data = data;	
+			self.make_project_selectbox();
+			console.log("#", data);
 			core.workspace = {};
 			for(var i in data) {
-				data[i].name && (core.workspace[data[i].name] = data[i].contents)
+				data[i].name && (core.workspace[data[i].name] = data[i].contents);
 			}
 		});
 		
@@ -138,21 +136,23 @@ org.goorm.core.project.explorer.prototype = {
 				kind: "project",
 				path: "" + temp_project_path
 			};
-
-			$.get("file/get_nodes", postdata, function (data) {
-				var sorting_data = eval(data);
-				
-				self.sort_project_treeview(sorting_data);	
 			
-				self.treeview.removeChildren(self.treeview.getRoot(), true);
+			$.get("file/get_nodes", postdata, function (data) {
+				if (data != null) {
+					var sorting_data = eval(data);
+					
+					self.sort_project_treeview(sorting_data);	
 				
-				self.expand_treeview(self.current_tree_data, sorting_data);
-				
-				self.treeview.buildTreeFromObject(sorting_data);
-	
-				self.treeview.render();
-				
-				self.refresh_context_menu();
+					self.treeview.removeChildren(self.treeview.getRoot(), true);
+					
+					self.expand_treeview(self.current_tree_data, sorting_data);
+					
+					self.treeview.buildTreeFromObject(sorting_data);
+		
+					self.treeview.render();
+					
+					self.refresh_context_menu();
+				}
 			});
 /*
 		}
@@ -184,20 +184,21 @@ org.goorm.core.project.explorer.prototype = {
 		
 		var max_num = parseInt($("#project_selector").width()/8);
 
-		
-		for(var project_idx=0; project_idx<self.project_data.length; project_idx++) {
-			var temp_name = self.project_data[project_idx].name;
-
-			if(temp_name.length > max_num) {
-				temp_name = temp_name.substring(0, max_num-1);
-				temp_name += " …";
-			}			
-
-			if (self.project_data[project_idx].name == core.status.current_project_path) {
-				$("#project_selectbox").append("<option value='"+project_idx+"' selected>"+temp_name+"</option>");
-			}
-			else {
-				$("#project_selectbox").append("<option value='"+project_idx+"'>"+temp_name+"</option>");
+		if(self.project_data){
+			for(var project_idx=0; project_idx<self.project_data.length; project_idx++) {
+				var temp_name = self.project_data[project_idx].name;
+	
+				if(temp_name.length > max_num) {
+					temp_name = temp_name.substring(0, max_num-1);
+					temp_name += " …";
+				}			
+	
+				if (self.project_data[project_idx].name == core.status.current_project_path) {
+					$("#project_selectbox").append("<option value='"+project_idx+"' selected>"+temp_name+"</option>");
+				}
+				else {
+					$("#project_selectbox").append("<option value='"+project_idx+"'>"+temp_name+"</option>");
+				}
 			}
 		}
 	},
@@ -205,13 +206,16 @@ org.goorm.core.project.explorer.prototype = {
 	on_project_selectbox_change: function (project_idx) {
 		var self = this;
 		// need modify. NullA
+		
 		if (project_idx!="") {
+			
 			self.current_project.current_project_path =  self.project_data[project_idx].name;
 			self.current_project.current_project_name = self.project_data[project_idx].contents.name;
 			self.current_project.current_projectType = self.project_data[project_idx].contents.type;
 			core.dialog.open_project.open(self.current_project.current_project_path, self.current_project.current_project_name, self.current_project.current_projectType);
 		}
 		else {
+		
 			core.current_project_name = "";
 			core.status.current_project_path = "";
 			core.current_projectType = "";

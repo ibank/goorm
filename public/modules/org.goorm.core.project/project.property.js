@@ -35,7 +35,6 @@ org.goorm.core.project.property.prototype = {
 				self.property = contents || {};
 				core.property = self.property;
 				self.property.plugins || (self.property.plugins = {});
-				
 				if(contents){
 					// 프로젝트에 사용하는 플러그인만 출력.
 					var node = self.manager.treeview.getNodeByProperty("label", "Plugin");
@@ -85,7 +84,8 @@ org.goorm.core.project.property.prototype = {
 		}
 		else {
 			alert.show(core.module.localization.msg["alert_project_not_opened"]);
-			// alert.show("Project is not opened");		}
+			// alert.show("Project is not opened");
+		}
 	},
 	
 	refresh_toolbox: function () {
@@ -220,7 +220,7 @@ org.goorm.core.project.property.prototype = {
 			$(targets[index]).find("input").each(function(){
 				if(key[$(this).attr("name")] !== null){
 					if($(this).attr("type") == "checkbox"){
-						if(key[$(this).attr("name")] == "true")
+						if(key[$(this).attr("name")] == "true" || key[$(this).attr("name")] == true)
 							$(this).attr("checked",true);
 //						else $(this).attr("checked",);
 					}

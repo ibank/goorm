@@ -50,8 +50,14 @@
     "confirmation_language_message": {
         "value": "Are you sure you want to change the language setting to Korean?"
     },
+    "confirmation_language_message_yes": {
+        "value": "Yes"
+    },
+    "confirmation_language_message_no": {
+        "value": "No"
+    },
     "alertValidateRequired": {
-        "value": " : required"
+        "value": " : 필수 사항"
     },
     "alert_validate_alpha": {
         "value": " : 알파벳 영문자만 입력 가능합니다."
@@ -110,6 +116,12 @@
     "confirmation_new_title": {
         "value": "새로 만들기"
     },
+    "confirmation_exit": {
+        "value": "정말 종료하시겠습니까?"
+    },
+    "confirmation_delete_file": {
+        "value": "정말 이 파일을 지우시겠습니까?"
+    },
     "confirmation_new_message": {
         "value": "같은 파일의 이름이 이미 존재합니다. 그냥 진행하시겠습니까?"
     },
@@ -155,6 +167,12 @@
     "notice_write_done": {
         "value": "쓰기 작업을 완료했습니다."
     },
+    "notice_file_import_done": {
+        "value": "파일 불러오기를 완료했습니다."
+    },
+    "notice_project_delete_done": {
+        "value": "프로젝트가 삭제되었습니다."
+    },
     "alert_naming": {
         "value": "영역 이름을 겹칠 수 없습니다."
     },
@@ -166,5 +184,8 @@
     },
     "alert_select_project_item": {
         "value": "반드시 프로젝트를 1개 이상 선택하여야 합니다."
+    },
+    "alert_no_have_data": {
+        "value": "데이터가 없습니다."
     }
 }
