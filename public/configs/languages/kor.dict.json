@@ -1,0 +1,92 @@
+{
+	"previous": {
+		"value": "이전"	
+	},
+	"next": {
+		"value": "다음"	
+	},
+	"ok": {
+		"value": "확인"	
+	},
+	"cancel": {
+		"value": "취소"	
+	},
+	"close": {
+		"value": "닫기"	
+	},
+	"delete": {
+		"value": "삭제"	
+	},
+	"slide": {
+		"value": "슬라이드"	
+	},
+	"terminal": {
+		"value": "터미널"	
+	},
+	"search": {
+		"value": "검색"	
+	},
+	"communication": {
+		"value": "커뮤니케이션"	
+	},
+	"debug": {
+		"value": "디버그"	
+	},
+	"message": {
+		"value": "메시지"	
+	},
+	"object": {
+		"value": "객체"	
+	},
+	"properties": {
+		"value": "속성"	
+	},
+	"toolbox": {
+		"value": "도구상자"	
+	},
+	"project": {
+		"value": "프로젝트"	
+	},
+	"find": {
+		"value": "찾기"	
+	},
+	"find_all": {
+		"value": "모두 찾기"	
+	},
+	"replace_and_find": {
+		"value": "바꾸고 찾기"	
+	},
+	"replace": {
+		"value": "바꾸기"	
+	},
+	"replace_all": {
+		"value": "모두 바꾸기"	
+	},
+	"join" : {
+		"value" : "참여"
+	},
+	"save" : {
+		"value" : "저장"
+	},
+	"send" : {
+		"value" : "보내기"
+	},
+	"print" : {
+		"value" : "프린트"
+	},
+	"build" : {
+		"value" : "빌드"
+	},
+	"clean" : {
+		"value" : "비우기"
+	},
+	"open" : {
+		"value" : "열기"
+	},
+	"yes" : {
+		"value" : "네"
+	},
+	"no" : {
+		"value" : "아니오"
+	}
+}

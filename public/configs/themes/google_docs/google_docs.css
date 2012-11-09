@@ -1,0 +1,639 @@
+#goorm_top .yuimenubaritem .yuimenubaritemlabel {
+	font-family:Verdana, Arial, 굴림체, 굴림;
+	color:#000000;
+	outline:none;
+}
+#goorm_top .yuimenubaritem .yuimenubaritemlabel-selected {
+	color:#000000;
+	background:#e5e5e5;
+}
+#goorm_top .yuimenubar {
+	background:white;
+	border-bottom:1px solid #e5e5e5;
+}
+.yui-skin-sam .yuimenuitem-selected {
+	background:#eeeeee;
+}
+.yui-skin-sam .yuimenu .bd {
+	background:white;
+	border-color:#cccccc;
+}
+[localization_key=file_new] {
+	background-image:url(images/new.png) !important;
+}
+[localization_key=file_open_project] {
+	background-image:url(images/open_project.png) !important;
+}
+[localization_key=file_open_file] {
+	background-image:url(images/open_file.png) !important;
+}
+[localization_key=file_save] {
+	background-image:url(images/save.png) !important;
+}
+[localization_key=file_save_as] {
+	background-image:url(images/save_as.png) !important;
+}
+[localization_key=file_print] {
+	background-image:url(images/print.png) !important;
+}
+[localization_key=file_import] {
+	background-image:url(images/import.png) !important;
+}
+[localization_key=file_export] {
+	background-image:url(images/export.png) !important;
+}
+[localization_key=file_exit] {
+	background-image:url(images/exit.png) !important;
+}
+[localization_key=edit_undo] {
+	background-image:url(images/undo.png) !important;
+}
+[localization_key=edit_redo] {
+	background-image:url(images/redo.png) !important;
+}
+[localization_key=edit_cut] {
+	background-image:url(images/cut.png) !important;
+}
+[localization_key=edit_copy] {
+	background-image:url(images/copy.png) !important;
+}
+[localization_key=edit_paste] {
+	background-image:url(images/paste.png) !important;
+}
+[localization_key=edit_delete] {
+	background-image:url(images/delete.png) !important;
+}
+[localization_key=edit_select_all] {
+	background-image:url(images/select_all.png) !important;
+}
+[localization_key=edit_find_and_replace] {
+	background-image:url(images/find_replace.png) !important;
+}
+[localization_key=edit_find_next] {
+	background-image:url(images/find_next.png) !important;
+}
+[localization_key=edit_find_previous] {
+	background-image:url(images/find_previous.png) !important;
+}
+[localization_key=edit_auto_formatting] {
+}
+[localization_key=edit_preference] {
+	background-image:url(images/preference.png) !important;
+}
+[localization_key=project_run] {
+	background-image:url(images/run.png) !important;
+}
+[localization_key=project_generate] {
+	background-image:url(images/generate.png) !important;
+}
+[localization_key=project_generate_all] {
+}
+[localization_key=project_build_project] {
+	background-image:url(images/build.png) !important;
+}
+[localization_key=project_clean] {
+	background-image:url(images/clean.png) !important;
+}
+[localization_key=project_import] {
+	background-image:url(images/project_import.png) !important;
+}
+[localization_key=project_export] {
+	background-image:url(images/project_export.png) !important;
+}
+[localization_key=project_delete] {
+	background-image:url(images/project_delete.png) !important;
+}
+[localization_key=debug_start] {
+	background-image:url(images/debug.png) !important;
+}
+[localization_key=debug_continue] {
+	background-image:url(images/debug_continue.png) !important;
+}
+[localization_key=debug_terminate] {
+	background-image:url(images/terminate.png) !important;
+}
+[localization_key=debug_step_over] {
+	background-image:url(images/step_over.png) !important;
+}
+[localization_key=debug_step_in] {
+	background-image:url(images/step_in.png) !important;
+}
+[localization_key=debug_step_out] {
+	background-image:url(images/step_out.png) !important;
+}
+[localization_key=window_new_terminal_window] {
+	background-image:url(images/terminal.png) !important;
+}
+[localization_key=perspectives] {
+	background-image:url(images/perspective.png) !important;
+}
+[localization_key=window_left_layout_show_hide] {
+}
+[localization_key=window_right_layout_show_hide] {
+}
+[localization_key=window_bottom_layout_show_hide] {
+}
+[localization_key=window_cascade] {
+	background-image:url(images/cascade.png) !important;
+}
+[localization_key=window_tile_vertically] {
+	background-image:url(images/tile_vertical.png) !important;
+}
+[localization_key=window_tile_horizontally] {
+	background-image:url(images/tile_horizontal.png) !important;
+}
+[localization_key=plugin_install_new_plugin] {
+	background-image:url(images/plugin.png) !important;
+}
+[localization_key=help_help_contents] {
+	background-image:url(images/help.png) !important;
+}
+[localization_key=help_check_for_updates] {
+	background-image:url(images/check_for_update.png) !important;
+}
+[localization_key=help_bug_report] {
+	background-image:url(images/bug_report.png) !important;
+}
+[localization_key=help_about_goorm] {
+	background-image:url(images/about.png) !important;
+}
+#goorm_top .main_toolbar .toolbar_button.new {
+	background:url('images/new.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.open_project {
+	background:url('images/open_project.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.open_file {
+	background:url('images/open_file.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.save {
+	background:url('images/save.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.save_as {
+	background:url('images/save_as.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.import {
+	background:url('images/import.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.export {
+	background:url('images/export.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.print {
+	background:url('images/print.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.undo {
+	background:url('images/undo.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.redo {
+	background:url('images/redo.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.cut {
+	background:url('images/cut.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.copy {
+	background:url('images/copy.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.paste {
+	background:url('images/paste.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.delete {
+	background:url('images/delete.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.run {
+	background:url('images/run.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.debug {
+	background:url('images/debug.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.debug_continue {
+	background:url('images/debug_continue.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.debug_terminate {
+	background:url('images/terminate.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.debug_step_over {
+	background:url('images/step_over.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.debug_step_in {
+	background:url('images/step_in.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.debug_step_out {
+	background:url('images/step_out.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.generate {
+	background:url('images/generate.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.build_project {
+	background:url('images/build.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.build_clean {
+	background:url('images/clean.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.cascade {
+	background:url('images/cascade.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.tile_vertical {
+	background:url('images/tile_vertical.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.tile_horizontal {
+	background:url('images/tile_horizontal.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.align_left {
+	background:url('images/align_left.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.align_right {
+	background:url('images/align_right.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.align_top {
+	background:url('images/align_top.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.align_bottom {
+	background:url('images/align_bottom.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.align_horizontally_center {
+	background:url('images/align_horizontally_center.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.align_vertically_center {
+	background:url('images/align_vertically_center.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.bring_to_front {
+	background:url('images/bring_to_front.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.send_to_back {
+	background:url('images/send_to_back.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.bring_forward {
+	background:url('images/bring_forward.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.send_backward {
+	background:url('images/send_backward.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button.design_canvas_setting {
+	background:url('images/setting.png') no-repeat center !important;
+}
+#goorm_top .main_toolbar .toolbar_button {
+	background:none;
+}
+.main_toolbar .toolbar_button:hover {
+	background:#f6f6f6;
+	border-color:#c6c6c6;
+	border::1px solid #c6c6c6;
+	 -moz-box-shadow:0px 1px 3px rgba(198, 198, 198, 0.6);
+	-webkit-box-shadow:0px 1px 3px rgba(198, 198, 198, 0.6);
+	box-shadow:0px 1px 3px rgba(198, 198, 198, 0.6);
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;
+	border-radius:3px;
+}
+.main_toolbar .toolbar_handle {
+	border-left:1px solid #cccccc;
+}
+.yui-skin-sam .yui-layout .yui-layout-unit-top div.yui-layout-bd {
+	background:#f5f5f5;
+	border-color:#cccccc;
+	 -moz-box-shadow:none;
+	-webkit-box-shadow:none;
+	box-shadow:none;
+}
+#goorm_left.yui-navset .yui-nav a {
+	border-color:#e5e5e5;
+	background:#f5f5f5;
+}
+#goorm_left.yui-navset .yui-nav li {
+	border-color:#e5e5e5;
+}
+#goorm_left.yui-navset .yui-nav a:hover, #goorm_left.yui-navset .yui-nav a:focus {
+	background:#dfdfdf;
+	 -moz-box-shadow:none;
+	-webkit-box-shadow:none;
+	box-shadow:none;
+}
+#goorm_left.yui-navset .yui-nav .selected a, #goorm_left.yui-navset .yui-nav .selected a:focus, #goorm_left.yui-navset .yui-nav .selected a:hover {
+	background:#ffffd1;
+	text-shadow:none;
+	color:black;
+	 -moz-box-shadow:none;
+	-webkit-box-shadow:none;
+	box-shadow:none;
+}
+#goorm_left.yui-navset .yui-nav .selected a em {
+	text-shadow:none;
+	color:black;
+}
+#goorm_left.yui-navset .yui-nav {
+	background:#f5f5f5;
+	border-color:#cccccc;
+}
+.yui-skin-sam .yui-layout .yui-layout-clip-left {
+	background:#f5f5f5;
+	border-color:#cccccc;
+}
+.directory_treeview .ygtvfocus {
+	background-color:#f5f5f5;
+}
+.yui-skin-sam .yui-layout .yui-layout-unit-left div.yui-layout-hd .collapse {
+	background:transparent url(images/collapse_left.png) no-repeat 0px 0px;
+}
+.yui-skin-sam .yui-layout .yui-layout-clip-left .collapse {
+	background:transparent url(images/uncollapse_right.png) no-repeat 0px 0px;
+}
+#goorm_inner_layout_right.yui-navset .yui-nav a {
+	border-color:#e5e5e5;
+	background:#f5f5f5;
+}
+#goorm_inner_layout_right.yui-navset .yui-nav li {
+	border-color:#e5e5e5;
+}
+#goorm_inner_layout_right.yui-navset .yui-nav a:hover, #goorm_inner_layout_right.yui-navset .yui-nav a:focus {
+	background:#dfdfdf;
+	 -moz-box-shadow:none;
+	-webkit-box-shadow:none;
+	box-shadow:none;
+}
+#goorm_inner_layout_right.yui-navset .yui-nav .selected a, #goorm_inner_layout_right.yui-navset .yui-nav .selected a:focus, #goorm_inner_layout_right.yui-navset .yui-nav .selected a:hover {
+	background:#ffffd1;
+	text-shadow:none;
+	color:black;
+	 -moz-box-shadow:none;
+	-webkit-box-shadow:none;
+	box-shadow:none;
+}
+#goorm_inner_layout_right.yui-navset .yui-nav .selected a em {
+	text-shadow:none;
+	color:black;
+}
+#goorm_inner_layout_right.yui-navset .yui-nav {
+	background:#f5f5f5;
+	border-color:#cccccc;
+}
+.yui-skin-sam .yui-layout .yui-layout-clip-right {
+	background:#f5f5f5;
+	border-color:#cccccc;
+}
+.yui-skin-sam .yui-layout .yui-layout-unit-right div.yui-layout-hd .collapse {
+	background:transparent url(images/collapse_right.png) no-repeat 0px 0px;
+}
+.yui-skin-sam .yui-layout .yui-layout-clip-right .collapse {
+	background:transparent url(images/uncollapse_left.png) no-repeat 0px 0px;
+}
+#goorm_inner_layout_bottom.yui-navset .yui-nav a {
+	border-color:#e5e5e5;
+	background:#f5f5f5;
+}
+#goorm_inner_layout_bottom.yui-navset .yui-nav li {
+	border-color:#e5e5e5;
+}
+#goorm_inner_layout_bottom.yui-navset .yui-nav a:hover, #goorm_inner_layout_bottom.yui-navset .yui-nav a:focus {
+	background:#dfdfdf;
+	 -moz-box-shadow:none;
+	-webkit-box-shadow:none;
+	box-shadow:none;
+}
+#goorm_inner_layout_bottom.yui-navset .yui-nav .selected a, #goorm_inner_layout_bottom.yui-navset .yui-nav .selected a:focus, #goorm_inner_layout_bottom.yui-navset .yui-nav .selected a:hover {
+	background:#ffffd1;
+	text-shadow:none;
+	color:black;
+	 -moz-box-shadow:none;
+	-webkit-box-shadow:none;
+	box-shadow:none;
+}
+#layout-doc #goorm_inner_layout_bottom.yui-navset .yui-nav .selected a em {
+	text-shadow:none;
+	color:black;
+}
+#goorm_inner_layout_bottom.yui-navset .yui-nav {
+	background:#f5f5f5;
+	border-color:#cccccc;
+}
+.yui-skin-sam .yui-layout .yui-layout-clip-bottom {
+	background:#f5f5f5;
+	border-color:#cccccc;
+}
+.yui-skin-sam .yui-layout .yui-layout-unit-bottom div.yui-layout-hd .collapse {
+	background:transparent url(images/collapse_down.png) no-repeat 0px 0px;
+}
+.yui-skin-sam .yui-layout .yui-layout-clip-bottom .collapse {
+	background:transparent url(images/uncollapse_up.png) no-repeat 0px 0px;
+}
+.yui-skin-sam .yui-dt th {
+	background:#f3f3f3;
+}
+#debug_left, .yui-skin-sam .yui-dt tr.yui-dt-first td, #debug_left table, #debug_right table {
+	border-color:#cbcbcb;
+}
+#debug div.yui-layout-bd {
+	background:white;
+}
+#layout-doc #workspace_window_list .yui-nav a {
+	border-color:#e5e5e5;
+	background:#f5f5f5;
+}
+#layout-doc #workspace_window_list .yui-nav li {
+	border-color:#e5e5e5;
+}
+#layout-doc #workspace_window_list .yui-nav a:hover, #layout-doc #workspace_window_list .yui-nav a:focus {
+	background:#dfdfdf;
+	 -moz-box-shadow:none;
+	-webkit-box-shadow:none;
+	box-shadow:none;
+}
+#layout-doc #workspace_window_list .selected a, #layout-doc #workspace_window_list .selected a:focus, #layout-doc #workspace_window_list .selected a:hover {
+	background:#ffffd1;
+	text-shadow:none;
+	color:black;
+	 -moz-box-shadow:none;
+	-webkit-box-shadow:none;
+	box-shadow:none;
+}
+#layout-doc #workspace_window_list .selected a em {
+	text-shadow:none;
+	color:black;
+}
+#workspace .tab_close_button.window_button {
+	background:url('images/close.png') no-repeat 2px 3px !important;
+}
+#workspace_window_list .window_buttons, #workspace_window_list .selected .window_buttons {
+	background:none;
+	 -moz-box-shadow:none;
+	-webkit-box-shadow:none;
+	box-shadow:none;
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;
+	border-radius:3px;
+	border:none;
+}
+#goorm_inner_layout_center.yui-navset .yui-nav, #workspace_window_list {
+	background:#f5f5f5;
+	border-color:#cccccc;
+}
+.tab_max_buttons, #workspace .tab_scroll {
+	border:none;
+	background:none;
+	 -moz-box-shadow:none;
+	-webkit-box-shadow:none;
+	box-shadow:none;
+	padding-top:3px;
+}
+#workspace .tab_list_left.window_button {
+	background:url(images/leftarr.png) no-repeat center;
+	padding:2px 3px;
+}
+#workspace .window_list.window_button {
+	background:url(images/window_list.png) no-repeat center;
+	padding:2px 3px;
+}
+#workspace .tab_list_right.window_button {
+	background:url(images/rightarr.png) no-repeat center;
+	padding:2px 3px;
+}
+#workspace .unmaximize_all.window_button {
+	background:url(images/tabmenu_unmaximize.png) no-repeat center;
+	padding:2px 3px;
+}
+#workspace .maximized_close.window_button {
+	background:url(images/tabmenu_close.png) no-repeat center;
+	padding:2px 3px;
+}
+#goorm_inner_layout_center #workspace {
+	background-color:#ebebeb;
+	 -moz-box-shadow:inset 0px 27px 10px 0px rgba(0, 0, 0, 0.05);
+	-webkit-box-shadow:inset 0px 27px 10px 0px rgba(0, 0, 0, 0.05);
+	box-shadow:inset 0px 27px 10px 0px rgba(0, 0, 0, 0.05);
+}
+#goorm_left,#goorm_inner_layout_right,#goorm_inner_layout_bottom {
+	border-color:#cccccc;
+}
+.yui-skin-sam .yui-button {
+	background:#f4f4f4;
+	 -moz-box-shadow:none;
+	-webkit-box-shadow:none;
+	box-shadow:none;
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;
+	border-radius:3px;
+	border:1px solid #d9d9d9 !important;
+}
+.yui-skin-sam .default {
+	color:white !imortant;
+	background:#4e8aff;
+	border:1px solid #3475f6 !important;
+}
+.yui-skin-sam .default button {
+	color:white !important;
+}
+.yui-skin-sam .yui-button:hover {
+	 -moz-box-shadow:0px 1px 3px rgba(198, 198, 198, 0.6);
+	-webkit-box-shadow:0px 1px 3px rgba(198, 198, 198, 0.6);
+	box-shadow:0px 1px 3px rgba(198, 198, 198, 0.6);
+}
+.yui-skin-sam .yui-navset .yui-nav .selected a, .yui-skin-sam .yui-navset .yui-nav .selected a em {
+	background:#ffffd1;
+	text-shadow:none;
+	color:black;
+	 -moz-box-shadow:none;
+	-webkit-box-shadow:none;
+	box-shadow:none;
+}
+#goorm_dialog_container .yui-navset .yui-nav a,#goorm_dialog_container .yui-navset .yui-navset-top .yui-nav a {
+	border-color:#999;
+	background:#f5f5f5;
+}
+#goorm_dialog_container .yui-navset .yui-nav li,#goorm_dialog_container .yui-navset .yui-navset-top .yui-nav li, #goorm_dialog_container .yui-navset .yui-nav a em, .yui-skin-sam .yui-navset .yui-navset-top .yui-nav a em {
+	border-color:#999;
+}
+#goorm_dialog_container .yui-navset .yui-nav a:hover,#goorm_dialog_container .yui-navset .yui-navset-top .yui-nav a:hover {
+	background:#dfdfdf;
+	 -moz-box-shadow:none;
+	-webkit-box-shadow:none;
+	box-shadow:none;
+}
+#goorm_dialog_container .yui-navset .yui-nav .selected a, #goorm_dialog_container .yui-navset .yui-nav .selected a:focus, #goorm_dialog_container .yui-navset .yui-nav .selected a:hover {
+	background:#ffffd1;
+	text-shadow:none;
+	color:black;
+	 -moz-box-shadow:none;
+	-webkit-box-shadow:none;
+	box-shadow:none;
+}
+#goorm_dialog_container .selected a em {
+	padding:3px 6px 1px !important;
+}
+.yui-skin-sam .yui-panel {
+	border-color:#323232;
+	 -moz-box-shadow:0px 1px 7px 0px rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow:0px 1px 7px 0px rgba(0, 0, 0, 0.2);
+	box-shadow:0px 1px 7px 0px rgba(0, 0, 0, 0.2);
+	-webkit-border-radius:0px;
+	-moz-border-radius:0px;
+	border-radius:0px;
+}
+#goorm_dialog_container .hd {
+	background:#323232;
+	-webkit-border-radius:0px;
+	-moz-border-radius:0px;
+	border-radius:0px;
+	color:white;
+	border-color:#323232;
+}
+#goorm_dialog_container .ft {
+	-webkit-border-radius:0px;
+	-moz-border-radius:0px;
+	border-radius:0px;
+}
+.yui-skin-sam .container-close {
+	border:none;
+	background:url(images/dialog_close.png) no-repeat 2px 2px;
+}
+.yui-skin-sam .container-close:hover {
+	border:none;
+	background:url(images/dialog_close.png) no-repeat 2px 2px;
+}
+.yui-skin-sam .yui-panel .bd, .yui-skin-sam .yui-panel .ft {
+	border-color:#CCC;
+}
+.dialog_treeview .ygtvfocus, .dialog_treeview .ygtvfocus .ygtvlabel {
+	background-color:#f5f5f5;
+}
+#workspace .yui-panel .hd {
+	background:#969696;
+	-webkit-border-radius:0px;
+	-moz-border-radius:0px;
+	border-radius:0px;
+	color:white;
+	border-left-color:#323232;
+	border-right-color:#323232;
+	border-bottom-color:#323232;
+}
+#workspace .yui-panel .activated {
+	background:#323232;
+	-webkit-border-radius:0px;
+	-moz-border-radius:0px;
+	border-radius:0px;
+	color:white;
+	border-color:#323232;
+}
+#workspace .window_buttons, #workspace .activated .window_buttons {
+	border:none;
+	background:none;
+	 -moz-box-shadow:none;
+	-webkit-box-shadow:none;
+	box-shadow:none;
+}
+#workspace .minimize.window_button {
+	background:url(images/workspace_minimize.png) no-repeat 2px 2px;
+}
+#workspace .maximize.window_button {
+	background:url(images/workspace_maximize.png) no-repeat 2px 2px;
+}
+#workspace .close.window_button {
+	background:url(images/dialog_close.png) no-repeat 2px 2px;
+}
+.CodeMirror, #workspace .yui-panel .bd {
+	border-color:#CCC;
+}
+#workspace .yui-panel .ft {
+	-webkit-border-radius:0px;
+	-moz-border-radius:0px;
+	border-radius:0px;
+	background:#f5f5f5;
+}

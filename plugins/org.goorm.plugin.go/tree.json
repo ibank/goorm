@@ -1,0 +1,21 @@
+{
+	"preference" :
+	{
+		"label" : "GO",
+		"tab" :	[
+			{	"label" : "GO",
+				"html"	: "/org.goorm.plugin.go/preference.html"
+			}
+		]
+	},
+	
+	"property" : 
+	{
+		"label" : "GO",
+		"tab" :	[
+			{	"label" : "GO",
+				"html"	: "/org.goorm.plugin.go/property.html"
+			}
+		]
+	}
+}

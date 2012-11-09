@@ -1,0 +1,29 @@
+{
+	"c" : {
+		"path" : "configs/dictionary/c.json"
+	},
+	
+	"cpp" : {
+		"path" : "configs/dictionary/cpp.json"
+	},
+
+	"java" : {
+		"path" : "configs/dictionary/java.json"
+	},
+
+	"js" : {
+		"path" : "configs/dictionary/js.json"
+	},
+
+	"json" : {
+		"path" : "configs/dictionary/json.json"
+	},
+
+	"txt" : {
+		"path" : "configs/dictionary/txt.json"
+	}
+	
+	"etc" : {
+		"path" : "configs/dictionary/etc.json"
+	}
+}

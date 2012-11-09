@@ -1,0 +1,92 @@
+{
+	"previous": {
+		"value": "Previous"	
+	},
+	"next": {
+		"value": "Next"	
+	},
+	"ok": {
+		"value": "OK"	
+	},
+	"cancel": {
+		"value": "Cancel"	
+	},
+	"close": {
+		"value": "Close"	
+	},
+	"delete": {
+		"value": "Delete"	
+	},
+	"slide": {
+		"value": "Slide"	
+	},
+	"terminal": {
+		"value": "Terminal"	
+	},
+	"search": {
+		"value": "Search"	
+	},
+	"communication": {
+		"value": "Communication"	
+	},
+	"debug": {
+		"value": "Debug"	
+	},
+	"message": {
+		"value": "Message"	
+	},
+	"object": {
+		"value": "Object"	
+	},
+	"properties": {
+		"value": "Properties"	
+	},
+	"toolbox": {
+		"value": "Tool Box"	
+	},
+	"project": {
+		"value": "Project"	
+	},
+	"find": {
+		"value": "Find"	
+	},
+	"find_all": {
+		"value": "Find All"	
+	},
+	"fine_and_replace": {
+		"value": "Find/Replace"	
+	},
+	"replace": {
+		"value": "Replace"	
+	},
+	"replace_all": {
+		"value": "Replace All"	
+	},
+	"join" : {
+		"value": "Join"
+	},
+	"save" : {
+		"value" : "Save"
+	},
+	"send" : {
+		"value" : "Send"
+	},
+	"print" : {
+		"value" : "Print"
+	},
+	"build" : {
+		"value" : "Build"
+	},
+	"clean" : {
+		"value" : "Clean"
+	},
+	"open" : {
+		"value" : "Open"
+	},
+	"yes" : {
+		"value" : "Yes"
+	},
+	"no" : {
+		"value" : "No"
+	}
+}

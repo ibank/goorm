@@ -1,0 +1,6 @@
+{
+	"plugin.go.main" : 		"main",
+	"plugin.go.source_path" : 	"src/",
+	"plugin.go.build_path" : 	"bin/",
+	"plugin.go.build_option" : ""
+}

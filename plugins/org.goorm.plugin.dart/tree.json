@@ -1,0 +1,21 @@
+{
+	"preference" :
+	{
+		"label" : "Dart",
+		"tab" :	[
+			{	"label" : "Dart",
+				"html"	: "/org.goorm.plugin.dart/preference.html"
+			}
+		]
+	},
+	
+	"property" : 
+	{
+		"label" : "Dart",
+		"tab" :	[
+			{	"label" : "Dart",
+				"html"	: "/org.goorm.plugin.dart/property.html"
+			}
+		]
+	}
+}
