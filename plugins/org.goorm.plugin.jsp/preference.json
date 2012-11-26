@@ -1,0 +1,5 @@
+{
+	"plugin.jsp.deploy_path" : 		"/var/www/",
+	"plugin.jsp.run_path" : 		"http://localhost/",
+	"plugin.jsp.main" : 	"index.jsp"
+}

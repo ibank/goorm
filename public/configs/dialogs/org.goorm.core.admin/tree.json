@@ -1,0 +1,40 @@
+{
+	"core" : {
+		"label" : "User Management",
+		"expanded" : true,
+		"child" : [
+			{	"label" : "User List",
+				"tab" : [
+					{	"label" : "All",
+						"html" : "configs/admin/list/all.html",
+						"classname" : "org.goorm.core.admin.user_manager.all"
+					},
+					{	"label" : "Available & Blind",
+						"html" : "configs/admin/list/available_blind.html",
+						"classname" : "org.goorm.core.admin.user_manager.available_blind"
+					}
+				]
+			},
+			{	"label" : "Permission",
+				"tab" : [
+					{	"label" : "Projects",
+						"html" : "configs/admin/permission/projects.html",
+						"classname" : "org.goorm.core.admin.user_manager.projects"
+					},
+					{	"label" : "Files",
+						"html" : "configs/admin/permission/files.html",
+						"classname" : "org.goorm.core.admin.user_manager.files"
+					}
+				]
+			},
+			{	"label" : "Configs",
+				"tab" : [
+					{	"label" : "Sign-up",
+						"html" : "configs/admin/config/signup.html",
+						"classname" : "org.goorm.core.admin.user_manager.signup"
+					}
+				]
+			}
+		]
+	}
+}

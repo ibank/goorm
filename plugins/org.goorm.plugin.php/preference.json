@@ -1,0 +1,5 @@
+{
+	"plugin.php.deploy_path" : 		"/var/www/",
+	"plugin.php.run_path" : 		"http://localhost/",
+	"plugin.php.main" : 	"index.php"
+}

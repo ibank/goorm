@@ -1,0 +1,21 @@
+{
+	"preference" :
+	{
+		"label" : "JSP",
+		"tab" :	[
+			{	"label" : "JSP",
+				"html"	: "/org.goorm.plugin.jsp/preference.html"
+			}
+		]
+	},
+	
+	"property" : 
+	{
+		"label" : "JSP",
+		"tab" :	[
+			{	"label" : "JSP",
+				"html"	: "/org.goorm.plugin.jsp/property.html"
+			}
+		]
+	}
+}
