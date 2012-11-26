@@ -19,7 +19,6 @@ org.goorm.core.help.check_for_updates.prototype = {
 		var self = this;
 		
 		var handle_ok = function() { 
-			
 			this.hide(); 
 		};
 		
@@ -61,10 +60,8 @@ org.goorm.core.help.check_for_updates.prototype = {
 			dataType: "jsonp",
 			timeout: 5000,
 			success: function(json) {
-				console.log(json);
 				json = JSON.parse(json);
-				console.log(json);
-			    var official_version =  json.version;
+			    var official_version =  json[0].version;
 			    if(official_version) {
 					$("#div_check_for_update").append(
 							"Official Version : <span style='color:red;'>"+official_version+"</span>"

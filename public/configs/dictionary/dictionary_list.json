@@ -21,7 +21,7 @@
 
 	"txt" : {
 		"path" : "configs/dictionary/txt.json"
-	}
+	},
 	
 	"etc" : {
 		"path" : "configs/dictionary/etc.json"

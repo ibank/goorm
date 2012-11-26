@@ -59,6 +59,7 @@ org.goorm.core.file._import.prototype = {
 					success: function(data) {
 						self.dialog.panel.hide();
 						core.module.loading_bar.stop();
+						
 						if (data.err_code==0) {
 							notice.show(core.module.localization.msg['notice_file_import_done']);
 							core.module.layout.project_explorer.refresh();
@@ -73,10 +74,11 @@ org.goorm.core.file._import.prototype = {
 	            $('#myForm').ajaxForm(form_options);
 				
 				$('#myForm').submit(function() { 
-				    // submit the form 
-				    //$(this).ajaxSubmit(); 
-				    // return false to prevent normal browser submit and page navigation 
-				    return false; 
+					// submit the form 
+					//$(this).ajaxSubmit(); 
+					// return false to prevent normal browser submit and page navigation 
+					
+					return false; 
 				});
 			}
 		});

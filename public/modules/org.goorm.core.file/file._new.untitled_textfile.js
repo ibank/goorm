@@ -21,7 +21,9 @@ org.goorm.core.file._new.untitled_textfile.prototype = {
 			var data = self.dialog_explorer.get_data();
 
 			if(data.path=="") {
-				alert.show(core.module.localization.msg["alert_filename_empty"]);				// alert.show("Target location is empty. Please fill it...");				return false;
+				alert.show(core.module.localization.msg["alert_filename_empty"]);
+				// alert.show("Target location is empty. Please fill it...");
+				return false;
 			}
 
 			var postdata = {

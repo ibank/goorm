@@ -64,8 +64,8 @@ org.goorm.core.collaboration.settings.prototype = {
 		$("#dialog_collaboration_settings #collaboration_server_url").val(core.preference['collaboration_server_url']);
 		$("#dialog_collaboration_settings #collaboration_server_port").val(core.preference['collaboration_server_port']);
 		
-		if(core.user.last_name != null && core.user.first_name != null){
-			$("#dialog_collaboration_settings #collaboration_nickname").val(core.user.last_name+" "+core.user.first_name).attr("readonly","readonly");
+		if(core.user.id != null){
+			$("#dialog_collaboration_settings #collaboration_nickname").val(core.user.id).attr("readonly","readonly");
 		}
 		else {
 			$("#dialog_collaboration_settings #collaboration_nickname").val(localStorage['collaboration_nickname']);

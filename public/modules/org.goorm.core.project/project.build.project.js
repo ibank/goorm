@@ -23,7 +23,7 @@ org.goorm.core.project.build.project.prototype = {
 
 		self.is_repeat = false;
 				
-		var handle_open = function() {
+		var handle_build = function() {
 			$("#build_project_list input[type=checkbox]:checked").each(function(){
 				var list = this;
 				var window_manager = core.module.layout.workspace.window_manager;
@@ -57,7 +57,7 @@ org.goorm.core.project.build.project.prototype = {
 						yes: function () {
 							self.is_repeat = true;							
 							window_manager.window[target_window].editor.save();
-							handle_open();
+							handle_build();
 							self.dialog.panel.hide();
 						}, cancel: function () {
 							self.is_repeat = false;							
@@ -65,7 +65,7 @@ org.goorm.core.project.build.project.prototype = {
 							self.dialog.panel.hide();
 						}, no: function () {
 							self.is_repeat = true;
-							handle_open();
+							handle_build();
 							self.dialog.panel.hide();
 						}
 					});
@@ -102,7 +102,7 @@ org.goorm.core.project.build.project.prototype = {
 			this.hide(); 
 		};
 		
-		this.buttons = [ {text:"<span localization_key='build'>Build</span>", handler:handle_open, isDefault:true},
+		this.buttons = [ {text:"<span localization_key='build'>Build</span>", handler:handle_build, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
 		this.dialog = new org.goorm.core.project.build.project.dialog();

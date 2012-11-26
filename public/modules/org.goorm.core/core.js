@@ -57,9 +57,11 @@ org.goorm.core = function() {
 		device: null,
 		fn: null,
 		loading_bar: null,
+		toast: null,
 		theme: null,
 		theme_details: null,
-		auth: null
+		auth: null,
+		scm: null
 	};
 		
 	this.container = "";
@@ -93,6 +95,7 @@ org.goorm.core = function() {
 		build_configuration: null,
 		property: null,
 		find_and_replace: null,
+		search: null,
 		preference: null,
 		project_property: null,
 		join_project: null,
@@ -104,6 +107,7 @@ org.goorm.core = function() {
 		help_install_new_plugin: null,
 		help_about: null,
 		help_bug_report: null,
+		user_manager: null,
 		loaded_count:0		
 	};
 	
@@ -114,6 +118,7 @@ org.goorm.core = function() {
 	};
 	
 	this.status = {
+		is_login: false,
 		keydown: false,
 		focus_on_editor: false,
 		focus_on_inputbox: false,
@@ -141,10 +146,18 @@ org.goorm.core = function() {
 
 org.goorm.core.prototype = {
 	init: function(container) {
-		
+		var self = this;
+
+		//auth
+		this.module.auth = new org.goorm.core.auth();
+		this.module.auth.init();
+
+		// admin
+		this.module.admin = new org.goorm.core.admin();
+		this.module.admin.init();
+
 		this.start();		
 		
-		var self = this;
 		this.filetypes = [];
 		this.workspace = {};
 		
@@ -166,9 +179,7 @@ org.goorm.core.prototype = {
 			this.main();
 		});
 		
-		//auth
-		this.module.auth = new org.goorm.core.auth();
-		this.module.auth.get_info();		
+		// this.module.auth.get_info();		
 		
 		this.load_complete_flag = false;
 		
@@ -188,6 +199,37 @@ org.goorm.core.prototype = {
 				if(!self.load_complete_flag){
 					$(self).trigger("goorm_load_complete");
 					self.load_complete_flag = true;
+
+					core.module.auth.get_info(function(session_result){
+						var dbname = 'mongodb';
+						
+						$.get('/db/is_open?dbname='+dbname, function(db_result){
+							$("#goorm_loading_status_bar").fadeOut(1000);
+							
+							if(!db_result){
+								alert.show(core.module.localization.msg['alert_cannot_connect_db'], dbname);
+								// 
+								// local mode
+								//
+								
+							}
+							else{
+								if(session_result){
+									self.complete();
+								}
+								else{
+									core.module.auth.check_admin(function(admin_result){
+										if(admin_result){
+											self.show_login_box();
+										}
+										else{
+											core.module.auth.show_signup('admin');
+										}
+									});
+								}
+							}
+						})
+					})
 				}
 			}
 		});
@@ -198,6 +240,8 @@ org.goorm.core.prototype = {
 
 		//Loading Ending
 		$(this).bind("goorm_load_complete", function () {
+			console.log("!");
+		
 			$("input").bind("focus", function () {
 				self.status.focus_on_inputbox = true;
 			});
@@ -232,6 +276,8 @@ org.goorm.core.prototype = {
 			//theme
 			self.module.theme = new org.goorm.core.theme();
 			self.module.theme.init();
+			
+			
 
 		
 /*
@@ -253,7 +299,7 @@ org.goorm.core.prototype = {
 			else
 				core.module.layout.inner_right_tabview.selectTab(0);
 					
-			self.complete();
+			// self.complete();
 		});	
 		
 		$(window).unload(function () {
@@ -275,6 +321,10 @@ org.goorm.core.prototype = {
 		
 		//Project
 		this.module.project = new org.goorm.core.project();
+		
+		//Project
+		this.module.scm = new org.goorm.core.scm();
+		this.module.scm.init();
 		
 		//Plugin Loading Aspects
 		this.module.plugin_manager = new org.goorm.plugin.manager();
@@ -378,6 +428,9 @@ org.goorm.core.prototype = {
 		this.dialog.find_and_replace = new org.goorm.core.edit.find_and_replace();
 		this.dialog.find_and_replace.init();
 		
+		this.dialog.search = new org.goorm.core.search();
+		this.dialog.search.init();
+		
 		this.dialog.preference = this.module.preference;
 		this.dialog.preference.init_dialog();
 		
@@ -411,6 +464,8 @@ org.goorm.core.prototype = {
 		this.dialog.help_bug_report = new org.goorm.core.help.bug_report();
 		this.dialog.help_bug_report.init();		
 		
+		this.dialog.user_manager = this.module.admin.user_manager;
+		this.dialog.user_manager.init_dialog();
 		
 		////////////////////////////////////////////////////////////////////////////////////////
 		//module
@@ -425,6 +480,12 @@ org.goorm.core.prototype = {
 		
 		this.module.loading_bar = new org.goorm.core.utility.loading_bar();
 		this.module.loading_bar.init();
+		
+		this.module.toast = new org.goorm.core.utility.toast();
+		this.module.toast.init();
+		
+		this.module.social_plugin = new org.goorm.core.social_plugin();
+		this.module.social_plugin.init();
 		
 		alert.init();
 		notice.init();
@@ -449,20 +510,35 @@ org.goorm.core.prototype = {
 	},
 
 	start: function() {
+		var self = this;
+		
 		$("#goorm_dialog_container").append("<div id='loading_panel_container'></div>");
 		$("#goorm_dialog_container").append("<div id='loading_background'></div>");
 		$("#loading_panel_container").append("<div id='main_loading_image'><div id='goorm_loading_status_bar'></div></div>");
-		$("#loading_panel_container").append("<div id='developers'>Sung-tae Ryu, Noori Kim, Byeong-ung Ahn, Eungwi Jo, Nam You-Seok, Chonghyun Lee, Shinwook Gahng, Cheolhyun Park</div>");
+		$("#loading_panel_container").append("<div id='developers'>Sung-tae Ryu, Noori Kim, Byeong-ung Ahn, Eungwi Jo, You-Seok Nam, Chonghyun Lee, Shinwook Gahng, Cheolhyun Park</div>");
 		$("#loading_panel_container").append("<div id='loading_message'></div>");
 		$("#loading_panel_container").append("<div id='login_box_bg'></div>");
 		$("#loading_panel_container").append("<div id='login_box'></div>");
 		
 		$("#login_box").append("<input id='goorm_id' name='goorm_id' placeholder='username' />");
-		$("#login_box").append("<input id='goorm_pw' name='goorm_pw' placeholder='password' />");
+		$("#login_box").append("<input type='password' id='goorm_pw' name='goorm_pw' placeholder='password' />");
 		$("#login_box").append("<input type='button' id='goorm_login_button' value='Login' />");
+		$("#login_box").append("<input type='button' id='goorm_signup_button' value='Sign-up' />");
+		
+		$("#login_box").append("<div id='goorm_social_login'/>");
 		$("#login_box").after("<div id='login_message'></div>");
 		
-		this.login_button =  new YAHOO.widget.Button("goorm_login_button", { onclick: { fn: this.login } });
+		$("#goorm_social_login").append("<input type='button' id='goorm_facebook_login' value='facebook' class='social_login_button' style='display:none;' />");
+		$("#goorm_social_login").append("<input type='button' id='goorm_twitter_login' value='twitter' class='social_login_button' style='display:none;' />");
+		$("#goorm_social_login").append("<input type='button' id='goorm_github_login' value='github' class='social_login_button' style='display:none;' />");
+		$("#goorm_social_login").append("<input type='button' id='goorm_google_login' value='google' class='social_login_button' style='display:none;' />");		
+		
+		this.login_button =  new YAHOO.widget.Button("goorm_login_button", { onclick: { fn: self.module.auth.login } });
+		this.signup_button =  new YAHOO.widget.Button("goorm_signup_button", { onclick: { fn: self.module.auth.show_signup } });
+		
+		$(document).on("click", ".social_login_button", function(){
+			core.module.auth.social_login(this);
+		});
 		
 		$("#loading_background").css('position', "absolute");
 		$("#loading_background").width($(window).width());
@@ -472,6 +548,10 @@ org.goorm.core.prototype = {
 		$("#loading_background").css('z-index', 999);
 		$("#loading_background").css('background-color', "#EEE");
 		
+		$(window).resize(function () {
+			$("#loading_background").width($(window).width());
+			$("#loading_background").height($(window).height());
+		});
 		
 		$("#loading_panel_container").css('display', "none");
 		$("#loading_panel_container").width(640);
@@ -483,72 +563,45 @@ org.goorm.core.prototype = {
 		$("#loading_panel_container").fadeIn(2000);
 	},
 	
-	login: function () {
-/*
-		var self = this;
-		var user_id = $("#goorm_id").val();
-		var user_pw = $("#goorm_pw").val();
+	show_login_box : function(){
+		$.get('/admin/get_config', function(config){
+			if(config && !config.general_signup_config) $('#goorm_signup_button').hide();
 
-		$.ajax({
-			type: 'post', 
-			async: true, 
-			url: "/member/login", 
-			data: {id:user_id, pw:user_pw, auth_type:'password'}, 
-			success: function(data) {
-				//성공했으면 전역변수에 넣는다.
-				//cms.auth.info = data.info;
-				if(!data.err){
-					//아웃로그인 화면을 갱신한다.
-					//console.log(data);
-					core.user.first_name = data.info.id;
-					core.user.last_name = data.info.nick;
-
-					$("#login_message").empty();
-					$("#login_message").append("환영합니다. "+data.info.nick+" 님");
-					$("#login_message").fadeIn(500);
-
-				}else if(data.err.code==1){
-					$("#login_message").empty();
-					$("#login_message").append("비밀번호가 일치하지 않습니다.");
-					$("#login_message").fadeIn(500);
-				}else if(data.err.code==2){
-					$("#login_message").empty();
-					$("#login_message").append("구름 회원이 아닙니다.");
-					$("#login_message").fadeIn(500);
-				}else if(data.err.code==3){
-					$("#login_message").empty();
-					$("#login_message").append("아이디와 비밀번호를 입력하세요.");
-					$("#login_message").fadeIn(500);
-				}
-				$("#loading_background").delay(1000).fadeOut(1000);
-				$("#loading_panel_container").delay(1500).fadeOut(1000);
-			}, 
-			error: function(data, status, err) {	
-				console.log(status, err, '서버와의 통신이 실패했습니다.'); 
-			}
+			$("#login_box_bg").delay(1250).fadeIn(1500);
+			$("#login_box").delay(1500).fadeIn(2000);
 		});
-*/
-
-
 	},
 
 	complete: function() {
 		$("#goorm").show();
-		$("#goorm").show();
+		$('.goorm_user_menu').show();
 		
 		//$('.goorm_version').html("goorm IDE " + this.env.version);
 		
-		$("#goorm_loading_status_bar").fadeOut(1000);
-		
-//		$("#login_box_bg").delay(1250).fadeIn(1500);
-//		$("#login_box").delay(1500).fadeIn(2000);
-//		$("#login_box").delay(1500).fadeIn(2000);
-		
-
  		$("#loading_background").delay(1000).fadeOut(1000); 
  		$("#loading_panel_container").delay(1500).fadeOut(1000); 
-						
+		
 		this.dialog.project_property.refresh_toolbox();
+		
+		core.module.auth.get_info(function(user_reg){
+			$.getJSON("auth/get_info", function(user_data){
+				if(user_data && user_data.level == 'Admin'){
+					$('.admin_menu_item').removeClass('yuimenuitem-disabled');
+					$('.admin_menu_label').removeClass('yuimenuitemlabel-disabled');
+	
+					$('.admin_menu_label').show();
+				}
+				else{
+					$('.admin_menu_item').addClass('yuimenuitem-disabled');
+					$('.admin_menu_label').addClass('yuimenuitemlabel-disabled');
+					
+					$('.admin_menu_label').hide();
+				}
+				
+				core.module.toast.show(core.module.localization.msg['notice_welcome_goorm'])
+				core.module.layout.communication.join();
+			});
+		});
 	},
 
 	adapt_smart_pad: function () {

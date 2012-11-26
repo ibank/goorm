@@ -51,7 +51,7 @@ org.goorm.plugin.go.prototype = {
 		var self = this;
 		
 		$("ul[id='plugin_new_project']").append("<li class=\"yuimenuitem\"><a class=\"yuimenuitemlabel\" href=\"#\" action=\"new_file_go\" localizationKey='file_new_go_project'>GO Project</a></li>");
-		this.mainmenu.render();
+		//this.mainmenu.render();
 	},
 	
 	add_menu_action: function () {

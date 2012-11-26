@@ -155,6 +155,9 @@
             },
             "edit_preference": {
                 "value": "기본 설정"
+            },
+            "edit_search": {
+                "value": "검색"
             }
         }
     },
@@ -336,6 +339,12 @@
                     "window_right_layout_toggle_chat": {
                         "value": "채팅 보기"
                     },
+                    "window_right_layout_toggle_slide": {
+                        "value": "슬라이드 보기"
+                    },
+                    "window_right_layout_toggle_communication": {
+                        "value": "커뮤니케이션 보기"
+                    },
                     "window_bottom_layout": {
                         "value": "아래쪽 레이아웃"
                     },
@@ -349,7 +358,7 @@
                         "value": "디버그 보기"
                     },
                     "window_bottom_layout_console": {
-                        "value": "콘솔 보기"
+                        "value": "터미널 보기"
                     },
                     "window_bottom_layout_search": {
                         "value": "찾기 보기"
@@ -404,6 +413,20 @@
             },
             "help_about_goorm": {
                 "value": "goorm에 대하여"
+            }
+        }
+    },
+    "account": {
+        "value": "계정",
+        "children": {
+            "account_manage": {
+                "value": "회원 관리 하기"
+            },
+            "account_profile": {
+                "value": "계정 정보 보기"
+            },
+            "account_logout": {
+                "value": "로그아웃"
             }
         }
     },
@@ -475,6 +498,9 @@
             "file_open_as_code_editor_context": {
                 "value": "코드 에디터"
             },
+            "file_open_as_vim_editor_context": {
+                "value": "Vim 에디터"
+            },
             "file_open_as_ui_designer_context": {
                 "value": "UI 디자이너"
             },
@@ -504,6 +530,15 @@
     "file_save_all_context": {
         "value": "모두 저장"
     },
+    "file_new_file_context": {
+        "value": "새 파일"
+    },
+    "file_new_folder_context": {
+        "value": "새 폴더"
+    },
+    "file_new_untitled_text_file_context": {
+        "value": "새 텍스트 파일"
+    }, 
     "file_import_context": {
         "value": "가져오기"
     },
@@ -586,5 +621,20 @@
     },
     "close": {
         "value": "닫기"
+    },
+    "edit_cut_edit_context": {
+        "value": "잘라내기"
+    },
+    "edit_copy_edit_context": {
+        "value": "복사"
+    },
+    "edit_paste_edit_context": {
+        "value": "붙여넣기"
+    },
+    "edit_delete_edit_context": {
+        "value": "삭제"
+    },
+    "edit_find_replace_edit_context": {
+        "value": "찾기/바꾸기"
     }
 }

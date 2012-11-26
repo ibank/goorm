@@ -122,14 +122,15 @@ org.goorm.core.dialog.prototype = {
 				confirmation.panel.cfg.config.visible = {};
 				confirmation.panel.cfg.config.visible.value = false;
 			}
-		
+			
 			if (self.buttons && self.panel.cfg.config.visible.value && !core.status.keydown && !alert.panel.cfg.config.visible.value && !notice.panel.cfg.config.visible.value && !confirmation.panel.cfg.config.visible.value) {
 				$(self.buttons).each(function (i) {
 					if (this.isDefault) {
 						this.hide = function(){};
 						this.handler();
-												
+						
 						core.status.keydown = true;
+						e.preventDefault();
 					}
 				});
 			}

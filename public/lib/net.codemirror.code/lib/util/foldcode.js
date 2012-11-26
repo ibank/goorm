@@ -156,7 +156,7 @@ CodeMirror.indentRangeFinder = function(cm, line) {
 
 CodeMirror.newFoldFunction = function(rangeFinder, markText, hideEnd) {
   var folded = [];
-  if (markText == null) markText = '<div class="folding_icon"></div>%N%';
+  if (markText == null) markText = '<div style="position: absolute; left: 2px; color:#600">&#x25bc;</div>%N%';
 
   function isFolded(cm, n) {
     for (var i = 0; i < folded.length; ++i) {

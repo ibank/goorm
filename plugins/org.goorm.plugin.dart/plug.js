@@ -38,7 +38,7 @@ org.goorm.plugin.dart.prototype = {
 	
 	
 	add_project_item: function () {
-		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='dartp'><div class='project_type_icon'><img src='/org.goorm.plugin.dart/images/dart.png' class='project_icon' /></div><div class='project_type_title'>Dart Project</div><div class='project_type_description'>Dart Project (HTML5/Javascript)</div></div>");
+		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='dartp'><div class='project_type_icon'><img src='/org.goorm.plugin.dart/images/dart.png' class='project_icon' /></div><div class='project_type_title'>DART Project</div><div class='project_type_description'>Dart Project (HTML5/Javascript)</div></div>");
 		
 		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all dartp' description='  Create default Dart project' projecttype='dart' plugin_name='org.goorm.plugin.dart'><img src='/org.goorm.plugin.dart/images/dart_console.png' class='project_item_icon' /><br /><a>Default Dart project</a></div>");
 		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all dartp' description='  Create sample Clock project' projecttype='dart' plugin_name='org.goorm.plugin.dart'><img src='/org.goorm.plugin.dart/images/dart_console.png' class='project_item_icon' /><br /><a>Clock sample</a></div>");
@@ -53,8 +53,8 @@ org.goorm.plugin.dart.prototype = {
 	add_mainmenu: function () {
 		var self = this;
 		
-		$("ul[id='plugin_new_project']").append("<li class=\"yuimenuitem\"><a class=\"yuimenuitemlabel\" href=\"#\" action=\"new_file_dart\" localizationKey='file_new_dart_project'>dart Project</a></li>");
-		this.mainmenu.render();
+		$("ul[id='plugin_new_project']").append("<li class=\"yuimenuitem\"><a class=\"yuimenuitemlabel\" href=\"#\" action=\"new_file_dart\" localizationKey='file_new_dart_project'>DART Project</a></li>");
+		//this.mainmenu.render();
 	},
 	
 	add_menu_action: function () {

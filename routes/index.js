@@ -14,12 +14,15 @@ var rimraf = require('rimraf');
 var g_file = require("../modules/org.goorm.core.file/file");
 var g_preference = require("../modules/org.goorm.core.preference/preference");
 var g_project = require("../modules/org.goorm.core.project/project");
+var g_scm = require("../modules/org.goorm.core.scm/scm");
 var g_terminal = require("../modules/org.goorm.core.terminal/terminal");
 var g_theme = require("../modules/org.goorm.core.theme/theme");
 var g_plugin = require("../modules/org.goorm.plugin/plugin");
 var g_help = require("../modules/org.goorm.help/help");
-var g_auth_list = require("../modules/org.goorm.auth/list");
-/* var g_member_service = require("../modules/org.goorm.core.member/member_service"); */
+var g_auth = require("../modules/org.goorm.auth/auth");
+var g_auth_manager = require("../modules/org.goorm.auth/auth.manager");
+var g_admin = require("../modules/org.goorm.admin/admin");
+var g_social = require("../modules/org.goorm.auth/social");
 
 var EventEmitter = require("events").EventEmitter;
 
@@ -127,6 +130,12 @@ exports.project.set_property = function(req, res){
 	g_project.set_property(req.query, evt);
 };
 
+/*
+ * API : SCM
+ */
+exports.scm = function(req, res){
+	g_scm.index(req.query, res);
+};
 
 /*
  * API : Plugin
@@ -266,7 +275,8 @@ exports.file.put_contents = function(req, res){
 		res.json(data);
 	});
 
-	g_file.put_contents(req.query, evt);
+	// g_file.put_contents(req.query, evt);
+	g_file.put_contents(req.body, evt);
 };
 
 exports.file.get_nodes = function(req, res){
@@ -313,6 +323,30 @@ exports.file.get_dir_nodes = function(req, res){
 	});
 	
 	g_file.get_dir_nodes(__workspace+'/' + path, evt);
+};
+
+exports.file.get_file = function(req, res){
+	var evt = new EventEmitter();
+	var filepath = req.query.filepath;
+	var filename = req.query.filename;
+	filepath = filepath.replace(/\/\//g, "/");
+
+	//res.setHeader("Content-Type", "application/json");
+	
+	evt.on("got_file", function (data) {
+		try {
+			//console.log(JSON.stringify(data));
+			res.json(data);
+			
+			//res.send(JSON.stringify(data));
+			//res.end();
+		}
+		catch (exception) {
+			throw exception;
+		}
+	});
+	
+	g_file.get_file(filepath, filename, evt);
 };
 
 exports.file.do_move = function(req, res){
@@ -363,6 +397,16 @@ exports.file.do_import = function(req, res){
 	});
 
 	g_file.do_import(req.body, req.files.file, evt);
+};
+
+exports.file.do_search_on_project = function(req, res){
+	var evt = new EventEmitter();
+
+	evt.on("file_do_search_on_project", function (data) {
+		res.send(data);
+	});
+	
+	g_file.do_search_on_project(req.query, evt);
 };
 
 
@@ -491,6 +535,16 @@ exports.help.get_readme_markdown = function(req, res){
 	res.json(data);
 };
 
+exports.help.send_to_bug_report = function(req, res) {
+	var evt = new EventEmitter();
+	
+	evt.on("help_send_to_bug_report", function (data) {
+		res.json(data);
+	});
+	
+	g_help.send_to_bug_report(req.query, evt);
+}
+
 /*
  * API : Auth
  */
@@ -500,14 +554,32 @@ exports.auth = function(req, res){
  
 exports.auth.get_info = function(req, res){
 	//console.log(req.session.auth.google.user);
-	var available_list = g_auth_list.get_list();
+	var available_list = g_auth.get_list();
+	var evt = new EventEmitter();
 
 	if (req.session.auth && req.session.auth.loggedIn) {
-		for(var type in req.session.auth){
-			if(available_list.indexOf(type) != -1){
-				res.json(req.session.auth[type].user);
+		evt.on("auth_get_info", function(evt, i){
+			if(available_list[i]){
+				var type = available_list[i];
+				if(req.session.auth[type]){
+					res.json(req.session.auth[type].user);
+				}
+				else{
+					evt.emit("auth_get_info", evt, ++i);
+				}
 			}
-		}
+			else{
+				res.json({});
+			}
+		});
+		evt.emit("auth_get_info", evt, 0);
+		// for(var type in req.session.auth){
+			// if(available_list.indexOf(type) != -1){
+				// req.session.auth[type].user.type = type;
+				// res.json(req.session.auth[type].user);
+				// break;
+			// }
+		// }
 		// res.json(req.session.auth[type].user);
 		// res.json(req.session.auth.google.user);
 	}
@@ -515,6 +587,136 @@ exports.auth.get_info = function(req, res){
 		res.json({});
 	}	
 };
+
+exports.auth.login = function(req, res){
+	g_auth_manager.login(req.body, req, function(result){
+		res.json(result);
+	});
+}
+
+exports.auth.logout = function(req, res){
+	g_auth_manager.logout(req, function(result){
+		res.json(result);
+	});
+}
+
+exports.auth.signup = function(req, res){
+	var evt = new EventEmitter();
+	
+	evt.on("auth_check_user_data", function (data) {
+		if(data.result){
+			g_auth_manager.register(req, function(result){
+				res.json({
+					'type' : 'signup',
+					'data' : result
+				});
+			});
+		}
+		else{
+			res.json({
+				'type' : 'check',
+				'data' : data
+			});
+		}
+	});
+	
+	g_auth_manager.check(req.body, evt);
+};
+
+exports.auth.signup.check = function(req, res){
+	var evt = new EventEmitter();
+
+	evt.on("auth_check_user_data", function (data) {
+		res.json(data);
+	});
+
+	g_auth_manager.check(req.body, evt);
+};
+
+exports.admin = function(req, res){
+	res.json(null);
+}
+
+exports.admin.check = function(req, res){
+	g_auth_manager.check_admin(function(result){
+		res.json(result);
+	});
+}
+
+exports.admin.get_config = function(req, res){
+	g_admin.get_config(function(config){
+		res.json(config);
+	});
+}
+
+exports.admin.user_add = function(req, res){
+	var evt = new EventEmitter();
+	
+	evt.on("auth_check_user_data", function (data) {
+		if(data.result){
+			g_auth_manager.user_add(req.body, function(result){
+				res.json({
+					'type' : 'signup',
+					'data' : result
+				});
+			});
+		}
+		else{
+			res.json({
+				'type' : 'check',
+				'data' : data
+			});
+		}
+	});
+	
+	g_auth_manager.check(req.body, evt);
+}
+
+exports.admin.user_del = function(req, res){
+	g_auth_manager.remove(req.body, function(result){
+		res.json(result);
+	});
+}
+
+
+exports.user = function(req, res){
+	res.json(null);
+}
+
+exports.user.get = function(req, res){
+	g_auth_manager.user_get(req.body, function(data){
+		res.json(data);
+	});
+}
+
+exports.user.set = function(req, res){
+	var evt = new EventEmitter();
+	
+	evt.on("auth_set_check_user_data", function (data) {
+		if(data.result){
+			g_auth_manager.user_set(req, function(result){
+				res.json({
+					'type' : 'set',
+					'data' : result // true, false
+				});
+			});
+		}
+		else{
+			res.json({
+				'type' : 'check',
+				'data' : data // code, result
+			});
+		}
+	});
+	
+	g_auth_manager.set_check(req.body, evt);
+}
+
+exports.user.list = function(req, res){
+	g_auth_manager.get_list(function(data){
+		res.json(data);
+	});
+}
 
 /*
  * Download and Upload
@@ -535,6 +737,35 @@ exports.download = function(req, res) {
 		
 	}, function (err) {
 		// ...
+	});
+};
+
+/*
+ * Social
+ */
+
+exports.social = function(req, res){
+	res.send(null);
+};
+
+exports.social.login = function(req, res){
+	var social_type = req.query.type;
+	if(!social_type) res.redirect('/');
+	
+	var g_social_m = new g_social(social_type);
+	g_social_m.login(req, function(result){
+		res.redirect('/');
+	});
+};
+
+exports.social.twitter = function(req, res){
+	var method = req.route.method;
+	var api_root = req.body.api_root;
+	var data = req.body.data;
+
+	var g_social_m = new g_social('twitter');
+	g_social_m.load(req.session.auth['twitter'], method, api_root, data, function(result){
+		res.json(result);
 	});
 };
 

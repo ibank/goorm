@@ -8,6 +8,7 @@
 
 org.goorm.core.theme = function () {
 	this.theme_data = null;
+	this.previous_theme = null;
 	this.current_theme = null;
 	this.current_theme_data = null;
 	this.details_dialog = null;
@@ -22,7 +23,7 @@ org.goorm.core.theme.prototype = {
 		var self = this;
 		
 		self.apply_theme_button = new YAHOO.widget.Button({  
-									label:"Theme Apply",  
+									label:"Preview",  
 									id:"theme_apply_button",  
 									container:"buttons_for_theme" }); 
 
@@ -111,7 +112,7 @@ org.goorm.core.theme.prototype = {
 	//select box change
 	on_theme_selectbox_change: function (theme_idx) {
 		var self = this;
-
+		self.previous_theme = self.current_theme;
 		self.current_theme = self.theme_data[theme_idx];
 
 		var temp_description = self.current_theme.contents.description;
@@ -184,23 +185,7 @@ org.goorm.core.theme.prototype = {
 			data: { path: path, data: filedata },
 			success: function(data) {
 				//apply theme
-				var css_node = $("link[kind='theme']");
-				if(css_node.length==0){
-					$("head").append("<link>");
-					css_node = $("head").children(":last");
-					css_node.attr({
-						rel:  "stylesheet",
-						type: "text/css",
-						href: "/configs/themes/"+self.current_theme.name + "/" + self.current_theme.name+".css",
-						kind: "theme"
-					});
-				}
-				else{
-					css_node.attr({
-						href: "/configs/themes/"+self.current_theme.name + "/" + self.current_theme.name+".css",
-						kind: "theme"
-					});
-				}
+				self.load_css();
 				m.s("Save complete! (" + self.filename + ")", "org.goorm.core.theme");
 			}
 		});
@@ -218,6 +203,50 @@ org.goorm.core.theme.prototype = {
 			}
 		});
 
+		confirmation.init({
+			title : "Do you want to apply this theme?",
+			// message : "<span localization_key='confirmation_exit'>Do you want exit?</span>",
+			// yes_text : "<span localization_key='yes'>Yes</span>",
+			// no_text : "<span localization_key='no'>No</span>",
+			message : core.module.localization.msg['confirmation_theme'],
+			yes_text : core.module.localization.msg['confirmation_yes'],
+			no_text : core.module.localization.msg['confirmation_no'],
+			yes : function() {
+				core.module.preference.apply();
+			},
+			no : function() {
+				self.current_theme = self.previous_theme;
+				$("#theme_selectbox [value="+self.theme_data.indexOf(self.current_theme)+"]").attr("selected", true);
+				self.on_theme_selectbox_change(self.theme_data.indexOf(self.current_theme));
+				self.load_css();
+
+			}
+		});
+
+		confirmation.panel.show();
+
+	},
+	load_css: function() {
+		var self = this;
+
+		//apply theme
+		var css_node = $("link[kind='theme']");
+		if(css_node.length==0){
+			$("head").append("<link>");
+			css_node = $("head").children(":last");
+			css_node.attr({
+				rel:  "stylesheet",
+				type: "text/css",
+				href: "/configs/themes/"+self.current_theme.name + "/" + self.current_theme.name+".css",
+				kind: "theme"
+			});
+		}
+		else{
+			css_node.attr({
+				href: "/configs/themes/"+self.current_theme.name + "/" + self.current_theme.name+".css",
+				kind: "theme"
+			});
+		}
 	},
 	//create new theme
 	create_new_theme: function() {

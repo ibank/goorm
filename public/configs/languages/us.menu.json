@@ -155,6 +155,9 @@
 			},
 			"edit_uncomment_selected": { 
 				"value": "Uncomment_Selected"
+			},
+			"edit_search": { 
+				"value": "Search"
 			}
         }
     },
@@ -336,6 +339,12 @@
                     "window_right_layout_toggle_chat": {
                         "value": "Show Chat"
                     },
+                    "window_right_layout_toggle_slide": {
+                        "value": "Show Slide"
+                    },
+                    "window_right_layout_toggle_communication": {
+                        "value": "Show Communication"
+                    },
                     "window_bottom_layout": {
                         "value": "Bottom Layout"
                     },
@@ -349,7 +358,7 @@
                         "value": "Show Debug"
                     },
                     "window_bottom_layout_console": {
-                        "value": "Show Console"
+                        "value": "Show Terminal"
                     },
                     "window_bottom_layout_search": {
                         "value": "Show Search"
@@ -406,7 +415,21 @@
                 "value": "Send Bug Report"
             },
             "help_about_goorm": {
-                "value": "About goorm 3"
+                "value": "About goorm"
+            }
+        }
+    },
+    "account": {
+        "value": "Account",
+        "children": {
+            "account_manage": {
+                "value": "Users Manage"
+            },
+            "account_profile": {
+                "value": "Profile"
+            },
+            "account_logout": {
+                "value": "Logout"
             }
         }
     },
@@ -478,6 +501,9 @@
             "file_open_as_code_editor_context": {
                 "value": "Code Editor"
             },
+            "file_open_as_vim_editor_context": {
+                "value": "Vim Editor"
+            },
             "file_open_as_ui_designer_context": {
                 "value": "UI Designer"
             },
@@ -507,6 +533,15 @@
     "file_save_all_context": {
         "value": "Save All"
     },
+    "file_new_file_context": {
+        "value": "New File"
+    },
+    "file_new_folder_context": {
+        "value": "New Folder"
+    },
+    "file_new_untitled_text_file_context": {
+        "value": "New Untitled Text File"
+    },    
     "file_import_context": {
         "value": "Import File"
     },
@@ -589,5 +624,20 @@
     },
     "close": {
         "value": "Close"
+    },
+    "edit_cut_edit_context": {
+        "value": "Cut"
+    },
+    "edit_copy_edit_context": {
+        "value": "Copy"
+    },
+    "edit_paste_edit_context": {
+        "value": "Paste"
+    },
+    "edit_delete_edit_context": {
+        "value": "Delete"
+    },
+    "edit_find_replace_edit_context": {
+        "value": "Find/Replace"
     }
 }

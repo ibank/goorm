@@ -123,7 +123,8 @@ org.goorm.core.design.prototype = {
 		
 		$.ajax({
 			url: url,			
-			type: "GET",
+			//type: "GET",
+			type: "POST",
 			data: { path: path, data: filedata },
 			success: function(data) {
 				//self.canvas.objects = [];

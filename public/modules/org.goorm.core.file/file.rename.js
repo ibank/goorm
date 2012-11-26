@@ -32,14 +32,18 @@ org.goorm.core.file.rename.prototype = {
 			var dst_name = $("#input_rename_new_filename").val();
 			
 			if (dst_name=="") {
-				alert.show(core.module.localization.msg["alert_filename_empty"]);				// alert.show("File name is empty. Please fill it...");				return false;
+				alert.show(core.module.localization.msg["alert_filename_empty"]);
+				// alert.show("File name is empty. Please fill it...");
+				return false;
 			}
 			else if (dst_name.indexOf(" ")!=-1) {
-				// alert.show("Can not use space in file name");				alert.show(core.module.localization.msg["alert_allow_character"]);
+				// alert.show("Can not use space in file name");
+				alert.show(core.module.localization.msg["alert_allow_character"]);
 				return false;
 			}
 			else if (!dst_name_check(dst_name)){
-				// alert.show("Can not use special characters in file name");				alert.show(core.module.localization.msg["alert_allow_character"]);
+				// alert.show("Can not use special characters in file name");
+				alert.show(core.module.localization.msg["alert_allow_character"]);
 				return false;
 			}
 		

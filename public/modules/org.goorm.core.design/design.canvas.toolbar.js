@@ -32,7 +32,6 @@ org.goorm.core.design.canvas.toolbar.prototype = {
 		$(this.target).parent().find(".design_toolbar_container").append("<img src='images/org.goorm.core.design/resize.png' action='resize' class='toolbar_button' border='0' />"); 
 		$(this.target).parent().find(".design_toolbar_container").append("<img src='images/org.goorm.core.design/printer.png' class='toolbar_button' border='0' />"); 
 		$(this.target).parent().find(".design_toolbar_container").append("<img src='images/org.goorm.core.design/ruler_onoff.png' action='rulerOnOff' class='toolbar_button toolbar_buttonPressed' border='0' />"); 
-		$(this.target).parent().find(".design_toolbar_container").append("<img src='images/org.goorm.core.design/share.png' action='collaborationOnOff' class='toolbar_button' border='0' />");
 		$(this.target).parent().find(".design_toolbar_container").append("<img src='images/org.goorm.core.design/preview.png' action='previewOnOff' class='toolbar_button toolbar_buttonPressed' border='0' />"); 
 		$(this.target).parent().find(".design_toolbar_container").append("<img src='images/org.goorm.core.design/zoom-fit.png' action='zoomFit' class='toolbar_button' border='0' />"); 
 		$(this.target).parent().find(".design_toolbar_container").append("<img src='images/org.goorm.core.design/zoom-in.png' action='zoomIn' class='toolbar_button' border='0' />"); 

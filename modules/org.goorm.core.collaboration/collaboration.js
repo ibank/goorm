@@ -48,7 +48,7 @@ module.exports = {
 					communication.msg(socket, msg_obj);
 				}
 				else if (channel == "editing") {
-					updating.push(msg_obj.workspace, msg_obj);
+					//updating.push(msg_obj.workspace, msg_obj);
 					editing.msg(socket, msg_obj);
 				}
 				else if (channel == "composing") {
@@ -59,6 +59,9 @@ module.exports = {
 				}
 				else if (channel == "slideshare") {
 					slideshare.msg(socket, msg_obj);
+				}
+				else if (channel == "workspace") {
+					workspace.msg(socket, msg_obj);
 				}
 			});
 			

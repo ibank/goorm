@@ -20,10 +20,10 @@ org.goorm.core.printer.prototype = {
 		
 		var handle_print = function() { 
 			self.print_window = window.open("", "", "width=800, height=600, scrollbars=yes");
-
-			self.print_window.document.write("<script src='../lib/codemirror.js'></script>");
-			self.print_window.document.write("<script src='../lib/util/runmode.js'></script>");
-			self.print_window.document.write("<script src='../mode/xml/xml.js'></script>");
+	
+			self.print_window.document.write("<script src='/lib/net.codemirror.code/lib/codemirror.js'></script>");
+			self.print_window.document.write("<script src='/lib/net.codemirror.code/lib/util/runmode.js'></script>");
+			self.print_window.document.write("<script src='/lib/net.codemirror.code/mode/xml/xml.js'></script>");
 			
 			self.print_window.document.write("<link rel='stylesheet' href='/lib/net.codemirror.code/lib/codemirror.css'>");
 			self.print_window.document.write("<link rel='stylesheet' href='/lib/net.codemirror.code/theme/default.css'>");
@@ -40,13 +40,13 @@ org.goorm.core.printer.prototype = {
 			self.print_window.document.write("<link rel='stylesheet' href='/lib/net.codemirror.code/mode/rst/rst.css'>");
 			self.print_window.document.write("<link rel='stylesheet' href='/lib/net.codemirror.code/mode/stex/stex.css'>");
 			self.print_window.document.write("<link rel='stylesheet' href='/lib/net.codemirror.code/mode/xml/xml.css'>");
-
+	
 			self.print_window.document.write("<pre id='print_contents' class='cm-s-default'></pre>");
-			
+
 			self.set_contents(self.print_window);
 			self.print_window.focus();
-			
-			this.hide(); 
+
+			this.hide();
 		};
 
 		var handle_cancel = function() { 
@@ -69,7 +69,7 @@ org.goorm.core.printer.prototype = {
 			buttons:this.buttons,
 			success: function () {
 
-			}			
+			}
 		});
 		this.dialog = this.dialog.dialog;
 	}, 
@@ -87,15 +87,14 @@ org.goorm.core.printer.prototype = {
 		if (window_manager.window[window_manager.active_window].editor) {
 			var code = window_manager.window[window_manager.active_window].editor.editor.getValue();
 			var mode = window_manager.window[window_manager.active_window].editor.mode;
-			
-			CodeMirror.runMode(code, mode, target.document.getElementById("print_contents"));
-			
-			target.print();
+
+			setTimeout(function(){
+				CodeMirror.runMode(code, mode, target.document.getElementById("print_contents"));
+				target.print();
+			}, 500);
 		}
 		else if (window_manager.window[window_manager.active_window].designer) {
 			var design_print = new org.goorm.core.printer.design();
-			
-			//$(target).find("#print_contents").html("fuck");
 						
 			design_print.init($(target.document).find("#print_contents"), window_manager.window[window_manager.active_window].designer.canvas.width, window_manager.window[window_manager.active_window].designer.canvas.height, 1, window_manager.window[window_manager.active_window].designer.canvas);
 			design_print.draw();

@@ -24,6 +24,10 @@
 	text-align:center;
 }
 
+#communication .communication_message_social_area {
+	padding:3px;
+	text-align:right;
+}
 #communication .user_color {
 	width: 12px;
 	margin-right: 5px;

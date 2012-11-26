@@ -203,6 +203,10 @@ label:hover {
 	background-color: #F8F8F8;
 }
 
+.glowing {
+	text-shadow: -1px 1px 10px #44f, -1px 1px 10px #44f;
+}
+
 #main_loading_image {
 	background-image:url(../images/loading.png); 
 	width:640px; 
@@ -243,12 +247,43 @@ label:hover {
 	color:#fff;
 }
 
+#goorm_signup_container, #goorm_profile_container{
+	
+}
+
+#goorm_signup_container .goorm_signup_input {
+	margin : 5px;
+	padding : 3px;
+}
+
+#goorm_signup_container .goorm_signup_span {
+	text-align: left;
+	margin-left: 29px;
+}
+
+#goorm_profile_container .goorm_profile_input {
+	margin: 5px;
+	padding: 3px;
+	width: 170px;
+	font-size: 11px;
+}
+
+#goorm_profile_container .goorm_profile_span {
+	text-align: right;
+	margin-left: 3px;
+	width: 61px;
+	float: left;
+	padding: 7px;
+	font-size: 11px;
+}
+
 #login_box_bg {
 	position:absolute; 
 	left:2px; 
-	top:414px; 
+	top:412px; 
 	width:626px; 
-	height:25px; 
+	height:23px; 
+	/*height:51px;*/
 	padding:5px; 
 	display:none;
 	
@@ -262,10 +297,20 @@ label:hover {
 	
 	position:absolute; 
 	left:2px; 
-	top:414px; 
+	top:412px; 
 	width:626px; 
 	height:25px;  
 	display:none;
+}
+
+#goorm_social_login {
+	
+}
+
+#goorm_social_login .social_login_button {
+	width : 60px;
+	padding : 3px;
+	margin : 3px;
 }
 
 #goorm_id {
@@ -291,15 +336,23 @@ label:hover {
 }
 #login_message {
 	position:absolute; 
-	left:2px; 
-	top:449px; 
+	left:120px; 
+	top:488px; 
 	width:626px; 
 	height:25px; 
 	padding:5px 5px 0; 
-	display:block;
-	color: white;
 	opacity:0.7;
 	display: none;
+	
+	width : 400px;
+}
+
+#login_message .signup_error_message {
+	color : black;
+	font-weight : bold;
+	background-color : #ccc;
+	border : 1px solid #ccc;
+	border-radius : 5px;
 }
 
 
@@ -313,6 +366,14 @@ label:hover {
 	/*border-top: 1px solid #999;
 	border-bottom: 1px solid #999;*/	
 }
+
+#goorm_inner_layout_right .tab_area {
+	-webkit-transition: 500ms linear 0s;
+	-moz-transition: 500ms linear 0s;
+	-o-transition: 500ms linear 0s;
+	transition: 500ms linear 0s;
+}
+
 
 #goorm_inner_layout_center {
 	/*
@@ -621,6 +682,15 @@ YUI MENU STYLE CUSTOMIZATION
 .yui-skin-sam .yuimenu {
 	font-size: 11px;
 	font-family: Verdana, Arial, 굴림체, 굴림;
+	outline:none;
+}
+
+.yui-skin-sam .yuimenu a {
+	outline:none;
+}
+
+.yui-skin-sam .yuimenu a:focus {
+	outline:none;
 }
 
 .yui-skin-sam .yui-menu-button button {
@@ -644,6 +714,7 @@ YUI MENU STYLE CUSTOMIZATION
 .yui-skin-sam .yuimenubaritem .yuimenubaritemlabel {
 	font-size: 11px;
 	font-family: Verdana, Arial, 굴림체, 굴림;
+	outline:none;
 }
 
 .yui-skin-sam .yuimenubaritem .yuimenubaritemlabel-selected {
@@ -656,15 +727,18 @@ YUI MENU STYLE CUSTOMIZATION
 	
 	color: white !important;
 	text-shadow: 0px 0px 3px black;
+	outline:none;
 }
 
 .yui-skin-sam .yuimenubaritemlabel {
 	border:none;
+	outline:none;
 }
 
 .yui-skin-sam .yuimenuitem .yuimenuitemlabel {
 	font-size: 11px;
 	font-family: Verdana, Arial, 굴림체, 굴림;
+	outline:none;
 }
 
 #goorm_top .yuimenuitem .yuimenuitemlabel {
@@ -1052,6 +1126,22 @@ YUI PANEL STYLE CUSTOMIZATION
 	 
 	border: 0px solid #444;
 	border-top: 1px solid #444;
+}
+
+#toast .bd {
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	-khtml-border-radius: 6px;
+	border-radius: 6px;
+	
+	font-size: 11px;
+	
+	background-image: -o-linear-gradient(bottom, rgb(255,255,255) 10%, rgb(230,230,230) 90%);
+	background-image: -moz-linear-gradient(bottom, rgb(255,255,255) 10%, rgb(230,230,230) 90%);
+	background-image: -webkit-gradient(linear, left bottom, left bottom, color-stop(0.1, rgb(255,255,255)), color-stop(0.9, rgb(230,230,230)));
+	background-image: -webkit-linear-gradient(bottom, rgb(255,255,255) 10%, rgb(230,230,230) 90%);
+	background-image: -ms-linear-gradient(bottom, rgb(255,255,255) 10%, rgb(230,230,230) 90%);
+	background-image: linear-gradient(bottom, rgb(255,255,255) 10%, rgb(230,230,230) 90%);
 }
 
 .yui-skin-sam .container-close {

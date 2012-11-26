@@ -56,19 +56,16 @@ org.goorm.core.localization.prototype = {
 			
 			if (is_first && language=="kor") {
 				confirmation.init({
-					// title: core.module.localization.msg["confirmation_language_title"].value, 
 					message: core.module.localization.msg["confirmation_language_message"].value,
 					yes_text: core.module.localization.msg["confirmation_language_message_yes"].value,
-					no_text: core.module.localization.msg["confirmation_language_message_no"].value,					title: "Language automatic chanage", 
-					// message: "<span localization_key='confirmation_language_message'>Are you sure you want to change the language setting to Korean?</span>",
-					// yes_text: "Yes",
-					// no_text: "No",					
+					no_text: core.module.localization.msg["confirmation_language_message_no"].value,
+
+					title: "Language Automatic Change", 
+					
 					yes: function () {
 						core.module.localization.change_language(language);
-						core.module.localization.before_language=language;
 					}, no: function () {
 						core.module.localization.change_language("us");
-						core.module.localization.before_language="us";
 					}
 				});
 				
@@ -83,34 +80,6 @@ org.goorm.core.localization.prototype = {
 			self.data4 = data;
 			self.apply(data);
 		});
-
-/*
-		$.getScript('config/languages/' + language + '.msg.js', function () {
-
-			delete self.msg;	
-			eval("self.msg = new org.goorm.core.module.localization."+language+"();");
-			self.msg.init();
-			
-			if (is_first && language=="kor") {
-				confirmation.init({
-					title: core.module.localization.msg["confirmation_language_title"], 
-					message: core.module.localization.msg["confirmation_language_message"],
-					yes_text: core.module.localization.msg["confirmation_yes"],
-					no_text: core.module.localization.msg["confirmation_no"],
-					yes: function () {
-						core.module.localization.change_language(language);
-						core.module.localization.before_language=language;
-					}, no: function () {
-						core.module.localization.change_language("us");
-						core.module.localization.before_language="us";
-					}
-				});
-				
-				confirmation.panel.show();
-			}
-		});	
-*/
-
 		
 	},
 
@@ -123,6 +92,7 @@ org.goorm.core.localization.prototype = {
 				var helptext = $("[localization_key='" + key + "']").find(".helptext").html();
 				
 				$("[localization_key='" + key + "']").html(this.value);
+				$("input[localization_key='" + key + "']").val(this.value);
 				
 				if (helptext != null) {
 					$("[localization_key='" + key + "']").append("<em class='helptext'>" + helptext + "</em>");

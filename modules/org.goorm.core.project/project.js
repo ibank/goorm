@@ -189,7 +189,7 @@ module.exports = {
 						}
 						else {
 							data.err_code = 20;
-							data.message = "Cannot make zip file";
+							data.message = "Cannot make export file";
 							
 							evt.emit("project_do_export", data);
 						}

@@ -44,12 +44,9 @@ org.goorm.core.preference.language.prototype = {
 			}
 			
 			core.module.localization.change_language(language);
-			core.module.localization.before_language = language;
-			
 		}
 		else {
 			core.module.localization.change_language(localStorage.getItem("language"));
-			core.module.localization.before_language = localStorage.getItem("language");
 		}
 		
 		var language_pack_download_button = new YAHOO.widget.Button("language_pack_download_button");

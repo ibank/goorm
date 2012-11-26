@@ -41,7 +41,7 @@ org.goorm.plugin.android.prototype = {
 		var self = this;
 		
 		$("ul[id='plugin_new_project']").append("<li class=\"yuimenuitem\"><a class=\"yuimenuitemlabel\" href=\"#\" action=\"new_file_android\" localizationKey='file_new_android_project'>Android Project</a></li>");
-		this.mainmenu.render();
+		//this.mainmenu.render();
 	},
 	
 	add_menu_action: function () {

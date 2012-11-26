@@ -33,7 +33,8 @@ org.goorm.core.collaboration.communication.prototype = {
  		
 		$("#" + target).append("<div class='communication_user_container'>User </div>");
 		$("#" + target).append("<div class='communication_message_container'></div>");
-		$("#" + target).append("<div class='communication_message_input_container'><input id='input_chat_message' placeholder='Type your meessage...' style='width:90%;' /></div>");		
+		$("#" + target).append("<div class='communication_message_input_container'><input id='input_chat_message' placeholder='Type your meessage...' style='width:90%;' /></div>");
+		$("#" + target +' .communication_message_input_container').append("<div class='communication_message_social_area'></div>");
 		
 		$("#" + target + " #input_chat_message").keypress(function(evt){
 			if((evt.keyCode || evt.which) == 13){
@@ -43,7 +44,7 @@ org.goorm.core.collaboration.communication.prototype = {
 				var encodedMsg = encodeURIComponent($(this).val());
 				
 				if (self.socket.socket.connected) {
-					self.socket.emit("message", '{"channel": "communication", "action":"send_message", "user":"' + core.user.first_name + "_" + core.user.last_name + '", "workspace": "'+ core.status.current_project_name +'", "message":"' + encodedMsg + '"}');
+					self.socket.emit("message", '{"channel": "communication", "action":"send_message", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "workspace": "'+ core.status.current_project_name +'", "message":"' + encodedMsg + '"}');
 				} 
 				else {
 					// alert.show("Could not connect to collaboration server");
@@ -61,27 +62,38 @@ org.goorm.core.collaboration.communication.prototype = {
 		
  		this.socket.on("communication_message", function (data) {
  			data = decodeURIComponent(data);
- 			
- 			if(core.module.layout.inner_layout.getUnitByPosition("right")._collapsed){
- 				self.notification.notify(data);
- 			}
 
+			self.notification.notify(data);
  			$("#" + self.target).find(".communication_message_container").append("<div class='communication_message_content'>" + data + "</div>");
  			var length = $("#" + self.target).find(".communication_message_container").find('.communication_message_content').length || 0;
  			$("#" + self.target).find(".communication_message_container").scrollTop(parseInt(length) * 16); // 16 = height of communication_message_content
+
+
+ 			if(core.module.layout.inner_layout.getUnitByPosition("right")._collapsed){
+ 				self.notification.show();
+ 			}
+ 			else if($('#goorm_inner_layout_right .selected span').attr('localization_key') != 'communication'){
+ 				$('#goorm_inner_layout_right').find('[localization_key="communication"]').addClass("glowing");
+ 			}
  		});
  		
  		this.socket.on("communication_someone_joined", function (data) {
  			data = JSON.parse(data);
+ 			for(var i=0; i<data.list.length; i++){
+ 				data.list[i] = data.list[i].split(',')[1];
+ 			}
  			
- 			$("#" + self.target).find(".communication_message_container").append("<div>" + data.user + " joined this workspace!</div>");
+ 			$("#" + self.target).find(".communication_message_container").append("<div>" + data.nick + " joined this workspace!</div>");
  			$("#" + self.target).find(".communication_user_container").html(data.list.join("<br />"));
  		});
  		
  		this.socket.on("communication_someone_leaved", function (data) {
  			data = JSON.parse(data);
- 			
- 			$("#" + self.target).find(".communication_message_container").append("<div>" + data.user + " leaved this workspace!</div>");
+ 			for(var i=0; i<data.list.length; i++){
+ 				data.list[i] = data.list[i].split(',')[1];
+ 			}
+
+ 			$("#" + self.target).find(".communication_message_container").append("<div>" + data.nick + " leaved this workspace!</div>");
  			$("#" + self.target).find(".communication_user_container").html(data.list.join("<br />"));
  		});
  		
@@ -102,11 +114,12 @@ org.goorm.core.collaboration.communication.prototype = {
 	},
 	
 	join: function () {
-		this.socket.emit("join", '{"channel": "workspace", "action":"join_workspace", "user":"' + core.user.first_name + "_" + core.user.last_name + '", "workspace":"'+ core.status.current_project_name +'", "message":"hello"}');
+		if(core.user.id != null)
+			this.socket.emit("join", '{"channel": "workspace", "action":"join_workspace", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "workspace":"'+ core.status.current_project_name +'", "message":"hello"}');
 	},
 	
 	leave: function () {
-		this.socket.emit("leave", '{"channel": "workspace", "action":"leave_workspace", "user":"' + core.user.first_name + "_" + core.user.last_name + '", "workspace":"'+ core.status.current_project_name +'", "message":"goodbye"}');
+		this.socket.emit("leave", '{"channel": "workspace", "action":"leave_workspace", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "workspace":"'+ core.status.current_project_name +'", "message":"goodbye"}');
 		this.clear();
 	},
 	

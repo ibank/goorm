@@ -24,6 +24,14 @@
 	
 	"preference.theme.current_theme" : 		"0",
 	
+	"preference.sns.facebook.id" :			"",
+	"preference.sns.facebook.user" :		"",
+	"preference.sns.facebook.name" :		"",
+	
+	"preference.sns.twitter.id" :			"",
+	"preference.sns.twitter.user" :			"",
+	"preference.sns.twitter.name" :			"",
+	
 	"share" : [
 		"collaboration_server_url",
 		"collaboration_server_port"

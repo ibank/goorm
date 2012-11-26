@@ -8,11 +8,15 @@
 
 org.goorm.core.layout.workspace = function () {
 	this.window_manager = null;
+	this.collaboration = null;
 };
 
 org.goorm.core.layout.workspace.prototype = {
 	init: function (target) { 
 		var self = this;
+		
+		this.collaboration = new org.goorm.core.collaboration.workspace();
+		this.collaboration.init();
 		
 		//attaching tab element
 		$("#"+target).append("<div id='workspace'></div>");

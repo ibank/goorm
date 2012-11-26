@@ -45,7 +45,7 @@
         "value": " 는 수정되었습니다. 저장 후 빌드 하시겠습니까?"
     },
     "confirmation_language_title": {
-        "value": "Language automatic chanage"
+        "value": "Language Automatic Change"
     },
     "confirmation_language_message": {
         "value": "Are you sure you want to change the language setting to Korean?"
@@ -119,6 +119,9 @@
     "confirmation_exit": {
         "value": "정말 종료하시겠습니까?"
     },
+    "confirmation_theme": {
+        "value": "테마를 적용하시겠습니까?"
+    },
     "confirmation_delete_file": {
         "value": "정말 이 파일을 지우시겠습니까?"
     },
@@ -187,5 +190,68 @@
     },
     "alert_no_have_data": {
         "value": "데이터가 없습니다."
+    },
+    "alert_sigup_undefined_id": {
+        "value": "ID를 입력해주세요."
+    },
+    "alert_sigup_unfit_reg_id": {
+        "value": "ID의 형식이 올바르지 않은 양식입니다(4~15자리, 알파벳+숫자)."
+    },
+    "alert_sigup_duplicate_id": {
+        "value": "동일한 ID가 존재합니다."
+    },
+    "alert_sigup_not_fount_id": {
+        "value": "ID가 존재하지 않습니다."
+    },
+    "alert_sigup_undefined_password": {
+        "value": "Password를 입력해주세요."
+    },
+    "alert_sigup_undefined_re_password": {
+        "value": "Password 재확인을 위해, 입력해주세요"
+    },
+    "alert_sigup_undefined_password_not_match": {
+        "value": "Password를 다시 한번 확인해 주세요."
+    },
+    "alert_sigup_unfit_req_password": {
+        "value": "Password의 형식이 올바르지 않은 양식입니다(8~15자리, 알파벳과 숫자의 조합)."
+    },
+    "alert_sigup_undefined_email": {
+        "value": "E-mail을 입력해주세요."
+    },
+    "alert_sigup_unfit_email": {
+        "value": "E-mail의 형식이 올바르지 않은 양식입니다(예) goorm@skima.co.kr)."
+    },
+    "alert_sigup_undefined_name": {
+        "value": "이름을 입력해주세요."
+    },
+    "alert_sigup_unfit_name": {
+        "value": "이름의 형식이 올바르지 않은 양식입니다(3~15자리, 한글/알파벳/숫자/특수문자(-/_/.))."
+    },
+    "alert_sigup_undefined_nick": {
+        "value": "닉네임을 입력해주세요."
+    },
+    "alert_sigup_unfit_nick": {
+        "value": "닉네임의 형식이 올바르지 않은 양식입니다(3~20자리, 한글/알파벳/숫자/특수문자(-/_/.))."
+    },
+    "alert_confirm_logout": {
+        "value": "정말로 로그아웃을 하시겠습니까?"
+    },
+    "alert_login_not_match_password": {
+        "value": "패스워드가 일치하지 않습니다."
+    },
+    "alert_login_no_id": {
+        "value": "존재하지 않는 회원입니다."
+    },
+    "alert_login_undefined_id_or_password": {
+        "value": "아이디 또는 패스워드가 입력되지 않았습니다."
+    },
+    "notice_no_matched_fild": {
+	    "value": "검색어와 일치하는 파일을 찾을 수 없습니다."
+    },
+    "notice_welcome_goorm": {
+	    "value": "구름 IDE에 오신 걸 환영합니다."
+    },
+    "alert_cannot_connect_db": {
+	    "value": "Database에 접근할 수 없습니다."
     }
 }

@@ -65,7 +65,7 @@ org.goorm.core.file.move.prototype = {
 
 		this.dialog = new org.goorm.core.file.move.dialog();
 		this.dialog.init({
-			title:"Move file", 
+			title:"Move", 
 			path:"configs/dialogs/org.goorm.core.file/file.move.html",
 			width:800,
 			height:500,

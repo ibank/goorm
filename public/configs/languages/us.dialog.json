@@ -382,6 +382,9 @@
     "dialog_project_find_and_replace": {
         "value": "Find/Replace",
         "children": {
+            "dialog_project_site_guide":{
+                "value": "Site :"
+            },
             "dialog_project_find_guide": {
                 "value": "Find : "
              },
@@ -399,6 +402,9 @@
              },
             "dialog_project_use_regular_expression_guide": {
                 "value": "Use regular expression"
+             },
+            "dialog_project_find_on_workspace_guide": {
+                "value": "Find on Workspace"
              }
         }
     },

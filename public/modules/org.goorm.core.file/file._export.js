@@ -18,7 +18,9 @@ org.goorm.core.file._export.prototype = {
 		var self = this;
 		
 		var handle_ok = function() {
-		
+			console.log("!");
+			core.module.loading_bar.start("Export processing...");
+			
 			var data = self.dialog_explorer.get_data();
 
 			if(data.path=="" || data.name=="") {
@@ -27,13 +29,17 @@ org.goorm.core.file._export.prototype = {
 				return false;
 			}
 
+			var name = core.user.id;
+
 			var postdata = {
-				user: core.user.first_name+"_"+core.user.last_name,
+				user: name,
 				path: data.path,
 				file: data.name
 			};
-								
+			
 			$.get("file/export", postdata, function (data) {
+				core.module.loading_bar.stop();
+				
 				if (data.err_code == 0) {
 					self.dialog.panel.hide();
 					

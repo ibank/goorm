@@ -25,42 +25,30 @@ org.goorm.plugin.uml.prototype = {
 		
 		this.mainmenu = core.module.layout.mainmenu;
 		
-		/*
-		$.ajax({
-			type: "GET",
-			dataType: "xml",
-			async :false,
-			url: "org.goorm.plugin.uml/config.xml",
-			success: function(xml) {
-				self.toolbox_name = $(xml).find("toolbox").attr("name");
-
-				self.add_toolbox();
-			},
-			error: function(xhr, status, error) {
-			}
-		});
-		*/
 		
-		//this.add_toolbox();
+		this.add_toolbox();
 		
 		//Loading CSS
-		//this.load_css();
+		this.load_css();
 		
 		//Add Project Item
-		//this.add_project_item();
+		this.add_project_item();
 		
 		//Add Toolbar
-		//this.add_toolbar();
+		this.add_toolbar();
 		
 		//Add Main Menu
-		//this.add_mainmenu();
+		this.add_mainmenu();
+		
+		//Add Menu Action
+		this.add_menu_action();
 		
 		//Add Context Menu
-		//this.add_context_menu();
+		this.add_context_menu();
 	},
 	
 	new_project : function(project_name, project_author, project_type, project_detailed_type, project_path) {
-/*
+
 		var postdata = {
 	    		"project_name" : project_name,
 	    		"project_author" : project_author,
@@ -79,7 +67,7 @@ org.goorm.plugin.uml.prototype = {
 				alert.show(receivedData.errCode + " : " + receivedData.message);
 			}
 		});
-*/
+
 	},
 
 	load_css: function () {
@@ -94,16 +82,16 @@ org.goorm.plugin.uml.prototype = {
 
 	add_project_item: function () {
 
-		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='umlp'><div class='project_type_icon'><img src='org.goorm.plugin.uml/images/uml.png' class='project_icon' /></div><div class='project_type_title'>UML Project</div><div class='project_type_description'>Unified Modeling Language Project</div></div>");
+		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='uml'><div class='project_type_icon'><img src='org.goorm.plugin.uml/images/uml.png' class='project_icon' /></div><div class='project_type_title'>UML Project</div><div class='project_type_description'>Unified Modeling Language Project</div></div>");
 		
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all umlp' description='  Create New UML Project for Class Diagram' project_type='uml'><img src='org.goorm.plugin.uml/images/class_diagram.png' class='project_item_icon' /><br /><a>Class Diagram</a></div>");
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all umlp' description='  Create New UML Project for State Diagram' project_type='uml'><img src='org.goorm.plugin.uml/images/sequence_diagram.png' class='project_item_icon' /><br /><a>State Diagram</a></div>");
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all umlp' description='  Create New UML Project for Sequence Diagram' project_type='uml'><img src='org.goorm.plugin.uml/images/state_diagram.png' class='project_item_icon' /><br /><a>Sequence Diagram</a></div>");
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all umlp' description='  Create New UML Project for Component Diagram' project_type='uml'><img src='org.goorm.plugin.uml/images/state_diagram.png' class='project_item_icon' /><br /><a>Component Diagram</a></div>");
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all umlp' description='  Create New UML Project for Activity Diagram' project_type='uml'><img src='org.goorm.plugin.uml/images/state_diagram.png' class='project_item_icon' /><br /><a>Activity Diagram</a></div>");
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all umlp' description='  Create New UML Project for UseCase Diagram' project_type='uml'><img src='org.goorm.plugin.uml/images/state_diagram.png' class='project_item_icon' /><br /><a>UseCase Diagram</a></div>");	
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all uml' description='  Create New UML Project for Class Diagram' projecttype='uml'><img src='org.goorm.plugin.uml/images/class_diagram.png' class='project_item_icon' /><br /><a>Class Diagram</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all uml' description='  Create New UML Project for State Diagram' projecttype='uml'><img src='org.goorm.plugin.uml/images/sequence_diagram.png' class='project_item_icon' /><br /><a>State Diagram</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all uml' description='  Create New UML Project for Sequence Diagram' projecttype='uml'><img src='org.goorm.plugin.uml/images/state_diagram.png' class='project_item_icon' /><br /><a>Sequence Diagram</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all uml' description='  Create New UML Project for Component Diagram' projecttype='uml'><img src='org.goorm.plugin.uml/images/state_diagram.png' class='project_item_icon' /><br /><a>Component Diagram</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all uml' description='  Create New UML Project for Activity Diagram' projecttype='uml'><img src='org.goorm.plugin.uml/images/state_diagram.png' class='project_item_icon' /><br /><a>Activity Diagram</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all uml' description='  Create New UML Project for UseCase Diagram' projecttype='uml'><img src='org.goorm.plugin.uml/images/state_diagram.png' class='project_item_icon' /><br /><a>UseCase Diagram</a></div>");	
 	
-		$(".project_dialog_type").append("<option value='UML'>UML Project</option>").attr("selected", "");
+		$(".project_dialog_type").append("<option value='uml'>UML Project</option>").attr("selected", "");
 	},
 	
 	add_toolbar: function () {
@@ -114,50 +102,16 @@ org.goorm.plugin.uml.prototype = {
 		var self = this;
 		
 		$("ul[id='plugin_new_project']").append("<li class=\"yuimenuitem\"><a class=\"yuimenuitemlabel\" href=\"#\" action=\"new_file_uml\" localizationKey='file_new_uml_project'>UML Project</a></li>");
-		this.mainmenu.render();
+		//this.mainmenu.render();
 	},
 	
 	add_menu_action: function () {
 		$("a[action=new_file_uml]").unbind("click");
 		$("a[action=new_file_uml]").click(function () {
-			core.dialognew_project.show();
+			core.dialog.new_project.show();
 			$(".project_wizard_first_button[project-type=uml]").trigger("click");
 			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project-type=uml]").position().top - 100);
 		});	
-	},
-
-	add_new_other_filelist: function () {
-		var val =	"<div id='selector_uml' value='uml_class_diagram' class='selectDiv' url='org.goorm.plugin.web/template/template.uml.uml' style='height:16px;'>" +
-					"<div style='float:left; width:20px; height:16px;'>" +
-					"<img src='config/image/icons/filetype/uml.filetype.png' />" + 
-					"</div>" +
-					"<div style='float:left; padding-top:2px; padding-left:2px;'>UML Class Diagram</div>" +
-					"</div>" +
-					"</div>";
-		val 	+=	"<div id='selector_uml' value='uml_state_diagram' class='selectDiv' url='org.goorm.plugin.web/template/template.uml.uml' style='height:16px;'>" +
-					"<div style='float:left; width:20px; height:16px;'>" +
-					"<img src='config/image/icons/filetype/uml.filetype.png' />" + 
-					"</div>" +
-					"<div style='float:left; padding-top:2px; padding-left:2px;'>UML State Diagram</div>" +
-					"</div>" +
-					"</div>";
-		val 	+=	"<div id='selector_uml' value='uml_sequence_diagram' class='selectDiv' url='org.goorm.plugin.web/template/template.uml.uml' style='height:16px;'>" +
-					"<div style='float:left; width:20px; height:16px;'>" +
-					"<img src='config/image/icons/filetype/uml.filetype.png' />" + 
-					"</div>" +
-					"<div style='float:left; padding-top:2px; padding-left:2px;'>UML Sequence Diagram</div>" +
-					"</div>" +
-					"</div>";
-		val 	+=	"<div id='selector_uml' value='uml_usecase_diagram' class='selectDiv' url='org.goorm.plugin.web/template/template.uml.uml' style='height:16px;'>" +
-					"<div style='float:left; width:20px; height:16px;'>" +
-					"<img src='config/image/icons/filetype/uml.filetype.png' />" + 
-					"</div>" +
-					"<div style='float:left; padding-top:2px; padding-left:2px;'>UML Usecase Diagram</div>" +
-					"</div>" +
-					"</div>";
-					
-					
-		$("#new_other_file_list").append(val);			
 	},
 	
 	add_context_menu: function () {
@@ -775,12 +729,13 @@ org.goorm.plugin.uml.prototype = {
 	},
 	
 	refreshtoolbox: function(){
-
 		$("#uml_toolset").show();
 		$("#uml_toolset").children().each(function(){
-			$(this).css("display","none");
+			//$(this).css("display","none");
+			$(this).css("display","block");
 		});
 		
+/*
 		$("#uml_toolset #too_uml_general").css("display","block")
 			.next().css("display","block")
 			.next().css("display","block")
@@ -837,5 +792,6 @@ org.goorm.plugin.uml.prototype = {
 					.next().css("display","block");
 				break;
 		}
+*/
 	}
 };

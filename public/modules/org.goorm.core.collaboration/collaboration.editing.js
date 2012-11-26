@@ -42,7 +42,7 @@ org.goorm.core.collaboration.editing.prototype = {
   		this.task_queue = [];
   		this.removed_lines_uuids = [];
  		
- 		this.user = core.user.first_name + "_" + core.user.last_name;
+ 		this.user = core.user.id;
 
 		var check_for_updates = function() {
 			while(self.task_queue.length > 0 && self.updating_process_running == false) {
@@ -63,9 +63,10 @@ org.goorm.core.collaboration.editing.prototype = {
  			}
 
 			var received_msg = JSON.parse(data);
-			
+
 			if(received_msg.channel == "editing" && 
-			   // received_msg.user != core.user.first_name + "_" + core.user.last_name &&			   received_msg.filepath == self.filepath) {
+			   received_msg.user != core.user.id &&
+			   received_msg.filepath == self.filepath) {
 				switch(received_msg.action){
 					case "change":
 						self.task_queue.push(received_msg);
@@ -122,8 +123,9 @@ org.goorm.core.collaboration.editing.prototype = {
 
 		if(this.socket != null){
 			if (self.socket.socket.connected) {
-				data.user = core.user.first_name + "_" + core.user.last_name;
-				self.socket.emit("message", '{"channel": "editing", "action":"change", "user":"' + core.user.first_name + "_" + core.user.last_name + '", "workspace": "'+ core.status.current_project_name +'", "filepath":"' + self.filepath + '", "message":' + JSON.stringify(data) + '}');
+				data.user = core.user.id;
+				data.nick = core.user.nick;
+				self.socket.emit("message", '{"channel": "editing", "action":"change", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "workspace": "'+ core.status.current_project_name +'", "filepath":"' + self.filepath + '", "message":' + JSON.stringify(data) + '}');
 				
 				clearTimeout(this.auto_save_timer);
 				this.auto_save_timer = setTimeout(function(){
@@ -143,10 +145,9 @@ org.goorm.core.collaboration.editing.prototype = {
 		var self = this;
 		if(this.socket != null){
 			if (self.socket.socket.connected) {
-				data.user = core.user.first_name + "_" + core.user.last_name;
-				self.socket.emit("message", '{"channel": "editing", "action":"cursor", "user":"' + core.user.first_name + "_" + core.user.last_name + '", "workspace": "'+ core.status.current_project_name +'", "filepath":"' + self.filepath + '", "message":' + JSON.stringify(data) + '}');
-
-				self.check_other_cursor(data);
+				data.user = core.user.id;
+				data.nick = core.user.nick;
+				self.socket.emit("message", '{"channel": "editing", "action":"cursor", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "workspace": "'+ core.status.current_project_name +'", "filepath":"' + self.filepath + '", "message":' + JSON.stringify(data) + '}');
 			}
 			else {
 				// alert.show("Disconnected to collaboration server");
@@ -169,64 +170,68 @@ org.goorm.core.collaboration.editing.prototype = {
 		};
 	},
 	
-	check_other_cursor : function(message){
-		var self = this;
-		
-		var coords = this.editor.charCoords({line:message.line, ch:message.ch});
-		var top = parseInt(coords.y) - parseInt($(this.target).find(".CodeMirror-scroll").offset().top);
-		var left = parseInt(coords.x) - parseInt($(this.target).find(".CodeMirror-scroll").offset().left);
-		
-		// console.log(parseInt(coords.y), parseInt($(this.target).find(".CodeMirror-scroll").offset().top), top);
-		
-		for(var i=0; i<self.cursor_location.length; i++){
-			
-		}
-	},
+	// check_other_cursor : function(message){
+		// var self = this;
+// 		
+		// var coords = this.editor.charCoords({line:message.line, ch:message.ch});
+		// var top = parseInt(coords.y) - parseInt($(this.target).find(".CodeMirror-scroll").offset().top);
+		// var left = parseInt(coords.x) - parseInt($(this.target).find(".CodeMirror-scroll").offset().left);
+// 		
+		// // console.log(parseInt(coords.y), parseInt($(this.target).find(".CodeMirror-scroll").offset().top), top);
+// 		
+		// for(var i=0; i<self.cursor_location.length; i++){
+// 			
+		// }
+	// },
+
 	
-	set_cursor_info : function(data){
-		var self = this;
-
-		var get_cursor_location_position = function(user){
-			for(var i=0; i<self.cursor_location.length; i++){
-				if(self.cursor_location[i].user == user) return i;
-			}
-			return self.cursor_location.length;
-		}
-
-		var location_data = {
-			user : data.user,
-			line : data.line,
-			top : data.top,
-			left : data.left
-		};
-		
-		this.cursor_location[get_cursor_location_position(data.user)] = location_data;
-	},
+	// set_cursor_info : function(data){
+		// var self = this;
+// 
+		// var get_cursor_location_position = function(user){
+			// for(var i=0; i<self.cursor_location.length; i++){
+				// if(self.cursor_location[i].user == user) return i;
+			// }
+			// return self.cursor_location.length;
+		// }
+// 
+		// var location_data = {
+			// user : data.user,
+			// line : data.line,
+			// top : data.top,
+			// left : data.left
+		// };
+// 		
+		// this.cursor_location[get_cursor_location_position(data.user)] = location_data;
+	// },
 	
 	set_cursor: function(message) {
-		if(message.user != core.user.first_name + "_" + core.user.last_name){
-			
+		if(message.user != core.user.id){
 			var coords = this.editor.charCoords({line:message.line, ch:message.ch});
-			var top = parseInt(coords.y) - parseInt($(this.target).find(".CodeMirror-scroll").offset().top);
-			var left = parseInt(coords.x) - parseInt($(this.target).find(".CodeMirror-scroll").offset().left);
-
-			this.set_cursor_info({
-				user : message.user,
-				line : message.line,
-				top : top,
-				left : left
-			});
+			var scroll = this.editor.getScrollInfo();
 			
-			if ($(this.target).find(".CodeMirror-scroll").find(".user_name_" + message.user).length > 0) {
-				$(this.target).find(".CodeMirror-scroll").find(".user_name_" + message.user).css("top", top - 8);
-				$(this.target).find(".CodeMirror-scroll").find(".user_name_" + message.user).css("left", left + 5);
+			var top = parseInt(coords.y) - parseInt($(this.target).find(".CodeMirror-scroll").offset().top) + scroll.y;
+			var left = parseInt(coords.x) - parseInt($(this.target).find(".CodeMirror-scroll").offset().left)  + scroll.x;
+
+			// this.set_cursor_info({
+				// user : message.user,
+				// line : message.line,
+				// top : top,
+				// left : left
+			// });
+			
+			var user_name = message.nick;
+			
+			if ($(this.target).find(".CodeMirror-scroll").find(".user_name_" + user_name).length > 0) {
+				$(this.target).find(".CodeMirror-scroll").find(".user_name_" + user_name).css("top", top - 8);
+				$(this.target).find(".CodeMirror-scroll").find(".user_name_" + user_name).css("left", left + 5);
 				
-				$(this.target).find(".CodeMirror-scroll").find(".user_cursor_" + message.user).css("top", top);
-				$(this.target).find(".CodeMirror-scroll").find(".user_cursor_" + message.user).css("left", left);
+				$(this.target).find(".CodeMirror-scroll").find(".user_cursor_" + user_name).css("top", top);
+				$(this.target).find(".CodeMirror-scroll").find(".user_cursor_" + user_name).css("left", left);
 			}
 			else {
-				$(this.target).find(".CodeMirror-scroll").prepend("<span class='user_name_" + message.user + " user_name' style='top:" + (top - 8) + "px; left:" + (left + 5) + "px;'>" + message.user + "</span>");
-				$(this.target).find(".CodeMirror-scroll").prepend("<span class='user_cursor_" + message.user + " user_cursor' style='top:" + top + "px; left:" + left + "px;'></span>");
+				$(this.target).find(".CodeMirror-scroll").prepend("<span class='user_name_" + user_name + " user_name' style='top:" + (top - 8) + "px; left:" + (left + 5) + "px;'>" + user_name + "</span>");
+				$(this.target).find(".CodeMirror-scroll").prepend("<span class='user_cursor_" + user_name + " user_cursor' style='top:" + top + "px; left:" + left + "px;'></span>");
 				
 				var red = Math.floor(Math.random()*206) - Math.floor(Math.random()*30);
 				var green = Math.floor(Math.random()*206) - Math.floor(Math.random()*30);
@@ -239,11 +244,11 @@ org.goorm.core.collaboration.editing.prototype = {
 				var color = '#' + red.toString(16) + green.toString(16) + blue.toString(16);
 				var light_color = '#' + light_red.toString(16) + light_green.toString(16) + light_blue.toString(16);
 				
-				$(this.target).find(".CodeMirror-scroll").find(".user_name_" + message.user).css("background-color", light_color);
-				$(this.target).find(".CodeMirror-scroll").find(".user_name_" + message.user).css("border-color", color);
-				$(this.target).find(".CodeMirror-scroll").find(".user_name_" + message.user).css("color", color);
+				$(this.target).find(".CodeMirror-scroll").find(".user_name_" + user_name).css("background-color", light_color);
+				$(this.target).find(".CodeMirror-scroll").find(".user_name_" + user_name).css("border-color", color);
+				$(this.target).find(".CodeMirror-scroll").find(".user_name_" + user_name).css("color", color);
 				
-				$(this.target).find(".CodeMirror-scroll").find(".user_cursor_" + message.user).css("border-color", color);
+				$(this.target).find(".CodeMirror-scroll").find(".user_cursor_" + user_name).css("border-color", color);
 			}
 		}
 
@@ -253,7 +258,7 @@ org.goorm.core.collaboration.editing.prototype = {
 	change: function(message){
 		var self = this;
 
-		if (message.user != core.user.first_name + "_" + core.user.last_name) {
+		if (message.user != core.user.id) {
 			var textStr = "";
 			
 			for(var i=0; i < message.text.length; i++){

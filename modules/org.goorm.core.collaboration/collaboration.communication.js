@@ -10,7 +10,7 @@ module.exports = {
 	files: [],
 	
 	msg: function (socket, msg) {
-		chatting_message = msg.user + " : " + msg.message; 
+		chatting_message = msg.nick + " : " + msg.message; 
 		
 		socket.broadcast.to(msg.workspace).emit("communication_message", chatting_message);
 		socket.emit("communication_message", chatting_message);

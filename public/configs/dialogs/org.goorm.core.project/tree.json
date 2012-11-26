@@ -9,6 +9,13 @@
 						"html"	: "configs/project/default/project.general.html"
 					}
 				]
+			},
+			{	"label" : "SCM",
+				"tab" : [
+					{	"label" : "SCM configuration",
+						"html"	: "configs/project/default/scm.property.html"
+					}
+				]
 			}
 		]
 	},

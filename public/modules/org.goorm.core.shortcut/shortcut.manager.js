@@ -15,11 +15,10 @@ org.goorm.core.shortcut.manager.prototype = {
 
 		//Prevent Backspace Key
 		$(document).bind('keydown', 'Backspace', function (e) {
-			
 			if (core.status.focus_on_editor) {
 				
 			}
-			else if (core.focusOnInputBox) {
+			else if (core.status.focus_on_inputbox) {
 				
 			}
 			else {
@@ -43,7 +42,11 @@ org.goorm.core.shortcut.manager.prototype = {
 		$("input").keyup(function (e) {
 			var ev = e || event;
 			
-		  	if (e.keyCode == 27 && e.keyCode == 13) {
+		  	if (e.keyCode == 27 || e.keyCode == 13) {
+				if($(e.currentTarget).attr('id') == 'goorm_id' || $(e.currentTarget).attr('id') == 'goorm_pw'){
+					core.module.auth.login();
+				}
+				
 				$(document).trigger(e);
 				
 				e.stopPropagation();
@@ -58,6 +61,8 @@ org.goorm.core.shortcut.manager.prototype = {
 					
 		//Main Menu Selection
 		$(document).bind('keydown', "Alt", function (e) {
+			console.log("!");
+			
 			//core.module.layout.mainmenu.setInitialSelection();
 			core.module.layout.mainmenu.focus();
 		  
@@ -354,6 +359,18 @@ org.goorm.core.shortcut.manager.prototype = {
 			e.preventDefault();
 			return false;
 		});
+		//Search
+		$(document).bind('keydown', 'Alt+H', function (e) {
+
+			var window_manager = core.module.layout.workspace.window_manager;
+
+			core.dialog.search.show();
+
+			
+			e.stopPropagation();
+			e.preventDefault();
+			return false;
+		});
 		
 		//Find Next
 		$(document).bind('keydown', 'Ctrl+G', function (e) {
@@ -516,6 +533,9 @@ org.goorm.core.shortcut.manager.prototype = {
 		//Left Layout Show/Hide
 		$(document).bind('keydown', 'Alt+Shift+1', function (e) {
 			if (!core.status.keydown) {
+				if (core.module.layout.layout.getUnitByPosition("left")._collapsed) {
+					core.module.layout.layout.getUnitByPosition("left").expand();
+				}
 				core.module.layout.left_tabview.selectTab(0);
 			}
 			
@@ -526,14 +546,17 @@ org.goorm.core.shortcut.manager.prototype = {
 			return false;
 		});
 		
-		//Left Layout Toggle Project Explorer
+		//Left Layout Show/Hide
 		$(document).bind('keydown', 'Alt+Shift+2', function (e) {
 			if (!core.status.keydown) {
+				if (core.module.layout.layout.getUnitByPosition("left")._collapsed) {
+					core.module.layout.layout.getUnitByPosition("left").expand();
+				}
 				core.module.layout.left_tabview.selectTab(1);
 			}
 			
 			core.module.layout.mainmenu.blur();
-
+			
 			e.stopPropagation();
 			e.preventDefault();
 			return false;
@@ -557,9 +580,12 @@ org.goorm.core.shortcut.manager.prototype = {
 			return false;
 		});	
 		
-		//Right Layout Toggle Toolbox
+		//Right Layout Toggle Communication
 		$(document).bind('keydown', 'Alt+Shift+3', function (e) {
 			if (!core.status.keydown) {
+				if (core.module.layout.inner_layout.getUnitByPosition("right")._collapsed) {
+					core.module.layout.inner_layout.getUnitByPosition("right").expand();
+				}
 				core.module.layout.inner_right_tabview.selectTab(0);
 			}
 			
@@ -570,9 +596,12 @@ org.goorm.core.shortcut.manager.prototype = {
 			return false;
 		});
 		
-		//Right Layout Show/Hide
+		//Right Layout Slide
 		$(document).bind('keydown', 'Alt+Shift+4', function (e) {
 			if (!core.status.keydown) {
+				if (core.module.layout.inner_layout.getUnitByPosition("right")._collapsed) {
+					core.module.layout.inner_layout.getUnitByPosition("right").expand();
+				}
 				core.module.layout.inner_right_tabview.selectTab(1);
 			}
 			
@@ -583,18 +612,18 @@ org.goorm.core.shortcut.manager.prototype = {
 			return false;
 		});
 		
-		//Right Layout Toggle Properties
-		$(document).bind('keydown', 'Alt+Shift+5', function (e) {
-			if (!core.status.keydown) {
-				core.module.layout.inner_right_tabview.selectTab(2);
-			}
-			
-			core.module.layout.mainmenu.blur();
-			
-			e.stopPropagation();
-			e.preventDefault();
-			return false;
-		});
+//		//Right Layout Toggle Properties
+//		$(document).bind('keydown', 'Alt+Shift+5', function (e) {
+//			if (!core.status.keydown) {
+//				core.module.layout.inner_right_tabview.selectTab(2);
+//			}
+//			
+//			core.module.layout.mainmenu.blur();
+//			
+//			e.stopPropagation();
+//			e.preventDefault();
+//			return false;
+//		});
 		
 		//Bottom Layout Show/Hide
 		$(document).bind('keydown', 'Alt+Shift+B', function (e) {
@@ -614,9 +643,12 @@ org.goorm.core.shortcut.manager.prototype = {
 			return false;
 		});			
 		
-		//Right Layout Toggle Object Explorer
-		$(document).bind('keydown', 'Alt+Shift+6', function (e) {
+		//Bottom Layout Toggle Debug
+		$(document).bind('keydown', 'Alt+Shift+5', function (e) {
 			if (!core.status.keydown) {
+				if (core.module.layout.inner_layout.getUnitByPosition("bottom")._collapsed) {
+					core.module.layout.inner_layout.getUnitByPosition("bottom").expand();
+				}
 				core.module.layout.inner_bottom_tabview.selectTab(0);
 			}
 			
@@ -627,9 +659,12 @@ org.goorm.core.shortcut.manager.prototype = {
 			return false;
 		});
 		
-		//Bottom Layout Show/Hide
-		$(document).bind('keydown', 'Alt+Shift+7', function (e) {
+		//Bottom Layout console
+		$(document).bind('keydown', 'Alt+Shift+6', function (e) {
 			if (!core.status.keydown) {
+				if (core.module.layout.inner_layout.getUnitByPosition("bottom")._collapsed) {
+					core.module.layout.inner_layout.getUnitByPosition("bottom").expand();
+				}
 				core.module.layout.inner_bottom_tabview.selectTab(1);
 			}
 			
@@ -640,9 +675,12 @@ org.goorm.core.shortcut.manager.prototype = {
 			return false;
 		});
 		
-		//Bottom Layout Toggle Messages
-		$(document).bind('keydown', 'Alt+Shift+8', function (e) {
+		//Bottom Layout search
+		$(document).bind('keydown', 'Alt+Shift+7', function (e) {
 			if (!core.status.keydown) {
+				if (core.module.layout.inner_layout.getUnitByPosition("bottom")._collapsed) {
+					core.module.layout.inner_layout.getUnitByPosition("bottom").expand();
+				}
 				core.module.layout.inner_bottom_tabview.selectTab(2);
 			}
 			
@@ -653,18 +691,18 @@ org.goorm.core.shortcut.manager.prototype = {
 			return false;
 		});
 		
-		//Bottom Layout Toggle Generator
-		$(document).bind('keydown', 'Alt+Shift+9', function (e) {
-			if (!core.status.keydown) {
-				core.module.layout.inner_bottom_tabview.selectTab(3);
-			}
-
-			core.module.layout.mainmenu.blur();
-	
-			e.stopPropagation();
-			e.preventDefault();
-			return false;
-		});
+//		//Bottom Layout Toggle Generator
+//		$(document).bind('keydown', 'Alt+Shift+9', function (e) {
+//			if (!core.status.keydown) {
+//				core.module.layout.inner_bottom_tabview.selectTab(3);
+//			}
+//
+//			core.module.layout.mainmenu.blur();
+//	
+//			e.stopPropagation();
+//			e.preventDefault();
+//			return false;
+//		});
 		
 		$(document).bind('keydown', 'Alt+Shift+W', function (e) {
 			if (!core.status.keydown) {
@@ -704,8 +742,6 @@ org.goorm.core.shortcut.manager.prototype = {
 			e.preventDefault();
 			return false;
 		});
-		
-		
 		
 	}
 };

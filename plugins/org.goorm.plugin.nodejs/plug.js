@@ -49,8 +49,8 @@ org.goorm.plugin.nodejs.prototype = {
 	add_mainmenu: function () {
 		var self = this;
 		
-		$("ul[id='plugin_new_project']").append("<li class=\"yuimenuitem\"><a class=\"yuimenuitemlabel\" href=\"#\" action=\"new_file_nodejs\" localizationKey='file_new_nodejs_project'>nodejs Project</a></li>");
-		this.mainmenu.render();
+		$("ul[id='plugin_new_project']").append("<li class=\"yuimenuitem\"><a class=\"yuimenuitemlabel\" href=\"#\" action=\"new_file_nodejs\" localizationKey='file_new_nodejs_project'>node.js Project</a></li>");
+		//this.mainmenu.render();
 	},
 	
 	add_menu_action: function () {

@@ -36,7 +36,7 @@ org.goorm.core.project.explorer.prototype = {
 			self.project_data = data;
 //			self.make_project_selectbox();
 		});
-		
+
 		$("#project_explorer").append("<div id='project_treeview' style='overflow-x:hidden'></div>");
 				
 		var postdata = {
@@ -47,16 +47,16 @@ org.goorm.core.project.explorer.prototype = {
 		$.get("file/get_nodes", postdata, function (data) {
 			if (data != null) {
 				var sorting_data = eval(data);
-				
+
 				self.sort_project_treeview(sorting_data);
-	
+				console.log(sorting_data);
 				self.treeview = new YAHOO.widget.TreeView("project_treeview", sorting_data);
 				
 				self.current_tree_data = self.treeview.getTreeDefinition();
 	
 				self.treeview.subscribe("clickEvent", function(nodedata) { return false; });
 	
-				self.treeview.subscribe("dblClickEvent", function(nodedata) {	
+				self.treeview.subscribe("dblClickEvent", function(nodedata) {
 					if(nodedata.node.data.cls == "file") {
 						var filename = nodedata.node.data.filename;
 						var filetype = nodedata.node.data.filetype;
@@ -64,7 +64,7 @@ org.goorm.core.project.explorer.prototype = {
 												
 						core.module.layout.workspace.window_manager.open(filepath, filename, filetype);
 					}
-					else if(nodedata.node.data.cls == "folder") {
+					else if(nodedata.node.data.cls == "dir") {
 						if (nodedata.node.expanded) {
 							nodedata.node.collapse();
 						}
@@ -105,13 +105,14 @@ org.goorm.core.project.explorer.prototype = {
 		});
 	},
 	
-	refresh: function() {
+	refresh: function(event_emitting) {
 		var self = this;
+		
+		event_emitting = typeof event_emitting !== 'undefined' ? event_emitting : true;
 			
 		$.get("project/get_list", "", function (data) {
 			self.project_data = data;	
 			self.make_project_selectbox();
-			console.log("#", data);
 			core.workspace = {};
 			for(var i in data) {
 				data[i].name && (core.workspace[data[i].name] = data[i].contents);
@@ -142,16 +143,20 @@ org.goorm.core.project.explorer.prototype = {
 					var sorting_data = eval(data);
 					
 					self.sort_project_treeview(sorting_data);	
-				
+					
 					self.treeview.removeChildren(self.treeview.getRoot(), true);
 					
 					self.expand_treeview(self.current_tree_data, sorting_data);
-					
+
 					self.treeview.buildTreeFromObject(sorting_data);
 		
 					self.treeview.render();
 					
 					self.refresh_context_menu();
+					
+					if (event_emitting) {
+						$(core).trigger("project_explorer_refreshed");
+					}
 				}
 			});
 /*

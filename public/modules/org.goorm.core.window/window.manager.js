@@ -151,6 +151,7 @@ org.goorm.core.window.manager.prototype = {
 					current_window.width = this.width;
 					current_window.height = this.height;
 					current_window.status = this.status;
+					current_window.project = this.project;
 					
 					if (this.status == "maximized") {						
 						$("#" + current_window.container + "_c").offset({left:$("#" + current_window.workspace_container).offset().left - 1, top:$("#" + self.workspace_container).offset().top});
@@ -190,6 +191,7 @@ org.goorm.core.window.manager.prototype = {
 					}
 					
 					current_window.resize_all();
+					current_window.set_title();
 				});
 			}
 		});
@@ -214,6 +216,7 @@ org.goorm.core.window.manager.prototype = {
 					filepath: this.filepath,
 					filename: this.filename,
 					filetype: this.filetype,
+					project: this.project,
 					editor: this.type,
 					left: this.left,
 					top: this.top,
@@ -229,32 +232,43 @@ org.goorm.core.window.manager.prototype = {
 	},
 
 	open: function(filepath, filename, filetype, editor) {
-		var i = this.is_opened(filepath, filename);
-		
-		var project_name = filepath.split('/')[1];
-		if(filepath[0] != '/') project_name = filepath.split('/')[0]
-		var workspace = project_name.substring(parseInt(project_name.indexOf('_'))+1);
-		
-		if(i >= 0) {
-			this.active_window = i;
-			this.window[i].activate();
+
+		if (filetype == "pdf" || filetype == "jpg" || filetype == "jpeg" || filetype == "gif" || filetype == "png" || filetype == "doc" || filetype == "docx" || filetype == "ppt" || filetype == "pptx" || filetype == "xls" || filetype == "xlsx") {		
+			var query = {
+				filepath: filepath,
+				filename: filename
+			};
 			
-			// $(core).trigger('edit_file_open', {'workspace':workspace});
-			
-			return this.window[i];
+			$.get("file/get_file", query, function () {
+				window.open("files/" + filepath + filename);
+			});
 		}
 		else {
-			this.add(filepath, filename, filetype, editor);
+			var i = this.is_opened(filepath, filename);
+			var project_name = filepath.split('/')[1];
+			if(filepath[0] != '/') project_name = filepath.split('/')[0]
+			var workspace = project_name.substring(parseInt(project_name.indexOf('_'))+1);
 			
-			if (this.maximized) {
-				this.window[this.window.length - 1].maximize();
+			if(i >= 0) {
+				this.active_window = i;
+				this.window[i].activate();
+				
+				// $(core).trigger('edit_file_open', {'workspace':workspace});
+				
+				return this.window[i];
 			}
-			
-			//$(core).trigger('edit_file_open', {'workspace':workspace});
-			
-			return this.window[this.window.length - 1];
+			else {
+				this.add(filepath, filename, filetype, editor);
+				
+				if (this.maximized) {
+					this.window[this.window.length - 1].maximize();
+				}
+				
+				//$(core).trigger('edit_file_open', {'workspace':workspace});
+				
+				return this.window[this.window.length - 1];
+			}
 		}
-		
 	},
 	
 	find_by_filename: function (filepath, filename) {
@@ -292,8 +306,6 @@ org.goorm.core.window.manager.prototype = {
 				base = filepath;
 				target = this.filepath;
 			}
-			
-			console.log(base, target);
 			
 			if ( base.indexOf(target) != -1 && this.filename == filename) {
 				window_index = i;
@@ -462,6 +474,7 @@ org.goorm.core.window.manager.prototype = {
 				$('#filewindow'+i).css('height', (this.window[i].panel.height - 2) + 'px');
 				$('#filewindow'+i+'_c').children(".window_container").height(this.window[i].panel.height - 50);
 				this.window[i].resize_all();
+				this.window[i].refresh();
 				count++;
 			}
 		}
@@ -510,6 +523,7 @@ org.goorm.core.window.manager.prototype = {
 				$('#filewindow'+i+'_c').children('.yui-panel').children(".bd").height(this.window[i].panel.height - 50);
 				$('#filewindow'+i+'_c').find(".window_container").find(".CodeMirror").height(this.window[i].panel.height - 50);
 				this.window[i].resize_all();
+				this.window[i].refresh();
 				count++;
 				
 				$('#filewindow'+i).css('width', this.window[i].panel.width + 'px');
@@ -560,6 +574,7 @@ org.goorm.core.window.manager.prototype = {
 				$('#filewindow'+i+'_c').children('.yui-panel').children(".bd").height(this.window[i].panel.height - 50);
 				$('#filewindow'+i+'_c').find(".window_container").find(".CodeMirror").height(this.window[i].panel.height - 50);
 				this.window[i].resize_all();
+				this.window[i].refresh();
 				count++;
 				
 				$('#filewindow'+i).css('width', this.window[i].panel.width + 'px');
@@ -569,6 +584,14 @@ org.goorm.core.window.manager.prototype = {
 			
 		this.is_maxmizedd = false;
 		$(".tab_max_buttons").hide();
+	},
+	
+	hide_all_context_menu : function(){
+		var self = this;
+		
+		for(var i=0; i<self.window.length; i++){
+			self.window[i].context_menu.hide();
+		}
 	},
 	
 	count_alive_windows: function() {

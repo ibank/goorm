@@ -31,7 +31,7 @@ org.goorm.core.window.tab.prototype = {
 		
 		this.title = title;
 		
-		this.tab = new YAHOO.widget.Tab({ label: "<span class='tabtitle' style='float:left'>" + this.title + "</span> <div class='window_buttons'><div class='close tab_close_button window_button'></div></div>", content: "" });
+		this.tab = new YAHOO.widget.Tab({ label: "<span class='tabtitle window_title' style='float:left'>" + this.title + "</span> <div class='window_buttons'><div class='close tab_close_button window_button'></div></div>", content: "" });
 
 		
 		this.tabview.addTab(this.tab);
@@ -212,6 +212,8 @@ org.goorm.core.window.tab.prototype = {
 			if (!$("#" + this.window.container).find(".hd").hasClass("activated")) {
 				for (var i = 0; i < core.module.layout.workspace.window_manager.index; i++) {
 					if (core.module.layout.workspace.window_manager.window[i].alive && core.module.layout.workspace.window_manager.window[i] == this.window) {
+						$(core).trigger("window_panel_activated", [core.module.layout.workspace.window_manager.active_window, i]);
+					
 						core.module.layout.workspace.window_manager.active_window = i;
 						break;
 					}

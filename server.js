@@ -21,6 +21,7 @@ var g_terminal = require("./modules/org.goorm.core.terminal/terminal");
 var g_collaboration = require("./modules/org.goorm.core.collaboration/collaboration");
 var g_utility = require("./modules/org.goorm.core.utility/utility");
 var g_port_manager = require("./modules/org.goorm.core.utility/utility.port_manager");
+var g_configs_social = require("./configs/social");
 
 global.__path = __dirname+"/";
 
@@ -28,7 +29,8 @@ var server = null;
 var io = null;
 var config_data = {
 	workspace: undefined,
-	temp_dir: undefined
+	temp_dir: undefined,
+	social_key: undefined
 };
 
 var users = []
@@ -49,12 +51,20 @@ else {
 	global.__workspace = __path + "workspace/";
 }
 
-if (config_data.__temp_dir != undefined) {
+if (config_data.temp_dir != undefined) {
 	global.__temp_dir = config_data.temp_dir;
 }
 else {
 	global.__temp_dir = __path + "temp_files/";
 }
+
+if (config_data.social_key != undefined) {
+	global.__social_key = config_data.social_key;
+}
+else {
+	global.__social_key = {};
+}
+
 
 console.log("--------------------------------------------------------".grey);
 console.log("workspace_path: " + __workspace);
@@ -63,23 +73,6 @@ console.log("temp_dir_path: " + __temp_dir);
 console.log();
 console.log("goormIDE:: starting...".yellow);
 console.log("--------------------------------------------------------".grey);
-
-
-var usersById = {};
-var nextUserId = 0;
-
-function addUser (source, sourceUser) {
-  var user;
-  if (arguments.length === 1) { // password-based
-    user = sourceUser = source;
-    user.id = ++nextUserId;
-    return usersById[nextUserId] = user;
-  } else { // non-password-based
-    user = usersById[++nextUserId] = {id: nextUserId};
-    user[source] = sourceUser;
-  }
-  return user;
-}
 
 function check_auth(req, res, next){
 	//console.log("has session : %s", req.loggedIn);
@@ -95,57 +88,12 @@ function check_auth(req, res, next){
 	next();
 }
 
-var usersByGoogleId = {};
-var usersByFbId = {};
-var usersByGitHubId = {};
+g_configs_social.init(everyauth);
 
-everyauth.everymodule
-	.findUserById( function (id, callback) {
-		callback(null, usersById[id]);
-	});
-  
-everyauth.google
-	.appId('1004367875263-qrh830opk4ulvkvb1cgt7n8d50b3ibqo.apps.googleusercontent.com')
-	.appSecret('ovHVH8DPbMCQN6Pic_be6lQ4')
-	.scope('https://www.googleapis.com/auth/userinfo.profile') // What you want access to
-	.handleAuthCallbackError( function (req, res) {
-		
-	})
-	.findOrCreateUser(function (sess, accessToken, extra, googleUser) {
-		googleUser.refreshToken = extra.refresh_token;
-		googleUser.expiresIn = extra.expires_in;
-		
-		return usersByGoogleId[googleUser.id] || (usersByGoogleId[googleUser.id] = addUser('google', googleUser));
-	})
-	.redirectPath('/');
-
-everyauth.facebook
-	.appId('429685707079692')
-	.appSecret('81d9562b7909b0e84c1f3148af376da2')
-	.handleAuthCallbackError( function (req, res) {
-		
-	})
-	.findOrCreateUser(function (sess, accessToken, extra, fbUser) {
-		fbUser.refreshToken = extra.refresh_token;
-		fbUser.expiresIn = extra.expires_in;
-		return usersByFbId[fbUser.id] || (usersByFbId[fbUser.id] = addUser('facebook', fbUser));
-	})
-	.redirectPath('/');
-
-everyauth.github
-	.appId('f5ededd9912bef7ff86a')
-	.appSecret('a2caf9c899af5782f0fad7c487b15f66980a2518')
-	.scope('user repo')
-	.handleAuthCallbackError( function (req, res) {
-		
-	})
-	.findOrCreateUser(function (sess, accessToken, extra, githubUser) {
-		githubUser.refreshToken = extra.refresh_token;
-		githubUser.expiresIn = extra.expires_in;
-		return usersByGitHubId[githubUser.id] || (usersByGitHubId[githubUser.id] = addUser('github', githubUser));
-	})
-	.redirectPath('/');
-
+if(global.__social_key.google) g_configs_social.attach_google(global.__social_key.google);
+if(global.__social_key.facebook) g_configs_social.attach_facebook(global.__social_key.facebook);
+if(global.__social_key.github) g_configs_social.attach_github(global.__social_key.github);
+if(global.__social_key.twitter) g_configs_social.attach_twitter(global.__social_key.twitter);
 
 // Configuration
 goorm.configure(function(){
@@ -165,6 +113,7 @@ goorm.configure(function(){
 	goorm.use(express.static(__temp_dir));
 });
 
+
 goorm.configure('development', function(){
   goorm.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
@@ -172,6 +121,20 @@ goorm.configure('development', function(){
 goorm.configure('production', function(){
   goorm.use(express.errorHandler());
 });
+
+// goorm.all('*', function(req, res, next){
+	// res.header("Access-Control-Allow-Origin", "*");
+	// res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+	// res.header("Access-Control-Allow-Headers", "origin, x-requested-with, x-file-name, content-type, cache-control, Authorization");
+	// res.header('Access-Control-Allow-Credentials', 'true');
+// 	
+	// if( req.method.toLowerCase() === "options" ) {
+        // res.send( 200 );
+    // }
+    // else {
+        // next();
+    // }	
+// });
 
 // Routes
 goorm.get('/', check_auth, routes.index);
@@ -188,6 +151,8 @@ goorm.get('/project/clean', check_auth, routes.project.do_clean);
 goorm.get('/project/get_property', check_auth, routes.project.get_property);
 goorm.get('/project/set_property', check_auth, routes.project.set_property);
 
+//for SCM
+goorm.get('/scm', check_auth, routes.scm);
 
 //for plugin
 goorm.get('/plugin/get_list', check_auth, routes.plugin.get_list);
@@ -207,14 +172,17 @@ goorm.get('/file/save_as', check_auth, routes.file.do_save_as);
 goorm.get('/file/delete', check_auth, routes.file.do_delete);
 goorm.get('/file/get_contents', check_auth, routes.file.get_contents);
 goorm.get('/file/get_url_contents', check_auth, routes.file.get_url_contents);
-goorm.get('/file/put_contents', check_auth, routes.file.put_contents);
+//goorm.get('/file/put_contents', check_auth, routes.file.put_contents);
+goorm.post('/file/put_contents', check_auth, routes.file.put_contents);
 goorm.get('/file/get_nodes', check_auth, routes.file.get_nodes);
 goorm.get('/file/get_dir_nodes', check_auth, routes.file.get_dir_nodes);
+goorm.get('/file/get_file', check_auth, routes.file.get_file);
 goorm.post('/file/import', check_auth, routes.file.do_import);
 goorm.get('/file/export', check_auth, routes.file.do_export);
 goorm.get('/file/move', check_auth, routes.file.do_move);
 goorm.get('/file/rename', check_auth, routes.file.do_rename);
 goorm.get('/file/get_property', check_auth, routes.file.get_property);
+goorm.get('/file/search_on_project', check_auth, routes.file.do_search_on_project);
 
 //for shell
 goorm.get('/terminal/exec', check_auth, routes.terminal.exec);
@@ -224,7 +192,7 @@ goorm.get('/preference/save', check_auth, routes.preference.save);
 goorm.get('/preference/ini_parser', check_auth, routes.preference.ini_parser);
 goorm.get('/preference/ini_maker', check_auth, routes.preference.ini_maker);
 goorm.get('/preference/workspace_path', check_auth, function(req, res) {
-	res.json({"path": global.__workspace+'/'});
+	res.json({"path": global.__workspace});
 });
 goorm.get('/preference/get_server_info', check_auth, routes.preference.get_server_info);
 goorm.get('/preference/get_goorm_info', check_auth, routes.preference.get_goorm_info);
@@ -237,25 +205,32 @@ goorm.get('/theme/put_contents', check_auth, routes.theme.put_contents);
 
 //for help
 goorm.get('/help/get_readme_markdown', check_auth, routes.help.get_readme_markdown);
+goorm.get('/help/send_to_bug_report', check_auth, routes.help.send_to_bug_report);
 
 //for Auth
 goorm.get('/auth/get_info', check_auth, routes.auth.get_info);
+goorm.post('/auth/login', routes.auth.login);
+goorm.post('/auth/logout', routes.auth.logout);
+goorm.post('/auth/signup', routes.auth.signup);
+goorm.post('/auth/signup/check', routes.auth.signup.check);
+
+// for admin
+goorm.get('/auth/check_admin', routes.admin.check);
+goorm.get('/admin/get_config', check_auth, routes.admin.get_config);
+goorm.post('/admin/user/add', check_auth, routes.admin.user_add);
+goorm.post('/admin/user/del', check_auth, routes.admin.user_del);
+
+// for users
+goorm.post('/user/get', routes.user.get);
+goorm.post('/user/get/list', routes.user.list);
+goorm.post('/user/set', routes.user.set);
 
 //for download and upload
 goorm.get('/download', check_auth, routes.download);
 
-
-
-/*************************
- * 로그인 관련
- *************************/
-//id/pw 로그인
-/* goorm.post('/member/login', routes.member.login); */
-//로그아웃
-/* goorm.get('/member/logout', routes.member.logout); */
-//현재 로그인 상태 (로그인한 계정의 정보)
-/* goorm.get('/member/login_status', routes.member.login_status); */
-/*************************/
+//for Social API
+goorm.get('/social/login', routes.social.login);
+goorm.all('/social/twitter', check_auth, routes.social.twitter);
 
 goorm.get('/alloc_port', check_auth, function(req, res) {
 	// req : port, process_name
@@ -267,7 +242,12 @@ goorm.get('/remove_port', check_auth, function(req, res) {
 	res.json(g_port_manager.remove_port(req.query));
 });
 
-
+goorm.get('/db/is_open', function(req, res){
+	var dbname = req.query.dbname;
+	var is_open = eval('global.__use_'+dbname);
+	
+	res.json(is_open);
+})
 
 server = http.createServer(goorm).listen(9999, function(){
 		console.log("goorm IDE server listening on port %d in %s mode", server.address().port, goorm.settings.env);

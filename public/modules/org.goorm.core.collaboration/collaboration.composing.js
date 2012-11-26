@@ -139,7 +139,7 @@ org.goorm.core.collaboration.composing.prototype = {
 					eval("object_data.shape.properties." + key + " = '" + encodeURIComponent(value) + "';");
 				});
 				
-				self.socket.emit("message", '{"channel": "composing", "action":"add_object", "user":"' + core.user.first_name + "_" + core.user.last_name + '", "workspace": "'+ core.status.current_project_name +'", "filepath":"' + self.filepath + '", "message": { "object": ' + JSON.stringify(object_data) + ' }}');
+				self.socket.emit("message", '{"channel": "composing", "action":"add_object", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "workspace": "'+ core.status.current_project_name +'", "filepath":"' + self.filepath + '", "message": { "object": ' + JSON.stringify(object_data) + ' }}');
 			}
 		});
 		
@@ -187,7 +187,7 @@ org.goorm.core.collaboration.composing.prototype = {
 					eval("object_data.shape.properties." + key + " = '" + encodeURIComponent(value) + "';");
 				});
 				
-				self.socket.emit("message", '{"channel": "composing", "action":"modify_object", "user":"' + core.user.first_name + "_" + core.user.last_name + '", "workspace": "'+ core.status.current_project_name +'", "filepath":"' + self.filepath + '", "message": { "object": ' + JSON.stringify(object_data) + ' }}');
+				self.socket.emit("message", '{"channel": "composing", "action":"modify_object", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "workspace": "'+ core.status.current_project_name +'", "filepath":"' + self.filepath + '", "message": { "object": ' + JSON.stringify(object_data) + ' }}');
 			}
 		});
 		
@@ -198,7 +198,7 @@ org.goorm.core.collaboration.composing.prototype = {
 				}
 			};
 		
-			self.socket.emit("message", '{"channel": "composing", "action":"remove_object", "user":"' + core.user.first_name + "_" + core.user.last_name + '", "workspace": "'+ core.status.current_project_name +'", "filepath":"' + self.filepath + '", "message": { "object": ' + JSON.stringify(object_data) + ' }}');
+			self.socket.emit("message", '{"channel": "composing", "action":"remove_object", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "workspace": "'+ core.status.current_project_name +'", "filepath":"' + self.filepath + '", "message": { "object": ' + JSON.stringify(object_data) + ' }}');
 		});
 		
 		this.timer = window.setInterval(check_for_updates, 500);
@@ -212,7 +212,7 @@ org.goorm.core.collaboration.composing.prototype = {
 			var received_msg = JSON.parse(data);
 			
 			if(received_msg.channel == "composing" && 
-			   received_msg.user != core.user.first_name + "_" + core.user.last_name &&
+			   received_msg.user != core.user.id &&
 			   received_msg.filepath == self.filepath) {
 			
 				switch(received_msg.action){

@@ -42,7 +42,7 @@ org.goorm.plugin.ios.prototype = {
 		var self = this;
 		
 		$("ul[id='plugin_new_project']").append("<li class=\"yuimenuitem\"><a class=\"yuimenuitemlabel\" href=\"#\" action=\"new_file_ios\" localizationKey='file_new_ios_project'>iOS Project</a></li>");
-		this.mainmenu.render();
+		//this.mainmenu.render();
 	},
 	
 	add_menu_action: function () {

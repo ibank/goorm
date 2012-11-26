@@ -12,7 +12,8 @@ var commander = require('commander')
   , forever = require('forever')
   , os = require('os')
   , exec = require('child_process').exec
-  , http = require('http');
+  , http = require('http')
+  , querystring = require('querystring');
 
 fs.readFile(__dirname+"/info_goorm.json", "utf8", function(err, contents) {
 	if (err!=null) {
@@ -88,10 +89,22 @@ fs.readFile(__dirname+"/info_goorm.json", "utf8", function(err, contents) {
 				console.log('      $ node goorm.js set -w workspace');
 				console.log('      $ goorm start --workspace my_workspace');
 				console.log('');
-				console.log('      -t, --temp-directory  set the temporary directory. default value is "tmp"');
+				console.log('      -t, --temp-directory  set the temporary directory. default value is "temp_files"');
 				console.log('');
 				console.log('      $ node goorm.js set -t temp');
 				console.log('      $ goorm start --temp-directory temp_files');
+				console.log('');
+				console.log('      $ node goorm.js set -f appId, appSecret');
+				console.log('      $ goorm start --api-key-facebook appId, appSecret');
+				console.log('');
+				console.log('      $ node goorm.js set -b consumerKey, consumerSecret');
+				console.log('      $ goorm start --api-key-twitter consumerKey, consumerSecret');
+				console.log('');
+				console.log('      $ node goorm.js set -g appId, appSecret');
+				console.log('      $ goorm start --api-key-google appId, appSecret');
+				console.log('');
+				console.log('      $ node goorm.js set -h appId, appSecret');
+				console.log('      $ goorm start --api-key-github appId, appSecret');
 				console.log('');
 				console.log('  Command: Clean Configs');
 				console.log('');
@@ -104,100 +117,38 @@ fs.readFile(__dirname+"/info_goorm.json", "utf8", function(err, contents) {
 			.command('update')
 			.action(function (env, options) {
 				
-				var server_data = {};
-				server_data.os_version = os.type()+" "+os.release();
-				server_data.node_version = process.version;
-				server_data.mongodb_version = "";
-				server_data.theme = "default";
-				server_data.language = "client";
-
-				var child = exec('mongod --version',
-					function (error, stdout, stderr) {
-						if (error == null) {
-							server_data.mongodb_version = stdout.split(" ")[2].slice(0,-1);
-						}
-
-						fs.writeFileSync(__dirname +  '/info_server.json', JSON.stringify(server_data));
-						console.log("Server info is updated...");
+				var print_message = 'Do you want to send server information to developer?(yes/no) ';
+				commander.prompt(print_message, function(arg){
+					if(arg=="yes"||arg=="y"||arg=="YES"||arg=="Y") {
+						send_log("server update", command_update);
 					}
-				);
+					else {
+						command_update();
+					}
+				});
 			});
 			
-		commander
-			.command('test')
-			.action(function (env, options) {
-			
-				var postdata = {}
-				postdata.board_id='ide_bugreport';
-				postdata.subject='server on log';
-				postdata.content='';
-				//postdata.extra='';
-				postdata.notice=false;
-				
-				var server_info = {};
-				server_info.os = os.type()+" "+os.release();
-				var ori_cpus = os.cpus();
-				var cpus = [];
-				for (k in ori_cpus) {
-					cpus.push(ori_cpus[k].model+" : "+ori_cpus[k].speed);
-				}
-				server_info.cpus = cpus;
-				server_info.memory = os.totalmem();
-				var interfaces = os.networkInterfaces();
-				var addresses = [];
-				for (k in interfaces) {
-				    for (k2 in interfaces[k]) {
-				        var address = interfaces[k][k2];
-				        if (address.family == 'IPv4' && !address.internal) {
-				            addresses.push(address.address);
-				        }
-				    }
-				}
-				server_info.ip_address=addresses;
-				server_info.start= new Date();
-				postdata.content = JSON.stringify(server_info);
-				//postdata.extra = JSON.stringify(server_info);
-								
-				var options = {
-					host: 'www.goorm.org',
-					port: 80,
-					path: '/api/article/write',
-					method: 'POST'
-				};
-	
-				var req = http.request(options, function(res) {
-					var data = "";
-					res.setEncoding('utf8');
-					res.on('data', function (chunk) {
-						data += chunk;
-					});
-					res.on('end', function() {
-						//console.log(data);
-					});
-					
-				});
-				
-				req.on('error', function(e) {
-				});
-				//console.log(JSON.stringify(postdata));
-				req.write(JSON.stringify(postdata));
-				req.end();				
-		});
-		
 		commander
 			.command('start [option]')
 			.option('-d, --daemon', 'run the goorm server as a daemon using the forever module...')
 			.action(function (env, options) {
-				if (options.daemon) {
-					forever.startDaemon(__dirname+'/server.js', {
-						'env': { 'NODE_ENV': 'production' },
-						'spawnWith': { env: process.env }
-					});
-					console.log("goormIDE server is started...");
-				}
-				else {
-					forever.start('server.js', []);
-				}
+				
+				var print_message = 'Do you want to send server information to developer?(yes/no) ';
+				commander.prompt(print_message, function(arg){
+					if(arg=="yes"||arg=="y"||arg=="YES"||arg=="Y") {
+						send_log("server start", function() {});
+					}
+					if (options.daemon) {
+						forever.startDaemon(__dirname+'/server.js', {
+							'env': { 'NODE_ENV': 'production' },
+							'spawnWith': { env: process.env }
+						});
+						console.log("goormIDE server is started...");
+					}
+					else {
+						forever.start('server.js', []);
+					}
+				});
 			});
 		
 		commander
@@ -224,47 +175,103 @@ fs.readFile(__dirname+"/info_goorm.json", "utf8", function(err, contents) {
 			.command('set [option]')
 			.option('-w, --workspace [dir_name]', 'Set the workspace directory')
 			.option('-t, --temp-directory [dir_name]', 'Set the temporary directory')
+			.option('-f, --api-key-facebook [app_id],[app_secret]', 'Set the facebook app key(please do not enter whitespace.)')
+			.option('-b, --api-key-twitter [consumer_key],[consumer_secret]', 'Set the twitter app key(please do not enter whitespace.)')
+			.option('-g, --api-key-google [app_id],[app_secret]', 'Set the google app key(please do not enter whitespace.)')
+			.option('-h, --api-key-github [app_id],[app_secret]', 'Set the github app key(please do not enter whitespace.)')
 			.action(function (env, options) {	
 				if (!fs.existsSync(process.env.HOME + '/.goorm/')) {
 					fs.mkdirSync(process.env.HOME + '/.goorm/');
+					fs.writeFileSync(process.env.HOME + '/.goorm/config.json', "", 'utf8');
+				}
+				else if(!fs.existsSync(process.env.HOME + '/.goorm/config.json')){
+					fs.writeFileSync(process.env.HOME + '/.goorm/config.json', "", 'utf8');
 				}
 				
 				if (fs.existsSync(process.env.HOME + '/.goorm/')) {
-					var config_data = JSON.parse(fs.readFileSync(process.env.HOME + '/.goorm/config.json', 'utf8'));
-					var workspace = config_data.workspace;
-					var temp_dir = config_data.temp_dir;
+					var config_data = {};
+					var raw_config_data = fs.readFileSync(process.env.HOME + '/.goorm/config.json', 'utf8');
+					if(raw_config_data && typeof(raw_config_data) != 'object' ) config_data = JSON.parse(fs.readFileSync(process.env.HOME + '/.goorm/config.json', 'utf8'));
+					
+					var workspace = config_data.workspace || process.env.PWD + '/' + "workspace/";
+					var temp_dir = config_data.temp_dir || process.env.PWD + '/' + "temp_files/";
+					var social_key = config_data.social_key || {};
 					
 					if (options.workspace)	 {	
-						workspace = options.workspace || "workspace";
+						workspace = options.workspace || process.env.PWD + '/' + "workspace/";
 						
-						if (!fs.existsSync(process.env.PWD + '/' + workspace)) {
-							fs.mkdirSync(process.env.PWD + '/' + workspace);
+						if (!fs.existsSync(workspace)) {
+							fs.mkdirSync(workspace);
 						}
 						else {
 							console.log("That directory already exists!");
 						}
 					}
 					
-					if (options['temp-directory'])	 {	
-						temp_dir = options['temp-directory'] || "tmp";
+					if (options['tempDirectory'])	 {	
+						temp_dir = options['tempDirectory'] || process.env.PWD + '/' + "temp_files/";
 						
-						if (!fs.existsSync(process.env.PWD + '/' + temp_dir)) {
-							fs.mkdirSync(process.env.PWD + '/' + temp_dir);
+						if (!fs.existsSync(temp_dir)) {
+							fs.mkdirSync(temp_dir);
 						}
 						else { 
 							console.log("That directory already exists!");
 						}
 					}
-							
+					
+					if(options['apiKeyFacebook'])	{
+						if(!social_key['facebook']) social_key['facebook'] = {};
+						
+						var raw_keys = options['apiKeyFacebook'].replace(" ", "");
+						var data = raw_keys.split(",");
+						
+						social_key['facebook']['appId'] = data[0] || social_key['facebook']['appId'] || "";
+						social_key['facebook']['appSecret'] = data[1] || social_key['facebook']['appSecret'] || "";
+					}
+					
+					if(options['apiKeyTwitter'])	{
+						if(!social_key['twitter']) social_key['twitter'] = {};
+						
+						var raw_keys = options['apiKeyTwitter'].replace(" ", "");
+						var data = raw_keys.split(",");
+						
+						social_key['twitter']['consumerKey'] = data[0] || social_key['twitter']['consumerKey'] || "";
+						social_key['twitter']['consumerSecret'] = data[1] || social_key['twitter']['consumerSecret'] || "";
+					}
+					
+					if(options['apiKeyGoogle'])	{
+						if(!social_key['google']) social_key['google'] = {};
+						
+						var raw_keys = options['apiKeyGoogle'].replace(" ", "");
+						var data = raw_keys.split(",");
+						
+						social_key['google']['appId'] = data[0] || social_key['google']['appId'] || "";
+						social_key['google']['appSecret'] = data[1] || social_key['google']['appSecret'] || "";
+					}
+					
+					if(options['apiKeyGithub'])	{
+						if(!social_key['github']) social_key['github'] = {};
+						
+						var raw_keys = options['apiKeyGithub'].replace(" ", "");
+						var data = raw_keys.split(",");
+						
+						social_key['github']['appId'] = data[0] || social_key['github']['appId'] || "";
+						social_key['github']['appSecret'] = data[1] || social_key['github']['appSecret'] || "";
+					}
+					
+					if(workspace && workspace[workspace.length - 1] != '/') workspace = workspace + '/';
+					if(temp_dir && temp_dir[temp_dir.length - 1] != '/') temp_dir = temp_dir + '/';
+					
 					var config_data = {
-						workspace: process.env.PWD + '/' + workspace,
-						temp_dir: process.env.PWD + '/' + temp_dir
+						workspace: workspace,
+						temp_dir: temp_dir,
+						social_key : social_key
 					};
 			
-					fs.writeFileSync(process.env.HOME +  '/.goorm/config.json', JSON.stringify(config_data));
+					fs.writeFileSync(process.env.HOME +  '/.goorm/config.json', JSON.stringify(config_data), 'utf8');
 					console.log("goormIDE: your configs are successfully added!");
 				}
-			});
+			})
 		
 		commander
 			.command('clean')
@@ -279,3 +286,96 @@ fs.readFile(__dirname+"/info_goorm.json", "utf8", function(err, contents) {
 		commander.parse(process.argv);
 	}
 });
+
+function send_log(title, callback) {
+
+	var ori_data = {};
+	ori_data.board_id='ide_log';
+	ori_data.subject=title;
+	ori_data.content='';
+	ori_data.language='ko';
+	
+	var server_info = {};
+	server_info.os = os.type()+" "+os.release();
+	var ori_cpus = os.cpus();
+	var cpus = [];
+	for (k in ori_cpus) {
+		cpus.push(ori_cpus[k].model+" : "+ori_cpus[k].speed);
+	}
+	server_info.cpus = cpus;
+	server_info.memory = os.totalmem();
+	var interfaces = os.networkInterfaces();
+	var addresses = [];
+	for (k in interfaces) {
+	    for (k2 in interfaces[k]) {
+	        var address = interfaces[k][k2];
+	        if (address.family == 'IPv4' && !address.internal) {
+	            addresses.push(address.address);
+	        }
+	    }
+	}
+	server_info.ip_address=addresses;
+	server_info.start= new Date();
+	
+	var contents = "";
+	contents += "<b>OS : </b>"+server_info.os+"<br/>";
+	contents += "<b>CPU : </b>"+server_info.cpus+"<br/>";
+	contents += "<b>MEMORY : </b>"+server_info.memory+"<br/>";
+	contents += "<b>IP : </b>"+server_info.ip_address;
+	ori_data.content = contents;
+
+	var post_data = querystring.stringify(ori_data);
+	
+	var post_options = {
+		host: 'www.goorm.org',
+		port: '80',
+		path: '/api/article/write',
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			'Content-Length': post_data.length
+		}
+	};
+	
+	var post_req = http.request(post_options, function(res) {
+		res.setEncoding('utf8');
+		
+		var data = "";
+		
+		res.on('data', function (chunk) {
+			data += chunk;
+		});
+		
+		res.on('end', function() {
+			console.log("Information was sent.");
+			callback();
+		});		
+	});
+	
+	post_req.on('error', function(e) {
+	});
+	
+	post_req.write(post_data);
+	post_req.end();
+}
+
+function command_update() {
+	var server_data = {};
+	server_data.os_version = os.type()+" "+os.release();
+	server_data.node_version = process.version;
+	server_data.mongodb_version = "";
+	server_data.theme = "default";
+	server_data.language = "client";
+	
+	var child = exec('mongod --version',
+		function (error, stdout, stderr) {
+			if (error == null) {
+				server_data.mongodb_version = stdout.split(" ")[2].slice(0,-1);
+			}
+	
+			fs.writeFileSync(__dirname +  '/info_server.json', JSON.stringify(server_data));
+			console.log("Server info is updated...");
+			process.stdin.destroy();
+		}
+	);
+}

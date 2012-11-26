@@ -73,12 +73,13 @@ org.goorm.core.preference.prototype = {
 			if(!$.isEmptyObject(localStorage[key])){
 				if(key != "plugins"){
 					core.preference[key] = localStorage[key];
-				}					
+				}
 				else {
 					core.preference[key] = JSON.parse(localStorage[key]);
 				} 
 			}
 		});
+		localStorage['workspace'] && (core.preference['workspace'] = JSON.parse(localStorage['workspace']))
 	},
 	
 	// save current preferences(core.preference) to localStorage or share.json
@@ -88,11 +89,15 @@ org.goorm.core.preference.prototype = {
 				
 			}
 			else {
-				localStorage[key] = value;
+				if(typeof value == "object") {
+					localStorage[key] = JSON.stringify(value);
+				}
+				else {
+					localStorage[key] = value;
+				}
 			}
 		});
 		
-		localStorage['plugins'] = JSON.stringify(core.preference.plugins);
 	},
 	
 	apply: function(id){
@@ -101,7 +106,7 @@ org.goorm.core.preference.prototype = {
 		if(id){
 			target+= " #"+id;
 		}
-		
+		core.module.theme.load_css();
 		this.read_dialog(core.preference);
 			
 		// Save changes of the information about file types into filetype.json
@@ -278,46 +283,14 @@ org.goorm.core.preference.prototype = {
 			$("#preference_tabview #System").show();
 			this.firstShow=false;
 		}
+		core.module.localization.before_language = localStorage.getItem("language");
 	},
 
 	set_before: function(){
 		this.load();
 		this.fill_dialog(core.preference);		
 	},
-	
-//	get_preference: function (xml) {
-//		var self=this;
-//		$(xml).find("tree").each(function(){
-//			if ($(this).find("ini").length > 0) {
-//				$(this).find("ini").each(function(){
-//					if(self.ini[$(this).attr("name")] == null){
-//						self.ini[$(this).attr("name")] = $(this).attr("default");
-//					}
-//				});
-//			}
-//			if ($(this).find("preference").length > 0) {
-//				$(this).find("preference").each(function(){
-//					if(localStorage.getItem($(this).attr("name")) != null && localStorage.getItem($(this).attr("name")) != ""){
-//						self.preference[$(this).attr("name")] = localStorage.getItem($(this).attr("name"));
-//					}
-//					else {
-//						self.preference[$(this).attr("name")] = $(this).attr("default");
-//					}
-//				});
-//			}
-//		});
-//	},
-//	
-//	get_plugin_preference: function(){
-//		var self = this;
-//		for (plugin_name in self.plugin){
-//			for(name in self.plugin[plugin_name].preference){
-//				self.plugin[plugin_name].preference[name] = localStorage.getItem(name);
-//				self.preference[name] = localStorage.getItem(name);
-//			}
-//		}
-//	},
-	
+		
 	init_dialog: function () {
 		var self = this;
 		var handle_ok = function() {
@@ -327,6 +300,7 @@ org.goorm.core.preference.prototype = {
 		};
 
 		var handle_cancel = function() { 
+
 			if (core.module.localization.before_language != localStorage.getItem("language")) {
 				core.module.localization.change_language(core.module.localization.before_language);
 			}

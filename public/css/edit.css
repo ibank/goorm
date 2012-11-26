@@ -181,7 +181,7 @@ version: 3.0.0
 	position: absolute;
 	z-index: 10;
 	width:0px;
-	height: 13px;
+	height: 15px;
 	border-left-width: 1px;
 	border-left-style: solid;
 }

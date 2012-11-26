@@ -51,7 +51,7 @@ org.goorm.plugin.cpp.prototype = {
 		var self = this;
 		
 		$("ul[id='plugin_new_project']").append("<li class=\"yuimenuitem\"><a class=\"yuimenuitemlabel\" href=\"#\" action=\"new_file_cpp\" localizationKey='file_new_cpp_project'>C/C++ Project</a></li>");
-		this.mainmenu.render();
+		//this.mainmenu.render();
 	},
 	
 	add_menu_action: function () {
@@ -254,7 +254,8 @@ org.goorm.plugin.cpp.prototype = {
 		$.each(lines, function(i, line){
 			if(line == '') return;
 			// 현재 라인 처리
-			var regex = /#0.*at ((.*)\/)?(.*):(\d+)/;
+			var regex = /at ((.*)\/)?(.*):(\d+)/;
+			
 			if(regex.test(line)) {
 				var match = line.match(regex);
 				var filepath = match[2];
@@ -265,6 +266,7 @@ org.goorm.plugin.cpp.prototype = {
 								
 				for (var j=0; j<windows.length; j++) {
 					var window = windows[j];
+					
 					if (window.project == self.current_debug_project 
 							&& window.filename == filename){
 						

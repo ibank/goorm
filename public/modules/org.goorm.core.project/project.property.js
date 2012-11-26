@@ -180,22 +180,36 @@ org.goorm.core.project.property.prototype = {
 			}
 				
 			$(targets[index]).find("input").each(function(){
-				var value;
-				if($(this).attr("type") == "checkbox"){
-					value = ($(this).attr("checked") == "checked") ? true : false;
+				if($(this).attr("name") != undefined){
+					var value;
+					if($(this).attr("type") == "checkbox"){
+						value = ($(this).attr("checked") == "checked") ? true : false;
+					}
+					else if($(this).attr("type") == "radio"){
+						if($(this).attr("checked") == "checked"){
+							value = $(this).val();
+						}
+						else {
+							return ;
+						}
+					}
+					else {
+						value = $(this).val();
+					}
+					key[$(this).attr("name")] = value;
 				}
-				else {
-					value = $(this).val();
-				}
-				key[$(this).attr("name")] = value;
 			});
 			
 			$(targets[index]).find("textarea").each(function(){
-				key[$(this).attr("name")] = $(this).val();
+				if($(this).attr("name") != undefined){
+					key[$(this).attr("name")] = $(this).val();
+				}
 			});
 			
 			$(targets[index]).find("select").each(function(){
-				key[$(this).attr("name")] = $(this).children("option:selected").val();
+				if($(this).attr("name") != undefined){
+					key[$(this).attr("name")] = $(this).children("option:selected").val();
+				}
 			});
 		});
 	},
@@ -218,11 +232,14 @@ org.goorm.core.project.property.prototype = {
 			}
 			
 			$(targets[index]).find("input").each(function(){
-				if(key[$(this).attr("name")] !== null){
+				if(key[$(this).attr("name")]){
 					if($(this).attr("type") == "checkbox"){
 						if(key[$(this).attr("name")] == "true" || key[$(this).attr("name")] == true)
 							$(this).attr("checked",true);
-//						else $(this).attr("checked",);
+					}
+					else if($(this).attr("type") == "radio"){
+						if(key[$(this).attr("name")] == $(this).val())
+							$(this).attr("checked",true);
 					}
 					else{
 						$(this).val(key[$(this).attr("name")]);
@@ -288,7 +305,9 @@ org.goorm.core.project.property.prototype = {
 		// Handler for OK button
 		var handle_ok = function() {
 			self.apply();
-			self.save();
+			self.save(function(){
+				core.module.layout.project_explorer.refresh();
+			});
 			this.hide();
 		};
 

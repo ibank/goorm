@@ -291,10 +291,13 @@ org.goorm.core.project._new.prototype = {
 		// for step 1
 		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='all'><div class='project_type_icon'><img src='images/org.goorm.core.project/project.png' class='project_icon' /></div><div class='project_type_title'>All</div><div class='project_type_description'>View all available<br />project items</div></div>");
 
+/*
 		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='goormp'><div class='project_type_icon'><img src='images/org.goorm.core.project/goorm_project.png' class='project_icon' /></div><div class='project_type_title'>goorm Project</div><div class='project_type_description'>Customization/Plugin<br />/Theme</div></div>");
 		
 		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all goormp' description=' Create New goorm Customization Project' projecttype='goorm'><img src='images/org.goorm.core.project/customization.png' class='project_item_icon' /><br /><a>goorm Customization</a></div>");
 		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all goormp' description=' Create New goorm Plugin' projecttype='goorm'><img src='images/org.goorm.core.project/plugin.png' class='project_item_icon' /><br /><a>goorm Plugin</a></div>");
 		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all goormp' description=' Create New goorm Theme' projecttype='goorm'><img src='images/org.goorm.core.project/theme.png' class='project_item_icon' /><br /><a>goorm Theme</a></div>");
+*/
+
 	}	
 };

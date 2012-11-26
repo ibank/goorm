@@ -733,7 +733,7 @@
 		}
 	},
 	"left-project-view": {
-		"selector": ".directory_treeview .ygtvfocus",
+		"selector": ".directory_treeview .ygtvfocus, #search_treeview .ygtvfocus",
 		"description": "edit style of tabmenu background",
 		"style": {
 			"background-color": "#f5f5f5"

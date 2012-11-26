@@ -53,6 +53,7 @@ org.goorm.core.terminal = function () {
 	this.timestamp = null;
 	
 	this.command_queue = null;
+	this.last_command = null;
 	
 	this.default_prompt = /bash-\d\.\d(\#|\$)/;
 	 
@@ -105,8 +106,12 @@ org.goorm.core.terminal.prototype = {
 					special_key: false
 				};
 				
-				self.socket.emit("pty_execute_command", JSON.stringify(msg));
-				
+				if(self.check_command($(this).val())){
+					self.is_command = false;
+					if(self.platform == 'linux') $(self.target).find('#results').append(msg.command);
+					self.socket.emit("pty_execute_command", JSON.stringify(msg));
+				}
+				self.last_command = msg.command;
 				self.history.push(msg.command);
 				self.history_count = self.history.length;
 			}
@@ -218,7 +223,6 @@ org.goorm.core.terminal.prototype = {
 		var temp_stdout = "";
 		
 		var result = function (msg, mode) {
-			
 			if (msg.terminal_name == self.terminal_name) {
 				var stdout = msg.stdout;
 				
@@ -232,6 +236,7 @@ org.goorm.core.terminal.prototype = {
 				}
 				
 				if (mode == 1 || /\n/.test(stdout) || stdout.indexOf('$') > -1) {
+//					console.log(temp_stdout);
 					if(msg.terminal_name == "debug") {
 						if(self.debug_endstr && self.debug_endstr.test(temp_stdout)) {
 							$(core.module.debug).trigger("debug_end");
@@ -246,40 +251,56 @@ org.goorm.core.terminal.prototype = {
 					temp_stdout = self.transform_bash_to_html(temp_stdout);
 					$(self.target).find("#results").append(temp_stdout);
 					
-					temp_stdout = "";
-				}
-				
-				if (!(stdout.indexOf('[K') > -1)) {
-					if(self.platform == "darwin") {
-						$(self.target).find("#prompt_input").appendTo($(self.target).find("#results pre:last"));
-					}
-					else if(self.platform == "linux") {
-						$(self.target).find("#prompt_input").appendTo($(self.target).find("#results"));
-					}
-				}
-				
-				$(self.target).find("#prompt_input").val("");
-				$(self.target).find("#prompt_input").focus();
-				
-				$(self.target).parent().parent().scrollTop(parseInt($(self.target).height()));
-				
-				if (stdout.indexOf('[2J') > -1) {
-					var pre_count = $(self.target).find("#results pre").length;
+					var from = (self.in_panel ? "panel" : "layout");
 					
-					$(self.target).find("#results pre").each(function (i) {
-						if (pre_count - 1 > i) {
-							$(this).remove();
+					self.resize_all(from);
+					
+					temp_stdout = "";
+					
+					if (!(stdout.indexOf('[K') > -1)) {
+						if(self.platform == "darwin") {
+							$(self.target).find("#prompt_input").appendTo($(self.target).find("#results pre:last"));
 						}
-					});
+						else if(self.platform == "linux") {
+							$(self.target).find("#prompt_input").appendTo($(self.target).find("#results"));
+						}
+					}
+					
+					$(self.target).find("#prompt_input").val("");
+					$(self.target).find("#prompt_input").focus();
+					
+					$(self.target).parent().parent().scrollTop(parseInt($(self.target).height()));
+					
+					if (stdout.indexOf('[2J') > -1) {
+						var pre_count = $(self.target).find("#results pre").length;
+						
+						$(self.target).find("#results pre").each(function (i) {
+							if (pre_count - 1 > i) {
+								$(this).remove();
+							}
+						});
+					}
 				}
-				
-				var from = (self.in_panel ? "panel" : "layout");
-				
-				self.resize_all(from);
 			}
 		}
 		
+		var pop_command = function(target_stdout){
+			var temp_stdout = target_stdout;
+			
+			if(!self.is_command && self.last_command && self.last_command != "" && target_stdout.match(self.last_command)){
+				var position = target_stdout.indexOf(self.last_command);
+				var new_stdout = target_stdout.substring(0, position-1) + target_stdout.substring(position + self.last_command.length, target_stdout.length)
+
+				temp_stdout = new_stdout
+				self.is_command = true;
+			}
+			
+			return temp_stdout;
+		}
+		
 		this.socket.on("pty_command_result", function(msg){
+			if(self.platform == 'linux') msg.stdout = pop_command(msg.stdout);
+			
 			result(msg);
 			if(timeout) clearTimeout(timeout);
 			timeout = setTimeout(function(){
@@ -309,8 +330,6 @@ org.goorm.core.terminal.prototype = {
 			};
 			
 			self.socket.emit("terminal_leave", JSON.stringify(msg));
-			
-			console.log("dddd!");
 		});
 		
 		$(window).bind("unload", function () {
@@ -396,15 +415,17 @@ org.goorm.core.terminal.prototype = {
 	
 	work_queue: function(stdout){
 		var self = this;
-		
+
 		if(stdout){
 			this.stdout += stdout;
 		}
+//		console.log("queue");
 
 		if (this.command_queue === undefined || this.command_queue.length == 0) {
 			this.command_queue = [];
 			return;
 		}
+		
 		if (this.running_queue) return;
 		else this.running_queue = true;
 		
@@ -453,8 +474,9 @@ org.goorm.core.terminal.prototype = {
 		return this.user + "@" + this.server + ":" + this.path + "$ ";
 	},
 	
-	transform_bash_to_html: function (data) {		
+	transform_bash_to_html: function (data) {
 		data = data.split("\n");
+		if(data[0] == '\r') data[0] = "\n";
 		
 		for (var i=0; i<data.length; i++) {
 			
@@ -573,6 +595,40 @@ org.goorm.core.terminal.prototype = {
 			else {
 				$(this.target).height(target_height);
 			}
+		}
+	},
+	
+	check_command: function(command) {
+		var self = this;
+		if(command == "vi" ||command == "vim" || /(vim|vi) /.test(command)) {
+			var matches = command.match(/;?(vim|vi) (.*);?/);
+//			console.log(msg);
+			if(!matches) {
+			}
+			else {
+				var file = (matches.length>2) ? matches[2] : null;
+				if(!file){
+				}
+				else {
+					self.send_command("pwd", null, function(data){
+						var lines = data.split("\n");
+						var path = lines[1].split(core.preference.workspace_path).pop();
+						path = path.trim();
+						var filetype = null;
+						if(file.indexOf(".") != -1)
+							filetype = (file.split(".")).pop();
+						var editor = core.module.layout.workspace.window_manager.open(path+"/", file, filetype).editor;
+						editor.set_option({"vim_mode":true});
+					});
+				}
+			}
+			
+			$(self.target).find("#prompt_input").val('');
+			
+			return false;
+		}
+		else {
+			return true;
 		}
 	}
 };

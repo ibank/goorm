@@ -46,6 +46,7 @@ module.exports = {
 					var result = {};
 					result.stdout = data;
 					result.terminal_name = msg.terminal_name;
+					
 					//evt.emit("executed_command", result);
 					//console.log(data);
 //					console.log("on data : " + msg.workspace + '/' + msg.terminal_name);
@@ -85,7 +86,6 @@ module.exports = {
 
 			socket.on('pty_execute_command', function (msg) {
 				msg = JSON.parse(msg);
-				
 				self.exec(term[msg.index], msg.command, msg.special_key);
 			});
 			
@@ -98,9 +98,6 @@ module.exports = {
 				}
 			});
 			
-
-			
-			
 		});
 	},
 	
@@ -110,7 +107,7 @@ module.exports = {
 				term.write(command);
 			}
 			else {
-				term.write(command + ' \r');
+				term.write(command + '\r');
 			}
 		}
 		else {

@@ -113,6 +113,9 @@
     "confirmation_exit": {
         "value": "Do you want exit?"
     },
+    "confirmation_theme": {
+        "value": "Do you want apply this theme?"
+    },
     "confirmation_delete_file": {
         "value": "Do you want to delete this file?"
     },
@@ -181,5 +184,68 @@
     },
     "alert_no_have_data": {
         "value": "No data to display"
+    },
+    "alert_sigup_undefined_id": {
+        "value": "Please enter an ID."
+    },
+    "alert_sigup_unfit_reg_id": {
+        "value": "It is invalid to ID form.(4~15 digits, Alphabet+Number)."
+    },
+    "alert_sigup_duplicate_id": {
+        "value": "The ID is duplicated"
+    },
+    "alert_sigup_not_fount_id": {
+        "value": "The ID is not found."
+    },
+    "alert_sigup_undefined_password": {
+        "value": "Please enter a Password."
+    },
+    "alert_sigup_undefined_re_password": {
+        "value": "Please enter a RePassword"
+    },
+    "alert_sigup_undefined_password_not_match": {
+        "value": "Please recheck your password. They are not a match."
+    },
+    "alert_sigup_unfit_req_password": {
+        "value": "It is invalid to Password form.(8~15 digits, Alphabet+Number)."
+    },
+    "alert_sigup_undefined_email": {
+        "value": "Please enter an E-mail."
+    },
+    "alert_sigup_unfit_email": {
+        "value": "It is invalid to E-mail form. (ex) goorm@skima.co.kr)."
+    },
+    "alert_sigup_undefined_name": {
+        "value": "Please enter a Name."
+    },
+    "alert_sigup_unfit_name": {
+        "value": "It is invalid to Name form.(3~15 digits, Hangul/Alphabet/Number/Special characters(-/_/.))."
+    },
+    "alert_sigup_undefined_nick": {
+        "value": "Please enter a Nickname."
+    },
+    "alert_sigup_unfit_nick": {
+        "value": "It is invalid to Nickname form.(3~20 digits, Hangul/Alphabet/Number/Special characters(-/_/.))."
+    },
+    "alert_confirm_logout": {
+        "value": "Are you sure?"
+    },
+    "alert_login_not_match_password": {
+        "value": "Password is incorrect."
+    },
+    "alert_login_no_id": {
+        "value": "There is no such a member."
+    },
+    "alert_login_undefined_id_or_password": {
+        "value": "ID or Password is not typed."
+    },
+    "notice_no_matched_fild": {
+	    "value": "No matching files found."
+    },
+    "notice_welcome_goorm": {
+	    "value": "Welcome to goorm ide."
+    },
+    "alert_cannot_connect_db": {
+	    "value": "Fail to connect from database."
     }
 }

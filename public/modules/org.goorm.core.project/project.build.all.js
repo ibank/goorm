@@ -41,7 +41,7 @@ org.goorm.core.project.build.all.prototype = {
 						 
 		this.dialog = new org.goorm.core.project.build.all.dialog();
 		this.dialog.init({
-			title:"Build Project", 
+			title:"Build All", 
 			path:"configs/dialogs/org.goorm.core.project/project.build.all.html",
 			width:400,
 			height:370,

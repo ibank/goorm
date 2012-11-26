@@ -22,8 +22,6 @@ org.goorm.core.edit = function () {
 	this.mode = "htmlmixed";
 	this.indent_unit = 2;
 	this.indent_with_tabs = true;
-	this.tab_mode = "classic";
-	this.enter_mode = "indent";
 	this.show_line_numbers = true;
 	this.first_line_number = 1;
 	this.undo_depth = 40;
@@ -35,6 +33,7 @@ org.goorm.core.edit = function () {
 	this.fromCh = null;
 	this.toCh = null;
 	this.breakpoints = [];
+	this.vim_mode = false;
 };
 
 org.goorm.core.edit.prototype = {
@@ -82,38 +81,40 @@ org.goorm.core.edit.prototype = {
 				"Ctrl-Space": function(cm) {
 					var cursor = cm.getCursor();
 					var token = cm.getTokenAt(cursor);
-				
-					var cursor_pos = cm.charCoords({line:cursor.line, ch:token.start}, "local");
-					//cursor_pos.ch = cm.getTokenAt(cm.getCursor()).start;
-					
 					
 					self.dictionary.search(token.string);
-					self.dictionary.show(cursor_pos);
+					self.dictionary.show(cm);
+				}
+			},
+			onScroll: function(i ,e) {
+				if($(self.target).find(".dictionary_box").css("display") == "block") {
+					self.dictionary.hide();
+					self.editor.focus();
 				}
 			},
 			onKeyEvent: function(i, e) {
 				if ($(self.target).find(".dictionary_box").css("display") == "block" && e.type == "keyup" && e.keyCode != 8 && e.keyCode != 32) {
+					
 					var cursor = self.editor.getCursor();
 					var token = self.editor.getTokenAt(cursor);
-				
-					var cursor_pos = self.editor.charCoords({line:cursor.line, ch:token.start}, "local");
-					//cursor_pos.ch = cm.getTokenAt(cm.getCursor()).start;
 					
 					self.dictionary.search(token.string);
-					self.dictionary.show(cursor_pos);
+					self.dictionary.show(self.editor);
 				}
-
+				
 				if( (e.type == "keydown" && e.keyIdentifier == "Enter") || (e.type == "keydown" && e.keyIdentifier == "Down")){
 					var cursor_position = parseInt(self.editor.getCursor().line) * 16;
 					var container_height = $(self.target).find('.CodeMirror-lines').height();
 
 					var cursor = self.editor.getCursor();
 					var token = self.editor.getTokenAt(cursor);
-					var cursor_pos = self.editor.charCoords({line:cursor.line, ch:token.start}, "local");
+					var cursor_pos = self.editor.charCoords({line:cursor.line, ch:cursor.ch}, "local");
 					
 					// console.log(cursor_pos);
 					// if(cursor_position >= container_height)
 					// self.editor.scrollTo(parseInt(self.editor.getScrollInfo().x), parseInt(self.editor.getScrollInfo().y)+16);
+					
+					console.log("Down Keydown");
 				}
 				
 				if(e.type == "keydown" && e.keyIdentifier == "Enter"){
@@ -306,6 +307,26 @@ org.goorm.core.edit.prototype = {
 		this.context_menu = new org.goorm.core.menu.context();
 		this.context_menu.init("configs/menu/org.goorm.core.edit/edit.context.html", "edit.context", this.target, this.timestamp, null, function () {
 			core.module.action.init();
+
+			var language = "";
+			if(localStorage.getItem("language")==null) {
+				if (core.server_language=="client") {
+					if(navigator.language=="ko") {
+						language = "kor";
+					}
+					else {
+						language = "us";
+					}
+				}
+				else {
+					language = core.server_language;
+				}
+				
+				core.module.localization.change_language(language);
+			}
+			else {
+				core.module.localization.change_language(localStorage.getItem("language"));
+			}
 		});
 		
 //		$(this.target).find(".CodeMirror-lines div:first").append("<div class='highlight_line'></div>");
@@ -484,20 +505,23 @@ org.goorm.core.edit.prototype = {
 		self.object_tree.render();
 	},
 
-	set_option: function() {
-		this.indent_unit = parseInt(this.preference["preference.editor.indent_unit"]);
-		this.indent_with_tabs = this.preference["preference.editor.indent_with_tabs"];
-		this.tab_mode = this.preference["preference.editor.tab_mode"];
-		this.enter_mode = this.preference["preference.editor.enter_mode"];
-		this.show_line_numbers = this.preference["preference.editor.show_line_numbers"];
-		this.first_line_number = parseInt(this.preference["preference.editor.first_line_number"]);
-		this.undo_depth = parseInt(this.preference["preference.editor.undo_depth"]);
-		this.highlight_current_cursor_line = this.preference["preference.editor.highlight_current_cursor_line"];
-		this.theme = this.preference["preference.editor.theme"];
+	set_option: function(options) {
+		options || (options = {})
+		this.indent_unit = (options.indent_unit)? options.indent_unit : parseInt(this.preference["preference.editor.indent_unit"]);
+		this.indent_with_tabs = (options.indent_with_tabs)? options.indent_with_tabs : this.preference["preference.editor.indent_with_tabs"];
+		this.show_line_numbers = (options.show_line_numbers)? options.show_line_numbers : this.preference["preference.editor.show_line_numbers"];
+		this.first_line_number = (options.first_line_number)? options.first_line_number : parseInt(this.preference["preference.editor.first_line_number"]);
+		this.undo_depth = (options.undo_depth)? options.undo_depth : parseInt(this.preference["preference.editor.undo_depth"]);
+		this.highlight_current_cursor_line = (options.highlight_current_cursor_line)? options.highlight_current_cursor_line : this.preference["preference.editor.highlight_current_cursor_line"];
+		this.theme = (options.theme)? options.theme : this.preference["preference.editor.theme"];
+		this.vim_mode = (options.vim_mode)? options.vim_mode : false;
 		
 		//////////////////////////////////////////////////////////////
 		//Edit Settings
 		//////////////////////////////////////////////////////////////
+		if (this.vim_mode) {
+			this.editor.setOption("keyMap", "vim");
+		}
 		if (this.indent_unit != undefined) {
 			this.editor.setOption("indentUnit", this.indent_unit);
 		}
@@ -522,6 +546,7 @@ org.goorm.core.edit.prototype = {
 			this.editor.setOption("undoDepth", this.undo_depth);
 		}
 		if (this.theme != undefined) {
+			$("<link>").attr("rel","stylesheet").attr("type","text/css").attr("href","/lib/net.codemirror.code/theme/"+this.theme+".css").appendTo("head");
 			this.editor.setOption("theme", this.theme);
 		}
 	},
@@ -566,9 +591,11 @@ org.goorm.core.edit.prototype = {
 		var postdata = {
 			path: temp_path
 		};
-
+		
 		$.get(url, postdata, function (data) {
-			self.editor.setValue(data);
+			
+			if(data) self.editor.setValue(data);
+			else self.editor.setValue("");
 			//self.collaboration.init(self.target,self);
 			
 			/*
@@ -612,13 +639,13 @@ org.goorm.core.edit.prototype = {
 		
 		var data = this.editor.getValue();
 		
-		
 		var send_data = {
 			path: path,
 			data: data
 		};
-
-		$.get(url, send_data, function (data) {
+		
+		// $.get(url, send_data, function (data) {
+		$.post(url, send_data, function (data) {
 			if(core.flag.collaboration_on == true){
 				self.collaboration.socket.send('{"channel": "edit","action":"autoSaved", "identifier":"'+self.collaboration.identifier+'", "message":""}');
 			}

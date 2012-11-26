@@ -328,7 +328,7 @@
 	background:#f5f5f5;
 	border-color:#cccccc;
 }
-.directory_treeview .ygtvfocus {
+.directory_treeview .ygtvfocus, #search_treeview .ygtvfocus {
 	background-color:#f5f5f5;
 }
 .yui-skin-sam .yui-layout .yui-layout-unit-left div.yui-layout-hd .collapse {

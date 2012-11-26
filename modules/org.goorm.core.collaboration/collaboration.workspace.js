@@ -15,27 +15,32 @@ module.exports = {
 	join: function (socket, msg) {
 		socket.join(msg.workspace);
 		socket.set('workspace', msg.workspace);
-		updating.init(msg.workspace);
+		// updating.init(msg.workspace);
 		
 		var index = 0;
 		
 		if ((index = this.workspaces.inArray(msg.workspace)) > -1) {
-			this.users[index].list.push(msg.user);
+			this.users[index].list.push(msg.user+','+msg.nick);
 		}
 		else {
 			this.workspaces.push(msg.workspace);
 			this.users.push({workspace:msg.workspace, list:[]});
-			this.users[this.users.length-1].list.push(msg.user);
+			this.users[this.users.length-1].list.push(msg.user+','+msg.nick);
 			index = this.users.length - 1;
 		}
 		
 		var return_msg = {
 			user: msg.user,
+			nick: msg.nick,
 			list: this.users[index].list
 		};
 		
 		socket.broadcast.to(msg.workspace).emit("communication_someone_joined", JSON.stringify(return_msg));
 		socket.emit("communication_someone_joined", JSON.stringify(return_msg));
+	},
+	
+	msg: function (socket, msg) {
+		socket.broadcast.to(msg.workspace).emit("workspace_message", JSON.stringify(msg));
 	},
 	
 	leave: function (socket, msg) {
@@ -46,11 +51,12 @@ module.exports = {
 		if ((index = this.workspaces.inArray(msg.workspace)) > -1) {
 			var user_index = 0;
 			
-			if ((user_index = this.users[index].list.inArray(msg.user)) > -1) {
+			if ((user_index = this.users[index].list.inArray(msg.user+','+msg.nick)) > -1) {
 				this.users[index].list.remove(user_index);
 			
 				var return_msg = {
 					user: msg.user,
+					nick: msg.nick,
 					list: this.users[index].list 
 				};
 				
@@ -58,6 +64,6 @@ module.exports = {
 			}
 		}
 
-		socket.broadcast.to(msg.workspace).emit("editing_someone_leaved", msg.user);
+		socket.broadcast.to(msg.workspace).emit("editing_someone_leaved", msg.nick);
 	}
 };

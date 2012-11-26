@@ -88,5 +88,20 @@
 	},
 	"no" : {
 		"value" : "아니오"
+	},
+	"logout" : {
+		"value" : "로그아웃"
+	},
+	"account_modify" : {
+		"value" : "정보 변경"
+	},
+	"signup" : {
+		"value" : "회원 가입"
+	},
+	"register" : {
+		"value" : "등록"
+	},
+	"modify" : {
+		"value" : "변경"
 	}
 }

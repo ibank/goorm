@@ -17,6 +17,7 @@ org.goorm.core.edit.find_and_replace = function() {
 	this.ignore_whitespace = false;
 	this.use_regexp = false;
 	this.replace_cursor = null;
+	this.matched_file_list = [];
 };
 
 org.goorm.core.edit.find_and_replace.prototype = {
@@ -148,15 +149,17 @@ org.goorm.core.edit.find_and_replace.prototype = {
 
 	find : function(direction) {
 		var window_manager = core.module.layout.workspace.window_manager;
-		// Get current active_window's editor
-		if(window_manager.window[window_manager.active_window].editor) {
-			// Get current active_window's CodeMirror editor
-			var editor = window_manager.window[window_manager.active_window].editor.editor;
-			// Get input query of this dialog
-			var keyword = $("#find_query_inputbox").val();
-			// Call search function of org.goorm.core.file.findReplace with keyword and editor			
-			this.search(keyword, editor, direction);
-		}
+
+	// Get current active_window's editor
+	if(window_manager.window[window_manager.active_window].editor) {
+		// Get current active_window's CodeMirror editor
+		var editor = window_manager.window[window_manager.active_window].editor.editor;
+		// Get input query of this dialog
+		var keyword = $("#find_query_inputbox").val();
+		// Call search function of org.goorm.core.file.findReplace with keyword and editor			
+		this.search(keyword, editor, direction);
+	}
+
 	},
 
 	find_all : function() {
@@ -220,13 +223,13 @@ org.goorm.core.edit.find_and_replace.prototype = {
 			this.replace_all(keyword1, keyword2, editor);
 		}
 	},
-
 	search : function(keyword, editor, direction) {
 		if(!keyword)
 			return;
 		var text = keyword;
 		var caseFold = true;
-
+		var self = this; 
+		
 		if(this.use_regexp == true)
 			text = RegExp(keyword, "g");
 		else {
@@ -242,23 +245,66 @@ org.goorm.core.edit.find_and_replace.prototype = {
 			this.last_pos = null;
 
 		var cursor = editor.getSearchCursor(text, this.last_pos ? this.last_pos : editor.getCursor(), caseFold);
-
+		var window_manager = core.module.layout.workspace.window_manager;
+		
 		if(direction == "previous") {
 			cursor.findPrevious();
-			if(cursor.findPrevious() == false) {
-				for( cursor = editor.getSearchCursor(text, null, caseFold); cursor.findNext(); ) {
+			if(!cursor.findPrevious()) {
+				//첫번재 match 단어에서 previous 시
+
+				if($("#find_on_workspace")[0].checked == true){
+					for( var i = 0 ; i < window_manager.window.length; i++){
+						if(window_manager.active_window == 0){
+							window_manager.window[window_manager.window.length - 1].activate();	
+						}
+						else{
+							window_manager.window[(window_manager.active_window - 1) % window_manager.window.length].activate();
+						}
+
+						editor = window_manager.window[window_manager.active_window].editor.editor;
+
+						for( cursor = editor.getSearchCursor(text, null, caseFold); cursor.findNext(); ) {
+						}
+						cursor.findPrevious();
+						if(editor.getSearchCursor(text, null, caseFold).findNext()) {
+							break;
+						}
+					}
 				}
-				cursor.findPrevious();
-				if(!editor.getSearchCursor(text, null, caseFold).findNext()) {
-					return;
+
+				else{
+					for( cursor = editor.getSearchCursor(text, null, caseFold); cursor.findNext(); ) {
+					}
+					cursor.findPrevious();
+					if(!editor.getSearchCursor(text, null, caseFold).findNext()) {
+						return;
+					}
 				}
 			}
 		} else {
 			if(!cursor.findNext()) {
-				cursor = editor.getSearchCursor(text, null, caseFold);
+				//마지막 match 단어에서 next 시
 
-				if(!cursor.findNext())
-					return;
+				if($("#find_on_workspace")[0].checked == true){
+					for( var i = 0 ; i < window_manager.window.length; i++){
+						window_manager.window[(window_manager.active_window + 1) % window_manager.window.length].activate();
+
+						editor = window_manager.window[window_manager.active_window].editor.editor;
+
+						cursor = editor.getSearchCursor(text, null, caseFold);
+						if(cursor.findNext()){
+							break;
+						}
+					}
+				}
+
+				else{
+					cursor = editor.getSearchCursor(text, null, caseFold);
+					if(!cursor.findNext()){
+						return;
+					}
+				}
+				
 			}
 		}
 
@@ -267,7 +313,7 @@ org.goorm.core.edit.find_and_replace.prototype = {
 		this.last_query = text;
 		this.last_pos = cursor.to();
 	},
-
+	/* 트리뷰 만들어줘야됌 */
 	search_all : function(keyword, editor) {
 
 		if(!keyword)
@@ -283,16 +329,35 @@ org.goorm.core.edit.find_and_replace.prototype = {
 			if(this.ignore_whitespace == true)
 				text = text.replace(/\s*/g, '');
 		}
-
+		var nodes = {};
+		var window_manager = core.module.layout.workspace.window_manager;
 		// Activate search tab and clean it.
-		core.module.layout.inner_bottom_tabview.selectTab(3);
-		core.module.search.clean();
+/* 		core.module.layout.inner_bottom_tabview.selectTab(3); */
+/* 		core.module.search.clean(); */
 
 		var searchedWords = [];
 
 		this.unmark();
+
+		var node = {};
+		node.filename = window_manager.window[window_manager.active_window].filename;
+		node.filetype = window_manager.window[window_manager.active_window].filetype;
+		node.filepath = window_manager.window[window_manager.active_window].filepath;
+		node.matched_line = 1;
+		node.expanded = false;
+		node.type = "html";
+		node.html = "";
+		node.children = [];
+
+		nodes[node.filepath+node.filename] = node;
+		
+		var cursor = editor.getSearchCursor(text, null, caseFold);
+		if(!cursor.findNext()){
+			core.dialog.search.set_search_treeview(null);
+			return;
+		}
 		// search all matched words and set background of them yellow
-		for(var cursor = editor.getSearchCursor(text, null, caseFold); cursor.findNext(); ) {
+		for(cursor = editor.getSearchCursor(text, null, caseFold); cursor.findNext(); ) {
 			this.marked.push(editor.markText(cursor.from(), cursor.to(), "searched"));
 			var temp = {
 				fline : cursor.from().line,
@@ -300,8 +365,35 @@ org.goorm.core.edit.find_and_replace.prototype = {
 				tline : cursor.to().line,
 				tch : cursor.to().ch
 			};
+			
+			/////////////////////////////////////////////////////////////////////////////////
+			var node = {};
+
+			node.filename = window_manager.window[window_manager.active_window].filename;
+			node.filetype = window_manager.window[window_manager.active_window].filetype;
+			node.filepath = window_manager.window[window_manager.active_window].filepath;
+			node.matched_line = cursor.from().line+1;
+			node.expanded = false;
+			node.type = "html";
+			node.html = "<span style=\"color: #666; font-weight:bold;\">Line: " + node.matched_line +  "</span> - <span style=\"color: #808080\">" + window_manager.window[window_manager.active_window].editor.editor.getLine(node.matched_line-1) + "</span>";
+
+			nodes[node.filepath+node.filename].children.push(node);
+			/////////////////////////////////////////////////////////////////////////////////
+
 			searchedWords.push(temp);
 		}
+
+		for (key in nodes){
+			nodes[key].matched_line = nodes[key].children[0].matched_line;
+			nodes[key].html = "<div class='node'>" 
+							+ "<img src=images/icons/filetype/" + "etc" + ".filetype.png class=\"directory_icon file\" style=\"margin: 0px 3px 0 2px !important; float:left\"/>"
+							+ nodes[key].filepath + nodes[key].filename
+							+ "<div class=\"matched_lines_cnt\" style=\"float:right; background: #99acc4; color: white; width: 14px; height: 14px; text-align:center; -webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px; margin: 1px 10px 0px;\">" + nodes[key].children.length + "</div>"
+							+ "<div class=\"fullpath\" style=\"display:none;\">" + nodes[key].filepath + nodes[key].filename + "</div>"
+							+ "</div>";
+		}
+		
+		core.dialog.search.set_search_treeview(nodes);
 
 		// print messages in reverse order (becuase getSearchCursor search text from the end to the start of the document)
 		for(var i = searchedWords.length - 1; i > -1; i--) {
@@ -459,7 +551,7 @@ org.goorm.core.edit.find_and_replace.prototype = {
 		var window_manager = core.module.layout.workspace.window_manager;
 
 		// Get current active_window's editor
-		if(window_manager.window[window_manager.active_window].editor) {
+		if(window_manager.window[window_manager.active_window].editor != undefined) {
 			// Get current active_window's CodeMirror editor
 			var editor = window_manager.window[window_manager.active_window].editor.editor;
 			

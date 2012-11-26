@@ -54,6 +54,13 @@ org.goorm.core.window.panel.prototype = {
 		this.filename = filename;
 		this.filetype = filetype;
 
+		for (var i=0; i<core.filetypes.length; i++) {
+			if (filetype==core.filetypes[i].file_extension) {
+				editor = core.filetypes[i].editor;
+				break;
+			}			
+		}
+		
 		if(!editor) editor = 'Editor';
 		
 		this.project = core.status.current_project_path;
@@ -101,7 +108,7 @@ org.goorm.core.window.panel.prototype = {
 		//////////////////////////////////////////////////////////////////////////////////////////	
 		
 		this.title = title;
-		this.panel.setHeader("<div style='overflow:auto' class='titlebar'><div class='windowTitle' style='float:left'>"+this.title+"</div><div class='window_buttons'><div class='minimize window_button'></div> <div class='maximize window_button'></div> <div class='close window_button'></div></div></div>");
+		this.panel.setHeader("<div style='overflow:auto' class='titlebar'><div class='window_title' style='float:left'>"+this.title+"</div><div class='window_buttons'><div class='minimize window_button'></div> <div class='maximize window_button'></div> <div class='close window_button'></div></div></div>");
 		this.panel.setBody("<div class='window_container'></div>");
 		this.panel.setFooter("<div class='.footer'>footer</div>");
 		this.panel.render();
@@ -260,7 +267,7 @@ org.goorm.core.window.panel.prototype = {
 		
 		//title bar click event assign
 		$("#"+container).find("#"+container+"_h").find(".titlebar").click(function() {
-			
+			core.module.layout.workspace.window_manager.hide_all_context_menu();
 			return false;
 		});
 		
@@ -307,6 +314,13 @@ org.goorm.core.window.panel.prototype = {
 		
 		core.dialog.project_property.refresh_toolbox();
 		
+		$(core).bind("on_project_open", function () {
+			self.set_title();
+		});
+		
+		setTimeout(function(){
+			self.init_context_event();
+		}, 500)
 	},
 	
 	connect: function(tab) {
@@ -368,6 +382,7 @@ org.goorm.core.window.panel.prototype = {
 		
 		this.resize.lock();
 		this.resize_all();
+		this.refresh();
 	},
 	
 	unmaximize: function () {
@@ -389,7 +404,8 @@ org.goorm.core.window.panel.prototype = {
 		
 		this.resize.unlock();
 		this.resize_all();
-		
+		this.refresh();
+			
 		this.left = 0;
 		this.top = 0;
 		this.width = 0;
@@ -410,7 +426,8 @@ org.goorm.core.window.panel.prototype = {
 			this.status = null;
 		}
 		
-		this.resize_all();		
+		this.resize_all();
+		this.refresh();		
 		this.activate();				
 	},
 	
@@ -505,10 +522,12 @@ org.goorm.core.window.panel.prototype = {
 	},
 	
 	show: function() {
+		this.context_menu.hide();
 		$("#" + this.container + "_c").show();
 	},
 	
 	hide: function() {
+		this.context_menu.hide();
 		$("#" + this.container + "_c").hide();
 	},	
 	
@@ -528,11 +547,21 @@ org.goorm.core.window.panel.prototype = {
 		$("#" + this.container).parent().css("z-index", "3");
 		
 		this.tab.activate();
+		this.context_menu.hide();
 		//core.dialog.project_property.refresh_toolbox();
 	},
 	
-	set_header: function(contents) {
-
+	set_title: function(contents) {
+		if (contents == undefined) {
+			if (this.project != core.status.current_project_path) {
+				this.title = this.filepath + this.filename;
+				$("#" + this.container + "_c").find(".window_title").html(this.title);
+			}
+			else {
+				this.title = this.filename;
+				$("#" + this.container + "_c").find(".window_title").html(this.title);
+			}
+		}
 	},
 	
 	set_body: function(contents) {
@@ -594,10 +623,37 @@ org.goorm.core.window.panel.prototype = {
 		else if(this.type == "Designer") {
 			this.designer.resize_all();
 		}
+		
+		// this.context_menu.hide();
 	},
 	
 	refresh : function(){
+		this.context_menu.hide();
 		this.editor.line_refresh();
+	},
+	
+	init_context_event : function(){
+		var self = this;
+		
+		$('[id="'+self.context_menu.name+'"]').find(".minimize").click(function(){
+			self.minimize();
+			self.context_menu.hide()
+			
+			return false;
+		})
+		
+		$('[id="'+self.context_menu.name+'"]').find(".maximize").click(function(){
+			core.module.layout.workspace.window_manager.maximize_all();
+			self.context_menu.hide()
+			
+			return false;
+		})
+		$('[id="'+self.context_menu.name+'"]').find(".close").click(function(){
+			self.close();
+			self.context_menu.hide()
+			
+			return false;
+		})
 	},
 	
 	inArray: function(keyword) {

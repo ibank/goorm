@@ -45,26 +45,19 @@ org.goorm.core.help.bug_report.prototype = {
 				return false;
 			}
 			
-			var d = new Date();
-			
 			var postdata = {
-				mid: "bug_report",
-				document_srl: "",
 				title: $("#bug_reports_title").val(),
-				allow_comment: "Y",
-				allow_trackback: "N",
-				nick_name: $("#bug_reports_author").val(),
-				password: (d.getMinutes()+d.getSeconds()),
-				act: "procBoardInsertDocument",
-				module: "board",
-				email_address: $("#bug_reports_email").val(),
-				extra_vars1: $("#bug_reports_version").val(),
-				extra_vars2: $("#bug_reports_module").val(),
-				content: $("#bug_reports_content").val()
-			};"OK"
+				explanation: $("#bug_reports_content").val(),
+				author: $("#bug_reports_author").val(),
+				email: $("#bug_reports_email").val(),
+				version: $("#bug_reports_version").val(),
+				module: $("#bug_reports_module").val()
+			};
 			
-			$.post("", postdata, function (data) {
-				if($(data).find("h1").text()=="success") {
+			console.log(postdata);
+			
+			$.get("/help/send_to_bug_report", postdata, function (data) {
+				if(data.err_code==0) {
 					notice.show(core.module.localization.msg["notice_write_done"]);
 					pan.hide(); 
 				}
@@ -93,7 +86,9 @@ org.goorm.core.help.bug_report.prototype = {
 	}, 
 
 	show: function () {
-		$("#bug_reports_author").val(core.user.first_name+"_"+core.user.last_name);
+		var name = core.user.id;
+		
+		$("#bug_reports_author").val(name);
 		$("#bug_reports_title").val("");
 		$("#bug_reports_email").val("");
 		$("#bug_reports_version").val(core.env.version);

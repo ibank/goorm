@@ -42,7 +42,7 @@ org.goorm.core.dialog.confirmation.prototype = {
 		var handle_yes = function() { 
 			if ( typeof self.yes == "function" )
 				self.yes();
-			this.hide(); 
+			self.panel.hide(); 
 		};
 		
 		var handle_no = function() { 

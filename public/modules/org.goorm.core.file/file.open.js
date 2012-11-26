@@ -25,7 +25,9 @@ org.goorm.core.file.open.prototype = {
 			var data = self.dialog_explorer.get_data();
 		
 			if(data.path=="" || data.name=="") {
-				alert.show(core.module.localization.msg["alert_filename_empty"]);				// alert.show("File name is empty. Please fill it...");				return false;
+				alert.show(core.module.localization.msg["alert_filename_empty"]);
+				// alert.show("File name is empty. Please fill it...");
+				return false;
 			}
 
 			core.module.layout.workspace.window_manager.open(data.path, data.name, data.type);

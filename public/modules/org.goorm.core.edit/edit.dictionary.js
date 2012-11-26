@@ -56,6 +56,10 @@ org.goorm.core.edit.dictionary.prototype = {
 					
 					self.editor.focus();
 				}
+				else if (code == 37 || code == 39) {
+					self.hide();
+					self.editor.focus();
+				}
 				else {
 					self.editor.focus();
 				}
@@ -88,7 +92,6 @@ org.goorm.core.edit.dictionary.prototype = {
 		var self = this;
 		
 		$(this.target).find(".dictionary_list").empty();
-		
 		$.getJSON("configs/dictionary/dictionary_list.json", function(list_data) {
 			if (filetype && list_data[filetype] != null) {
 				$.getJSON(list_data[filetype].path, function(data) {
@@ -102,11 +105,11 @@ org.goorm.core.edit.dictionary.prototype = {
 			}
 		});
 		
-		// if (filetype != null) {
-			// $.getJSON("configs/dictionary/" + filetype + ".json", function(data) {
-				// self.contents = eval(data);
-			// });
-		// }
+//		 if (filetype != null) {
+//			 $.getJSON("configs/dictionary/" + filetype + ".json", function(data) {
+//				 self.contents = eval(data);
+//			 });
+//		 }
 	},
 	
 	set: function () {
@@ -192,19 +195,51 @@ org.goorm.core.edit.dictionary.prototype = {
 		});
 	},
 	
-	show: function (cursor_pos) {
-		$(this.target).find(".dictionary_box").css('left', cursor_pos.x + 35);
-		$(this.target).find(".dictionary_box").css('top', cursor_pos.y + 20);
-		$(this.target).find(".dictionary_box").show();
+	show: function (cm) {
+		var cursor = cm.getCursor();
+		var cursor_pos = cm.charCoords({line:cursor.line, ch:cursor.ch}, "local");
+		var scroll = cm.getScrollInfo();
+		var gutter = cm.getGutterElement();
+		var gutter_width = $(gutter).outerWidth() + 15;
 		
-		$(this.target).find(".dictionary_desc").css('left', cursor_pos.x + 45 + $(this.target).find(".dictionary_box").width());
-		$(this.target).find(".dictionary_desc").css('top', cursor_pos.y + 20);
-		$(this.target).find(".dictionary_desc").show();
+		var left = cursor_pos.x + gutter_width;
+		var top = cursor_pos.y - scroll.y + 20;
+		
+		var wrapper = $(cm.getWrapperElement());
+		var wrapper_height = wrapper.outerHeight();
+		var dictionary_box = $(this.target).find(".dictionary_box");
+		var workspace = $("#workspace");
+		
+		if(top < 0) top = 5;
+		
+		if(top > wrapper_height) {
+			top = wrapper_height - dictionary_box.height();
+		}
+		
+		// 딕셔너리박스가 아래라인을 넘어가면 밀림현상 발생.
+		if(workspace.offset().top + workspace.height() -1 < wrapper.offset().top + top + dictionary_box.height()) {
+			console.log(top, wrapper_height);
+			if(top < wrapper_height) {
+				top = top - dictionary_box.height() - 18;
+			}
+			else {
+				top = wrapper_height - dictionary_box.height();
+			}
+		}
+		
+		dictionary_box.css('left', left);
+		dictionary_box.css('top', top);
+		dictionary_box.show();
+		
+		var dictionary_desc = $(this.target).find(".dictionary_desc");
+		dictionary_desc.css('left', left + dictionary_box.width());
+		dictionary_desc.css('top', top);
+		dictionary_desc.show();
 		
 		$(this.target).find(".dictionary_list .hovered").removeClass("hovered");
 		$(this.target).find(".dictionary_list .dictionary_element:first").addClass("hovered");
 		
-		$(this.target).find(".dictionary_box").attr("tabindex", -1).focus();
+		dictionary_box.attr("tabindex", -1).focus();
 		
 		this.index = 0;
 	},

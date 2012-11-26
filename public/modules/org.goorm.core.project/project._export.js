@@ -19,6 +19,7 @@ org.goorm.core.project._export.prototype = {
 		var self = this;
 		
 		var handle_ok = function() { 
+			core.module.loading_bar.start("Export processing...");
 
 			var data = self.project_list.get_data();
 
@@ -27,15 +28,19 @@ org.goorm.core.project._export.prototype = {
 				// alert.show("Project item is not selected");
 				return false;
 			}
-
+			
+			var name = core.user.id;
+			
 			var postdata = {
-				user: core.user.first_name+"_"+core.user.last_name,
+				user: name,
 				project_path: data.path,
 				project_name: data.name,
 				export_type: $("#project_export_datatype option:selected").text()
 			};
 								
 			$.get("project/export", postdata, function (data) {
+				core.module.loading_bar.stop();
+				
 				if (data.err_code == 0) {
 					self.dialog.panel.hide();
 					
@@ -62,7 +67,7 @@ org.goorm.core.project._export.prototype = {
 						 
 		this.dialog = new org.goorm.core.project._export.dialog();
 		this.dialog.init({
-			title:"Export", 
+			title:"Export Project", 
 			path:"configs/dialogs/org.goorm.core.project/project._export.html",
 			width:800,
 			height:500,

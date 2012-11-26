@@ -70,7 +70,7 @@ org.goorm.core.collaboration.notification.prototype = {
 		
 		$('.notification_content_area').scrollTop($('.notification_content').length * 19);
 		
-		this.show();
+		// this.show();
 	},
 	
 	show : function(){

@@ -88,5 +88,20 @@
 	},
 	"no" : {
 		"value" : "No"
+	},
+	"logout" : {
+		"value" : "Logout"
+	},
+	"account_modify" : {
+		"value" : "Account Modify"
+	},
+	"signup" : {
+		"value" : "Sign-up"
+	},
+	"register" : {
+		"value" : "Register"
+	},
+	"modify" : {
+		"value" : "Modify"
 	}
 }

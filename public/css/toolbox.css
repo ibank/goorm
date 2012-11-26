@@ -11,7 +11,7 @@
 }
 
 #toolbox .category_icon {
-	background-image:url('../images/org.goorm.core.layout/item_toolboxCategory.png'); background-repeat:no-repeat; background-position: 3px 3px;
+	background-image:url('../images/org.goorm.core.layout/item_toolbox_category.png'); background-repeat:no-repeat; background-position: 3px 3px;
 }
 
 #toolbox .tool_item {

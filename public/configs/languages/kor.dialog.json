@@ -373,6 +373,9 @@
     "dialog_project_find_and_replace": {
         "value": "찾기/바꾸기",
         "children": {
+            "dialog_project_site_guide":{
+               "value": "범위 :"
+            },
             "dialog_project_find_guide": {
                 "value": "찾기 : "
              },
@@ -390,6 +393,9 @@
              },
             "dialog_project_use_regular_expression_guide": {
                 "value": "정규식 표현 사용하기"
+             },
+            "dialog_project_find_on_workspace_guide": {
+                "value": "워크스페이스내에서 찾기"
              }
         }
     },

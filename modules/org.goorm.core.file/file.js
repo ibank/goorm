@@ -11,6 +11,7 @@ var walk = require('walk');
 var EventEmitter = require("events").EventEmitter;
 var rimraf = require('rimraf');
 var http = require('http');
+var exec = require('child_process').exec;
 
 var root_dir = "";
 var file_type = [];
@@ -234,7 +235,6 @@ module.exports = {
 				if (root.indexOf("\/\.")==-1) {			
 					for (var i=0; i < file_stats.length; i++) {
 						if (file_stats[i].name.indexOf("\.") != 0 ) {
-							
 							var temp_filename = file_stats[i].name;
 							var file_path = file_stats[i].name.split('.').pop() + ".filetype.png";
 
@@ -263,6 +263,9 @@ module.exports = {
 									  + "</div>";
 							node.children = [];
 							node.filetype = extension;
+							
+							if(node.root && (node.root.split('/').length == 2 || node.root.split('/').length == 3) && node.filename == 'project.json')
+								continue;
 							
 							nodes.push(node);
 						}
@@ -303,7 +306,7 @@ module.exports = {
 						dir.name = dir_stats_array[i].name;
 						dir.parent_label = dir.root;
 						dir.cls = "dir";
-						dir.expanded = true;
+						dir.expanded = false;
 						dir.sortkey = 0 + dir.name;
 						dir.type = "html";
 						dir.html = "<div class='node'>" 
@@ -404,7 +407,7 @@ module.exports = {
 					tree[i].children.join(this.make_file_tree(tree[i].children, rest_files));
 				}
 			}
-			
+
 			return tree;
 		}
 		else {
@@ -675,4 +678,100 @@ module.exports = {
 			evt.emit("file_do_save_as", data);
 		}
 	},
+	
+	get_file: function (filepath, filename, evt) {
+		if(!fs.existsSync(__temp_dir)) {
+			fs.mkdirSync(__temp_dir);
+		}
+		if(!fs.existsSync(__temp_dir + "/files")) {
+			fs.mkdirSync(__temp_dir + "/files");
+		}
+		if(!fs.existsSync(__temp_dir + "/files/" + filepath)) {
+			fs.mkdirSync(__temp_dir + "/files/" + filepath);
+		}
+		
+		console.log(__workspace + filepath + filename);
+		console.log(__temp_dir + "files");
+		
+		this.copy_file_sync(__workspace + filepath + filename, __temp_dir + "/files/" + filepath + filename);
+		
+		evt.emit("got_file", {result:true});
+	},
+	
+	copy_file_sync : function(srcFile, destFile) {
+		BUF_LENGTH = 64*1024;
+		buff = new Buffer(BUF_LENGTH);
+		fdr = fs.openSync(srcFile, 'r');
+		fdw = fs.openSync(destFile, 'w');
+		bytesRead = 1;
+		pos = 0;
+		while (bytesRead > 0) {
+			bytesRead = fs.readSync(fdr, buff, 0, BUF_LENGTH, pos);
+			fs.writeSync(fdw,buff,0,bytesRead);
+			pos += bytesRead;
+		}
+		fs.closeSync(fdr);
+		fs.closeSync(fdw);
+	},
+		
+	do_search_on_project: function (query, evt) {
+		var self = this;
+		var nodes = {};
+		var find_query = query.find_query;
+		var project_path = query.project_path;
+		var grep_option = query.grep_option;
+		var invert_match  = " | grep -v \"/.svn\" | grep -v \"Binary\" | grep -v \"file.list\" | grep -v \"project.json\" | grep -v \".classpath\"";
+
+		console.log("grep " + find_query + " " + __workspace.slice(0, -1) + project_path + grep_option + invert_match);
+		var command = exec("grep " + find_query + " " + __workspace.slice(0, -1) + project_path + grep_option + invert_match, function (error, stdout, stderr) {
+			if (error == null) {
+				var matched_files_list = stdout.split(/\n/);
+				matched_files_list.pop();
+
+				for(var idx = 0; idx < matched_files_list.length; idx++){
+					var node = {};
+					node.filename = matched_files_list[idx].split(":")[0].match(/[^/]*$/)[0];
+					node.filetype = matched_files_list[idx].replace(/(\/[a-zA-Z0-9_-]+)+\/?/, "").split(":")[0]
+					node.filepath = matched_files_list[idx].split(":")[0].replace(__workspace, "").replace(node.filename, "");
+					node.matched_line = 1;
+					node.expanded = false;
+					node.type = "html";
+					node.html = "";
+					node.children = [];
+
+					nodes[node.filepath+node.filename] = node;
+				}
+
+				for(var idx = 0; idx < matched_files_list.length; idx++){
+					var node = {};
+
+					node.filename = matched_files_list[idx].split(":")[0].match(/[^/]*$/)[0];
+					node.filetype = matched_files_list[idx].replace(/(\/[a-zA-Z0-9_-]+)+\/?/, "").split(":")[0]
+					node.filepath = matched_files_list[idx].split(":")[0].replace(__workspace, "").replace(node.filename, "");
+					node.matched_line = matched_files_list[idx].replace(/(\/[a-zA-Z0-9_-]+)+\/?.[a-z]+\:/, "").split(":")[0];
+					node.expanded = false;
+					node.type = "html";
+					node.html = "<span style=\"color: #666; font-weight:bold;\">Line: " + node.matched_line +  "</span> - <span style=\"color: #808080\">" + matched_files_list[idx].replace(/(\/[a-zA-Z0-9_-]+)+\/?.[a-z]+\:\d+\:/, "") + "</span>";
+
+					nodes[node.filepath+node.filename].children.push(node);
+				}
+				
+				for (key in nodes){
+					nodes[key].matched_line = nodes[key].children[0].matched_line;
+					nodes[key].html = "<div class='node'>" 
+									+ "<img src=images/icons/filetype/" + "etc" + ".filetype.png class=\"directory_icon file\" style=\"margin: 0px 3px 0 2px !important; float:left\"/>"
+									+ nodes[key].filepath + nodes[key].filename
+									+ "<div class=\"matched_lines_cnt\" style=\"float:right; background: #99acc4; color: white; width: 14px; height: 14px; text-align:center; -webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px; margin: 1px 10px 0px;\">" + nodes[key].children.length + "</div>"
+									+ "<div class=\"fullpath\" style=\"display:none;\">" + nodes[key].filepath + nodes[key].filename + "</div>"
+									+ "</div>";
+				}
+
+				evt.emit("file_do_search_on_project", nodes);
+			}
+
+			else{
+				evt.emit("file_do_search_on_project", null);
+			}
+		});
+	}
 };

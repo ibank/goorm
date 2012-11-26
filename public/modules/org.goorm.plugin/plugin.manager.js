@@ -61,36 +61,6 @@ org.goorm.plugin.manager.prototype = {
 		
 			$("#toolbox_selectbox").prepend("<option value='all'>ALL</option>");
 			
-/*
-			self.toolbox_selector = new YAHOO.widget.Button({ 
-					id: "toolboxSelectBox", 
-					name: "toolboxSelectBox",
-					label: "Select Tool",
-					type: "menu",  
-					menu: "toolbox_selectbox", 
-					container: "toolbox_selector"
-			});
-
-			var toolboxClick = function (p_sType, p_aArgs) {
-				var oEvent = p_aArgs[0],	//	DOM event
-					oMenuItem = p_aArgs[1];	//	MenuItem instance that was the target of 
-											//	the event 
-				if (oMenuItem) {
-					if (oMenuItem.value=="all") {
-						$("#toolboxSelectBox-button").text($(oMenuItem.element).text());
-						$(".toolsets").css("display", "block");
-					}
-					else {
-						$("#toolboxSelectBox-button").text($(oMenuItem.element).text());
-						$(".toolsets").css("display", "none");
-						$("#"+oMenuItem.value+"_toolset").css("display", "block");
-					}
-				}
-			};
-
-			self.toolbox_selector.getMenu().subscribe("click", toolboxClick);
-*/
-
 			return false;
 		}
 		else if(this.list.length != 0){
@@ -98,7 +68,10 @@ org.goorm.plugin.manager.prototype = {
 				$("#toolbox").html("<div id='toolbox_selector'></div>");
 				$("#toolbox_selector").append("<select id='toolbox_selectbox' name='toolbox_selectbox' style='width:100%;'></select>");
 				
-				$("#toolbox_selector").change(function () {
+				$("#toolbox_selectbox").change(function () {
+					if ($(this).val() == "all") {
+						$("#toolbox div").show();
+					}
 					$("#" + $("#toolbox_selector option:selected").val() + "_toolset").show();
 				});
 			}
@@ -113,13 +86,12 @@ org.goorm.plugin.manager.prototype = {
 
 					index++;
 					self.load(index);
-					
 					core.module.preference.manager.get_default_file('/' + plugin_name + '/preference.json', function(json){
 						core.preference.plugins[plugin_name] || (core.preference.plugins[plugin_name] = {})
-						$.extend(true, core.preference.plugins[plugin_name], json);
+						core.preference.plugins[plugin_name] = $.extend(true, json, core.preference.plugins[plugin_name]);
 						// restore default를 위한 기본 preference데이터를 저장.
 						core.module.preference.preference_default.plugins[plugin_name] = {};
-						$.extend(true, core.module.preference.preference_default.plugins[plugin_name], json);
+						core.module.preference.preference_default.plugins[plugin_name] = $.extend(true, core.module.preference.preference_default.plugins[plugin_name], json);
 					});
 					
 					$(core).trigger("goorm_loading");
