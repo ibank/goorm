@@ -109,7 +109,7 @@ Getting Started
           $ node goorm.js start -d
           $ goorm start -d
 
-  config : 
+  config (optional) : 
 
           $ node goorm.js set --workspace ~/workspace/
           $ goorm set -w ~/workspace/
