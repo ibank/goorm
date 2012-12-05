@@ -4,14 +4,14 @@ project.goorm
 goorm is the cloud-based Integrated Development Environment. It is developed in only javascript and using various open source libraries. It is also an open-source project. goorm supports currently C/C++ and Java as well as HTML, CSS, PHP and Javascript. Other languages will be supported with plugin. (future works).
 
 * **goorm is developing now and this repository provides only beta version.**
-* **please, feedback to us about bugs and feature what you need.** (email: xenoz0718@gmail.com)
+* **please, feedback to us about bugs and feature what you need.** (email: sungtae.ryu@goorm.io)
 
 Installation
 ------------
 
   install using npm :
 
-          $ npm install goorm
+          $ npm install goorm -g
 
 Official Site
 -------------
