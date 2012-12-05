@@ -133,7 +133,13 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=delete_file]").unbind("click");
 		$("a[action=delete_file]").click(function() {
 			if(core.status.selected_file) {
+				if("/"+core.status.current_project_path == core.status.selected_file) {
+					console.log(core.status.current_project_path);
+					alert.show("Cannot Delete!");
+					return ;
+				}
 				confirmation.init({
+					localization_key:"title_delete",
 					title : "Delete",
 					// message : "<span localization_key='confirmation_delete_file'>Do you want to delete this file?</span>",
 					// yes_text : "<span localization_key='yes'>Yes</span>",
@@ -220,6 +226,7 @@ org.goorm.core.menu.action.prototype = {
 
 		$("a[action=do_cut]").unbind("click");
 		$("a[action=do_cut]").click(function() {
+			console.log("cut");
 			//core.dialog.preference.preference['preference.editor.use_clipboard'];
 			var window_manager = core.module.layout.workspace.window_manager;
 
@@ -232,7 +239,7 @@ org.goorm.core.menu.action.prototype = {
 
 		$("a[action=do_copy]").unbind("click");
 		$("a[action=do_copy]").click(function() {
-
+			console.log("copy");
 			var window_manager = core.module.layout.workspace.window_manager;
 
 			if(window_manager.window[window_manager.active_window].designer) {
@@ -250,6 +257,14 @@ org.goorm.core.menu.action.prototype = {
 			if(window_manager.window[window_manager.active_window].designer) {
 				window_manager.window[window_manager.active_window].designer.canvas.paste();
 			} else if(window_manager.window[window_manager.active_window].editor) {
+				if(core.env.os == "darwin"){
+					var key = '⌘V';
+				}
+				else {
+					var key = "Ctrl+V";
+				}
+				alert.show("붙여넣기 작업은 '편집' 메뉴에서는 불가능하지만 '"+key+"' 키를 사용하면 가능합니다.");
+				return ;
 				window_manager.window[window_manager.active_window].editor.paste();
 			}
 		});
@@ -528,6 +543,7 @@ org.goorm.core.menu.action.prototype = {
 
 		$("a[action=build_configuration]").unbind("click");
 		$("a[action=build_configuration]").click(function() {
+			console.log(core.dialog.build_configuration);
 			core.dialog.build_configuration.show();
 		});
 
@@ -1072,6 +1088,11 @@ org.goorm.core.menu.action.prototype = {
 
 		$("a[action=delete_context]").unbind("click");
 		$("a[action=delete_context]").click(function() {
+			if("/"+core.status.current_project_path == core.status.selected_file) {
+				console.log(core.status.current_project_path);
+				alert.show("Cannot Delete!");
+				return ;
+			}
 			confirmation.init({
 				title : "Delete",
 				message : core.module.localization.msg['confirmation_delete_file'],
@@ -1174,11 +1195,28 @@ org.goorm.core.menu.action.prototype = {
 
 		$("a[action=account_logout]").unbind("click");
 		$("a[action=account_logout]").click(function(e) {
+			confirmation.init({
+				message: core.module.localization.msg["alert_confirm_logout"],
+				yes_text: core.module.localization.msg["confirmation_yes"],
+				no_text: core.module.localization.msg["confirmation_no"],
+				title: "Confirmation", 
+
+				yes: function () {
+					$.post('/auth/logout', function(result){
+						if(result) location.href = '/';
+					})
+				}, no: function () {
+				}
+			});
+			
+			confirmation.panel.show();
+/*
 			if(confirm(core.module.localization.msg["alert_confirm_logout"])){
 				$.post('/auth/logout', function(result){
 					if(result) location.href = '/';
 				})
 			}
+*/
 		});
 	}
 }

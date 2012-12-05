@@ -29,6 +29,7 @@ org.goorm.core.file.save_as.prototype = {
 						 
 		this.dialog = new org.goorm.core.file.save_as.dialog();
 		this.dialog.init({
+			localization_key:"title_save_as",
 			title:"Save as", 
 			path:"configs/dialogs/org.goorm.core.file/file.save_as.html",
 			width:600,

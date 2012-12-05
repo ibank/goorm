@@ -45,11 +45,12 @@ org.goorm.core.file._new.other.prototype = {
 			this.hide(); 
 		};
 		
-		this.buttons = [ {text:"<span localization_key='button_ok'>OK</span>", handler:handle_ok, isDefault:true},
-						 {text:"<span localization_key='button_cancel'>Cancel</span>",  handler:handle_cancel}]; 
+		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
+						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
 		this.dialog = new org.goorm.core.file._new.other.dialog();
 		this.dialog.init({
+			localization_key:"title_new_other_file",
 			title:"New Other File", 
 			path:"configs/dialogs/org.goorm.core.file/file._new.other.html",
 			width:400,

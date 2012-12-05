@@ -5,7 +5,7 @@
  * project_name : goormIDE
  * version: 1.0.0
  **/
- 
+
 var commander = require('commander')
   , fs = require('fs')
   , colors = require('colors')
@@ -92,19 +92,19 @@ fs.readFile(__dirname+"/info_goorm.json", "utf8", function(err, contents) {
 				console.log('      -t, --temp-directory  set the temporary directory. default value is "temp_files"');
 				console.log('');
 				console.log('      $ node goorm.js set -t temp');
-				console.log('      $ goorm start --temp-directory temp_files');
+				console.log('      $ goorm set --temp-directory temp_files');
 				console.log('');
 				console.log('      $ node goorm.js set -f appId, appSecret');
-				console.log('      $ goorm start --api-key-facebook appId, appSecret');
+				console.log('      $ goorm set --api-key-facebook appId, appSecret');
 				console.log('');
 				console.log('      $ node goorm.js set -b consumerKey, consumerSecret');
-				console.log('      $ goorm start --api-key-twitter consumerKey, consumerSecret');
+				console.log('      $ goorm set --api-key-twitter consumerKey, consumerSecret');
 				console.log('');
 				console.log('      $ node goorm.js set -g appId, appSecret');
-				console.log('      $ goorm start --api-key-google appId, appSecret');
+				console.log('      $ goorm set --api-key-google appId, appSecret');
 				console.log('');
 				console.log('      $ node goorm.js set -h appId, appSecret');
-				console.log('      $ goorm start --api-key-github appId, appSecret');
+				console.log('      $ goorm set --api-key-github appId, appSecret');
 				console.log('');
 				console.log('  Command: Clean Configs');
 				console.log('');

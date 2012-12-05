@@ -24,13 +24,17 @@ org.goorm.core.file.open.prototype = {
 			
 			var data = self.dialog_explorer.get_data();
 		
-			if(data.path=="" || data.name=="") {
+			if(data.path=="" || $("#file_open_target_name").val()=="") {
 				alert.show(core.module.localization.msg["alert_filename_empty"]);
-				// alert.show("File name is empty. Please fill it...");
 				return false;
 			}
 
-			core.module.layout.workspace.window_manager.open(data.path, data.name, data.type);
+			if($("#file_open_target_name").val().indexOf("..")!=-1) {
+				alert.show(core.module.localization.msg["alert_file_name_illegal"]);
+				return false;
+			}
+
+			core.module.layout.workspace.window_manager.open(data.path, $("#file_open_target_name").val(), data.type);
 			
 			this.hide(); 
 		};
@@ -39,12 +43,14 @@ org.goorm.core.file.open.prototype = {
 			
 			this.hide(); 
 		};
+	
 		
 		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 
 		this.dialog = new org.goorm.core.file.open.dialog();
 		this.dialog.init({
+			localization_key:"title_open_file",
 			title:"Open file", 
 			path:"configs/dialogs/org.goorm.core.file/file.open.html",
 			width:800,
@@ -64,6 +70,7 @@ org.goorm.core.file.open.prototype = {
 		            $("#open_dialog_center").css('width', (width - w - 9) + 'px');
 		        });
 		        
+/*
 		        $("#file_open_project_type").change(function() {
 		        	var type = $(this).val();
 		        	$("#open_dialog_center").find(".file_item").each(function() {
@@ -78,6 +85,7 @@ org.goorm.core.file.open.prototype = {
 		        		}
 		        	});
 		        });
+*/
 		        
 			}
 		});

@@ -148,6 +148,7 @@ org.goorm.core.project._new.prototype = {
 						 
 		this.dialog = new org.goorm.core.project._new.dialog();
 		this.dialog.init({
+			localization_key:"title_new_project",
 			title:"New Project", 
 			path:"configs/dialogs/org.goorm.core.project/project._new.html",
 			width:800,
@@ -278,6 +279,7 @@ org.goorm.core.project._new.prototype = {
 		$("#project_new_import_file").val("");
 		$("#check_project_new_import").attr('checked', false);
 		$("#check_use_collaboration").attr('checked', false);
+		$("#project_new_import_div").hide();
 		
 		$("div[id='project_new']").find(".project_types").scrollTop(0);
 		$("div[id='project_new']").find(".project_items").scrollTop(0);

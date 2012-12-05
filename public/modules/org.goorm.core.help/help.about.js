@@ -26,6 +26,7 @@ org.goorm.core.help.about.prototype = {
 						 
 		this.dialog = new org.goorm.core.help.about.dialog();
 		this.dialog.init({
+			localization_key:"title_about_goorm",
 			title:"About goorm",
 			path:"configs/dialogs/org.goorm.core.help/help.about.html",
 			width:660,

@@ -121,17 +121,21 @@ org.goorm.core.design.canvas.prototype = {
 
 		//Set Dialog
 		var handle_ok = function() { 
+			
 			var width = $("#" + self.dialog.container_id).find(".design_canvas_setting").find(".canvas_width").val();
 			var height = $("#" + self.dialog.container_id).find(".design_canvas_setting").find(".canvas_height").val();
 			
 			self.set_size(width, height);
 			
+/*
 			self.preview.scale=(self.preview_slider.get_real_value()/100).toFixed(2);
 			self.preview.set_size("change");
+*/
 			
 			parent.resize_all();
-		
+			
 			this.hide(); 
+			
 		};
 
 		var handle_cancel = function() { 
@@ -145,6 +149,7 @@ org.goorm.core.design.canvas.prototype = {
 		this.dialog = new org.goorm.core.design.canvas.dialog();
 
 		this.dialog.init({
+			localization_key:"title_canvas_setting",
 			title:"Canvas Setting", 
 			path:"configs/dialogs/org.goorm.core.design/design.canvas.html",
 			width:595,
@@ -1453,9 +1458,15 @@ if  ( ( (sx - 5 <= x && x <= ex + 5) || (ex - 5 <= x && x <= sx + 5) ) && ( (sy 
 	},
 	
 	set_size: function (width, height, indicator_top_fake) {
+		var self = this;
+	
 		//Set width, height properties
 		this.width = parseInt(width);
 		this.height = parseInt(height);
+		
+		$("#" + self.dialog.container_id).find(".design_canvas_setting").find(".canvas_width").val(width);
+		var height = self.height;
+		$("#" + self.dialog.container_id).find(".design_canvas_setting").find(".canvas_height").val(height);
 		
 		//Set Canvas Layer Style for aligning center
 		$(this.target).find(".canvas").width(this.width);

@@ -29,7 +29,8 @@ org.goorm.core.file.switch_workspace.prototype = {
 						 
 		this.dialog = new org.goorm.core.file.switch_workspace.dialog();
 		this.dialog.init({
-			title:"Switch workspace", 
+			localization_key:"title_switch_workspace",
+			title:"Switch Workspace", 
 			path:"configs/dialogs/org.goorm.core.file/file.switch_workspace.html",
 			width:600,
 			height:250,

@@ -15,7 +15,6 @@ org.goorm.core.collaboration.notification.prototype = {
 					// if(core.module.layout.inner_layout.getUnitByPosition("right")._collapsed){
 	 					// core.module.layout.inner_layout.getUnitByPosition("right").expand();
 	 				// }
-					// console.log('Send');
 				// }
 			// },
 			{
@@ -29,6 +28,7 @@ org.goorm.core.collaboration.notification.prototype = {
 		
 		this.dialog = new org.goorm.core.collaboration.notification.dialog();
 		this.dialog.init({
+			localization_key:"title_notification",
 			title: "Notification",
 			path : "configs/dialogs/org.goorm.core.collaboration/collaboration.notification.html",
 			width : 300,

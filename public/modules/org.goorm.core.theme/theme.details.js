@@ -34,6 +34,7 @@ org.goorm.core.theme.details.prototype = {
 
 		this.dialog = new org.goorm.core.theme.details.dialog();
 		this.dialog.init({
+			localization_key:"title_theme_details",
 			title:"Theme Details", 
 			path:"configs/dialogs/org.goorm.core.theme/theme.details.html",
 			width:1000,

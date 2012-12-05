@@ -64,7 +64,7 @@ module.exports = {
 				port_list.remove(i);
 			}
 		}
-		console.log(port+" port is removed");
+
 		return 1;
 	}
 }

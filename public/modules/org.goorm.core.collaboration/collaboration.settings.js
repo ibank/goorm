@@ -37,6 +37,7 @@ org.goorm.core.collaboration.settings.prototype = {
 						 
 		this.dialog = new org.goorm.core.collaboration.settings.dialog();
 		this.dialog.init({
+			localization_key:"title_settings",
 			title:"Settings", 
 			path:"configs/dialogs/org.goorm.core.collaboration/collaboration.settings.html",
 			width:700,

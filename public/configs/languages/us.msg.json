@@ -1,4 +1,7 @@
 {
+	"alert_file_name_illegal": {
+        "value": "File name is illegal"
+    },
     "alert_folder_name_empty": {
         "value": "Folder name is empty"
     },
@@ -19,6 +22,9 @@
     },
     "alert_project_not_opened": {
         "value": "Cannot find opened project"
+    },
+    "alert_filetype_same_name": {
+        "value": "There is same file extension"
     },
     "alert_error": {
         "value": "Error : "
@@ -228,7 +234,7 @@
         "value": "It is invalid to Nickname form.(3~20 digits, Hangul/Alphabet/Number/Special characters(-/_/.))."
     },
     "alert_confirm_logout": {
-        "value": "Are you sure?"
+        "value": "Are you sure you want to logout?"
     },
     "alert_login_not_match_password": {
         "value": "Password is incorrect."
@@ -247,5 +253,29 @@
     },
     "alert_cannot_connect_db": {
 	    "value": "Fail to connect from database."
+    },
+    "confirmation_delete_item": {
+	    "value": "Are you sure you want to delete a user?"
+    },
+    "confirmation_modify_profile": {
+	    "value": "Are you sure you want to modify an information?"
+    },
+    "notice_help_goorm_ide_current_version" : {
+    	"value" : "goorm IDE Current Version"
+    },
+    "notice_help_goorm_ide_official_version" : {
+    	"value" : "Official Version"
+    },
+    "notice_help_goorm_ide_update" : {
+    	"value" : "Update"
+    },
+    "notice_search_select_project" : {
+    	"value" : "Select Project"
+    },
+    "confirmation_delete_filetype": {
+        "value": "Do you really want to delete this filetype?"
+    },
+    "toast_filetype_save_complete": {
+        "value": "Filetype save complete!"
     }
 }

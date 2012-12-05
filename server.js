@@ -6,6 +6,11 @@
  * version: 1.0.0
  **/
 
+var mongoose_module = require('mongoose');
+Schema = mongoose_module.Schema;	//global
+global.__use_mongodb = true;
+mongoose = mongoose_module.createConnection('mongodb://localhost/goorm_ide');	//global
+
 var express = require('express')
   , routes = require('./routes')
   , socketio = require('socket.io')
@@ -13,6 +18,14 @@ var express = require('express')
   , colors = require('colors')
   , everyauth = require('everyauth')
   , fs = require('fs');
+
+mongoose.on('error', function(err){
+	global.__use_mongodb = false;
+	console.log('\nmongoDB connection error. Is the "mongod" turned off?'.red);
+	console.log(err);
+});
+
+// mongoose.on('error', console.error.bind(console, '\nmongoDB connection error!!!\nIs the "mongod" turned off? : '.red));
 
 //everyauth.debug = true;
 
@@ -60,9 +73,11 @@ else {
 
 if (config_data.social_key != undefined) {
 	global.__social_key = config_data.social_key;
+	global.__social_key['possible_list'] = [];
 }
 else {
 	global.__social_key = {};
+	global.__social_key['possible_list'] = [];
 }
 
 
@@ -217,8 +232,10 @@ goorm.post('/auth/signup/check', routes.auth.signup.check);
 // for admin
 goorm.get('/auth/check_admin', routes.admin.check);
 goorm.get('/admin/get_config', check_auth, routes.admin.get_config);
+goorm.post('/admin/set_config', check_auth, routes.admin.set_config);
 goorm.post('/admin/user/add', check_auth, routes.admin.user_add);
 goorm.post('/admin/user/del', check_auth, routes.admin.user_del);
+goorm.post('/admin/user/avail_blind', check_auth, routes.admin.user_avail_blind);
 
 // for users
 goorm.post('/user/get', routes.user.get);
@@ -230,6 +247,7 @@ goorm.get('/download', check_auth, routes.download);
 
 //for Social API
 goorm.get('/social/login', routes.social.login);
+goorm.get('/social/list', routes.social.possible_list);
 goorm.all('/social/twitter', check_auth, routes.social.twitter);
 
 goorm.get('/alloc_port', check_auth, function(req, res) {
@@ -241,6 +259,10 @@ goorm.get('/remove_port', check_auth, function(req, res) {
 	// req : port
 	res.json(g_port_manager.remove_port(req.query));
 });
+
+//for history
+// goorm.post('/history/add_snapshot', check_auth, routes.history.add_snapshot);
+goorm.post('/history/get_history', check_auth, routes.history.get_history);
 
 goorm.get('/db/is_open', function(req, res){
 	var dbname = req.query.dbname;

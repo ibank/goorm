@@ -24,7 +24,9 @@ org.goorm.core.file.save_as.prototype = {
 			var data = self.dialog_explorer.get_data();
 		
 			if(data.path=="" || data.name=="") {
-				alert.show(core.module.localization.msg["alert_filename_empty"]);				// alert.show("File name is empty. Please fill it...");				return false;
+				alert.show(core.module.localization.msg["alert_filename_empty"]);
+				// alert.show("File name is empty. Please fill it...");
+				return false;
 			}
 
 			var postdata = {
@@ -46,7 +48,8 @@ org.goorm.core.file.save_as.prototype = {
 						// title: "Confirmation", 
 						// message: "Exist file. Do you want to save anyway?",
 						// yes_text: "yes",
-						// no_text: "no",
+						// no_text: "no",
+
 						title: "Confirmation", 
 						// message: "<span localization_key='confirmation_new_message'>Exist file. Do you want to save anyway?</span>",
 						// yes_text: "<span localization_key='yes'>Yes</span>",
@@ -81,6 +84,7 @@ org.goorm.core.file.save_as.prototype = {
 						 
 		this.dialog = new org.goorm.core.file.save_as.dialog();
 		this.dialog.init({
+			localization_key:"title_save_as",
 			title:"Save as", 
 			path:"configs/dialogs/org.goorm.core.file/file.save_as.html",
 			width:800,
@@ -116,7 +120,9 @@ org.goorm.core.file.save_as.prototype = {
 		var window_manager = core.module.layout.workspace.window_manager;
 
 		if (window_manager.active_window<0) {
-			alert.show(core.module.localization.msg.alert_file_not_opened);			// alert.show("Could not open this file");		}
+			alert.show(core.module.localization.msg.alert_file_not_opened);
+			// alert.show("Could not open this file");
+		}
 		else {
 			if(window_manager.window[window_manager.active_window].designer != undefined) {
 				self.contents_data = window_manager.window[window_manager.active_window].designer.get_contents();

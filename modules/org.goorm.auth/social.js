@@ -27,10 +27,18 @@ social.prototype = {
 		var user = self.get_user_data(req.session.auth[self.social_type]);
 		if(user){
 			auth_m.get(user, function(user_data){
-				if(user_data){
+				if(user_data && !user_data.deleted){
 					self.update_session(req, user_data);
 					callback({
 						result : true
+					});
+				}
+				else if(user_data){
+					auth_m.logout(req, function(logout_result){
+						callback({
+							code : 0,
+							result : false
+						})
 					});
 				}
 				else{

@@ -33,7 +33,7 @@ org.goorm.core.collaboration.communication.prototype = {
  		
 		$("#" + target).append("<div class='communication_user_container'>User </div>");
 		$("#" + target).append("<div class='communication_message_container'></div>");
-		$("#" + target).append("<div class='communication_message_input_container'><input id='input_chat_message' placeholder='Type your meessage...' style='width:90%;' /></div>");
+		$("#" + target).append("<div class='communication_message_input_container'><input id='input_chat_message' placeholder='Type your message...' style='width:90%;' /></div>");
 		$("#" + target +' .communication_message_input_container').append("<div class='communication_message_social_area'></div>");
 		
 		$("#" + target + " #input_chat_message").keypress(function(evt){
@@ -62,12 +62,14 @@ org.goorm.core.collaboration.communication.prototype = {
 		
  		this.socket.on("communication_message", function (data) {
  			data = decodeURIComponent(data);
-
 			self.notification.notify(data);
+			
+			data = ((data.replace(/&/g, '&amp;')).replace(/\"/g, '&quot;')).replace(/\'/g, '&#39;'); 
+			data = data.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+			
  			$("#" + self.target).find(".communication_message_container").append("<div class='communication_message_content'>" + data + "</div>");
- 			var length = $("#" + self.target).find(".communication_message_container").find('.communication_message_content').length || 0;
- 			$("#" + self.target).find(".communication_message_container").scrollTop(parseInt(length) * 16); // 16 = height of communication_message_content
-
+ 			var room = $("#" + self.target).find(".communication_message_container");
+ 			$(room).scrollTop(room.height());
 
  			if(core.module.layout.inner_layout.getUnitByPosition("right")._collapsed){
  				self.notification.show();
@@ -106,7 +108,8 @@ org.goorm.core.collaboration.communication.prototype = {
  		});
  		
  		this.notification = new org.goorm.core.collaboration.notification();
- 		this.notification.init();	},
+ 		this.notification.init();
+	},
 	
 	clear: function () {
 		$("#" + this.target).find(".communication_user_container").empty();

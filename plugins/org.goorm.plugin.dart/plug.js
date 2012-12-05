@@ -61,8 +61,8 @@ org.goorm.plugin.dart.prototype = {
 		$("a[action=new_file_dart]").unbind("click");
 		$("a[action=new_file_dart]").click(function () {
 			core.dialog.new_project.show();
-			$(".project_wizard_first_button[project-type=dart]").trigger("click");
-			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project-type=dart]").position().top - 100);
+			$(".project_wizard_first_button[project-type=dartp]").trigger("click");
+			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project-type=dartp]").position().top - 100);
 		});
 	},
 	

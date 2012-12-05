@@ -17,8 +17,6 @@ org.goorm.core.collaboration.workspace.prototype = {
 		this.socket = io.connect();
 		
 		this.socket.on("workspace_message", function (data) {
-			console.log("!");
- 			console.log(data);
  			data = JSON.parse(data);
  			 
  			if (data.workspace == core.status.current_project_name && data.user != core.user.id) {
@@ -28,8 +26,6 @@ org.goorm.core.collaboration.workspace.prototype = {
 		
 		
 		$(core).bind("project_explorer_refreshed", function () {
-			console.log("!");
-			
 			self.socket.emit("message", '{"channel": "workspace", "action":"project_explorer_refresh", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "workspace": "'+ core.status.current_project_name + '"}');
 		});
 		

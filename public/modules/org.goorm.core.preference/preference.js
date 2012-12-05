@@ -313,6 +313,7 @@ org.goorm.core.preference.prototype = {
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}];
 		
 		this.dialog.init({
+			localization_key:"title_preference",
 			title:"Preference", 
 			path:"configs/dialogs/org.goorm.core.preference/preference.html",
 			width:700,
@@ -331,17 +332,19 @@ org.goorm.core.preference.prototype = {
 
 					// TreeView labelClick function
 					self.manager.treeview.subscribe("clickEvent", function(nodedata){
-						var label = nodedata.node.label;
+						var label = nodedata.node.html;
 						label = label.replace(/[/#. ]/,"");
+						if(/localization_key/.test(label)) label = $('#'+nodedata.node.contentElId).children().attr('tab_action');
+						
 						$("#preference_tabview > *").hide();
 						$("#preference_tabview #"+label).show();
 
 						// File_Type이 클릭될 떄에는 항상 오른쪽 칸이 refresh되도록 설정
-						if (label == "FileType") {
+						if (/FileType/.test(label)) {
 							$(".filetype_list").find("div").first().trigger('click');
 						}
 						
-						if (label == "Designer") {
+						if (/Designer/.test(label)) {
 							self.grid_opacity_slider.setValue(parseInt($("#grid_opacity_slider_value").val()*200));
 							$("#grid_opacity_slider_value_text").text(($("#grid_opacity_slider_value").val()*100)+"%");	
 						}
@@ -366,9 +369,15 @@ org.goorm.core.preference.prototype = {
 					var language = new org.goorm.core.preference.language();
 					language.init();
 					
+					// $(core).bind('dialog_localization', function(){
+						// for(var i=0; i<self.manager.localization_ids.length; i++){
+							// var local_target = self.manager.localization_ids[i];
+							// $('#'+local_target.id).attr('localization_key', local_target.localization_key);
+						// }
+					// });
+					
 					$(core).trigger("preference_loading_complete");
 					console.log("preference dialogs load complete");
-					
 				});
 				
 //				// set username, password for svn
@@ -389,14 +398,14 @@ org.goorm.core.preference.prototype = {
 				$(this).attr("id","applyBt_"+i);
 				new YAHOO.widget.Button("applyBt_"+i,{onclick:{fn:function(){
 					self.apply($("#preference_tabview #applyBt_"+i).parents(".yui-navset").attr("id"));
-				}}});
+				}}, label:'<span localization_key="apply">Apply</span>' });
 			});
 			
 			$("#preference_tabview").find(".restore_default").each(function(i){
 				$(this).attr("id","restore_defaultBt_"+i);
 				new YAHOO.widget.Button("restore_defaultBt_"+i,{onclick:{fn:function(){
 					self.restore_default($("#preference_tabview #restore_defaultBt_"+i).parents(".yui-navset").attr("id"));
-				}}});
+				}}, label:'<span localization_key="restore_default">Restore Default</span>' });
 			});
 		};
 		
@@ -410,7 +419,7 @@ org.goorm.core.preference.prototype = {
 				var plugin_name = plugin.name;
 				$.getJSON("/" + plugin_name + "/tree.json", function(json){
 					if (plugin_node === null) {
-						plugin_node = self.manager.treeview.getNodeByProperty("label", "Plugin");
+						plugin_node = self.manager.treeview.getNodeByProperty("html", "<span localization_key='plugin'>Plugin</span>");
 					}
 					if (json && json.preference) {
 						// construct basic tree structure
@@ -431,7 +440,6 @@ org.goorm.core.preference.prototype = {
 		};
 		
 		this.dialog = this.dialog.dialog;
-		
 	}
 	
 };

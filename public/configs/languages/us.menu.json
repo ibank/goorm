@@ -423,7 +423,7 @@
         "value": "Account",
         "children": {
             "account_manage": {
-                "value": "Users Manage"
+                "value": "User Management"
             },
             "account_profile": {
                 "value": "Profile"

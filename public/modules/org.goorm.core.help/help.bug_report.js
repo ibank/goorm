@@ -53,9 +53,7 @@ org.goorm.core.help.bug_report.prototype = {
 				version: $("#bug_reports_version").val(),
 				module: $("#bug_reports_module").val()
 			};
-			
-			console.log(postdata);
-			
+						
 			$.get("/help/send_to_bug_report", postdata, function (data) {
 				if(data.err_code==0) {
 					notice.show(core.module.localization.msg["notice_write_done"]);
@@ -68,10 +66,16 @@ org.goorm.core.help.bug_report.prototype = {
 			});		
 		};
 		
-		this.buttons = [ {text:"<span localization_key='send'>Send</span>", handler:handle_ok, isDefault:true}]; 
+		var handle_cancel = function() {
+			this.hide();
+		};
+		
+		this.buttons = [ {text:"<span localization_key='send'>Send</span>", handler:handle_ok, isDefault:true},
+						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}];  
 						 
 		this.dialog = new org.goorm.core.help.about.dialog();
 		this.dialog.init({
+			localization_key:"title_send_bug_report",
 			title:"Send Bug Report", 
 			path:"configs/dialogs/org.goorm.core.help/help.bug_report.html",
 			width:620,

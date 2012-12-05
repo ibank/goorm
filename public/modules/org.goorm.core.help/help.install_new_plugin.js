@@ -31,19 +31,19 @@ org.goorm.core.help.install_new_plugin.prototype = {
 						 
 		this.dialog = new org.goorm.core.help.install_new_plugin.dialog();
 		this.dialog.init({
+			localization_key:"title_install_new_plugins",
 			title:"Install New Plugins", 
 			path:"configs/dialogs/org.goorm.core.help/help.install_new_plugin.html",
 			width:600,
 			height:400,
 			modal:true,
-			yes_text: "<span localization_key='ok'>OK</span>",
-			no_text: "<span localization_key='close'>Close</span>",
-			buttons:this.buttons,
+			// yes_text: "<span localization_key='ok'>OK</span>",
+			// no_text: "<span localization_key='close'>Close</span>",			buttons:this.buttons,
 			success: function () {
-				self.plugins_add_button = new YAHOO.widget.Button("plugins_add_button");
-				self.select_all = new YAHOO.widget.Button("select_all");
-				self.deselect_all = new YAHOO.widget.Button("deselect_all");
-				self.install_new_plugin = new YAHOO.widget.Button("install_new_plugin");
+				self.plugins_add_button = new YAHOO.widget.Button("plugins_add_button", {label:'<span localization_key="dialog_help_install_new_plugins_add">Add...</span>'});
+				self.select_all = new YAHOO.widget.Button("select_all", {label:'<span localization_key="common_select_all">Select All</span>'});
+				self.deselect_all = new YAHOO.widget.Button("deselect_all", {label:'<span localization_key="common_deselect_all">Deselect All</span>'});
+				self.install_new_plugin = new YAHOO.widget.Button("install_new_plugin", {label:'<span localization_key="dialog_help_install_new_plugins_install">Install</span>'});
 				//TabView Init
 				// self.tabview = new YAHOO.widget.TabView('help_install_new_pluginContents');
 // 				
@@ -51,11 +51,16 @@ org.goorm.core.help.install_new_plugin.prototype = {
 				// self.treeview = new YAHOO.widget.TreeView("help_install_new_pluginTreeview");
 				// self.treeview.render();
 				$("#div_install_new_plugins #install_new_plugin").click(function(){
-					core.module.loading_bar.start("Install new plugins...");
 					self.num=0;
 					$("#div_install_new_list input:checkbox:checked").each(function(){
 						self.num++;
 					});
+					if(self.num){
+						core.module.loading_bar.start("Install new plugins...");
+					}
+					else {
+						alert.show("No plugin selected");
+					}
 					$("#div_install_new_list input:checkbox:checked").each(function(){
 						var url = $(this).val();
 						setTimeout(function(){
@@ -80,7 +85,7 @@ org.goorm.core.help.install_new_plugin.prototype = {
 				$("#div_install_new_plugins #selectbox").change(function(){
 					var xml = null;
 					var url = $(this).val();
-					if(url != ""){
+					if(url && url != ""){
 						core.module.loading_bar.start("Loading, Please wait...");
 						
 						$.ajax({
@@ -101,6 +106,9 @@ org.goorm.core.help.install_new_plugin.prototype = {
 								 
 							}
 						});
+					}
+					else {
+						$("#div_install_new_list").html("");
 					}
 				});
 			}			

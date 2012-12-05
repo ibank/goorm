@@ -20,7 +20,8 @@ org.goorm.core.project.property.manager.prototype = {
 	add_treeview: function (parent, json){
 		var self = this;
 		var label = json.label;
-		var tmpnode = new YAHOO.widget.TextNode(label, parent, json.expanded);
+		var tmpnode = new YAHOO.widget.HTMLNode(label, parent, json.expanded);
+		
 		if ($.isArray(json.child)) {
 			$.each(json.child, function(index, object){
 				self.add_treeview(tmpnode, object);
@@ -33,8 +34,8 @@ org.goorm.core.project.property.manager.prototype = {
 		var self = this;
 		var treeview = new YAHOO.widget.TreeView("property_treeview");
 		
-		var core = new YAHOO.widget.TextNode(json.core.label, treeview.getRoot(), json.core.expanded);
-		var plugin = new YAHOO.widget.TextNode(json.plugin.label, treeview.getRoot(), false);
+		var core = new YAHOO.widget.HTMLNode(json.core.label, treeview.getRoot(), json.core.expanded);
+		var plugin = new YAHOO.widget.HTMLNode(json.plugin.label, treeview.getRoot(), false);
 		
 		// add subtrees
 		$.each(json.core.child, function(index, object){
@@ -48,7 +49,7 @@ org.goorm.core.project.property.manager.prototype = {
 	// add tabview node reculsively
 	add_tabview: function(json, plugin_name){
 		var self = this;
-		var label = json.label;
+		var label = json.id || json.label;
 		label = label.replace(/[/#. ]/g,"");
 		
 		plugin_name || (plugin_name = "null");

@@ -14,6 +14,7 @@ var composing = require('./collaboration.composing.js');
 var drawing = require('./collaboration.drawing.js');
 var slideshare = require('./collaboration.slideshare.js');
 var updating = require('./collaboration.updating.js');
+var history = require('./collaboration.history.js');
 
 module.exports = {
 	start: function (io) {
@@ -23,9 +24,7 @@ module.exports = {
 		io.sockets.on('connection', function (socket) {
 			socket.on('join', function (raw_msg) {
 				var msg_obj = JSON.parse(raw_msg);
-
 				var channel = "";
-				
 				if(msg_obj["channel"] != undefined) {
 					channel = msg_obj["channel"];
 				}
@@ -33,11 +32,13 @@ module.exports = {
 				if (channel == "workspace") {
 					workspace.join(socket, msg_obj);
 				}
+				else if(channel == "history") {
+					history.join(socket, msg_obj);
+				}
 			});
 			
 			socket.on('message', function (raw_msg) {
 				var msg_obj = JSON.parse(raw_msg);
-				
 				var channel = "";
 
 				if(msg_obj["channel"] != undefined) {
@@ -47,9 +48,10 @@ module.exports = {
 				if (channel == "communication") {
 					communication.msg(socket, msg_obj);
 				}
-				else if (channel == "editing") {
+				else if (channel == "editing") {      // <-- history messages are caught in here
 					//updating.push(msg_obj.workspace, msg_obj);
 					editing.msg(socket, msg_obj);
+					history.msg(socket, msg_obj);
 				}
 				else if (channel == "composing") {
 					composing.msg(socket, msg_obj);
@@ -60,6 +62,10 @@ module.exports = {
 				else if (channel == "slideshare") {
 					slideshare.msg(socket, msg_obj);
 				}
+				// deprecated
+				// else if (channel == "history") {
+					// history.msg(socket, msg_obj);
+				// }
 				else if (channel == "workspace") {
 					workspace.msg(socket, msg_obj);
 				}
@@ -67,15 +73,16 @@ module.exports = {
 			
 			socket.on('leave', function (raw_msg) {
 				var msg_obj = JSON.parse(raw_msg);
-				
 				var channel = "";
-
 				if(msg_obj["channel"] != undefined) {
 					channel = msg_obj["channel"];
 				}
 				
 				if (channel == "workspace") {
 					workspace.leave(socket, msg_obj);
+				}
+				else if(channel == "history"){
+					history.leave(socket, msg_obj);
 				}
 			});
 		}); 

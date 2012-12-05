@@ -35,10 +35,11 @@ org.goorm.core.auth.signup.prototype = {
 						 
 		this.dialog = new org.goorm.core.auth.signup.dialog();
 		this.dialog.init({
+			localization_key:"title_register",
 			title:"Register", 
 			path:"configs/dialogs/org.goorm.core.auth/auth.signup.html",
-			width:250,
-			height:400,
+			width:380,
+			height:300,
 			zindex:1001,
 			modal:true,
 			buttons:this.buttons,

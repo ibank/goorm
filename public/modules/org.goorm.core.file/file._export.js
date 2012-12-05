@@ -18,7 +18,6 @@ org.goorm.core.file._export.prototype = {
 		var self = this;
 		
 		var handle_ok = function() {
-			console.log("!");
 			core.module.loading_bar.start("Export processing...");
 			
 			var data = self.dialog_explorer.get_data();
@@ -65,6 +64,7 @@ org.goorm.core.file._export.prototype = {
 						 
 		this.dialog = new org.goorm.core.file._export.dialog();
 		this.dialog.init({
+			localization_key:"title_export_file",
 			title:"Export File", 
 			path:"configs/dialogs/org.goorm.core.file/file._export.html",
 			width:800,

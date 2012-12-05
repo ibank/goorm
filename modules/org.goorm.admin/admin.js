@@ -1,9 +1,6 @@
-
-var mongoose = require('mongoose')
-var Schema = mongoose.Schema
-
 var goorm_admin_config = {
-	'general_signup_config' : Boolean
+	'general_signup_config' : Boolean,
+	'social_login_config' : Boolean
 };
 
 var Admin_config = mongoose.model('admin_config', new Schema(goorm_admin_config));
@@ -21,6 +18,7 @@ module.exports = {
 			else{
 				var doc = new Admin_config();
 				doc['general_signup_config'] = true;
+				doc['social_login_config'] = true;
 				
 				doc.save(function(err){
 					if(!err){
@@ -47,5 +45,19 @@ module.exports = {
 				callback(null);
 			}
 		});
+	},
+	
+	set_config : function(config, callback){
+		for(var attrname in goorm_admin_config){
+			if(config[attrname] && config[attrname] == 'true') config[attrname] = true;
+			else if(config[attrname] && config[attrname] == 'false') config[attrname] = false;
+		}
+		
+		console.log(config);
+		
+		Admin_config.update({}, config, null, function(err){
+			if(!err) callback(true);
+			else callback(false);
+		})
 	}
 }

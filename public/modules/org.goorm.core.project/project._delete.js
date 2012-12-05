@@ -24,7 +24,8 @@ org.goorm.core.project._delete.prototype = {
 
 			// project delete
 			if (data.path=="") {
-				// alert.show("Project is not selected");				alert.show(core.module.localization.msg['project_not_selected']);
+				// alert.show("Project is not selected");
+				alert.show(core.module.localization.msg['project_not_selected']);
 				return false;
 			}
 
@@ -43,7 +44,15 @@ org.goorm.core.project._delete.prototype = {
 						core.status.current_project_name = "";
 						core.status.current_project_type = "";
 						core.dialog.open_project.open("","","");
+						
+						
 					}
+					
+					$(core.module.layout.workspace.window_manager.window).each(function (i) {
+						if (postdata.project_path == this.project) {
+							this.close();
+						}
+					});
 				}
 				else {
 					//alert.show(core.module.localization.msg["alert_error"] + received_data.message);
@@ -67,6 +76,7 @@ org.goorm.core.project._delete.prototype = {
 						 
 		this.dialog = new org.goorm.core.project._delete.dialog();
 		this.dialog.init({
+			localization_key:"title_delete_project",
 			title:"Delete Project", 
 			path:"configs/dialogs/org.goorm.core.project/project._delete.html",
 			width:800,

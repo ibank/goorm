@@ -8,12 +8,8 @@ module.exports = {
 		BUF_LENGTH = 64*1024;
 		buff = new Buffer(BUF_LENGTH);
 		fdr = fs.openSync(srcFile, 'r');
-		fs.open(destFile, 'w', function(err, fdw){
-			if(err){
-				fs.closeSync(fdr);
-				
-				return 0;
-			}
+		fdw = fs.openSync(destFile, 'w');
+		if(fdw) {
 			bytesRead = 1;
 			pos = 0;
 			while (bytesRead > 0) {
@@ -23,8 +19,12 @@ module.exports = {
 			}
 			fs.closeSync(fdw);
 			fs.closeSync(fdr);
-			return 1;
-		});
+		}
+		else {
+			fs.closeSync(fdr);
+			return 0;
+		}
+		return 1;
 	},
 	
 	run : function(req, evt) {

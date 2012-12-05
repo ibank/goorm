@@ -54,7 +54,7 @@ org.goorm.core.dialog.alert.prototype = {
 				fixedcenter: true,
 				effect:{effect:YAHOO.widget.ContainerEffect.FADE,duration:0.2},
 				buttons: [ 
-					{ text:"<span localization_key='button_ok'>OK</span>", handler:handle_yes, isDefault:true }
+					{ text:"<span localization_key='ok'>OK</span>", handler:handle_yes, isDefault:true }
 				] 
 			} 
 		);

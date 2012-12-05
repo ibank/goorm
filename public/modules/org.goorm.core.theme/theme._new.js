@@ -48,6 +48,7 @@ org.goorm.core.theme._new.prototype = {
 						 
 		this.dialog = new org.goorm.core.theme._new.dialog();
 		this.dialog.init({
+			localization_key:"title_preference",
 			title:"Preference", 
 			path:"configs/preferences/org.goorm.core.theme/theme._new.html",
 			width:220,

@@ -67,6 +67,7 @@ org.goorm.core.project._export.prototype = {
 						 
 		this.dialog = new org.goorm.core.project._export.dialog();
 		this.dialog.init({
+			localization_key:"title_export_project",
 			title:"Export Project", 
 			path:"configs/dialogs/org.goorm.core.project/project._export.html",
 			width:800,

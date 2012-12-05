@@ -1,37 +1,28 @@
 {
 	"core" : {
 		"label" : "User Management",
+		"localization_key" : "dialog_user_management",
 		"expanded" : true,
 		"child" : [
-			{	"label" : "User List",
+			{	"label" : "UserList",
+				"localization_key" : "dialog_user_management_userlist",
 				"tab" : [
-					{	"label" : "All",
+					{	"label" : "<div localization_key='All' class='user_management_tab_action' parents='UserList' tab_action='all'>All</div>",
 						"html" : "configs/admin/list/all.html",
-						"classname" : "org.goorm.core.admin.user_manager.all"
+						"classname" : "all"
 					},
-					{	"label" : "Available & Blind",
+					{	"label" : "<div localization_key='avaliable_blind' class='user_management_tab_action' parents='UserList' tab_action='available_blind'>Available & Blind</div>",
 						"html" : "configs/admin/list/available_blind.html",
-						"classname" : "org.goorm.core.admin.user_manager.available_blind"
-					}
-				]
-			},
-			{	"label" : "Permission",
-				"tab" : [
-					{	"label" : "Projects",
-						"html" : "configs/admin/permission/projects.html",
-						"classname" : "org.goorm.core.admin.user_manager.projects"
-					},
-					{	"label" : "Files",
-						"html" : "configs/admin/permission/files.html",
-						"classname" : "org.goorm.core.admin.user_manager.files"
+						"classname" : "available_blind"
 					}
 				]
 			},
 			{	"label" : "Configs",
+				"localization_key" : "dialog_user_management_configs",
 				"tab" : [
-					{	"label" : "Sign-up",
+					{	"label" : "<div localization_key='signup' class='user_management_tab_action' parents='Configs' tab_action='signup'>Sign-up</div>",
 						"html" : "configs/admin/config/signup.html",
-						"classname" : "org.goorm.core.admin.user_manager.signup"
+						"classname" : "signup"
 					}
 				]
 			}

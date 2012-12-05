@@ -11,6 +11,7 @@ org.goorm.core.dialog = function () {
 	this.container_id = null;
 	this.context_menu = null;
 	this.path = null;
+	this.localization_key = null;
 	this.title = null;
 	this.type = null;
 	this.left = null;
@@ -29,6 +30,7 @@ org.goorm.core.dialog.prototype = {
 	init: function (option, appendded) {
 		var self = this;
 
+		this.localization_key = option["localization_key"];
 		this.title = option["title"];
 		this.path = option["path"];		
 		this.width = option["width"];
@@ -85,7 +87,8 @@ org.goorm.core.dialog.prototype = {
 			} 
 		);
 
-		this.panel.setHeader(this.title.split("_").join(" "));
+//		this.panel.setHeader(this.title.split("_").join(" "));
+		this.panel.setHeader('<span localization_key="'+this.localization_key+'">'+this.title.split("_").join(" ")+'</span>');
 		this.panel.setBody("Loading Data...");
 		this.panel.render();
 		
@@ -162,7 +165,6 @@ org.goorm.core.dialog.prototype = {
 	*/
 					}
 					
-	
 					$(core).trigger("goorm_loading");
 				}
 			}

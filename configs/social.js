@@ -49,7 +49,8 @@ module.exports = {
 				return usersByGoogleId[googleUser.id] || (usersByGoogleId[googleUser.id] = addUser('google', googleUser));
 			})
 			.redirectPath('/social/login?type=google');
-			
+		
+		global.__social_key['possible_list'].push("google")
 		console.log('[Social Login] google');
 	},
 	
@@ -67,7 +68,8 @@ module.exports = {
 			})
 			.redirectPath('/');
 
-		console.log('[Social Login] facebook');
+		// global.__social_key['possible_list'].push("facebook")
+		// console.log('[Social Login] facebook');
 	},
 	
 	attach_twitter : function(twitter_config){
@@ -84,6 +86,7 @@ module.exports = {
 			})
 			.redirectPath('/social/login?type=twitter');
 
+		global.__social_key['possible_list'].push("twitter")
 		console.log('[Social Login] twitter');
 	},
 	
@@ -102,6 +105,7 @@ module.exports = {
 			})
 			.redirectPath('/social/login?type=github');
 
+		global.__social_key['possible_list'].push("github")
 		console.log('[Social Login] github');
 	}
 }

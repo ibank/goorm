@@ -1,0 +1,49 @@
+#history .history_header{
+	text-align: center;
+	border-bottom:1px #BBB solid;
+	padding: 3px 5px 3px 5px;
+	cursor: pointer;
+}
+
+#history_container{
+	background-color: #FAFAFA; 
+	padding:0px;
+	overflow: auto;
+}
+#history_container table{
+	width:100%;
+	font-size:11px;
+	border:none;
+}
+
+#history_container .yui-dt-data tr{
+	cursor: pointer;
+}
+
+#history_container .yui-dt-rec td{
+	background-color: white;
+	border-bottom:1px #CCC solid;
+}
+
+#history .history_selected{
+	background-color: #E8F2FF;
+	color: black;
+}
+
+#history_container .yui-dt-selected td{
+	background-color: #E8F2FF;
+	color: black;
+}
+
+#history_container th{
+	text-align: center;
+}
+
+
+.history_line_marker{
+	background-color:#FDD !important;
+}
+
+.history_ch_marker{
+	background-color:#FAA;
+}

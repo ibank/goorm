@@ -7,7 +7,7 @@
 .user_management_user_span {
 	text-align: right;
 	float: left;
-	width: 73px;
+	width: 100px;
 	padding: 2px;
 	margin-top: 5px;
 }
@@ -15,4 +15,9 @@
 .user_management_user_input {
 	padding: 3px;
 	margin: 5px;
+	width: 150px;
+}
+
+.user_detail_view, .target_user_detail_view, .available_blind_user {
+	cursor:pointer;
 }

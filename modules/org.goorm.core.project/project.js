@@ -47,7 +47,8 @@ module.exports = {
 							}
 							else {
 								var today = new Date();
-								var date_string = today.getFullYear()+'/'+today.getMonth()+'/'+today.getDate()+' '+today.getHours()+':'+today.getMinutes()+':'+today.getSeconds();
+								var today_month = parseInt(today.getMonth()) + 1;
+								var date_string = today.getFullYear()+'/'+today_month+'/'+today.getDate()+' '+today.getHours()+':'+today.getMinutes()+':'+today.getSeconds();
 							
 								var file_contents = {
 									type: query.project_type,
@@ -93,7 +94,7 @@ module.exports = {
 		var data = {};
 		data.err_code = 0;
 		data.message = "process done";
-		
+
 		if (query.project_path != null) {
 			rimraf(__workspace+'/'+query.project_path, function(err) {
 				if (err!=null) {
@@ -130,7 +131,7 @@ module.exports = {
 		if (query.project_import_location!=null && file!=null) {
 			var command = exec("unzip -o "+file.path+" -d " + __workspace + "/"+query.project_import_location, function (error, stdout, stderr) {
 				if (error == null) {
-				
+					console.log(error);
 					rimraf(file.path, function(err) {
 						if (err!=null) {
 						}

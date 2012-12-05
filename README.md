@@ -137,12 +137,11 @@ Getting Started
   if goorm runned successfully, it prints information as below :
   
           goormIDE:: loading config...
-          --------------------------------------------------------
+          /--------------------------------------------------------
           workspace_path: /Users/goormUser/workspace/
           temp_dir_path: /Users/goormUser/temp_files/
-
           goormIDE:: starting...
-          --------------------------------------------------------
+          /--------------------------------------------------------
           info  - socket.io started
           goorm IDE server listening on port 9999 in development mode
           Open your browser and connect to

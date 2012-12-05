@@ -285,10 +285,18 @@ org.goorm.core.dialog.explorer.prototype = {
 	
 	add_file_type_selector: function () {
 		var self = this;
+		
+		var option_html = '<option value="" selected="selected">All Files (*.*)</option>';
+		
+		for(var i=0; i<core.filetypes.length; i++) {
+			option_html += '<option value="'+core.filetypes[i].file_extension+'">'+core.filetypes[i].description+' (*.'+core.filetypes[i].file_extension+')</option>';
+		}
+
+		$(self.file_type).html(option_html);
 
 		$(self.file_type+" option:eq(0)").attr("selected", "selected");
 		
-		$(self.file_type).change(function() {
+		$(self.file_type).change(function() {			
 			$(self.files+" .file_item").show();
 		
 			if($(this).val()=="") {

@@ -11,34 +11,33 @@ org.goorm.core.help.contents = function () {
 	this.buttons = null;
 	this.tabview = null;
 	this.treeview = null;
+	this.top = null;
+	this.title = null;
 };
 
 org.goorm.core.help.contents.prototype = {
 	init: function () {
 		var self = this;
 		
-		var handle_ok = function() { 
-			
-			this.hide(); 
-		};
-
-		var handle_cancel = function() { 
+		var handle_close = function() { 
 			
 			this.hide(); 
 		};
 		
-		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
-						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
-						 
+		this.buttons = [ {text:"<span localization_key='close'>Close</span>", handler:handle_close, isDefault:true} ];
+		
+		this.top = [];
+		this.title = [];
+		
 		this.dialog = new org.goorm.core.help.contents.dialog();
 		this.dialog.init({
+			localization_key:"title_help_contents",
 			title:"Help Contents", 
 			path:"configs/dialogs/org.goorm.core.help/help.contents.html",
 			width:900,
 			height:600,
 			modal:true,
-			yes_text: "<span localization_key='ok'>OK</span>",
-			no_text: "<span localization_key='close'>Close</span>",
+			yes_text: "<span localization_key='close'>Close</span>",
 			buttons:this.buttons,
 			success: function () {
 				//TabView Init
@@ -54,9 +53,8 @@ org.goorm.core.help.contents.prototype = {
 					// success: function(data) {
 						//var sorting_data = eval(data);
 						
-						$.getJSON("help/get_readme_markdown", function (data) {
-							$("#help_contents_middle").html(data.html);
-						});
+						
+						//self.load();
 						
 						var resize = new YAHOO.util.Resize("help_contents_left", {
 				            handles: ['r'],
@@ -66,13 +64,16 @@ org.goorm.core.help.contents.prototype = {
 						
 						resize.on('resize', function(ev) {
 				            var w = ev.width;
-				            $("#help_contents_middle").css('width', (900 - w - 30) + 'px');
+				            $("#help_contents_middle").css('width', (900 - w - 50) + 'px');
 				        });
 				        
 						self.treeview = new YAHOO.widget.TreeView("help_contents_treeview");
 						self.treeview.render();
-								
 						
+						for(var i=0; i<self.treeview.root.children.length; i++){
+							var target = self.treeview.root.children[i];
+							$('#'+target.labelElId).attr('localization_key', target.label)
+						}
 						
 						//$(".yui-content").append(sorting_data[i].url.text());
 						
@@ -93,6 +94,37 @@ org.goorm.core.help.contents.prototype = {
 		this.dialog = this.dialog.dialog;
 		
 		
+	},
+	
+	load: function () {
+		var self = this;
+		
+		$.getJSON("help/get_readme_markdown?language=" + localStorage.getItem("language"), function (data) {
+			$("#help_contents_middle").html(data.html);
+			
+			
+			$('#help_contents_middle').find('h2').each(function (i) {
+				self.top.push($(this).position().top);
+				self.title.push($(this).text());
+			});
+			
+			//console.log(self.top);
+			
+			$('#help_contents_treeview').find('a').each(function (i) {
+				if (i % 2 == 1) {
+					//console.log($(this).html());
+					var top = self.top.shift();
+					var title = self.title.shift();
+					
+					$(this).html(title);
+					$(this).parent().unbind("click");
+					$(this).parent().click(function () {
+						console.log(top);
+						$('#help_contents_middle').scrollTop(top);
+					});
+				}
+			});
+		});
 	},
 
 	show: function () {

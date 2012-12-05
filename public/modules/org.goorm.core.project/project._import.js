@@ -18,15 +18,17 @@ org.goorm.core.project._import.prototype = {
 		var self = this;
 		
 		var handle_ok = function() {
-			core.module.loading_bar.start("Import processing...");
-			
+			if ($("#project_import_location").val()=="") {
+				alert.show(core.module.localization.msg["alert_project_not_selected"]);
+				return false;
+			}
+					
 			var file_name = $("#project_import_file").val();
 			if(file_name.substr(file_name.length-3,3).toLowerCase()!="zip") {
 				alert.show(core.module.localization.msg["alert_only_zip_allowed"]);
-				// alert.show("Sorry, you can import only zip file");
 				return false;
 			}
-		
+			
 			core.module.loading_bar.start("Import processing...");
 			$('#project_import_my_form').submit();
 		};
@@ -41,6 +43,7 @@ org.goorm.core.project._import.prototype = {
 						 
 		this.dialog = new org.goorm.core.project._import.dialog();
 		this.dialog.init({
+			localization_key:"title_import_project",
 			title:"Import Project", 
 			path:"configs/dialogs/org.goorm.core.project/project._import.html",
 			width:800,

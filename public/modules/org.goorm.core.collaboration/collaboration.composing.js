@@ -375,8 +375,6 @@ org.goorm.core.collaboration.composing.prototype = {
 		target.properties.height = source.properties.height;
 		target.properties.dashed = source.properties.dashed;
 		
-		//console.log(source.properties.inner_node);
-		
 		target.properties.inner_node = [];
 		
 		$(source.properties.inner_node).each(function() {

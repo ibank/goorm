@@ -1,6 +1,6 @@
 <div style="font-size:11px;">
 	<div style="margin-bottom:0px; height:25px;clear:both">
-		<div style="float:left; width:120px;">Type</div>
+		<div style="float:left; width:120px;" localization_key="dialog_project_property_scm_type">Type</div>
 		<div style="float:left; width:305px;">
 			None <input type="radio" name="scm_type" id="scm_type" style="margin-right:10px;" value=""> 
 	  		Git <input type="radio" name="scm_type" id="scm_type" style="margin-right:10px;" value="git"> 
@@ -9,21 +9,27 @@
   	</div>
   	<fieldset style='padding-top:10px;margin-top:0px;'>
 	  	<div style="margin-bottom:10px;height:30px;clear:both">
-			<div style="float:left; width:70px;">Repository URL</div>
+			<div style="float:left; width:70px;" localization_key="dialog_project_property_repository_url">Repository URL</div>
 			<div style="float:left; width:340px;height:32px;margin-top:7px;">
 		  		<input type="text" name="scm_URL" id="scm_URL" style="width:335px;"> 
 	  		</div>
 	  	</div>
+	  	<div style="margin-bottom:10px;height:30px;clear:both">
+			<div style="float:left; width:70px;">Repository Path</div>
+			<div style="float:left; width:340px;height:32px;margin-top:7px;">
+		  		<input type="text" name="scm_path" id="scm_path" style="width:335px;"> 
+	  		</div>
+	  	</div>
 	  	<fieldset style='padding-top:25px;margin:10px auto;width:270px;background:white'>
-  			<legend>Authentication</legend>
+  			<legend localization_key="dialog_project_property_auth_guide">Authentication</legend>
 	  		<div style="float:left; width:300px;">
-		  		<div><div style="float:left; width:60px;">User</div><input type="text" id="scm_user" style="width:200px;"></div>
-		  		<div style="margin-top:5px;"><div style="float:left; width:60px;">Password</div><input type="password" id="scm_password" style="width:200px;"></div> 
+		  		<div><div style="float:left; width:60px;" localization_key="dialog_project_property_auth_user">User</div><input type="text" id="scm_user" style="width:200px;"></div>
+		  		<div style="margin-top:5px;"><div style="float:left; width:60px;" localization_key="dialog_project_property_auth_password">Password</div><input type="password" id="scm_password" style="width:200px;"></div> 
 	  		</div>
   		</fieldset>
   		<div style="float:right">
   			<a href=# action="scm_checkout">
-  				<button type="button" class="apply">Checkout in this project</button>
+  				<button type="button" class="scm_checkout_bt" localization_key="dialog_project_property_checkout" style="padding:6px 10px;">Checkout</button>
   			</a>
   		</div>
   	</fieldset>

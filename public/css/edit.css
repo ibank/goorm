@@ -19,9 +19,9 @@ version: 3.0.0
 	background: yellow;
 }
 
-.window_container .active_line {
+/*.window_container .active_line {
 	background: #FFC !important;
-}
+}*/
 
 .window_container .dictionary_box {
 	position: absolute;
@@ -128,7 +128,7 @@ version: 3.0.0
 
 .CodeMirror-gutter .folding_icon {
 	position:absolute;
-	left: 42px;
+	left: 42px !important;
 	width: 12px;
 	height: 12px;
 	background: transparent url(../images/icons/context/bullet_plus.png) no-repeat 2px 3px;
@@ -201,5 +201,9 @@ span.CodeMirror-matchhighlight {
 }
 
 .CodeMirror-focused span.CodeMirror-matchhighlight { 
-	background: #e7e4ff; !important 
+	background: #e7e4ff !important;
+}
+
+.activeline {
+	background: #e8f2ff !important;
 }

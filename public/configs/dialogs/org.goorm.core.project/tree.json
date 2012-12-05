@@ -1,18 +1,20 @@
 {
 	"core" : {
-		"label" : "Property",
+		"label" : "<span localization_key='property'>Property</span>",
 		"expanded" : true,
 		"child" : [
-			{	"label" : "Information",
+			{	"label" : "<span localization_key='information' tab_action='Information'>Information</span>",
+				"id" : "Information",
 				"tab" : [
-					{	"label" : "Information",
+					{	"label" : "<span localization_key='information'>Information</span>",
 						"html"	: "configs/project/default/project.general.html"
 					}
 				]
 			},
-			{	"label" : "SCM",
+			{	"label" : "<span localization_key='scm' tab_action='SCM'>SCM</span>",
+				"id" : "SCM",
 				"tab" : [
-					{	"label" : "SCM configuration",
+					{	"label" : "<span localization_key='scm_configuration'>SCM configuration</span>",
 						"html"	: "configs/project/default/scm.property.html"
 					}
 				]
@@ -20,7 +22,7 @@
 		]
 	},
 	"plugin" : {
-		"label" : "Plugin",
+		"label" : "<span localization_key='plugin'>Plugin</span>",
 		"child" : []
 	}
 }

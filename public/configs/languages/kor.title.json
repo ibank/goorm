@@ -1,0 +1,140 @@
+{
+	"title_new_project": {
+        "value": "새 프로젝트"
+    },
+    "title_user_management": {
+	    "value": "회원 관리"
+    },
+    "title_build_all": {
+	    "value": "모두 빌드"
+    },
+    "title_build_clean": {
+	    "value": "비우기"
+    },
+    "title_profile": {
+	    "value": "계정 정보"
+    },
+    "title_register": {
+	    "value": "회원가입"
+    },
+    "title_join_online_project": {
+	    "value": "온라인 프로젝트 참여"
+    },
+    "title_build_project": {
+	    "value": "프로젝트 빌드"
+    },
+    "title_open_project": {
+	    "value": "프로젝트 열기"
+    },
+    "title_notification": {
+	    "value": "알림"
+    },
+    "title_settings": {
+	    "value": "설정..."
+    },
+    "title_commit": {
+	    "value": "Commit"
+    },
+    "title_project_property": {
+	    "value": "프로젝트 속성"
+    },
+    "title_canvas_setting": {
+	    "value": "캔바스 설정"
+    },
+    "title_search": {
+	    "value": "검색"
+    },
+    "title_find_replace": {
+	    "value": "찾기/바꾸기"
+    },
+    "title_add_new_css": {
+	    "value": "새 CSS 추가"
+    },
+    "title_import_file": {
+	    "value": "파일 가져오기"
+    },
+    "title_export_file": {
+	    "value": "파일 내보내기"
+    },
+    "title_preference": {
+	    "value": "기본 설정"
+    },
+    "title_new_folder": {
+	    "value": "새 폴더"
+    },
+    "title_theme_details": {
+	    "value": "테마 세부 속성"
+    },
+    "title_add_new_area": {
+	    "value": "새 영역 추가"
+    },
+    "title_new_file": {
+	    "value": "새 파일"
+    },
+    "title_new_other_file": {
+	    "value": "새 기타 파일"
+    },
+    "title_new_untitled_text_file": {
+	    "value": "새 이름없는 텍스트 파일"
+    },
+    "title_about_goorm": {
+	    "value": "goorm에 대하여"
+    },
+    "title_move": {
+	    "value": "이동"
+    },
+    "title_send_bug_report": {
+	    "value": "버그 리포트 전송"
+    },
+    "title_checking_updates": {
+	    "value": "업데이트 확인"
+    },
+    "title_help_contents": {
+	    "value": "도움말 컨텐츠"
+    },
+    "title_install_new_plugins": {
+	    "value": "새 플러그인 설치..."
+    },
+    "title_open_file": {
+	    "value": "파일 열기"
+    },
+    "title_open_url": {
+	    "value": "URL 열기"
+    },
+    "title_help_search": {
+	    "value": "도움말 검색"
+    },
+    "title_tip_and_tricks": {
+	    "value": "사용 팁"
+    },
+    "title_property": {
+	    "value": "속성"
+    },
+    "title_rename": {
+	    "value": "이름 변경"
+    },
+    "title_save_as": {
+	    "value": "다른 이름으로 저장"
+    },
+    "title_switch_workspace": {
+	    "value": "작업 공간 전환"
+    },
+    "title_preference": {
+	    "value": "기본 설정"
+    },
+    "title_print": {
+	    "value": "인쇄"
+    },
+    "title_delete_project": {
+	    "value": "프로젝트 제거"
+    },
+    "title_export_project": {
+	    "value": "프로젝트 내보내기"
+    },
+    "title_import_project": {
+	    "value": "프로젝트 가져오기"
+    },
+    "title_delete": {
+	    "value": "삭제"
+    }
+}

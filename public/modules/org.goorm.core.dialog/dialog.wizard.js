@@ -32,6 +32,7 @@ org.goorm.core.dialog.wizard.prototype = {
 		
 		this.step = 1;
 		
+		this.localization_key = option["localization_key"];
 		this.title = option["title"];
 		this.path = option["path"];		
 		this.width = option["width"];
@@ -113,7 +114,7 @@ org.goorm.core.dialog.wizard.prototype = {
 			} 
 		);
 		
-		this.panel.setHeader(this.title.split("_").join(" "));
+		this.panel.setHeader('<span localization_key="'+this.localization_key+'">'+this.title.split("_").join(" ")+'</span>');
 		this.panel.setBody("Loading Data...");
 		this.panel.render();
 		

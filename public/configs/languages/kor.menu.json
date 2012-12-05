@@ -98,10 +98,10 @@
                 "value": "재시작"
             },
             "file_import": {
-                "value": "가져오기"
+                "value": "파일 가져오기"
             },
             "file_export": {
-                "value": "내보내기"
+                "value": "파일 내보내기"
             },
             "file_properties": {
                 "value": "속성"
@@ -420,10 +420,10 @@
         "value": "계정",
         "children": {
             "account_manage": {
-                "value": "회원 관리 하기"
+                "value": "회원 관리"
             },
             "account_profile": {
-                "value": "계정 정보 보기"
+                "value": "계정 정보"
             },
             "account_logout": {
                 "value": "로그아웃"
@@ -540,10 +540,10 @@
         "value": "새 텍스트 파일"
     }, 
     "file_import_context": {
-        "value": "가져오기"
+        "value": "파일 가져오기"
     },
     "file_export_context": {
-        "value": "내보내기"
+        "value": "파일 내보내기"
     },
     "file_refresh_context": {
         "value": "새로 고침"

@@ -22,7 +22,9 @@ org.goorm.core.file._new.prototype = {
 			var data = self.dialog_explorer.get_data();
 		
 			if(data.path=="" || data.name=="") {
-				alert.show(core.module.localization.msg["alert_filename_empty"]);				// alert.show("File name is empty. Please fill it...");				return false;
+				alert.show(core.module.localization.msg["alert_filename_empty"]);
+				// alert.show("File name is empty. Please fill it...");
+				return false;
 			}
 
 			var postdata = {
@@ -37,7 +39,8 @@ org.goorm.core.file._new.prototype = {
 						// title: core.module.localization.msg["confirmation_new_title"], 
 						message: core.module.localization.msg["confirmation_new_message"],
 						yes_text: core.module.localization.msg["confirmation_yes"],
-						no_text: core.module.localization.msg["confirmation_no"],
+						no_text: core.module.localization.msg["confirmation_no"],
+
 //						title: "Confirmation", 
 //						message: "Exist file. Do you want to make anyway?",
 //						yes_text: "yes",
@@ -46,7 +49,8 @@ org.goorm.core.file._new.prototype = {
 						title: "Confirmation", 
 						// message: "<span localization_key='confirmation_new_message'>Exist file. Do you want to make anyway?</span>",
 						// yes_text: "<span localization_key='yes'>Yes</span>",
-						// no_text: "<span localization_key='no'>No</span>",
+						// no_text: "<span localization_key='no'>No</span>",
+
 
 						yes: function () {
 							self.is_new_anyway = true;
@@ -77,7 +81,8 @@ org.goorm.core.file._new.prototype = {
 
 		this.dialog = new org.goorm.core.file._new.dialog();
 		this.dialog.init({
-			title:"New file", 
+			localization_key:"title_new_file",
+			title:"New File", 
 			path:"configs/dialogs/org.goorm.core.file/file._new.html",
 			width:800,
 			height:500,

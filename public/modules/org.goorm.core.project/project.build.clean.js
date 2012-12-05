@@ -58,6 +58,7 @@ org.goorm.core.project.build.clean.prototype = {
 						 
 		this.dialog = new org.goorm.core.project.build.clean.dialog();
 		this.dialog.init({
+			localization_key:"title_build_clean",
 			title:"Build Clean", 
 			path:"configs/dialogs/org.goorm.core.project/project.build.clean.html",
 			width:400,

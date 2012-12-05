@@ -78,11 +78,6 @@ org.goorm.core.auth.prototype = {
 	},
 	
 	get_info: function (callback) {
-		core.user.id = "";
-		core.user.email = "";
-		core.user.name = "";
-		core.user.nick = "";
-	
 		$.getJSON("auth/get_info", function (data) {
 			if (data.id != "" && data.id != undefined) {
 				core.user.id = data.id;
@@ -113,6 +108,33 @@ org.goorm.core.auth.prototype = {
 		});
 	},
 	
+	access_local_mode : function(){
+		core.user.id = "";
+		core.user.email = "";
+		core.user.name = "";
+		core.user.nick = "";
+		core.user.level = "Member";
+		core.user.type = "password"
+		
+		for (var i=0; i < Math.random() * 4 + 2; i++) {
+			core.user.id += String.fromCharCode(97 + Math.round(Math.random() * 25));
+		}
+		core.user.id = core.user.id + '_guest';
+		
+		for (var j=0; j < Math.random() * 4 + 2; j++) {
+			core.user.name += String.fromCharCode(97 + Math.round(Math.random() * 25));
+		}
+		core.user.name = core.user.name + '_guest';
+
+		for (var j=0; j < Math.random() * 4 + 2; j++) {
+			core.user.nick += String.fromCharCode(97 + Math.round(Math.random() * 25));
+		}
+		core.user.nick = core.user.nick + '_guest';
+		
+		localStorage['user'] = JSON.stringify(core.user);
+		core.local_complete();
+	},
+	
 	set_profile_content : function(){
 		$.getJSON("auth/get_info", function (data){
 			if (data.name != "" && data.name != undefined) {	
@@ -126,14 +148,17 @@ org.goorm.core.auth.prototype = {
 				$('[name="profile_type_input"]').val(data.type);
 				$('[name="profile_level_input"]').val(data.level);
 			}
-			// else if(localStorage['user'] && localStorage['user'] != ""){
-				// var user = JSON.parse(localStorage['user']);
-// 
-				// $('[name="profile_id_input"]').val(user.id);
-				// $('[name="profile_name_input"]').val(user.name);
-				// $('[name="profile_nickname_input"]').val(user.nick);
-				// $('[name="profile_email_input"]').val(user.email);
-			// }
+			else if(localStorage['user'] && localStorage['user'] != ""){
+				var user = JSON.parse(localStorage['user']);
+
+				$('[name="profile_id_input"]').val(user.id);
+				$('[name="profile_name_input"]').val(user.name);
+				$('[name="profile_nickname_input"]').val(user.nick);
+				$('[name="profile_email_input"]').val(user.email);
+				if(user.type == 'password') user.type = 'Generic';
+				$('[name="profile_type_input"]').val(user.type);
+				$('[name="profile_level_input"]').val(user.level);
+			}
 			else{
 				$('[name="profile_id_input"]').val("");
 				$('[name="profile_name_input"]').val("");
@@ -173,7 +198,7 @@ org.goorm.core.auth.prototype = {
 			location.href = '/auth/google'
 		}
 		else{
-			console.log('None');
+			//console.log('None');
 		}
 	},
 	
@@ -238,7 +263,7 @@ org.goorm.core.auth.prototype = {
 				// }
 			// },
 			// error : function(err, status, data){
-				// console.log(err, status, data);
+				
 			// }
 		// });
 		$.post("/auth/login", postdata, function(login_result){

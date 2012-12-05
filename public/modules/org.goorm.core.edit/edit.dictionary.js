@@ -218,7 +218,6 @@ org.goorm.core.edit.dictionary.prototype = {
 		
 		// 딕셔너리박스가 아래라인을 넘어가면 밀림현상 발생.
 		if(workspace.offset().top + workspace.height() -1 < wrapper.offset().top + top + dictionary_box.height()) {
-			console.log(top, wrapper_height);
 			if(top < wrapper_height) {
 				top = top - dictionary_box.height() - 18;
 			}

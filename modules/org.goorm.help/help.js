@@ -50,7 +50,7 @@ module.exports = {
 			
 			res.on('end', function() {
 				evt.emit("help_send_to_bug_report", return_data);
-			});		
+			});
 		});
 		
 		post_req.on('error', function(e) {
@@ -60,8 +60,15 @@ module.exports = {
 		post_req.end();
 	},
 	
-	get_readme_markdown: function () {
-		var input = require("fs").readFileSync(__path + '/README.md', 'utf8');
+	get_readme_markdown: function (language) {
+		var input;
+		
+		if (language == "kor") {
+			input = require("fs").readFileSync(__path + '/README_KO.md', 'utf8');
+		}
+		else {
+			input = require("fs").readFileSync(__path + '/README.md', 'utf8');
+		} 
 		var output = require("markdown").markdown.toHTML(input);
 		
 		return {html:output}; 

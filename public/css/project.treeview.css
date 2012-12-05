@@ -46,7 +46,7 @@ PROJECT TREE STYLE CUSTOMIZATION
 
 /* first or middle sibling, no children */
 .directory_treeview .ygtvtn { 
-	background: url(../images/org.goorm.core.layout/closed_folder_last.png) 0 0 no-repeat; 
+	background: url(../images/org.goorm.core.layout/file_button.gif) 0 0 no-repeat; 
 	width:17px; 
 	height:22px; 
 }

@@ -84,6 +84,7 @@ org.goorm.core.file.rename.prototype = {
 		
 		this.dialog = new org.goorm.core.file.rename.dialog();
 		this.dialog.init({
+			localization_key:"title_rename",
 			title:"Rename", 
 			path:"configs/dialogs/org.goorm.core.file/file.rename.html",
 			width:450,
@@ -106,6 +107,10 @@ org.goorm.core.file.rename.prototype = {
 		self.is_alive_window = false;	
 
 		if (context) {
+			if("/"+core.status.current_project_path == core.status.selected_file) {
+				alert.show("Cannot Rename!");
+				return ;
+			}
 			var filename = (core.status.selected_file.split("/")).pop();
 			var filepath = 	core.status.selected_file.replace(filename, "");
 			filepath = filepath.replace("//", "/");

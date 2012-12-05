@@ -62,7 +62,16 @@ org.goorm.core.design.prototype = {
 		this.filetype = filetype;
 		
 		var i = 0;
-		this.interval = window.setInterval(function () { if(i<100) { statusbar.progressbar.set('value', i+=10); } else { window.clearInterval(self.interval); } }, 100);
+		this.interval = window.setInterval(
+			function () {
+				if ( i<100 ) {
+					statusbar.progressbar.set('value', i+=10);
+				}
+				else {
+					window.clearInterval(self.interval);
+				}
+			}, 100
+		);
 		
 		statusbar.start();
 		
@@ -78,18 +87,11 @@ org.goorm.core.design.prototype = {
 				
 				if (data) {
 					filedata = eval("(" + data + ")");
+					self.canvas.set_size(filedata.canvas_width, filedata.canvas_height);
 					self.canvas.load(filedata.objects);
-					
-					
-					self.canvas.collaboration.set_filepath();
-/* why?
-					self.canvas.setSize(parseInt(filedata.canvas_width), parseInt(filedata.canvas_height));
 					self.resize_all();
 					
-					self.canvas.preview.real_width = filedata.canvas_width;
-					self.canvas.preview.real_height = filedata.canvas_height;
-					self.canvas.preview.set_size();
-*/
+					self.canvas.collaboration.set_filepath();
 				}
 
 				statusbar.progressbar.set('value', 100);
@@ -127,10 +129,6 @@ org.goorm.core.design.prototype = {
 			type: "POST",
 			data: { path: path, data: filedata },
 			success: function(data) {
-				//self.canvas.objects = [];
-				//self.canvas.objects = eval(data);
-				//self.canvas.draw();
-
 				m.s("Save complete! (" + self.filename + ")", "org.goorm.core.design");
 			}
 		});
@@ -155,7 +153,7 @@ org.goorm.core.design.prototype = {
 	},
 	
 	resize_all: function () {
-	
+
 		if(this.canvas.toolbar.is_ruler_on) {
 			$(this.container).find(".canvas_container").width($(this.container).parent().width() - 14);
 			$(this.container).find(".canvas_container").height($(this.container).parent().height() - 14 - 36);

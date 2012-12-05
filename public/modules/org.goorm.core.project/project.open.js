@@ -42,6 +42,7 @@ org.goorm.core.project.open.prototype = {
 						 
 		this.dialog = new org.goorm.core.project.open.dialog();
 		this.dialog.init({
+			localization_key:"title_open_project",
 			title:"Open Project", 
 			path:"configs/dialogs/org.goorm.core.project/project.open.html",
 			width:800,

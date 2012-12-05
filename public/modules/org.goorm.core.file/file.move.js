@@ -65,6 +65,7 @@ org.goorm.core.file.move.prototype = {
 
 		this.dialog = new org.goorm.core.file.move.dialog();
 		this.dialog.init({
+			localization_key:"title_move",
 			title:"Move", 
 			path:"configs/dialogs/org.goorm.core.file/file.move.html",
 			width:800,
@@ -110,6 +111,10 @@ org.goorm.core.file.move.prototype = {
 		self.dialog_explorer.init("#file_move", false);
 
 		if (context) {
+			if("/"+core.status.current_project_path == core.status.selected_file) {
+				alert.show("Cannot move!");
+				return ;
+			}
 			var filename = (core.status.selected_file.split("/")).pop();
 			var filepath = 	core.status.selected_file.replace(filename, "");
 			filepath = filepath.replace("//", "/");

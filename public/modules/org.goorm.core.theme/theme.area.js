@@ -73,6 +73,7 @@ org.goorm.core.theme.area.prototype = {
 						 
 		this.dialog = new org.goorm.core.theme._css.dialog();
 		this.dialog.init({
+			localization_key:"title_add_new_area",
 			title:"Add New Area", 
 			path:"configs/preferences/org.goorm.core.theme/theme.area.html",
 			width:220,

@@ -56,6 +56,7 @@ org.goorm.core.file._new.untitled_textfile.prototype = {
 
 		this.dialog = new org.goorm.core.file._new.untitled_textfile.dialog();
 		this.dialog.init({
+			localization_key:"title_new_untitled_text_file",
 			title:"New Untitled Text File", 
 			path:"configs/dialogs/org.goorm.core.file/file._new.untitled_textfile.html",
 			width:400,

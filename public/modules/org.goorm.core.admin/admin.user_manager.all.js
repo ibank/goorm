@@ -11,11 +11,13 @@ org.goorm.core.admin.user_manager.all = function () {
 
 org.goorm.core.admin.user_manager.all.prototype = {
 	init : function() {
+		var self = this;
+		
 		this.load();
 		
-		this.add_button =  new YAHOO.widget.Button("user_management_add", { onclick: { fn: this.add } });
-		this.del_button =  new YAHOO.widget.Button("user_management_delete", { onclick: { fn: this.del } });
-		this.register_button = new YAHOO.widget.Button("user_management_register", { onclick: { fn: this.register } });
+		this.add_button =  new YAHOO.widget.Button("user_management_add", { onclick: { fn: function(){ self.add() }  }, label:'<span localization_key="add">Add</span>' });
+		this.del_button =  new YAHOO.widget.Button("user_management_delete", { onclick: { fn: function(){ self.del() } }, label:'<span localization_key="delete">Delete</span>' });
+		this.register_button = new YAHOO.widget.Button("user_management_register", { onclick: { fn: function(){ self.register() } }, label:'<span localization_key="register">Register</span>' });
 	},
 	
 	load : function(){
@@ -45,6 +47,20 @@ org.goorm.core.admin.user_manager.all.prototype = {
 				});
 			}
 		});
+	},
+	
+	load_default : function(){
+		var self = this;
+		
+		$(".user_management_list_contents").find("[mode='view']").remove();
+		$(".user_management_list_contents").find("[mode='new']").remove();
+		
+		$(".user_management_list_contents").find(".user_management_list .user_detail_view").remove();
+		$(".user_management_list_contents").find(".user_management_list").children().each(function () {
+			$(this).css('background-color', '#fff');
+		});
+		
+		this.load();
 	},
 	
 	detail_user : function(user){
@@ -121,7 +137,8 @@ org.goorm.core.admin.user_manager.all.prototype = {
 	},
 	
 	add : function(){
-		var self = core.module.admin.user_manager.all;
+		//var self = core.module.admin.user_manager.manager.tabview_list['UserList'].all;
+		var self = this;
 		
 		$(".user_management_list_contents").find("[mode='view']").remove();
 		$(".user_management_list_contents").find("[mode='new']").hide();
@@ -159,32 +176,46 @@ org.goorm.core.admin.user_manager.all.prototype = {
 	},
 	
 	del : function(){
-		var self = core.module.admin.user_manager.all;
+		// var self = core.module.admin.user_manager.manager.tabview_list['UserList'].all;
+		var self = this;
 		
 		var target_class = $(".user_management_list_contents").find('[selected="selected"]').attr('class');
 		
-		if(target_class && confirm('Are you sure?')){
-			if(target_class == 'target_user_detail_view'){
-				$(".user_management_list_contents").find('[target='+self.target_index+']').remove();
-				$(".user_management_list_contents").find('[index='+self.target_index+']').remove();
-			}
-			else if(target_class == 'user_detail_view'){
-				var postdata = {
-					'id' : $(".user_management_list_contents").find('[selected="selected"]').attr('user_id'),
-					'type' : $(".user_management_list_contents").find('[selected="selected"]').attr('type')
-				}
-				
-				$.post('/admin/user/del', postdata, function(remove_result){
-					if(remove_result){
-						self.refresh();
+		if(target_class){
+			confirmation.init({
+				message: core.module.localization.msg["confirmation_delete_item"],
+				yes_text: core.module.localization.msg["confirmation_yes"],
+				no_text: core.module.localization.msg["confirmation_no"],
+				title: "Confirmation", 
+	
+				yes: function () {
+					if(target_class == 'target_user_detail_view'){
+						$(".user_management_list_contents").find('[target='+self.target_index+']').remove();
+						$(".user_management_list_contents").find('[index='+self.target_index+']').remove();
 					}
-				});
-			}
+					else if(target_class == 'user_detail_view'){
+						var postdata = {
+							'id' : $(".user_management_list_contents").find('[selected="selected"]').attr('user_id'),
+							'type' : $(".user_management_list_contents").find('[selected="selected"]').attr('type')
+						}
+						
+						$.post('/admin/user/del', postdata, function(remove_result){
+							if(remove_result){
+								self.refresh();
+							}
+						});
+					}
+				}, no: function () {
+				}
+			});
+			
+			confirmation.panel.show();
 		}
 	},
 	
 	register : function(){
-		var self = core.module.admin.user_manager.all;
+		// var self = core.module.admin.user_manager.manager.tabview_list['UserList'].all;
+		var self = this;
 		
 		var index = self.target_index;
 		var postdata = {

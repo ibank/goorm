@@ -116,11 +116,11 @@
          | Redo
          em.helptext Ctrl + Y
       ul
-       li.yuimenuitem
+       li.yuimenuitem#menu_cut
         a.yuimenuitemlabel(href="#", action='do_cut', localization_key='edit_cut', style='background-image: url(configs/toolbars/org.goorm.core.edit/image/cut.png);')
          | Cut
          em.helptext Ctrl + X
-       li.yuimenuitem
+       li.yuimenuitem#menu_copy
         a.yuimenuitemlabel(href="#", action='do_copy', localization_key='edit_copy', style='background-image: url(configs/toolbars/org.goorm.core.edit/image/copy.png);')
          | Copy
          em.helptext Ctrl + C
@@ -152,6 +152,11 @@
          em.helptext Ctrl + Shift + G
       ul
        li.yuimenuitem
+        a.yuimenuitemlabel(href="#", action='search', localization_key='edit_search')
+         | Search
+         em.helptext Alt + H
+      ul
+       li.yuimenuitem
         a.yuimenuitemlabel(href="#", action='auto_formatting', localization_key='edit_auto_formatting', style='background-image: url(configs/toolbars/org.goorm.core.edit/image/auto_formatting.png);')
          | Auto Formatting
          em.helptext Alt + ?
@@ -168,11 +173,6 @@
         a.yuimenuitemlabel(href="#", action='preference', localization_key='edit_preference', style='background-image: url(configs/toolbars/org.goorm.core.edit/image/preference.png);')
          | Preference
          em.helptext Alt + P
-      ul
-       li.yuimenuitem
-        a.yuimenuitemlabel(href="#", action='search', localization_key='edit_search')
-         | Search
-         em.helptext Alt + H
    li.yuimenubaritem
     a.yuimenubaritemlabel(href='#Design', localization_key='design') Design 
     #Design.yuimenu
@@ -218,13 +218,13 @@
         a.yuimenuitemlabel(href="#", action='run', localization_key='project_run', style='background-image: url(configs/toolbars/org.goorm.core.project/image/run.png);')
          | Run
          em.helptext Ctrl + F5
-       li.yuimenuitem
-        a.yuimenuitemlabel(href="#", action='remote_run', localization_key='project_remote_run') Remote Run
-      ul
-       li.yuimenuitem
-        a.yuimenuitemlabel(href="#", action='generate', localization_key='project_generate', style='background-image: url(configs/toolbars/org.goorm.core.project/image/generate.png);') Generate
-       li.yuimenuitem
-        a.yuimenuitemlabel(href="#", action='generate_all', localization_key='project_generate_all', style='background-image: url(configs/toolbars/org.goorm.core.project/image/generate_all.png);') Generate All
+       //-li.yuimenuitem
+        //-a.yuimenuitemlabel(href="#", action='remote_run', localization_key='project_remote_run') Remote Run
+      //-ul
+       //-li.yuimenuitem
+        //-a.yuimenuitemlabel(href="#", action='generate', localization_key='project_generate', style='background-image: url(configs/toolbars/org.goorm.core.project/image/generate.png);') Generate
+       //-li.yuimenuitem
+        //-a.yuimenuitemlabel(href="#", action='generate_all', localization_key='project_generate_all', style='background-image: url(configs/toolbars/org.goorm.core.project/image/generate_all.png);') Generate All
       ul
        li.yuimenuitem
         a.yuimenuitemlabel(href="#", action='build_project', localization_key='project_build_project', style='background-image: url(configs/toolbars/org.goorm.core.project/image/build.png);')
@@ -394,7 +394,7 @@
      .bd
       ul
        li.yuimenuitem.yuimenuitem-disabled.admin_menu_item
-        a.yuimenuitemlabel.yuimenuitemlabel-disabled.admin_menu_label(href="#", action='account_manage', localization_key='account_manage') Users Manage
+        a.yuimenuitemlabel.yuimenuitemlabel-disabled.admin_menu_label(href="#", action='account_manage', localization_key='account_manage') User Management
        li.yuimenuitem
         a.yuimenuitemlabel(href="#", action='account_profile', localization_key='account_profile') Profile
       ul

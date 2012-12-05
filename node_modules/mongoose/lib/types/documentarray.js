@@ -56,8 +56,10 @@ MongooseDocumentArray.prototype.__proto__ = MongooseArray.prototype;
  */
 
 MongooseDocumentArray.prototype._cast = function (value) {
-  var doc = new this._schema.casterConstructor(value, this);
-  return doc;
+  if (value instanceof this._schema.casterConstructor)
+    return value;
+
+  return new this._schema.casterConstructor(value, this);
 };
 
 /**
@@ -156,6 +158,7 @@ MongooseDocumentArray.prototype.notify = function notify (event) {
   return function notify (val) {
     var i = self.length;
     while (i--) {
+      if (!self[i]) continue;
       self[i].emit(event, val);
     }
   }

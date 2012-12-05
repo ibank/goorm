@@ -208,18 +208,21 @@ org.goorm.core.window.tab.prototype = {
 			core.module.toolbar.switch_state(this.window.type);
 			this.window.show();
 			
-			
+			var new_window;
 			if (!$("#" + this.window.container).find(".hd").hasClass("activated")) {
 				for (var i = 0; i < core.module.layout.workspace.window_manager.index; i++) {
 					if (core.module.layout.workspace.window_manager.window[i].alive && core.module.layout.workspace.window_manager.window[i] == this.window) {
-						$(core).trigger("window_panel_activated", [core.module.layout.workspace.window_manager.active_window, i]);
-					
-						core.module.layout.workspace.window_manager.active_window = i;
+						// if(core.module.layout.workspace.window_manager.active_window!=i){
+							// $(core).trigger("window_panel_activated", [this.window.filepath + this.window.filename]);
+						// }
+						new_window = i;
 						break;
 					}
 				}
 				
+				// if(core.module.layout.workspace.window_manager.active_window!=new_window)
 				this.window.activate();
+				core.module.layout.workspace.window_manager.active_window = new_window;
 			}
 		}
 	}

@@ -81,8 +81,6 @@ org.goorm.core.collaboration.editing.prototype = {
 		});
 		
 		this.socket.on("editing_someone_leaved", function (name) {
-			console.log(name + " leaved...");
-			
 			$(self.target).find(".CodeMirror-scroll").find(".user_name_" + name).remove();
 			$(self.target).find(".CodeMirror-scroll").find(".user_cursor_" + name).remove();
 		});
@@ -119,6 +117,7 @@ org.goorm.core.collaboration.editing.prototype = {
 	},
 	
 	update_change: function(data){
+		if(core.module.layout.history.mode == "history") return;
 		var self = this;
 
 		if(this.socket != null){
@@ -128,9 +127,15 @@ org.goorm.core.collaboration.editing.prototype = {
 				self.socket.emit("message", '{"channel": "editing", "action":"change", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "workspace": "'+ core.status.current_project_name +'", "filepath":"' + self.filepath + '", "message":' + JSON.stringify(data) + '}');
 				
 				clearTimeout(this.auto_save_timer);
-				this.auto_save_timer = setTimeout(function(){
-					self.parent.save();
-				},5000);
+				var action = function(){
+					if(core.module.layout.history.mode=="history") {
+						clearTimeout(self.auto_save_timer);
+						self.auto_save_timer = setTimeout(action, 5000);
+					}else{
+						self.parent.save();
+					}
+				}
+				this.auto_save_timer = setTimeout(action, 5000);
 			}
 			else {
 				// alert.show("Disconnected to collaboration server");
@@ -160,7 +165,7 @@ org.goorm.core.collaboration.editing.prototype = {
 	apply_update: function(action, update){
 		switch(action) {
 			case "change":
-				this.change(update);
+				if(core.module.layout.history.mode != "history") this.change(update);
 				break;
 			case "cursor":
 				this.set_cursor(update);
@@ -177,7 +182,7 @@ org.goorm.core.collaboration.editing.prototype = {
 		// var top = parseInt(coords.y) - parseInt($(this.target).find(".CodeMirror-scroll").offset().top);
 		// var left = parseInt(coords.x) - parseInt($(this.target).find(".CodeMirror-scroll").offset().left);
 // 		
-		// // console.log(parseInt(coords.y), parseInt($(this.target).find(".CodeMirror-scroll").offset().top), top);
+		
 // 		
 		// for(var i=0; i<self.cursor_location.length; i++){
 // 			
@@ -321,5 +326,4 @@ org.goorm.core.collaboration.editing.prototype = {
 		}
 
 	}
-	
 };

@@ -46,6 +46,7 @@ org.goorm.core.collaboration.join.prototype = {
 							 
 		this.dialog = new org.goorm.core.collaboration.join.dialog();
 		this.dialog.init({
+			localization_key:"title_join_online_project",
 			title:"Join Online Project", 
 			path:"configs/dialogs/org.goorm.core.collaboration/collaboration.join.html",
 			width:700,

@@ -1,0 +1,140 @@
+{
+	"title_new_project": {
+        "value": "New Project"
+    },
+    "title_user_management": {
+	    "value": "User Management"
+    },
+    "title_build_all": {
+	    "value": "Build All"
+    },
+    "title_build_clean": {
+	    "value": "Build Clean"
+    },
+    "title_profile": {
+	    "value": "Profile"
+    },
+    "title_register": {
+	    "value": "Register"
+    },
+    "title_join_online_project": {
+	    "value": "Join Online Project"
+    },
+    "title_build_project": {
+	    "value": "Build Project"
+    },
+    "title_open_project": {
+	    "value": "Open Project"
+    },
+    "title_notification": {
+	    "value": "Notification"
+    },
+    "title_settings": {
+	    "value": "Settings"
+    },
+    "title_commit": {
+	    "value": "Commit"
+    },
+    "title_project_property": {
+	    "value": "Project Property"
+    },
+    "title_canvas_setting": {
+	    "value": "Canvas Setting"
+    },
+    "title_search": {
+	    "value": "Search"
+    },
+    "title_find_replace": {
+	    "value": "Find/Replace"
+    },
+    "title_add_new_css": {
+	    "value": "Add New CSS"
+    },
+    "title_import_file": {
+	    "value": "Import File"
+    },
+    "title_export_file": {
+	    "value": "Export File"
+    },
+    "title_preference": {
+	    "value": "Preference"
+    },
+    "title_new_folder": {
+	    "value": "New Folder"
+    },
+    "title_theme_details": {
+	    "value": "Theme Details"
+    },
+    "title_add_new_area": {
+	    "value": "Add New Area"
+    },
+    "title_new_file": {
+	    "value": "New File"
+    },
+    "title_new_other_file": {
+	    "value": "New Other File"
+    },
+    "title_new_untitled_text_file": {
+	    "value": "New Untitled Text File"
+    },
+    "title_about_goorm": {
+	    "value": "About goorm"
+    },
+    "title_move": {
+	    "value": "Move"
+    },
+    "title_send_bug_report": {
+	    "value": "Send Bug Report"
+    },
+    "title_checking_updates": {
+	    "value": "Checking Updates"
+    },
+    "title_help_contents": {
+	    "value": "Help Contents"
+    },
+    "title_install_new_plugins": {
+	    "value": "Install New Plugins"
+    },
+    "title_open_file": {
+	    "value": "Open File"
+    },
+    "title_open_url": {
+	    "value": "Open URL"
+    },
+    "title_help_search": {
+	    "value": "Help Search"
+    },
+    "title_tip_and_tricks": {
+	    "value": "Tip and Tricks"
+    },
+    "title_property": {
+	    "value": "Property"
+    },
+    "title_rename": {
+	    "value": "Rename"
+    },
+    "title_save_as": {
+	    "value": "Save as"
+    },
+    "title_switch_workspace": {
+	    "value": "Switch Workspace"
+    },
+    "title_preference": {
+	    "value": "Preference"
+    },
+    "title_print": {
+	    "value": "Print"
+    },
+    "title_delete_project": {
+	    "value": "Delete Project"
+    },
+    "title_export_project": {
+	    "value": "Export Project"
+    },
+    "title_import_project": {
+	    "value": "Import Project"
+    },
+    "title_delete": {
+	    "value": "Delete"
+    }
+}

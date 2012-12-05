@@ -238,6 +238,9 @@
         "children": {
             "dialog_help_check_for_updates_searching": {
                 "value": "Searching for updates.."
+            },
+            "dialog_help_check_guide": {
+                "value": " - Check Updates for goorm IDE"
             }
         }
     },
@@ -267,6 +270,12 @@
             },
             "dialog_help_install_new_plugins_add": {
                 "value": "Add..."
+            },
+            "dialog_help_install_new_plugins_select_guide": {
+                "value": "Type or select a site."
+            },
+            "dialog_help_install_new_plugins_type_guide": {
+                "value": "type filter text"
             }
         }
     },
@@ -413,6 +422,175 @@
         "children": {
             "dialog_notification_partner_guide": {
                 "value": "Message : "
+             }
+        }
+    },
+    "dialog_user_management": {
+        "value": "User Management",
+        "children": {
+            "dialog_user_management_userlist": {
+                "value": "UserList"
+             },
+            "dialog_user_management_permission": {
+                "value": "Permission"
+             },
+            "dialog_user_management_configs": {
+                "value": "Configs"
+             },
+            "dialog_userlist_all_select_user": {
+                "value": "Select User"
+             },
+            "dialog_config_signup_general_config": {
+                "value": "General Sign-up On/Off"
+             },
+            "dialog_config_social_login_general_config": {
+                "value": "Social Login On/Off"
+             },
+            "dialog_config_signup_guide": {
+                "value": "Sign-up Configuration"
+             },
+            "dialog_userlist_available": {
+                "value": "Available"
+             },
+            "dialog_userlist_blind": {
+                "value": "Blind"
+             }
+        }
+    },
+    "dialog_search_project" : {
+        "value": "",
+        "children": {
+            "dialog_search_project_select_guide": {
+                "value": "Select Project"
+             }
+        }
+    },
+    "dialog_preferences_preference" : {
+        "value": "",
+        "children": {
+            "dialog_preference_system_server_guide": {
+                "value": "Server Information"
+             },
+            "dialog_preference_system_client_guide": {
+                "value": "Client Information"
+             },
+            "dialog_preference_libraries_goorm_guide": {
+                "value": "goorm Core"
+             },
+            "dialog_preference_libraries_external_guide": {
+                "value": "External Libraries"
+             },
+            "dialog_preference_animations_configuration_guide": {
+                "value": "Animation Configuration"
+             },
+            "dialog_preference_animations_config": {
+                "value": "Menu Animations"
+             },
+            "dialog_preference_editor_config_guide": {
+                "value": "Editor Configuration"
+             },
+            "dialog_preference_editor_indent_unit": {
+                "value": "Indent Unit : "
+             },
+            "dialog_preference_editor_first_line_number": {
+                "value": "First Line Number : "
+             },
+            "dialog_preference_editor_first_undo_depth": {
+                "value": "Undo Depth : "
+             },
+            "dialog_preference_editor_indent_with_tabs": {
+                "value": "Indent With Tabs"
+             },
+            "dialog_preference_editor_show_line_numbers": {
+                "value": "Show Line Numbers"
+             },
+            "dialog_preference_editor_highlight_current_cursor_line": {
+                "value": " Highlight Current Cursor Line"
+             },
+            "dialog_preference_editor_use_clipboard": {
+                "value": "Use Clipboard"
+             },
+            "dialog_preference_theme_guide": {
+                "value": "Theme"
+             },
+            "dialog_preference_theme_select_guide": {
+                "value": "Select Theme : "
+             },
+            "dialog_preference_filetype_guide": {
+                "value": "Modify file types"
+             },
+            "dialog_preference_select_language_guide": {
+                "value": "Select Language"
+             }
+        }
+    },
+    "dialog_project_property" : {
+        "value": "",
+        "children": {
+            "dialog_project_property_project_type": {
+                "value": "Project Type"
+             },
+            "dialog_project_property_project_detail": {
+                "value": "Project Detail"
+             },
+            "dialog_project_property_project_author": {
+                "value": "Project Author"
+             },
+            "dialog_project_property_project_name": {
+                "value": "Project Name"
+             },
+            "dialog_project_property_project_date": {
+                "value": "Project Date"
+             },
+            "dialog_project_property_project_description": {
+                "value": "Project Description"
+             },
+            "dialog_project_property_scm_type": {
+                "value": "Type"
+             },
+            "dialog_project_property_repository_url": {
+                "value": "Repository URL"
+             },
+            "dialog_project_property_auth_guide": {
+                "value": "Authentication"
+             },
+            "dialog_project_property_auth_user": {
+                "value": "User"
+             },
+            "dialog_project_property_auth_password": {
+                "value": "Password"
+             },
+            "dialog_project_property_checkout": {
+               "value": "Checkout"
+            }
+        }
+    },
+    "dialog_goorm_profile" : {
+        "value": "",
+        "children": {
+            "dialog_goorm_profile_id": {
+                "value": " ID : "
+             },
+            "dialog_goorm_profile_name": {
+                "value": " Name : "
+             },
+            "dialog_goorm_profile_password": {
+                "value": " Password : "
+             },
+            "dialog_goorm_profile_password_confirm": {
+                "value": " Password(Confirm) : "
+             },
+            "dialog_goorm_profile_nick": {
+                "value": " Nickname : "
+             },
+            "dialog_goorm_profile_email": {
+                "value": " E-mail : "
+             },
+            "dialog_goorm_profile_type": {
+                "value": " Type : "
+             },
+            "dialog_goorm_profile_level": {
+                "value": " Level : "
              }
         }
     }

@@ -32,6 +32,7 @@ org.goorm.core.file.property.prototype = {
 		
 		this.dialog = new org.goorm.core.file.property.dialog();
 		this.dialog.init({
+			localization_key:"title_property",
 			title:"Property", 
 			path:"configs/dialogs/org.goorm.core.file/file.property.html",
 			width:480,
@@ -58,12 +59,19 @@ org.goorm.core.file.property.prototype = {
 
 			$.get("file/get_property", postdata, function (data) {
 				if (data.err_code==0) {
+					function convert_date (target_date) {
+						var date = new Date(target_date);
+						var month = parseInt(date.getMonth()) + 1;
+						var tmp_date = date.getFullYear() + "/" + month + "/" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+						return tmp_date;
+					}
+					
 					$("#property_file_contents #filename").html(data.filename);
 					$("#property_file_contents #fileType").html(data.filetype);
 					$("#property_file_contents #fileLocation").html(data.path);
 					$("#property_file_contents #fileSize").html(data.size+" bytes");
-					$("#property_file_contents #aTime").html(data.atime);
-					$("#property_file_contents #mTime").html(data.mtime);
+					$("#property_file_contents #aTime").html(convert_date(data.atime));
+					$("#property_file_contents #mTime").html(convert_date(data.mtime));
 					self.dialog.panel.show();
 				}
 				else {
@@ -78,7 +86,8 @@ org.goorm.core.file.property.prototype = {
 			});			
 		}
 		else {
-			// alert.show("Not Selected");			alert.show(core.module.localization.msg['alert_project_not_selected'])
+			// alert.show("Not Selected");
+			alert.show(core.module.localization.msg['alert_project_not_selected'])
 		}
 	}	
 };

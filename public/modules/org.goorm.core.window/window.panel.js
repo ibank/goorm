@@ -141,6 +141,7 @@ org.goorm.core.window.panel.prototype = {
 			this.editor.init($("#"+container).find(".window_container"));
 			this.editor.load(this.filepath, this.filename, this.filetype);
 			this.editor.set_mode(mode);
+
 		}
 		else if (editor == "Designer") {
 			this.type = "Designer";
@@ -435,6 +436,16 @@ org.goorm.core.window.panel.prototype = {
 		var self = this;
 		
 		var window_manager = core.module.layout.workspace.window_manager;
+		
+		// clear highlight
+		if(this.type == 'Terminal'){
+			var project = this.project;
+			for(var i=0; i<window_manager.window.length; i++){
+				var target_window = window_manager.window[i];
+				if(target_window.project == project && target_window.editor ) target_window.editor.clear_highlight();
+			}
+		}
+		
 		if(this.is_saved) {
 			
 			$(document).trigger(this.filename + "_closed");		
@@ -482,15 +493,21 @@ org.goorm.core.window.panel.prototype = {
 			
 			window_manager.window.remove(this.index, this.index);
 			window_manager.index--;
+			window_manager.active_filename = "";
 			
-			window_manager.active_window = window_manager.window.length-1;
-			if (window_manager.active_window != -1) {
-				window_manager.window[window_manager.active_window].activate();
+			$("#history_container").empty();
+			$("#history .history_header").unbind('click');
+			$("#history").empty();
+			
+			var new_window = window_manager.window.length-1;
+			if (new_window != -1) {
+				window_manager.window[new_window].activate();
 			}
 			else {
 				$(".tab_max_buttons").hide();
 			}
-
+			window_manager.active_window = new_window;
+			core.module.layout.history.filename = "";
 			
 			delete this;
 		}
@@ -532,6 +549,14 @@ org.goorm.core.window.panel.prototype = {
 	},	
 	
 	activate: function() {
+		var self = this;
+		if(self.editor && self.editor.filename){
+			if(core.module.layout.workspace.window_manager.active_filename
+				!=(self.editor.filepath + self.editor.filename)){
+				core.module.layout.workspace.window_manager.active_filename = self.editor.filepath + self.editor.filename;
+				self.editor.on_activated();
+			}
+		}
 		core.module.layout.workspace.window_manager.active_window = this.index;
 
 		//core.dialog.project_property.refresh_toolbox();
@@ -629,7 +654,7 @@ org.goorm.core.window.panel.prototype = {
 	
 	refresh : function(){
 		this.context_menu.hide();
-		this.editor.line_refresh();
+		if(this.editor) this.editor.line_refresh();
 	},
 	
 	init_context_event : function(){
@@ -647,7 +672,8 @@ org.goorm.core.window.panel.prototype = {
 			self.context_menu.hide()
 			
 			return false;
-		})
+		})
+
 		$('[id="'+self.context_menu.name+'"]').find(".close").click(function(){
 			self.close();
 			self.context_menu.hide()

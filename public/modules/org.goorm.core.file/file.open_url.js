@@ -30,6 +30,7 @@ org.goorm.core.file.open_url.prototype = {
 						 
 		this.dialog = new org.goorm.core.file.open_url.dialog();
 		this.dialog.init({
+			localization_key:"title_open_url",
 			title:"Open URL", 
 			path:"configs/dialogs/org.goorm.core.file/file.open_url.html",
 			width:420,

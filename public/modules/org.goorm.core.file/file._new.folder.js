@@ -54,6 +54,7 @@ org.goorm.core.file._new.folder.prototype = {
 
 		this.dialog = new org.goorm.core.file._new.folder.dialog();
 		this.dialog.init({
+			localization_key:"title_new_folder",
 			title:"New folder", 
 			path:"configs/dialogs/org.goorm.core.file/file._new.folder.html",
 			width:400,

@@ -38,6 +38,18 @@ version: 3.0.0
 	margin-top: -1px;
 }
 
+/* for ZeroClipboard */
+.main_toolbar .hover {
+	border: 1px solid #999;
+	border-top: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	margin-top: -1px;
+}
+
 .main_toolbar .toolbar_button:active {
 	border: 1px solid #999;
 	border-top: 1px solid #ddd;

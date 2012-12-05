@@ -1,18 +1,26 @@
 <div style="font-size:11px; margin-top:10px;">
     <fieldset>
-        <legend>Sign-up Configuration</legend> 
+        <legend localization_key="dialog_config_signup_guide">Sign-up Configuration</legend> 
         <div style="width:100%; height:22px;">
-            <div style="float:left;" class="checkbox_div">
+            <div style="float:left; width:100%; height:30px;" class="checkbox_div">
             	<span class="checkbox">
-	            	<input name="user_management_config_general_signup" id="user_management_config_general_signup" type="checkbox" class="checkbox_margin" />
+	            	<input name="user_management_general_signup_config" id="user_management_config_general_signup" type="checkbox" class="checkbox_margin signup_config" />
 	            	<label data-on="" data-off=""></label>
         		</span>
-            	<label for="preference.core.animation.menu">General Sign-up On/Off</label>
+
+            	<label for="user_management_config_general_signup" localization_key="dialog_config_signup_general_config">General Sign-up On/Off</label>
+            </div>
+            <div style="float:left; width:100%; height:30px;" class="checkbox_div">
+            	<span class="checkbox">
+	            	<input name="user_management_social_login_config" id="user_management_config_general_social_login" type="checkbox" class="checkbox_margin signup_config" />
+	            	<label data-on="" data-off=""></label>
+        		</span>
+
+            	<label for="user_management_social_login_config" localization_key="dialog_config_social_login_general_config">Social Login On/Off</label>
             </div>
         </div>
     </fieldset>
 </div>
 <div style="position: absolute;bottom: 10px;right:10px;">
-	<input type="button" class="restore_default" value="Restore Default" />
-	<input type="button" class="apply" value="Apply" />
+	<input id="user_management_signup_apply" type="button" value="Apply" />
 </div>

@@ -21,6 +21,7 @@ org.goorm.core.layout = function () {
 	this.startpage = null;
 	this.window_manager = null;
 	this.communication = null;
+	this.history = null;
 	this.console = null;
 	this.tab_project = null;
 	this.tab_toolbox = null;
@@ -189,6 +190,8 @@ org.goorm.core.layout.prototype = {
 		//Slide Show Tab
 		this.attach_slide(this.inner_right_tabview);
 		
+		//History Tab
+		this.attach_history(this.inner_right_tabview);		
 		//Properties Tab
 		this.attach_properties(this.inner_right_tabview);
 		
@@ -223,7 +226,6 @@ org.goorm.core.layout.prototype = {
 		
 		this.workspace = new org.goorm.core.layout.workspace();
 		this.workspace.init(container+'_inner_layout_center');
-		
 		//this.startpage = new org.goorm.core.layout.startpage();
 		//this.startpage.init(container+'inner_layoutCenter');
 		
@@ -392,6 +394,11 @@ org.goorm.core.layout.prototype = {
 		this.slideshare.init();
 		
 		
+	},
+	
+	attach_history: function(target) {
+		target.addTab(new YAHOO.widget.Tab({ label: "<span localization_key='history'>History</span>", content: "<div id='history'></div>" }));		this.history = new org.goorm.core.collaboration.history();
+		this.history.init();
 	},
 	
 	attach_terminal: function(target) {

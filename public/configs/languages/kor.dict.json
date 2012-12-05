@@ -17,8 +17,26 @@
 	"delete": {
 		"value": "삭제"	
 	},
+	"add": {
+		"value": "추가"	
+	},
 	"slide": {
 		"value": "슬라이드"	
+	},
+	"history": {
+		"value": "작업내역"
+	},
+	"now":{
+		"value": "현재"
+	},
+	"userid":{
+		"value": "아이디"
+	},
+	"time":{
+		"value": "시간"
+	},
+	"event":{
+		"value": "이벤트"
 	},
 	"terminal": {
 		"value": "터미널"	
@@ -103,5 +121,107 @@
 	},
 	"modify" : {
 		"value" : "변경"
+	},
+	"All" : {
+		"value" : "모든 유저"
+	},
+	"avaliable_blind" : {
+		"value" : "유효 & 차단"
+	},
+	"Projects" : {
+		"value" : "프로젝트"
+	},
+	"Files" : {
+		"value" : "파일들"
+	},
+	"apply" : {
+		"value" : "적용"
+	},
+	"login" : {
+		"value" : "로그인"
+	},
+	"local_mode" : {
+		"value" : "로컬 모드"
+	},
+	"restore_default" : {
+		"value" : "기본 설정으로 되돌리기"
+	},
+	"language_pack_download" : {
+		"value" : "다른 언어 패키지 다운로드"
+	},
+	"preview" : {
+		"value" : "미리 보기"
+	},
+	"details" : {
+		"value" : "자세히"
+	},
+	"installation" : {
+		"value" : "설치"
+	},
+	"official_site" : {
+		"value" : "공식 사이트"
+	},
+	"features" : {
+		"value" : "기능 소개"
+	},
+	"getting_started" : {
+		"value" : "시작하기"
+	},
+	"license" : {
+		"value" : "라이센스"
+	},
+	"property" : {
+		"value" : "속성"
+	},
+	"information" : {
+		"value" : "정보"
+	},
+	"scm" : {
+		"value" : "SCM"
+	},
+	"preferences" : {
+		"value" : "설정"
+	},
+	"system" : {
+		"value" : "시스템"
+	},
+	"libraries" : {
+		"value" : "라이브러리"
+	},
+	"animations" : {
+		"value" : "에니메이션"
+	},
+	"editor" : {
+		"value" : "에디터"
+	},
+	"setting" : {
+		"value" : "설정"
+	},
+	"theme" : {
+		"value" : "테마"
+	},
+	"filetype" : {
+		"value" : "파일 타입"
+	},
+	"language" : {
+		"value" : "언어"
+	},
+	"plugin" : {
+		"value" : "플러그인"
+	},
+	"scm_configuration" : {
+		"value" : "SCM 설정"
+	},
+	"general" : {
+		"value" : "일반"
+	},
+	"twitter_login" : {
+		"value" : "+ 트위터"
+	},
+	"google_login" : {
+		"value" : "+ 구글"
+	},
+	"github_login" : {
+		"value" : "+ 깃허브"
 	}
 }

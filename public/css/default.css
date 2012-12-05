@@ -130,6 +130,15 @@ label:hover {
 	border-radius:8px;
 }
 
+.list_item {
+	cursor:pointer;
+	padding: 3px;
+}
+
+.list_item_selected { 
+	background-color: rgb(179, 212, 255);
+}
+
 .checkbox input {
 	display:block;
 	position:absolute;
@@ -252,28 +261,31 @@ label:hover {
 }
 
 #goorm_signup_container .goorm_signup_input {
+	float: left;
 	margin : 5px;
 	padding : 3px;
+	width: 170px;
 }
 
 #goorm_signup_container .goorm_signup_span {
-	text-align: left;
-	margin-left: 29px;
+	float: left;
+	text-align: right;
+	width: 150px;
+	margin: 5px;
 }
 
 #goorm_profile_container .goorm_profile_input {
-	margin: 5px;
-	padding: 3px;
-	width: 170px;
+	margin: 6px;
+	padding: 4px;
+	width: 165px;
 	font-size: 11px;
 }
 
 #goorm_profile_container .goorm_profile_span {
 	text-align: right;
-	margin-left: 3px;
-	width: 61px;
+	width: 71px;
 	float: left;
-	padding: 7px;
+	padding: 9px;
 	font-size: 11px;
 }
 
@@ -282,8 +294,7 @@ label:hover {
 	left:2px; 
 	top:412px; 
 	width:626px; 
-	height:23px; 
-	/*height:51px;*/
+	height:23px;
 	padding:5px; 
 	display:none;
 	
@@ -303,6 +314,19 @@ label:hover {
 	display:none;
 }
 
+#local_login_box {
+	font-size: 11px;
+	
+	position:absolute; 
+	left:2px; 
+	top:412px; 
+	width:626px; 
+	height:25px;  
+	display:none;
+	
+	margin-top: 4px;
+}
+
 #goorm_social_login {
 	
 }
@@ -311,6 +335,7 @@ label:hover {
 	width : 60px;
 	padding : 3px;
 	margin : 3px;
+	background: #F4F4F4;
 }
 
 #goorm_id {

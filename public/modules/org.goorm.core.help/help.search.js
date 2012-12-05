@@ -26,7 +26,8 @@ org.goorm.core.help.search.prototype = {
 
 		this.dialog = new org.goorm.core.help.search.dialog();
 		this.dialog.init({
-			title:"Help search", 
+			localization_key:"title_help_search",
+			title:"Help Search", 
 			path:"configs/dialogs/org.goorm.core.help/help.search.html",
 			width:400,
 			height:500,

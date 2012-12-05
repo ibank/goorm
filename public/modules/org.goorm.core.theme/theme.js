@@ -23,12 +23,12 @@ org.goorm.core.theme.prototype = {
 		var self = this;
 		
 		self.apply_theme_button = new YAHOO.widget.Button({  
-									label:"Preview",  
+									label:'<span localization_key="preview">Preview</span>',  
 									id:"theme_apply_button",  
 									container:"buttons_for_theme" }); 
 
 		self.details_button = new YAHOO.widget.Button({  
-									label:"Details",  
+									label:'<span localization_key="details">Details</span>',  
 									id:"details_button",  
 									container:"wrap_selectbox" }); 
 

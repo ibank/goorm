@@ -1,15 +1,3 @@
-
-var mongoose = require('mongoose')
-var Schema = mongoose.Schema
-
-global.__use_mongodb = true;
-
-mongoose.connect('mongodb://localhost/goorm_ide');
-mongoose.connection.on('error', function(err){
-	global.__use_mongodb = false;
-	console.log(err);
-});
-
 var user_schema = {
 	id: String,
 	pw: String,
@@ -18,18 +6,21 @@ var user_schema = {
 	email: String,
 	deleted: Boolean,
 	type : String,
-	level : String
+	level : String,
+	permission : String
 };
 
 var EventEmitter = require("events").EventEmitter;
 var User = mongoose.model('user', new Schema(user_schema));
+
 var g_admin = require('../org.goorm.admin/admin.js')
+var g_admin_permission = require('../org.goorm.admin/admin.permission.js')
 
 var check_form = {
 	regular_expression_id : /^[0-9a-zA-Z]{4,15}$/,
 	regular_expression_password : /^(?=([a-zA-Z]+[0-9]+[a-zA-Z0-9]*|[0-9]+[a-zA-Z]+[a-zA-Z0-9]*)$).{8,15}$/,
-	regular_expression_name : /^[가-힣0-9a-zA-Z._-]{3,15}$/,
-	regular_expression_nick : /^[가-힣0-9a-zA-Z._-]{3,20}$/,
+	regular_expression_name : /^[가-힣0-9a-zA-Z._-]{2,15}$/,
+	regular_expression_nick : /^[가-힣0-9a-zA-Z._-]{2,20}$/,
 	regular_expression_email : /^([0-9a-zA-Z._-]+)@([0-9a-zA-Z_-]+)(\.[a-zA-Z0-9]+)(\.[a-zA-Z]+)?$/
 }
 
@@ -179,8 +170,46 @@ module.exports = {
 		});
 	},
 	
+	avail_blind : function(users, callback){
+		var self = this;
+		var data = users.data;
+		var ret = {};
+		
+		var evt = new EventEmitter();
+		evt.on('blanch_user_avail_blind', function(evt, i){
+			if(data[i]){
+				if(data[i].deleted == 'true' || data[i].deleted === true){
+					self.blind(data[i], function(blind_data){
+						ret[data[i].id] = blind_data;
+						evt.emit('blanch_user_avail_blind', evt, ++i);
+					});
+				}
+				else if(data[i].deleted == 'false' || data[i].deleted === false){
+					self.avail(data[i], function(avail_data){
+						ret[data[i].id] = avail_data;
+						evt.emit('blanch_user_avail_blind', evt, ++i);
+					});
+				}
+			}
+			else{
+				callback(ret);
+			}
+		});
+		evt.emit('blanch_user_avail_blind', evt, 0)
+	},
+	
+	avail: function(user, callback){
+		User.update({'id':user.id, 'type':user.type}, {$set:{deleted:false}}, {multi:true}, function(err){
+			if (!err) callback(true);
+			else {
+				console.log(err, 'User Availiave [fail]');
+				callback(false);
+			}
+		});
+	},
+	
 	blind: function(user, callback){
-		User.update({id: {$in: user.id}, type: {$in: user.type}},{$set:{deleted:true}}, {multi:true}, function(err){
+		User.update({'id':user.id, 'type':user.type}, {$set:{deleted:true}}, {multi:true}, function(err){
 			if (!err) callback(true);
 			else {
 				console.log(err, 'User Blindng [fail]');
@@ -244,7 +273,7 @@ module.exports = {
 		var self = this;
 		
 		self.get(user, function(user_data){
-			if(user_data){
+			if(user_data && !user_data.deleted){
 				if(user_data.pw == user.pw){
 					self.update_session(req.session, user_data);
 					callback({
@@ -437,7 +466,7 @@ module.exports = {
 	filtering : function(data){
 		var user_data = {};
 		for(var attr in user_schema){
-			if(attr == 'pw' || attr == 'deleted')
+			if(attr == 'pw')
 				continue;
 			user_data[attr] = data[attr];
 		}
@@ -448,7 +477,7 @@ module.exports = {
 	update_session : function(session, user){
 		var user_data = {};
 		for(var attr in user_schema){
-			if(attr == 'pw' || attr == 'deleted')
+			if(attr == 'pw' || attr == 'deleted' || attr == 'permission')
 				continue;
 			user_data[attr] = user[attr];
 		}

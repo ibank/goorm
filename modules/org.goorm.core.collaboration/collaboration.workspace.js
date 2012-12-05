@@ -20,7 +20,8 @@ module.exports = {
 		var index = 0;
 		
 		if ((index = this.workspaces.inArray(msg.workspace)) > -1) {
-			this.users[index].list.push(msg.user+','+msg.nick);
+			if(this.users[index].list.inArray(msg.user+','+msg.nick) == -1)
+				this.users[index].list.push(msg.user+','+msg.nick);
 		}
 		else {
 			this.workspaces.push(msg.workspace);

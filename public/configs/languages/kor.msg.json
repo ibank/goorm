@@ -1,4 +1,7 @@
 {
+	"alert_file_name_illegal": {
+        "value": "파일명에 잘못된 값이 있습니다."
+    },
     "alert_folder_name_empty": {
         "value": "폴더 이름이 비어 있습니다."
     },
@@ -9,7 +12,7 @@
         "value": "파일을 선택하지 않으셨습니다."
     },
     "alert_file_not_opened": {
-        "value": "해당 파일을 오픈되어 있지 않습니다."
+        "value": "해당 파일이 오픈되어 있지 않습니다."
     },
     "alert_project_not_selected": {
         "value": "프로젝트를 선택해주세요."
@@ -19,6 +22,9 @@
     },
     "alert_project_not_opened": {
         "value": "해당 프로젝트는 오픈되어 있지 않습니다."
+    },
+    "alert_filetype_same_name": {
+        "value": "같은 확장자를 가진 파일 타입이 존재합니다."
     },
     "alert_error": {
         "value": "에러 : "
@@ -253,5 +259,29 @@
     },
     "alert_cannot_connect_db": {
 	    "value": "Database에 접근할 수 없습니다."
+    },
+    "confirmation_delete_item": {
+	    "value": "삭제하시겠습니까?"
+    },
+    "confirmation_modify_profile": {
+	    "value": "프로필 내용을 변경하시겠습니까?"
+    },
+    "notice_help_goorm_ide_current_version" : {
+    	"value" : "구름 IDE 현재 버젼"
+    },
+    "notice_help_goorm_ide_official_version" : {
+    	"value" : "공식 버젼"
+    },
+    "notice_help_goorm_ide_update" : {
+    	"value" : "업데이트"
+    },
+    "notice_search_select_project" : {
+    	"value" : "프로젝트를 선택하여 주십시오"
+    },
+    "confirmation_delete_filetype": {
+        "value": "정말 이 파일 타입을 삭제하길 원하십니까?"
+    },
+    "toast_filetype_save_complete": {
+        "value": "파일 타입을 저장하였습니다."
     }
 }

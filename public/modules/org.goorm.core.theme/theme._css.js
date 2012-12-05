@@ -72,6 +72,7 @@ org.goorm.core.theme._css.prototype = {
 						 			 
 		this.dialog = new org.goorm.core.theme._css.dialog();
 		this.dialog.init({
+			localization_key:"title_add_new_css",
 			title:"Add New CSS", 
 			path:"../../config/preference/org.goorm.core.theme/theme._css.html",
 			width:220,

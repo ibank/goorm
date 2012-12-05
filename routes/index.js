@@ -23,6 +23,7 @@ var g_auth = require("../modules/org.goorm.auth/auth");
 var g_auth_manager = require("../modules/org.goorm.auth/auth.manager");
 var g_admin = require("../modules/org.goorm.admin/admin");
 var g_social = require("../modules/org.goorm.auth/social");
+var g_history = require("../modules/org.goorm.core.collaboration/collaboration.history");
 
 var EventEmitter = require("events").EventEmitter;
 
@@ -70,6 +71,7 @@ exports.project.do_delete = function(req, res){
 	});
 
 	g_project.do_delete(req.query, evt);
+	g_history.empty_project_history(req.query.project_path);
 };
 
 exports.project.get_list = function(req, res){
@@ -246,6 +248,7 @@ exports.file.do_delete = function(req, res){
 	});
 
 	g_file.do_delete(req.query, evt);
+	g_history.empty_file_history(req.query.filename);
 };
 
 
@@ -530,7 +533,7 @@ exports.help = function(req, res){
 };
 
 exports.help.get_readme_markdown = function(req, res){
-	var data = g_help.get_readme_markdown();
+	var data = g_help.get_readme_markdown(req.query.language);
 	
 	res.json(data);
 };
@@ -649,6 +652,12 @@ exports.admin.get_config = function(req, res){
 	});
 }
 
+exports.admin.set_config = function(req, res){
+	g_admin.set_config(req.body, function(result){
+		res.json(result);
+	});
+}
+
 exports.admin.user_add = function(req, res){
 	var evt = new EventEmitter();
 	
@@ -678,6 +687,11 @@ exports.admin.user_del = function(req, res){
 	});
 }
 
+exports.admin.user_avail_blind = function(req, res){
+	g_auth_manager.avail_blind(req.body, function(result){
+		res.json(result);
+	});
+}
 
 exports.user = function(req, res){
 	res.json(null);
@@ -758,6 +772,11 @@ exports.social.login = function(req, res){
 	});
 };
 
+exports.social.possible_list = function(req, res){
+	var list = global.__social_key['possible_list'] || [];
+	res.json(list);
+};
+
 exports.social.twitter = function(req, res){
 	var method = req.route.method;
 	var api_root = req.body.api_root;
@@ -769,6 +788,16 @@ exports.social.twitter = function(req, res){
 	});
 };
 
+/*
+ * API : History
+ */
+
+exports.history = {};
+exports.history.get_history = function(req, res){
+	g_history.get_history(req.body.filename, function(history){
+		res.json({"history":history});
+	});
+};
 
 /*************************
  * 로그인 관련

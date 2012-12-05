@@ -27,7 +27,7 @@ org.goorm.core.social_plugin.twitter.prototype =  {
 			// dataType : 'jsonp',
 			// url : 'https://api.twitter.com/1/statuses/user_timeline.json?screen_name=nys3909&count=1&callback=?',
 			// success : function(data){
-				// console.log(data);
+				
 			// },
 			// error : function(err, status, data){}
 		// });

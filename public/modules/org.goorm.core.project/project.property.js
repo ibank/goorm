@@ -37,11 +37,11 @@ org.goorm.core.project.property.prototype = {
 				self.property.plugins || (self.property.plugins = {});
 				if(contents){
 					// 프로젝트에 사용하는 플러그인만 출력.
-					var node = self.manager.treeview.getNodeByProperty("label", "Plugin");
+					var node = self.manager.treeview.getNodeByProperty("html", "<span localization_key='plugin'>Plugin</span>");
 					var last_node;
 					for (var i=0; i < node.children.length; i++) {
 						var plugin = node.children[i];
-						if(plugin.label.toLowerCase() == contents.type.toLowerCase()) {
+						if(plugin.html.toLowerCase() == contents.type.toLowerCase()) {
 							$("#"+plugin.contentElId).prev().removeClass("ygtvln").addClass("ygtvtn")
 							.parent().show();
 							last_node = $("#"+plugin.contentElId);
@@ -321,6 +321,7 @@ org.goorm.core.project.property.prototype = {
 						 
 		this.dialog = new org.goorm.core.project.property.dialog();
 		this.dialog.init({
+			localization_key:"title_project_property",
 			title:"Project Property", 
 			path:"configs/dialogs/org.goorm.core.project/project.property.html",
 			width:700,
@@ -338,8 +339,9 @@ org.goorm.core.project.property.prototype = {
 
 					// TreeView labelClick function
 					self.manager.treeview.subscribe("clickEvent", function(nodedata){
-						var label = nodedata.node.label;
+						var label = nodedata.node.html;
 						label = label.replace(/[/#. ]/,"");
+						if(/localization_key/.test(label)) label = $('#'+nodedata.node.contentElId).children().attr('tab_action');
 						$("#property_tabview > *").hide();
 						$("#property_tabview #property_"+label).show();
 					});
@@ -353,7 +355,13 @@ org.goorm.core.project.property.prototype = {
 						$("#grid_opacity_slider_value").val(self.grid_opacity_slider.getRealValue());
 						$("#grid_opacity_slider_value_text").text((self.grid_opacity_slider.getRealValue()*100)+"%");
 					});
-				});
+					
+					// $(core).bind('dialog_localization', function(){
+						// for(var i=0; i<self.manager.localization_ids.length; i++){
+							// var local_target = self.manager.localization_ids[i];
+							// $('#'+local_target.id).attr('localization_key', local_target.localization_key);
+						// }
+					// });				});
 			}
 		});
 		
@@ -363,14 +371,14 @@ org.goorm.core.project.property.prototype = {
 				$(this).attr("id","property_applyBt_"+i);
 				new YAHOO.widget.Button("property_applyBt_"+i,{onclick:{fn:function(){
 					self.apply($("#property_tabview #property_applyBt_"+i).parents(".yui-navset").attr("id"));
-				}}});
+				}}, label:'<span localization_key="apply">Apply</span>' });
 			});
 			
 			$("#property_tabview").find(".restore_default").each(function(i){
 				$(this).attr("id","property_restore_defaultBt_"+i);
 				new YAHOO.widget.Button("property_restore_defaultBt_"+i,{onclick:{fn:function(){
 					self.restore_default($("#property_tabview #property_restore_defaultBt_"+i).parents(".yui-navset").attr("id"));
-				}}});
+				}}, label:'<span localization_key="restore_default">Restore Default</span>' });
 			});
 		};
 		
@@ -384,7 +392,7 @@ org.goorm.core.project.property.prototype = {
 				var plugin_name = plugin.name;
 				$.getJSON("/" + plugin_name + "/tree.json", function(json){
 					if (plugin_node === null) {
-						plugin_node = self.manager.treeview.getNodeByProperty("label", "Plugin");
+						plugin_node = self.manager.treeview.getNodeByProperty("html", "<span localization_key='plugin'>Plugin</span>");
 					}
 					if (json && json.property) {
 						// construct basic tree structure

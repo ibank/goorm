@@ -33,6 +33,7 @@ org.goorm.core.file._import.prototype = {
 						 
 		this.dialog = new org.goorm.core.file._import.dialog();
 		this.dialog.init({
+			localization_key:"title_import_file",
 			title:"Import File", 
 			path:"configs/dialogs/org.goorm.core.file/file._import.html",
 			width:800,

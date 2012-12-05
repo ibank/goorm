@@ -17,8 +17,26 @@
 	"delete": {
 		"value": "Delete"	
 	},
+	"add": {
+		"value": "Add"	
+	},
 	"slide": {
 		"value": "Slide"	
+	},
+	"history":{
+		"value": "History"
+	},
+	"now":{
+		"value": "Now"
+	},
+	"userid":{
+		"value": "User ID"
+	},
+	"time":{
+		"value": "Time"
+	},
+	"event":{
+		"value": "Event"
 	},
 	"terminal": {
 		"value": "Terminal"	
@@ -53,7 +71,7 @@
 	"find_all": {
 		"value": "Find All"	
 	},
-	"fine_and_replace": {
+	"find_and_replace": {
 		"value": "Find/Replace"	
 	},
 	"replace": {
@@ -103,5 +121,107 @@
 	},
 	"modify" : {
 		"value" : "Modify"
+	},
+	"All" : {
+		"value" : "All"
+	},
+	"avaliable_blind" : {
+		"value" : "Available & Blind"
+	},
+	"Projects" : {
+		"value" : "Projects"
+	},
+	"Files" : {
+		"value" : "Files"
+	},
+	"apply" : {
+		"value" : "Apply"
+	},
+	"login" : {
+		"value" : "Login"
+	},
+	"local_mode" : {
+		"value" : "Local Mode"
+	},
+	"restore_default" : {
+		"value" : "Restore Default"
+	},
+	"language_pack_download" : {
+		"value" : "Download Another Language Pack"
+	},
+	"preview" : {
+		"value" : "Preview"
+	},
+	"details" : {
+		"value" : "Details"
+	},
+	"installation" : {
+		"value" : "Installation"
+	},
+	"official_site" : {
+		"value" : "Official Site"
+	},
+	"features" : {
+		"value" : "Features"
+	},
+	"getting_started" : {
+		"value" : "Getting Started"
+	},
+	"license" : {
+		"value" : "License"
+	},
+	"property" : {
+		"value" : "Property"
+	},
+	"information" : {
+		"value" : "Information"
+	},
+	"scm" : {
+		"value" : "SCM"
+	},
+	"preferences" : {
+		"value" : "Preferences"
+	},
+	"system" : {
+		"value" : "System"
+	},
+	"libraries" : {
+		"value" : "Libraries"
+	},
+	"animations" : {
+		"value" : "Animations"
+	},
+	"editor" : {
+		"value" : "Editor"
+	},
+	"setting" : {
+		"value" : "Setting"
+	},
+	"theme" : {
+		"value" : "Theme"
+	},
+	"filetype" : {
+		"value" : "File Type"
+	},
+	"language" : {
+		"value" : "Language"
+	},
+	"plugin" : {
+		"value" : "Plugin"
+	},
+	"scm_configuration" : {
+		"value" : "SCM configuration"
+	},
+	"general" : {
+		"value" : "General"
+	},
+	"twitter_login" : {
+		"value" : "+ twitter"
+	},
+	"google_login" : {
+		"value" : "+ google"
+	},
+	"github_login" : {
+		"value" : "+ github"
 	}
 }

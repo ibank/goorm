@@ -229,6 +229,9 @@
         "children": {
             "dialog_help_check_for_updates_searching": {
                 "value": "업데이트를 체크하고 있습니다.."
+            },
+            "dialog_help_check_guide": {
+                "value": " - 구름 IDE 업데이트 체크"
             }
         }
     },
@@ -258,6 +261,12 @@
             },
             "dialog_help_install_new_plugins_add": {
                 "value": "추가..."
+            },
+            "dialog_help_install_new_plugins_select_guide": {
+                "value": "사이트를 입력하거나 선택하여 주세요."
+            },
+            "dialog_help_install_new_plugins_type_guide": {
+                "value": "원하시는 목록을 입력하여 주세요."
             }
         }
     },
@@ -404,6 +413,175 @@
         "children": {
             "dialog_notification_partner_guide": {
                 "value": "메세지 : "
+             }
+        }
+    },
+    "dialog_user_management": {
+        "value": "유저 관리",
+        "children": {
+            "dialog_user_management_userlist": {
+                "value": "유저 목록"
+             },
+            "dialog_user_management_permission": {
+                "value": "권한 관리"
+             },
+            "dialog_user_management_configs": {
+                "value": "설정"
+             },
+            "dialog_userlist_all_select_user": {
+                "value": "유저를 선택하세요"
+             },
+            "dialog_config_signup_general_config": {
+                "value": "일반 회원 가입 On/Off"
+             },
+            "dialog_config_social_login_general_config": {
+                "value": "소셜로그인 On/Off"
+             },
+            "dialog_config_signup_guide": {
+                "value": "회원 가입 설정"
+             },
+            "dialog_userlist_available": {
+                "value": "사용가능한 유저"
+             },
+            "dialog_userlist_blind": {
+                "value": "차단된 유저"
+             }
+        }
+    },
+    "dialog_search_project" : {
+        "value": "",
+        "children": {
+            "dialog_search_project_select_guide": {
+                "value": "프로젝트를 선택하여 주십시오"
+             }
+        }
+    },
+    "dialog_preferences_preference" : {
+        "value": "",
+        "children": {
+            "dialog_preference_system_server_guide": {
+                "value": "서버 정보"
+             },
+            "dialog_preference_system_client_guide": {
+                "value": "클라이언트 정보"
+             },
+            "dialog_preference_libraries_goorm_guide": {
+                "value": "구름 Core"
+             },
+            "dialog_preference_libraries_external_guide": {
+                "value": "외부 라이브러리"
+             },
+            "dialog_preference_animations_configuration_guide": {
+                "value": "애니메이션 설정"
+             },
+            "dialog_preference_animations_config": {
+                "value": "메뉴 에니메이션"
+             },
+            "dialog_preference_editor_config_guide": {
+                "value": "에디터 설정"
+             },
+            "dialog_preference_editor_indent_unit": {
+                "value": "인덴트 단위 : "
+             },
+            "dialog_preference_editor_first_line_number": {
+                "value": "첫번째 줄 번호 : "
+             },
+            "dialog_preference_editor_first_undo_depth": {
+                "value": "되돌리기 깊이 : "
+             },
+            "dialog_preference_editor_indent_with_tabs": {
+                "value": "탭으로 인덴팅"
+             },
+            "dialog_preference_editor_show_line_numbers": {
+                "value": "줄 번호 보이기"
+             },
+            "dialog_preference_editor_highlight_current_cursor_line": {
+                "value": " 현재 라인 하이라이팅"
+             },
+            "dialog_preference_editor_use_clipboard": {
+                "value": "클립보드 사용"
+             },
+            "dialog_preference_theme_guide": {
+                "value": "테마"
+             },
+            "dialog_preference_theme_select_guide": {
+                "value": "테마를 선택하세요 : "
+             },
+            "dialog_preference_filetype_guide": {
+                "value": "파일 타입을 변경하세요"
+             },
+            "dialog_preference_select_language_guide": {
+                "value": "언어를 선택하세요"
+             }
+        }
+    },
+    "dialog_project_property" : {
+        "value": "",
+        "children": {
+            "dialog_project_property_project_type": {
+                "value": "프로젝트 타입"
+             },
+            "dialog_project_property_project_detail": {
+                "value": "프로젝트 디테일"
+             },
+            "dialog_project_property_project_author": {
+                "value": "프로젝트 작성자"
+             },
+            "dialog_project_property_project_name": {
+                "value": "프로젝트 이름"
+             },
+            "dialog_project_property_project_date": {
+                "value": "프로젝트 작성일"
+             },
+            "dialog_project_property_project_description": {
+                "value": "프로젝트 설명"
+             },
+            "dialog_project_property_scm_type": {
+                "value": "타입"
+             },
+            "dialog_project_property_repository_url": {
+                "value": "저장소 URL"
+             },
+            "dialog_project_property_auth_guide": {
+                "value": "인증"
+             },
+            "dialog_project_property_auth_user": {
+                "value": "유저"
+             },
+            "dialog_project_property_auth_password": {
+                "value": "패스워드"
+             },
+            "dialog_project_property_checkout": {
+               "value": "체크아웃"
+            }
+        }
+    },
+    "dialog_goorm_profile" : {
+        "value": "",
+        "children": {
+            "dialog_goorm_profile_id": {
+                "value": " 아이디 : "
+             },
+            "dialog_goorm_profile_name": {
+                "value": " 이름 : "
+             },
+            "dialog_goorm_profile_password": {
+                "value": " 패스워드 : "
+             },
+            "dialog_goorm_profile_password_confirm": {
+                "value": " 패스워드(확인) : "
+             },
+            "dialog_goorm_profile_nick": {
+                "value": " 닉네임 : "
+             },
+            "dialog_goorm_profile_email": {
+                "value": " 이메일 : "
+             },
+            "dialog_goorm_profile_type": {
+                "value": " 타입 : "
+             },
+            "dialog_goorm_profile_level": {
+                "value": " 레벨 : "
              }
         }
     }

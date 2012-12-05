@@ -1,53 +1,54 @@
 {
 	"core" : {
-		"label" : "Preferences",
+		"label" : "<span localization_key='preferences'>Preferences</span>",
 		"expanded" : true,
 		"child" : [
-			{	"label" : "System",
+			{	"label" : "<span localization_key='system' tab_action='System'>System</span>",
+				"id" : "System",
 				"tab" : [
-					{	"label" : "Info",
+					{	"label" : "<span localization_key='information'>Info</span>",
 						"html"	: "configs/preferences/org.goorm.core/system.info.html",
 						"classname" : "org.goorm.core.preferences.info"
 					},
 					{
-						"label" : "Libraries",
+						"label" : "<span localization_key='libraries'>Libraries</span>",
 						"html"	: "configs/preferences/org.goorm.core/system.libraries.html"
-					},
-					{
-						"label" : "Animations",
-						"html"	: "configs/preferences/org.goorm.core/system.animations.html"
 					}
 				]
 			},
-			{	"label" : "Editor",
+			{	"label" : "<span localization_key='editor' tab_action='Editor'>Editor</span>",
+				"id" : "Editor",
 				"tab" : [
-					{	"label" : "Setting",
+					{	"label" : "<span localization_key='setting'>Setting</span>",
 						"html"	: "configs/preferences/org.goorm.core.edit/edit.setting.html"
 					},
-					{	"label" : "Theme",
+					{	"label" : "<span localization_key='theme'>Theme</span>",
 						"html"	: "configs/preferences/org.goorm.core.edit/edit.theme.html"
 					}
 				]
 			},
-			{	"label" : "Theme",
+			{	"label" : "<span localization_key='theme' tab_action='Theme'>Theme</span>",
+				"id" : "Theme",
 				"tab" : [
-					{	"label" : "Theme",
+					{	"label" : "<span localization_key='theme'>Theme</span>",
 						"html"	: "configs/preferences/org.goorm.core.theme/theme.edit.html",
 						"classname" : "org.goorm.core.theme"
 					}
 				]
 			},
-			{	"label" : "File Type",
+			{	"label" : "<span localization_key='filetype' tab_action='FileType'>File Type</span>",
+				"id" : "FileType",
 				"tab" : [
-					{	"label" : "File Type",
+					{	"label" : "<span localization_key='filetype'>File Type</span>",
 						"html"	: "configs/preferences/org.goorm.core/filetype.html",
 						"classname" : "org.goorm.core.preferences.filetype"
 					}
 				]
 			},
-			{	"label" : "Language",
+			{	"label" : "<span localization_key='language' tab_action='Language'>Language</span>",
+				"id" : "Language",
 				"tab" : [
-					{	"label" : "Language",
+					{	"label" : "<span localization_key='language'>Language</span>",
 						"html"	: "configs/preferences/org.goorm.core.localization/language.html",
 						"classname" : "org.goorm.core.preferences.language"
 					}
@@ -56,7 +57,7 @@
 		]
 	},
 	"plugin" : {
-		"label" : "Plugin",
+		"label" : "<span localization_key='plugin'>Plugin</span>",
 		"child" : []
 	}
 }

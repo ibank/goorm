@@ -12,8 +12,10 @@ org.goorm.core.localization = function () {
 	this.data2 = null;
 	this.data3 = null;
 	this.data4 = null;
+	this.data5 = null;
 	this.before_language = null;
 	this.msg = null;
+	this.dialog_localization = [];
 };
 
 org.goorm.core.localization.prototype = {
@@ -25,7 +27,7 @@ org.goorm.core.localization.prototype = {
 		var self = this;
 		var is_first = false;
 		
-		if (localStorage.getItem("language")==null && core.server_language=="client") {
+		if ( (localStorage.getItem("language")=="null" || localStorage.getItem("language")==null) && core.server_language=="client") {
 			is_first = true;
 		}
 
@@ -81,6 +83,12 @@ org.goorm.core.localization.prototype = {
 			self.apply(data);
 		});
 		
+		$.getJSON("configs/languages/"+language+".title.json", function (data) {
+			self.data5 = data;
+			self.apply(data);
+		});
+
+		core.dialog.help_contents.load();
 	},
 
 	apply: function (data) {
@@ -116,5 +124,27 @@ org.goorm.core.localization.prototype = {
 				eval("self.msg[\""+key+"\"]"+"=\""+this.value+"\";");
 			});
 		}
-	}
-};
+	},
+	
+	refresh : function(){
+		var self = this;
+		var language = "";
+		if(localStorage.getItem("language")==null) {
+			if (core.server_language=="client") {
+				if(navigator.language=="ko") {
+					language = "kor";
+				}
+				else {
+					language = "us";
+				}
+			}
+			else {
+				language = core.server_language;
+			}
+			
+			self.change_language(language);
+		}
+		else {
+			self.change_language(localStorage.getItem("language"));
+		}
+	}};

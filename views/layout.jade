@@ -59,6 +59,7 @@ html
 		link(rel='stylesheet', type='text/css', href='/css/preference.css')
 		link(rel='stylesheet', type='text/css', href='/css/preference.theme.css')
 		link(rel='stylesheet', type='text/css', href='/css/collaboration.communication.css')
+		link(rel='stylesheet', type='text/css', href='/css/collaboration.history.css')
 		link(rel='stylesheet', type='text/css', href='/css/search.css')
 		link(rel='stylesheet', type='text/css', href='/css/default.css')
 		link(rel='stylesheet', type='text/css', href='/css/user_management.css')
@@ -133,6 +134,9 @@ html
 		script(type='text/javascript', src='/lib/net.codemirror.code/mode/xml/xml.js')
 		script(type='text/javascript', src='/lib/net.codemirror.code/mode/yaml/yaml.js')
 		script(type='text/javascript', src='/lib/net.codemirror.code/keymap/vim.js')
+		
+		//JS : ZeroClipboard
+		script(type='text/javascript', src='/lib/com.zeroclipboard/ZeroClipboard.js')
 	
 		//JS : goorm 
 		script(type='text/javascript', src='/modules/org.goorm.core/core.js')
@@ -263,11 +267,13 @@ html
 		script(type='text/javascript', src='/modules/org.goorm.core.file/file.open_url.dialog.js')
 		script(type='text/javascript', src='/modules/org.goorm.core.edit/edit.find_and_replace.js')
 		script(type='text/javascript', src='/modules/org.goorm.core.edit/edit.dictionary.js')
+		script(type='text/javascript', src='/modules/org.goorm.core.edit/edit.clipboard.js')
 		script(type='text/javascript', src='/modules/org.goorm.core.edit/edit.find_and_replace.dialog.js')
 		script(type='text/javascript', src='/modules/org.goorm.core.collaboration/collaboration.js')
 		script(type='text/javascript', src='/modules/org.goorm.core.collaboration/collaboration.communication.js')
 		script(type='text/javascript', src='/modules/org.goorm.core.collaboration/collaboration.workspace.js')
 		script(type='text/javascript', src='/modules/org.goorm.core.collaboration/collaboration.slideshare.js')
+		script(type='text/javascript', src='/modules/org.goorm.core.collaboration/collaboration.history.js')
 		script(type='text/javascript', src='/modules/org.goorm.core.collaboration/collaboration.editing.js')
 		script(type='text/javascript', src='/modules/org.goorm.core.collaboration/collaboration.composing.js')
 		script(type='text/javascript', src='/modules/org.goorm.core.collaboration/collaboration.join.js')
@@ -308,6 +314,8 @@ html
 		script(type='text/javascript', src='/modules/org.goorm.core.admin/admin.user_manager.all.js')
 		script(type='text/javascript', src='/modules/org.goorm.core.admin/admin.user_manager.available_blind.js')
 		script(type='text/javascript', src='/modules/org.goorm.core.admin/admin.user_manager.signup.js')
+		script(type='text/javascript', src='/modules/org.goorm.core.admin/admin.user_manager.files.js')
+		script(type='text/javascript', src='/modules/org.goorm.core.admin/admin.user_manager.projects.js')
 		script(type='text/javascript', src='/modules/org.goorm.plugin/plugin.js')
 		script(type='text/javascript', src='/modules/org.goorm.plugin/plugin.manager.js')
 		script(type='text/javascript', src='/modules/org.goorm.plugin/plugin.loader.js')

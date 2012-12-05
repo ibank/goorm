@@ -39,6 +39,7 @@ org.goorm.core.search.prototype = {
 
 		this.dialog = new org.goorm.core.search.dialog();
 		this.dialog.init({
+			localization_key:"title_search",
 			title : "Search",
 			path : "configs/dialogs/org.goorm.core.search/search.html",
 			width : 550,
@@ -185,7 +186,6 @@ org.goorm.core.search.prototype = {
 			self.treeview = new YAHOO.widget.TreeView("search_treeview", sorting_data);
 
 			self.treeview.subscribe("clickEvent", function(nodedata) { 
-				console.log(nodedata);
 				var filename = nodedata.node.data.filename;
 				var filetype = nodedata.node.data.filetype;
 				var filepath = nodedata.node.data.filepath;
@@ -199,8 +199,6 @@ org.goorm.core.search.prototype = {
 					window.editor.editor.focus();
 					window.editor.highlight_line(matched_line);
 				}, 200);
-
-
 			});
 
 			self.treeview.subscribe("dblClickEvent", function(nodedata) { return false; });
@@ -249,7 +247,7 @@ org.goorm.core.search.prototype = {
 		var self = this;
 		$("#search_project_selectbox").empty();
 		
-		$("#search_project_selectbox").append("<option value='null' selected>Select Project</option>");
+		$("#search_project_selectbox").append("<option value='null' localization_key='dialog_search_project_select_guide' selected>"+core.module.localization.msg['notice_search_select_project']+"</option>");
 		
 		var max_num = parseInt($("#search_project_selector").width()/8);
 		

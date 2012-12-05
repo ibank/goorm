@@ -61,6 +61,7 @@ org.goorm.core.printer.prototype = {
 						 
 		this.dialog = new org.goorm.core.printer.dialog();
 		this.dialog.init({
+			localization_key:"title_print",
 			title:"Print", 
 			path:"configs/dialogs/org.goorm.core.printer/printer.html",
 			width:300,
@@ -75,10 +76,15 @@ org.goorm.core.printer.prototype = {
 	}, 
 	
 	show: function () {
-		this.set_preview_contents($("#print_preview"));
-		//$(document).find("#print_preview").html($(document).find(".activated").parent().find(".CodeMirror-lines").html());
-		this.dialog.panel.show();
-		
+		var window_manager = core.module.layout.workspace.window_manager;
+		if (window_manager.window[window_manager.active_window]) {
+			this.set_preview_contents($("#print_preview"));
+			//$(document).find("#print_preview").html($(document).find(".activated").parent().find(".CodeMirror-lines").html());
+			this.dialog.panel.show();
+		}
+		else {
+			alert.show("No file opened.");
+		}
 	},
 	
 	set_contents: function (target) {

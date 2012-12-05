@@ -419,7 +419,7 @@ module.exports = {
 		var data = {};
 		data.err_code = 0;
 		data.message = "process done";
-		
+
 		if (query.filename != null) {
 			rimraf(__workspace+'/'+query.filename, function(err) {
 				if (err!=null) {
@@ -540,28 +540,18 @@ module.exports = {
 		if ( query.user!=null && query.path!=null && query.file!=null ) {
 			fs.mkdir(__temp_dir+'/'+query.user, '0777', function(err) {
 				if (err==null || err.errno == 47) {		//errno 47 is exist folder error
-					fs.readFile(__workspace+'/'+query.path+'/'+query.file, "utf8", function(err, contents) {
-						if (err!=null) {
-							data.err_code = 40;
-							data.message = "Cannot find target file";
-	
+					
+					var command = exec("cp " + __workspace+'/'+query.path+'/'+query.file+" "+__temp_dir+'/'+query.user+'/'+query.file, function (error, stdout, stderr) {
+						if (error == null) {
+data.path = query.user+'/'+query.file;
+									evt.emit("file_do_export", data);						}
+						else {
+							data.err_code = 20;
+							data.message = "Cannot export file";
+							
 							evt.emit("file_do_export", data);
 						}
-						else {
-							fs.writeFile(__temp_dir+'/'+query.user+'/'+query.file, contents, function(err) {
-								if (err!=null) {
-									data.err_code = 10;
-									data.message = "Can not save";
-						
-									evt.emit("file_do_export", data);
-								}
-								else {
-									data.path = query.user+'/'+query.file;
-									evt.emit("file_do_export", data);
-								}
-							});		
-						}
-					});
+					});					
 				}
 				else {
 					data.err_code = 30;
@@ -690,9 +680,6 @@ module.exports = {
 			fs.mkdirSync(__temp_dir + "/files/" + filepath);
 		}
 		
-		console.log(__workspace + filepath + filename);
-		console.log(__temp_dir + "files");
-		
 		this.copy_file_sync(__workspace + filepath + filename, __temp_dir + "/files/" + filepath + filename);
 		
 		evt.emit("got_file", {result:true});
@@ -722,7 +709,6 @@ module.exports = {
 		var grep_option = query.grep_option;
 		var invert_match  = " | grep -v \"/.svn\" | grep -v \"Binary\" | grep -v \"file.list\" | grep -v \"project.json\" | grep -v \".classpath\"";
 
-		console.log("grep " + find_query + " " + __workspace.slice(0, -1) + project_path + grep_option + invert_match);
 		var command = exec("grep " + find_query + " " + __workspace.slice(0, -1) + project_path + grep_option + invert_match, function (error, stdout, stderr) {
 			if (error == null) {
 				var matched_files_list = stdout.split(/\n/);

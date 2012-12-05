@@ -207,6 +207,7 @@ org.goorm.core.terminal.prototype = {
 				self.default_prompt = /.*@.*:.*(\#|\$)/;
 			}
 			self.platform = data.platform;
+			core.env.os = data.platform;
 		});
 		
 		this.socket.on("terminal_index", function (data) {
@@ -236,7 +237,6 @@ org.goorm.core.terminal.prototype = {
 				}
 				
 				if (mode == 1 || /\n/.test(stdout) || stdout.indexOf('$') > -1) {
-//					console.log(temp_stdout);
 					if(msg.terminal_name == "debug") {
 						if(self.debug_endstr && self.debug_endstr.test(temp_stdout)) {
 							$(core.module.debug).trigger("debug_end");
@@ -419,8 +419,7 @@ org.goorm.core.terminal.prototype = {
 		if(stdout){
 			this.stdout += stdout;
 		}
-//		console.log("queue");
-
+		
 		if (this.command_queue === undefined || this.command_queue.length == 0) {
 			this.command_queue = [];
 			return;
@@ -602,7 +601,7 @@ org.goorm.core.terminal.prototype = {
 		var self = this;
 		if(command == "vi" ||command == "vim" || /(vim|vi) /.test(command)) {
 			var matches = command.match(/;?(vim|vi) (.*);?/);
-//			console.log(msg);
+
 			if(!matches) {
 			}
 			else {

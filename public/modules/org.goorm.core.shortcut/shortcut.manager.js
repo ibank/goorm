@@ -61,8 +61,6 @@ org.goorm.core.shortcut.manager.prototype = {
 					
 		//Main Menu Selection
 		$(document).bind('keydown', "Alt", function (e) {
-			console.log("!");
-			
 			//core.module.layout.mainmenu.setInitialSelection();
 			core.module.layout.mainmenu.focus();
 		  

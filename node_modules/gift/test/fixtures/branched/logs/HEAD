@@ -1,0 +1,7 @@
+0000000000000000000000000000000000000000 b045ec4b14c60f03329654266478b6e8b92b33c5 sentientwaffle <sentientwaffle@gmail.com> 1328999490 -0700	commit (initial): 1
+b045ec4b14c60f03329654266478b6e8b92b33c5 b045ec4b14c60f03329654266478b6e8b92b33c5 sentientwaffle <sentientwaffle@gmail.com> 1328999503 -0700	checkout: moving from master to something
+b045ec4b14c60f03329654266478b6e8b92b33c5 7783d64e077617ab7b84fe9726f721e921b9623b sentientwaffle <sentientwaffle@gmail.com> 1328999518 -0700	commit: 2
+7783d64e077617ab7b84fe9726f721e921b9623b b045ec4b14c60f03329654266478b6e8b92b33c5 sentientwaffle <sentientwaffle@gmail.com> 1328999521 -0700	checkout: moving from something to master
+b045ec4b14c60f03329654266478b6e8b92b33c5 7783d64e077617ab7b84fe9726f721e921b9623b sentientwaffle <sentientwaffle@gmail.com> 1329001555 -0700	checkout: moving from master to something
+7783d64e077617ab7b84fe9726f721e921b9623b b045ec4b14c60f03329654266478b6e8b92b33c5 sentientwaffle <sentientwaffle@gmail.com> 1329013635 -0700	checkout: moving from something to master
+b045ec4b14c60f03329654266478b6e8b92b33c5 913318e66e9beed3e89e9c402c1d6585ef3f7e6f sentientwaffle <sentientwaffle@gmail.com> 1329013671 -0700	commit: add a sub dir

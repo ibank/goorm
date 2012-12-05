@@ -37,7 +37,7 @@ org.goorm.core.scm.prototype = {
 				},
 				"revert": function(repository, filepath){
 					var git_dir = "--git-dir="+repository+"/.git --work-tree="+repository;
-					return "git "+git_dir+" reset;git "+git_dir+" clean -fd "+filepath+";git "+git_dir+" checkout "+filepath;
+					return "git "+git_dir+" reset;git "+git_dir+" clean -e project.json -fd "+filepath+";git "+git_dir+" checkout "+filepath;
 				},
 				"push": function(repository){
 					var git_dir = "--git-dir="+repository+"/.git --work-tree="+repository;
@@ -106,7 +106,7 @@ org.goorm.core.scm.prototype = {
 		var scm = this._check_type(core.property['scm_type']);
 		if(!scm) return ;
 		
-		var repository_name = core.property['scm_type'];
+		var repository_name = core.property['scm_path'];
 		var repository = core.preference.workspace_path+core.status.current_project_path+"/"+repository_name;
 		var URL = core.property['scm_URL'];
 		var cmd = scm.checkout(URL, repository);
@@ -121,7 +121,7 @@ org.goorm.core.scm.prototype = {
 		if(!scm) return ;
 		
 		// set variables
-		var repository_name = core.property['scm_type'];
+		var repository_name = core.property['scm_path'];
 		var repository = core.preference.workspace_path+core.status.current_project_path+"/"+repository_name;
 		
 		return {
@@ -144,6 +144,7 @@ org.goorm.core.scm.prototype = {
 				
 				// get status to select commit list
 				$.getJSON("/scm", req, function (data) {
+//					console.log(data);
 					data = JSON.parse(data);
 					var files = data.files;
 					for(var name in files){
@@ -197,7 +198,7 @@ org.goorm.core.scm.prototype = {
 		var file = core.status.selected_file;
 		if(!scm || !file) return ;
 		
-		var repository_name = core.property['scm_type'];
+		var repository_name = core.property['scm_path'];
 		var repository = core.preference.workspace_path+core.status.current_project_path+"/"+repository_name;
 		var path = core.preference.workspace_path+file;
 		
@@ -212,7 +213,7 @@ org.goorm.core.scm.prototype = {
 		var file = core.status.selected_file;
 		if(!scm || !file) return ;
 		
-		var repository_name = core.property['scm_type'];
+		var repository_name = core.property['scm_path'];
 		var repository = core.preference.workspace_path+core.status.current_project_path+"/"+repository_name;
 		var path = core.preference.workspace_path+file;
 		
@@ -232,6 +233,7 @@ org.goorm.core.scm.prototype = {
 	},
 	_init_dialogs: function(){
 		var self=this;
+		
 		/*
 		 * commit dialog
 		 */
@@ -246,6 +248,7 @@ org.goorm.core.scm.prototype = {
 		                 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 		var dialog = new org.goorm.core.dialog();
 		dialog.init({
+			localization_key:"title_commit",
 			title:"Commit", 
 			path:"configs/dialogs/org.goorm.core.scm/scm.commit.html",
 			width:500,

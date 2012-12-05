@@ -26,6 +26,7 @@ org.goorm.core.help.check_for_updates.prototype = {
 						 
 		this.dialog = new org.goorm.core.help.check_for_updates.dialog();
 		this.dialog.init({
+			localization_key:"title_checking_updates",
 			title:"Checking updates", 
 			path:"configs/dialogs/org.goorm.core.help/help.check_for_updates.html",
 			width:500,
@@ -51,7 +52,7 @@ org.goorm.core.help.check_for_updates.prototype = {
 		var current_version = core.env.version;
 //		var index=0;
 		core.module.loading_bar.start("Loading updates...");
-		$("#div_check_for_update").html("goorm IDE Current Version : "+current_version+"<br>");
+		$("#div_check_for_update").html(core.module.localization.msg['notice_help_goorm_ide_current_version']+" : "+current_version+"<br>");
 		
 		// Get official version
 		$.ajax({
@@ -64,10 +65,10 @@ org.goorm.core.help.check_for_updates.prototype = {
 			    var official_version =  json[0].version;
 			    if(official_version) {
 					$("#div_check_for_update").append(
-							"Official Version : <span style='color:red;'>"+official_version+"</span>"
+							core.module.localization.msg['notice_help_goorm_ide_official_version']+" : <span style='color:red;'>"+official_version+"</span>"
 							);
 					if(current_version != official_version){
-						$("#div_check_for_update").append("<p>Update : <a href='http://goorm.io' target='_blank'>http://goorm.io</a></p>");
+						$("#div_check_for_update").append("<p>"+core.module.localization.msg['notice_help_goorm_ide_update']+" : <a href='http://goorm.io' target='_blank'>http://goorm.io</a></p>");
 					}
 			    }
 			    else {

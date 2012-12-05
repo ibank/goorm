@@ -57,6 +57,7 @@ org.goorm.core.edit.find_and_replace.prototype = {
 
 		this.dialog = new org.goorm.core.edit.find_and_replace.dialog();
 		this.dialog.init({
+			localization_key:"title_find_replace",
 			title : "Find/Replace",
 			path : "configs/dialogs/org.goorm.core.edit/edit.find_and_replace.html",
 			width : 550,
@@ -331,70 +332,123 @@ org.goorm.core.edit.find_and_replace.prototype = {
 		}
 		var nodes = {};
 		var window_manager = core.module.layout.workspace.window_manager;
-		// Activate search tab and clean it.
-/* 		core.module.layout.inner_bottom_tabview.selectTab(3); */
-/* 		core.module.search.clean(); */
 
 		var searchedWords = [];
 
 		this.unmark();
 
-		var node = {};
-		node.filename = window_manager.window[window_manager.active_window].filename;
-		node.filetype = window_manager.window[window_manager.active_window].filetype;
-		node.filepath = window_manager.window[window_manager.active_window].filepath;
-		node.matched_line = 1;
-		node.expanded = false;
-		node.type = "html";
-		node.html = "";
-		node.children = [];
+		if($("#find_on_workspace")[0].checked == true){
 
-		nodes[node.filepath+node.filename] = node;
+			for( var i = 0 ; i < window_manager.window.length; i++){
+				window_manager.window[(window_manager.active_window + 1) % window_manager.window.length].activate();
+
+				var node = {};
+				node.filename = window_manager.window[window_manager.active_window].filename;
+				node.filetype = window_manager.window[window_manager.active_window].filetype;
+				node.filepath = window_manager.window[window_manager.active_window].filepath;
+				node.matched_line = 1;
+				node.expanded = false;
+				node.type = "html";
+				node.html = "";
+				node.children = [];
 		
-		var cursor = editor.getSearchCursor(text, null, caseFold);
-		if(!cursor.findNext()){
-			core.dialog.search.set_search_treeview(null);
-			return;
-		}
-		// search all matched words and set background of them yellow
-		for(cursor = editor.getSearchCursor(text, null, caseFold); cursor.findNext(); ) {
-			this.marked.push(editor.markText(cursor.from(), cursor.to(), "searched"));
-			var temp = {
-				fline : cursor.from().line,
-				fch : cursor.from().ch,
-				tline : cursor.to().line,
-				tch : cursor.to().ch
-			};
-			
-			/////////////////////////////////////////////////////////////////////////////////
-			var node = {};
+				nodes[node.filepath+node.filename] = node;
+			}
 
+			for( var i = 0 ; i < window_manager.window.length; i++){
+				window_manager.window[(window_manager.active_window + 1) % window_manager.window.length].activate();
+				editor = window_manager.window[window_manager.active_window].editor.editor;
+
+				var cursor = editor.getSearchCursor(text, null, caseFold);
+				if(!cursor.findNext()){
+					delete nodes[window_manager.window[window_manager.active_window].filepath+window_manager.window[window_manager.active_window].filename];
+					continue;
+				}
+				// search all matched words and set background of them yellow
+				for(cursor = editor.getSearchCursor(text, null, caseFold); cursor.findNext(); ) {
+					this.marked.push(editor.markText(cursor.from(), cursor.to(), "searched"));
+					
+					var node = {};
+		
+					node.filename = window_manager.window[window_manager.active_window].filename;
+					node.filetype = window_manager.window[window_manager.active_window].filetype;
+					node.filepath = window_manager.window[window_manager.active_window].filepath;
+					node.matched_line = cursor.from().line+1;
+					node.expanded = false;
+					node.type = "html";
+					node.html = "<span style=\"color: #666; font-weight:bold;\">Line: " + node.matched_line +  "</span> - <span style=\"color: #808080\">" + window_manager.window[window_manager.active_window].editor.editor.getLine(node.matched_line-1) + "</span>";
+		
+					nodes[node.filepath+node.filename].children.push(node);
+				}
+			}
+
+			for (key in nodes){
+				nodes[key].matched_line = nodes[key].children[0].matched_line;
+				nodes[key].html = "<div class='node'>" 
+								+ "<img src=images/icons/filetype/" + "etc" + ".filetype.png class=\"directory_icon file\" style=\"margin: 0px 3px 0 2px !important; float:left\"/>"
+								+ nodes[key].filepath + nodes[key].filename
+								+ "<div class=\"matched_lines_cnt\" style=\"float:right; background: #99acc4; color: white; width: 14px; height: 14px; text-align:center; -webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px; margin: 1px 10px 0px;\">" + nodes[key].children.length + "</div>"
+								+ "<div class=\"fullpath\" style=\"display:none;\">" + nodes[key].filepath + nodes[key].filename + "</div>"
+								+ "</div>";
+			}
+
+			core.dialog.search.set_search_treeview($.isEmptyObject(nodes)? null : nodes);
+		}
+		else{
+			var node = {};
 			node.filename = window_manager.window[window_manager.active_window].filename;
 			node.filetype = window_manager.window[window_manager.active_window].filetype;
 			node.filepath = window_manager.window[window_manager.active_window].filepath;
-			node.matched_line = cursor.from().line+1;
+			node.matched_line = 1;
 			node.expanded = false;
 			node.type = "html";
-			node.html = "<span style=\"color: #666; font-weight:bold;\">Line: " + node.matched_line +  "</span> - <span style=\"color: #808080\">" + window_manager.window[window_manager.active_window].editor.editor.getLine(node.matched_line-1) + "</span>";
+			node.html = "";
+			node.children = [];
+	
+			nodes[node.filepath+node.filename] = node;
+			
+			var cursor = editor.getSearchCursor(text, null, caseFold);
+			if(!cursor.findNext()){
+				core.dialog.search.set_search_treeview(null);
+				return;
+			}
+			// search all matched words and set background of them yellow
+			for(cursor = editor.getSearchCursor(text, null, caseFold); cursor.findNext(); ) {
+				this.marked.push(editor.markText(cursor.from(), cursor.to(), "searched"));
+				var temp = {
+					fline : cursor.from().line,
+					fch : cursor.from().ch,
+					tline : cursor.to().line,
+					tch : cursor.to().ch
+				};
+				
+				var node = {};
+	
+				node.filename = window_manager.window[window_manager.active_window].filename;
+				node.filetype = window_manager.window[window_manager.active_window].filetype;
+				node.filepath = window_manager.window[window_manager.active_window].filepath;
+				node.matched_line = cursor.from().line+1;
+				node.expanded = false;
+				node.type = "html";
+				node.html = "<span style=\"color: #666; font-weight:bold;\">Line: " + node.matched_line +  "</span> - <span style=\"color: #808080\">" + window_manager.window[window_manager.active_window].editor.editor.getLine(node.matched_line-1) + "</span>";
+	
+				nodes[node.filepath+node.filename].children.push(node);
+	
+				searchedWords.push(temp);
+			}
 
-			nodes[node.filepath+node.filename].children.push(node);
-			/////////////////////////////////////////////////////////////////////////////////
-
-			searchedWords.push(temp);
+			for (key in nodes){
+				nodes[key].matched_line = nodes[key].children[0].matched_line;
+				nodes[key].html = "<div class='node'>" 
+								+ "<img src=images/icons/filetype/" + "etc" + ".filetype.png class=\"directory_icon file\" style=\"margin: 0px 3px 0 2px !important; float:left\"/>"
+								+ nodes[key].filepath + nodes[key].filename
+								+ "<div class=\"matched_lines_cnt\" style=\"float:right; background: #99acc4; color: white; width: 14px; height: 14px; text-align:center; -webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px; margin: 1px 10px 0px;\">" + nodes[key].children.length + "</div>"
+								+ "<div class=\"fullpath\" style=\"display:none;\">" + nodes[key].filepath + nodes[key].filename + "</div>"
+								+ "</div>";
+			}
+			
+			core.dialog.search.set_search_treeview(nodes);
 		}
-
-		for (key in nodes){
-			nodes[key].matched_line = nodes[key].children[0].matched_line;
-			nodes[key].html = "<div class='node'>" 
-							+ "<img src=images/icons/filetype/" + "etc" + ".filetype.png class=\"directory_icon file\" style=\"margin: 0px 3px 0 2px !important; float:left\"/>"
-							+ nodes[key].filepath + nodes[key].filename
-							+ "<div class=\"matched_lines_cnt\" style=\"float:right; background: #99acc4; color: white; width: 14px; height: 14px; text-align:center; -webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px; margin: 1px 10px 0px;\">" + nodes[key].children.length + "</div>"
-							+ "<div class=\"fullpath\" style=\"display:none;\">" + nodes[key].filepath + nodes[key].filename + "</div>"
-							+ "</div>";
-		}
-		
-		core.dialog.search.set_search_treeview(nodes);
-
 		// print messages in reverse order (becuase getSearchCursor search text from the end to the start of the document)
 		for(var i = searchedWords.length - 1; i > -1; i--) {
 			core.module.search.m(searchedWords[i].fline, searchedWords[i].fch, searchedWords[i].tline, searchedWords[i].tch, editor.getLine(searchedWords[i].fline));

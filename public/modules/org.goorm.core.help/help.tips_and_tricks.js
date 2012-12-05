@@ -33,7 +33,8 @@ org.goorm.core.help.tips_and_tricks.prototype = {
 						 
 		this.dialog = new org.goorm.core.help.tips_and_tricks.dialog();
 		this.dialog.init({
-			title:"Tips_and_Tricks", 
+			localization_key:"title_tip_and_tricks",
+			title:"Tips and Tricks", 
 			path:"configs/dialogs/org.goorm.core.help/help.tips_and_tricks.html",
 			width:700,
 			height:400,

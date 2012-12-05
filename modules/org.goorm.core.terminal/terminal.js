@@ -32,8 +32,6 @@ module.exports = {
 				
 				socket.join(msg.workspace + '/' + msg.terminal_name);
 				
-				console.log("Joined: " + msg.workspace + '/' + msg.terminal_name);
-				
 				term.push(pty.spawn('bash', [], {
 					name: 'xterm-color',
 					cols: parseInt(msg.cols),
@@ -48,7 +46,7 @@ module.exports = {
 					result.terminal_name = msg.terminal_name;
 					
 					//evt.emit("executed_command", result);
-					//console.log(data);
+					
 //					console.log("on data : " + msg.workspace + '/' + msg.terminal_name);
 					socket.emit("pty_command_result", result);
 					//io.sockets.in(msg.workspace + '/' + msg.terminal_name).emit("pty_command_result", result);

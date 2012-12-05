@@ -65,7 +65,7 @@
 	{
 		"file_extension": "jsp",
 		"editor": "Editor",
-		"description": "jsp",
+		"description": "undefined",
 		"type": "Code",
 		"mode": "text/html"
 	},
@@ -74,7 +74,7 @@
 		"editor": "Editor",
 		"description": "php",
 		"type": "Code",
-		"mode": "text/x-php"
+		"mode": "text/html"
 	},
 	{
 		"file_extension": "css",
@@ -112,13 +112,6 @@
 		"mode": "text/javascript"
 	},
 	{
-		"file_extension": "xml",
-		"editor": "Editor",
-		"description": "undefined",
-		"type": "xml",
-		"mode": "application/xml"
-	},
-	{
 		"file_extension": "rule",
 		"editor": "Rule_Editor",
 		"description": "Code Generation Rule File",
@@ -126,10 +119,17 @@
 		"mode": "application/xml"
 	},
 	{
-		"file_extension": "test",
+		"file_extension": "dart",
 		"editor": "Editor",
-		"description": "",
-		"type": "Code",
-		"mode": "text/javascript"
+		"description": "Extensible Markup Language",
+		"type": "xml",
+		"mode": "application/xml"
+	},
+	{
+		"file_extension": "xml",
+		"editor": "Editor",
+		"description": "Extensible Markup Language",
+		"type": "xml",
+		"mode": "application/xml"
 	}
 ]

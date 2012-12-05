@@ -1,16 +1,17 @@
 <div style="font-size:11px; margin-top:10px;">
     <fieldset>
-        <legend>Editor Configuration</legend> 
+        <legend localization_key="dialog_preference_editor_config_guide">Editor Configuration</legend> 
         <div style="width:100%; height:30px;">
-            <div style="float:left;">Indent Unit : 
+            <div style="float:left;">
+            	<span localization_key="dialog_preference_editor_indent_unit">Indent Unit : </span> 
             	<input name="preference.editor.indent_unit" id="preference.editor.indent_unit" validate="required, number"/>
             </div>
         </div>
         <div style="width:100%; height:30px;">
-            <div style="float:left;">First Line Number : <input name="preference.editor.first_line_number" /></div>
+            <div style="float:left;"><span localization_key="dialog_preference_editor_first_line_number">First Line Number : </span><input name="preference.editor.first_line_number" /></div>
         </div>
         <div style="width:100%; height:30px;">
-            <div style="float:left;">Undo Depth : <input name="preference.editor.undo_depth" /></div>
+            <div style="float:left;"><span localization_key="dialog_preference_editor_first_undo_depth">Undo Depth : </span><input name="preference.editor.undo_depth" /></div>
         </div>
         <div style="width:100%; height:30px;">
             <div style="float:left;" class="checkbox_div">
@@ -18,7 +19,7 @@
             		<input name="preference.editor.indent_with_tabs" id="preference.editor.indent_with_tabs" type="checkbox" id="indent_with_tabs" class="checkbox_margin" />
             		<label data-on="" data-off=""></label>
         		</span>
-            	<label for="preference.editor.indent_with_tabs">Indent With Tabs</label>
+            	<label for="preference.editor.indent_with_tabs" localization_key="dialog_preference_editor_indent_with_tabs">Indent With Tabs</label>
             </div>
         </div>
         <div style="width:100%; height:30px;">
@@ -27,7 +28,7 @@
 	            	<input name="preference.editor.show_line_numbers" id="preference.editor.show_line_numbers" type="checkbox" id="show_line_numbers" class="checkbox_margin" />
 	            	<label data-on="" data-off=""></label>
         		</span>
-            	<label for="preference.editor.show_line_numbers">Show Line Numbers</label>
+            	<label for="preference.editor.show_line_numbers" localization_key="dialog_preference_editor_show_line_numbers">Show Line Numbers</label>
             </div>
         </div>
         <div style="width:100%; height:30px;">
@@ -36,7 +37,7 @@
             		<input name="preference.editor.highlight_current_cursor_line" type="checkbox" id="preference.editor.highlight_current_cursor_line" class="checkbox_margin" />
 					<label data-on="" data-off=""></label>
             	</span>
-            	<label for="preference.editor.highlight_current_cursor_line"> Highlight Current Cursor Line</label>
+            	<label for="preference.editor.highlight_current_cursor_line" localization_key="dialog_preference_editor_highlight_current_cursor_line"> Highlight Current Cursor Line</label>
             </div>            
         </div>
         <div style="width:100%; height:30px;">
@@ -45,7 +46,7 @@
             		<input name="preference.editor.use_clipboard" type="checkbox" id="preference.editor.use_clipboard" class="checkbox_margin" />
             		<label data-on="" data-off=""></label>
             	</span>
-            	<label for="preference.editor.use_clipboard">Use Clipboard</label>
+            	<label for="preference.editor.use_clipboard" localization_key="dialog_preference_editor_use_clipboard">Use Clipboard</label>
             </div>
         </div>
         <!--
