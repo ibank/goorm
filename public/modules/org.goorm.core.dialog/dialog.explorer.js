@@ -32,7 +32,7 @@ org.goorm.core.dialog.explorer.prototype = {
 		
 		self.dir_tree = context + "_dir_tree";
 		self.files = context + "_files";
-
+		
 		self.current_path = core.status.current_project_path;
 
 		$(self.location_path).val(self.current_path);
@@ -106,9 +106,7 @@ org.goorm.core.dialog.explorer.prototype = {
 		};
 
 		$.get("file/get_dir_nodes", postdata, function (data) {
-			
 			self.treeview = new YAHOO.widget.TreeView(self.dir_tree_ori, data);
-
 			self.treeview.subscribe("clickEvent", function(nodedata) {	
 
 				if(nodedata.node.data.cls == "dir") {
@@ -153,24 +151,50 @@ org.goorm.core.dialog.explorer.prototype = {
 				$(self.dir_tree).find(".ygtvdepth0").find(".ygtvcell").addClass("ygtvfocus");
 			}
 			
+			$(self).trigger('treeviewRenderComplete');
 		});
 	},
 
 	expand_directory: function (directory) {
-				
-		$(self.dir_tree).find(".ygtvfocus").parent().parent().parent().parent().find(".ygtvcell").each(function () {
-			if ($(this).find(".fullpath").text().split("/").pop() == directory) {
-				$(self.dir_tree).find(".ygtvfocus").removeClass("ygtvfocus");
-				
-				$(this).prev().addClass("ygtvfocus");
-				$(this).addClass("ygtvfocus");
-			}
-		});
-
+		var self = this;
+		
+		// $(self.dir_tree).find(".ygtvfocus").parent().parent().parent().parent().find(".ygtvcell").each(function () {
+			// if ($(this).find(".fullpath").text().split("/").pop() == directory) {
+				// $(self.dir_tree).find(".ygtvfocus").removeClass("ygtvfocus");
+// 				
+				// $(this).prev().addClass("ygtvfocus");
+				// $(this).addClass("ygtvfocus");
+			// }
+		// });
+		
 		//this.treeview.getNodeByElement($(self.dir_tree).find(".ygtvfocus")[0]).expand();
+		
+		var nodes = directory.split('/');
+
+		var target_parent = "";
+		var target_name = "";
+		
+		function get_node_by_path(node){
+			if(node.data.parent_label == target_parent && node.data.name == target_name) return true;
+			else return false;
+		}
+		
+		for(var i=0; i<nodes.length; i++){
+			target_name = nodes[i];
+			
+			var target_node = self.treeview.getNodesBy(get_node_by_path);
+			if(target_node){
+				target_node = target_node.pop();
+				target_node.expand();
+			}
+			
+			target_parent	+=	nodes[i] + '/'
+		}
 	},
 	
 	tree_expand_complete: function () {
+		var self = this;
+		
 		$(self.dir_tree).find(".ygtvcell").unbind("mousedown");		
 		$(self.dir_tree).find(".ygtvcell").mousedown(function (e) {
 			if ($(this).hasClass("ygtvfocus") == false) {
@@ -184,19 +208,19 @@ org.goorm.core.dialog.explorer.prototype = {
 		});	
 	},
 	
-	add_file_items: function () {
-		
+	add_file_items: function (directory_path) {
 		var self = this;
-		
-		$(self.files).empty();
+		var path = directory_path || this.current_path;
 		
 		var postdata = {
-			path: this.current_path
+			path: path,
+			type: 'add_file_items'
 		};
 		
 		$.get("file/get_nodes", postdata, function (data) {
-
-		for(var idx=0; idx<data.length; idx++) {
+			$(self.files).empty();
+			
+			for(var idx=0; idx<data.length; idx++) {
 				var icon_str = "";
 				if(data[idx].cls=="dir") {
 					icon_str += "<div class='folder_item'";
@@ -230,7 +254,8 @@ org.goorm.core.dialog.explorer.prototype = {
 				$(self.location_path).val(self.current_path);
 
 				self.add_file_items();
-				self.expand_directory($(this).attr("filename"));
+				//self.expand_directory($(this).attr("filename"));
+				self.expand_directory(self.current_path);
 			});
 			
 				

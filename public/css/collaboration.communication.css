@@ -24,6 +24,10 @@
 	text-align:center;
 }
 
+#communication .communication_user_item:hover{
+	background-color:#B3D4FF;
+}
+
 #communication .communication_message_social_area {
 	padding:3px;
 	text-align:right;

@@ -146,7 +146,7 @@ fs.readFile(__dirname+"/info_goorm.json", "utf8", function(err, contents) {
 						console.log("goormIDE server is started...");
 					}
 					else {
-						forever.start('server.js', []);
+						forever.start(__dirname+'/server.js', []);
 					}
 				});
 			});

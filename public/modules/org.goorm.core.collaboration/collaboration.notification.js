@@ -68,9 +68,8 @@ org.goorm.core.collaboration.notification.prototype = {
 		$('.notification_partner_area').find('.partner_name').html(" " + name);
 		$('.notification_content_area').append('<div class="notification_content">'+ data +'</div>');
 		
-		$('.notification_content_area').scrollTop($('.notification_content').length * 19);
-		
-		// this.show();
+		var room = $('.notification_content_area');
+		$(room).scrollTop(room.height());
 	},
 	
 	show : function(){

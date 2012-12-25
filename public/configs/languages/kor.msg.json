@@ -197,46 +197,49 @@
     "alert_no_have_data": {
         "value": "데이터가 없습니다."
     },
-    "alert_sigup_undefined_id": {
+    "alert_user_undefined_id": {
         "value": "ID를 입력해주세요."
     },
-    "alert_sigup_unfit_reg_id": {
+    "alert_user_unfit_reg_id": {
         "value": "ID의 형식이 올바르지 않은 양식입니다(4~15자리, 알파벳+숫자)."
     },
-    "alert_sigup_duplicate_id": {
+    "alert_user_duplicate_id": {
         "value": "동일한 ID가 존재합니다."
     },
-    "alert_sigup_not_fount_id": {
+    "alert_user_not_fount_id": {
         "value": "ID가 존재하지 않습니다."
     },
-    "alert_sigup_undefined_password": {
+    "alert_user_unmatched_id": {
+        "value": "해당 회원이 아니십니다."
+    },
+    "alert_user_undefined_password": {
         "value": "Password를 입력해주세요."
     },
-    "alert_sigup_undefined_re_password": {
+    "alert_user_undefined_re_password": {
         "value": "Password 재확인을 위해, 입력해주세요"
     },
-    "alert_sigup_undefined_password_not_match": {
+    "alert_user_undefined_password_not_match": {
         "value": "Password를 다시 한번 확인해 주세요."
     },
-    "alert_sigup_unfit_req_password": {
+    "alert_user_unfit_req_password": {
         "value": "Password의 형식이 올바르지 않은 양식입니다(8~15자리, 알파벳과 숫자의 조합)."
     },
-    "alert_sigup_undefined_email": {
+    "alert_user_undefined_email": {
         "value": "E-mail을 입력해주세요."
     },
-    "alert_sigup_unfit_email": {
+    "alert_user_unfit_email": {
         "value": "E-mail의 형식이 올바르지 않은 양식입니다(예) goorm@skima.co.kr)."
     },
-    "alert_sigup_undefined_name": {
+    "alert_user_undefined_name": {
         "value": "이름을 입력해주세요."
     },
-    "alert_sigup_unfit_name": {
+    "alert_user_unfit_name": {
         "value": "이름의 형식이 올바르지 않은 양식입니다(3~15자리, 한글/알파벳/숫자/특수문자(-/_/.))."
     },
-    "alert_sigup_undefined_nick": {
+    "alert_user_undefined_nick": {
         "value": "닉네임을 입력해주세요."
     },
-    "alert_sigup_unfit_nick": {
+    "alert_user_unfit_nick": {
         "value": "닉네임의 형식이 올바르지 않은 양식입니다(3~20자리, 한글/알파벳/숫자/특수문자(-/_/.))."
     },
     "alert_confirm_logout": {

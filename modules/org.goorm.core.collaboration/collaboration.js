@@ -46,7 +46,7 @@ module.exports = {
 				}
 				
 				if (channel == "communication") {
-					communication.msg(socket, msg_obj);
+					communication.msg(io, socket, msg_obj);
 				}
 				else if (channel == "editing") {      // <-- history messages are caught in here
 					//updating.push(msg_obj.workspace, msg_obj);

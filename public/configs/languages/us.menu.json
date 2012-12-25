@@ -639,5 +639,11 @@
     },
     "edit_find_replace_edit_context": {
         "value": "Find/Replace"
+    },
+    "communication_user_info_context": {
+        "value": "User Info"
+    },
+    "communication_user_whisper_context": {
+        "value": "Whisper"
     }
 }

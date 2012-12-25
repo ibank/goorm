@@ -238,7 +238,7 @@ org.goorm.core.admin.user_manager.all.prototype = {
 				}
 			}
 			else if(add_result.type == 'check'){
-				if(!add_result.data.result) core.module.auth.signup.signup_error_message(add_result.data);
+				if(!add_result.data.result) core.module.auth.signup.toast_error_message(add_result.data);
 			}
 		});
 	},

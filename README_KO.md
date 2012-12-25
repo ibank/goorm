@@ -4,14 +4,14 @@ project.goorm
 구름[goorm]은 오픈 소스로 진행 중인 클라우드 통합 개발 환경 프로젝트입니다. 오직 자바스크립트로만 개발되었으며, 다양한 오픈 소스 라이브러리를 사용하고 있습니다. 현재 구름은 C/C++, Java, HTML, CSS, PHP, Javascript 등의 개발을 지원합니다. 새로운 언어들도 플러그인 형태로 추가될 예정입니다.
 
 * **구름은 현재 개발중이며, 현재 베타 버전으로 제공되고 있습니다.**
-* **원하는 기능이 있거나 버그를 발견하시면 연락주세요.** (email: xenoz0718@gmail.com)
+* **원하는 기능이 있거나 버그를 발견하시면 연락주세요.** (email: sungtae.ryu@goorm.io)
 
 설치
 ---
 
   install using npm :
 
-          $ npm install goorm
+          $ npm install goorm -g
 
 공식 사이트
 --------

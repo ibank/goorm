@@ -636,5 +636,11 @@
     },
     "edit_find_replace_edit_context": {
         "value": "찾기/바꾸기"
+    },
+    "communication_user_info_context": {
+        "value": "유저 정보"
+    },
+    "communication_user_whisper_context": {
+        "value": "귓속말"
     }
 }

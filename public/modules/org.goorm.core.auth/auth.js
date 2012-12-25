@@ -84,6 +84,7 @@ org.goorm.core.auth.prototype = {
 				core.user.email = data.email;
 				core.user.name = data.name;
 				core.user.nick = data.nick || null;
+				core.user.type = data.type;
 				callback(true);
 			}
 			// else if(localStorage['user'] && localStorage['user'] != ""){
@@ -135,46 +136,10 @@ org.goorm.core.auth.prototype = {
 		core.local_complete();
 	},
 	
-	set_profile_content : function(){
-		$.getJSON("auth/get_info", function (data){
-			if (data.name != "" && data.name != undefined) {	
-				var nickname = data.nick || data.nickname || "";
-				
-				$('[name="profile_id_input"]').val(data.id);
-				$('[name="profile_name_input"]').val(data.name);
-				$('[name="profile_nickname_input"]').val(nickname);
-				$('[name="profile_email_input"]').val(data.email);
-				if(data.type == 'password') data.type = 'Generic';
-				$('[name="profile_type_input"]').val(data.type);
-				$('[name="profile_level_input"]').val(data.level);
-			}
-			else if(localStorage['user'] && localStorage['user'] != ""){
-				var user = JSON.parse(localStorage['user']);
-
-				$('[name="profile_id_input"]').val(user.id);
-				$('[name="profile_name_input"]').val(user.name);
-				$('[name="profile_nickname_input"]').val(user.nick);
-				$('[name="profile_email_input"]').val(user.email);
-				if(user.type == 'password') user.type = 'Generic';
-				$('[name="profile_type_input"]').val(user.type);
-				$('[name="profile_level_input"]').val(user.level);
-			}
-			else{
-				$('[name="profile_id_input"]').val("");
-				$('[name="profile_name_input"]').val("");
-				$('[name="profile_nickname_input"]').val("");
-				$('[name="profile_email_input"]').val("");
-				$('[name="profile_type_input"]').val("");
-				$('[name="profile_level_input"]').val("");
-			}
-		});
+	show_profile : function(target_id, target_type){
+		this.profile.show(target_id, target_type);
 	},
 	
-	profile_panel_show : function(){
-		this.set_profile_content();
-		this.profile.show();
-	},
-
 	show_signup : function(mode) {
 		core.status.focus_on_inputbox = true;
 		core.module.auth.signup.show(mode);

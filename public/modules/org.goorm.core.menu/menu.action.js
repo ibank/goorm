@@ -986,7 +986,31 @@ org.goorm.core.menu.action.prototype = {
 		//////////////////////////////////////////////////
 		$("a[action=new_file_file_context]").unbind("click");
 		$("a[action=new_file_file_context]").click(function() {
-			core.dialog.new_file.show("context");
+			var target = $("#project_treeview").find(".ygtvfocus")[0];
+			if(target){
+				var node = core.module.layout.project_explorer.treeview.getNodeByElement(target);
+				var target_src = node.data.parent_label + node.data.name;
+
+				core.dialog.new_file.show("context");
+				
+				$(core.dialog.new_file.dialog_explorer).unbind("treeviewRenderComplete")
+				$(core.dialog.new_file.dialog_explorer).bind("treeviewRenderComplete", function(){
+					if(target_src[0]=='/') target_src = target_src.substring(1);
+					
+					core.dialog.new_file.expand("#file_new_dir_tree", target_src);
+					core.dialog.new_file.add_items("#file_new_files", target_src);
+					
+					$('#file_new_location_path').val(target_src);
+				});
+
+				// $(core.dialog.new_file.dialog_explorer).unbind("fileItemRenderComplete")
+				// $(core.dialog.new_file.dialog_explorer).bind("fileItemRenderComplete", function(){
+					// core.dialog.new_file.add_items("#file_new_files", target_src);
+				// });
+			}
+			else{
+				core.dialog.new_file.show("context");
+			}
 		});
 
 		$("a[action=open_context]").unbind("click");
@@ -1120,18 +1144,52 @@ org.goorm.core.menu.action.prototype = {
 		//////////////////////////////////////////////////
 		$("a[action=new_file_folder_context]").unbind("click");
 		$("a[action=new_file_folder_context]").click(function(e) {
-			core.dialog.new_folder.show("context");
+			var target = $("#project_treeview").find(".ygtvfocus")[0];
+			if(target){
+				var node = core.module.layout.project_explorer.treeview.getNodeByElement(target);
+				var target_src = node.data.parent_label + node.data.name;
+				
+				core.dialog.new_folder.show("context");
+				
+				$(core.dialog.new_folder.dialog_explorer).unbind("treeviewRenderComplete")
+				$(core.dialog.new_folder.dialog_explorer).bind("treeviewRenderComplete", function(){
+					if(target_src[0]=='/') target_src = target_src.substring(1);
+					
+					core.dialog.new_folder.expand("#folder_new_dir_tree", target_src);
+					$('#folder_new_location_path').val(target_src);
+				});
+			}
+			else{
+				core.dialog.new_folder.show("context");
+			}
 		});
 
 		$("a[action=new_file_textfile_context]").unbind("click");
 		$("a[action=new_file_textfile_context]").click(function(e) {
-			core.dialog.new_untitled_textfile.show("context");
+			var target = $("#project_treeview").find(".ygtvfocus")[0];
+			if(target){
+				var node = core.module.layout.project_explorer.treeview.getNodeByElement(target);
+				var target_src = node.data.parent_label + node.data.name;
+
+				core.dialog.new_untitled_textfile.show("context");
+				
+				$(core.dialog.new_untitled_textfile.dialog_explorer).unbind("treeviewRenderComplete")
+				$(core.dialog.new_untitled_textfile.dialog_explorer).bind("treeviewRenderComplete", function(){
+					if(target_src[0]=='/') target_src = target_src.substring(1);
+					
+					core.dialog.new_untitled_textfile.expand("#text_new_dir_tree", target_src);
+					$('#text_new_location_path').val(target_src);
+				});
+			}
+			else{
+				core.dialog.new_untitled_textfile.show("context");
+			}
 		});
 
 		$("a[action=folder_open_context]").unbind("click");
 		$("a[action=folder_open_context]").click(function(e) {
 			var target = $("#project_treeview").find(".ygtvfocus")[0];
-
+			
 			core.module.layout.project_explorer.treeview.getNodeByElement(target).expand();
 		});
 		
@@ -1190,9 +1248,35 @@ org.goorm.core.menu.action.prototype = {
 		
 		$("a[action=account_profile]").unbind("click");
 		$("a[action=account_profile]").click(function(e) {
-			core.module.auth.profile_panel_show();
+			core.module.auth.get_info(function(result){
+				core.module.auth.show_profile(core.user.id, core.user.type);
+			});
 		});
-
+		
+		$("a[action=account_profile_context]").unbind("click");
+		$("a[action=account_profile_context]").click(function(e) {
+			var user = core.module.layout.communication.selected_user;
+			if(user){
+				core.module.auth.show_profile(user.id, user.type);
+			}
+		});
+		
+		$("a[action=account_user_whisper]").unbind("click");
+		$("a[action=account_user_whisper]").click(function(e) {
+			var communication = core.module.layout.communication;
+			var user = communication.selected_user;
+			if(user){
+				var target_user = user.id+','+user.nick+','+user.type;
+				
+				communication.message_state = 'whisper';
+				communication.message_interface_data['whisper'] = {
+					'target_user' : target_user
+				}
+				$("#" + communication.target + " #input_chat_message").val('[To. '+user.nick+'] ')
+				$("#" + communication.target + " #input_chat_message").focus();
+			}
+		});
+		
 		$("a[action=account_logout]").unbind("click");
 		$("a[action=account_logout]").click(function(e) {
 			confirmation.init({

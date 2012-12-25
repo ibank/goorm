@@ -26,7 +26,7 @@ org.goorm.core.collaboration.workspace.prototype = {
 		
 		
 		$(core).bind("project_explorer_refreshed", function () {
-			self.socket.emit("message", '{"channel": "workspace", "action":"project_explorer_refresh", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "workspace": "'+ core.status.current_project_name + '"}');
+			self.socket.emit("message", '{"channel": "workspace", "action":"project_explorer_refresh", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "type":"'+core.user.type+'", "workspace": "'+ core.status.current_project_name + '"}');
 		});
 		
 	}

@@ -78,5 +78,29 @@ org.goorm.core.file._new.folder.prototype = {
 		self.dialog_explorer.init("#folder_new", true);
 		
 		this.dialog.panel.show();
-	}
+	},
+	
+	expand: function(tree_div, src){
+		var self = this;
+		var nodes = src.split('/');
+		
+		var target_parent = "";
+		var target_name = "";
+
+		function get_node_by_path(node){
+			if(node.data.parent_label == target_parent && node.data.name == target_name) return true;
+			else return false;
+		}
+		
+		for(var i=0; i<nodes.length; i++){
+			target_name = nodes[i];
+			
+			var target_node = self.dialog_explorer.treeview.getNodesBy(get_node_by_path);
+			if(target_node){
+				target_node = target_node.pop();
+				target_node.expand();
+			}
+			
+			target_parent	+=	nodes[i] + '/'
+		}	}
 };

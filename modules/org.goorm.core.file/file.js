@@ -13,7 +13,8 @@ var rimraf = require('rimraf');
 var http = require('http');
 var exec = require('child_process').exec;
 
-var root_dir = "";
+var root_dir = ""; // project root
+var target_dir = ""; // target root
 var file_type = [];
 
 module.exports = {
@@ -215,14 +216,16 @@ module.exports = {
 		});		
 	},
 		
-	get_nodes: function (path, evt) {
+	get_nodes: function (path, evt, type) {
 		var self = this;
 	
 		var evt_dir = new EventEmitter();
 				
 		var nodes = [];
 		
-		root_dir = path.replace(__workspace+'/', "") + "/";
+		if(!type)
+			root_dir = path.replace(__workspace+'/', "") + "/";	// project root
+		target_dir = path.replace(__workspace+'/', "") + "/";	// target root
 
 		evt_dir.on("got_dir_nodes_for_get_nodes", function (dirs) {
 			var options = {
@@ -275,7 +278,7 @@ module.exports = {
 			});
 			
 			walker.on("end", function () {
-				tree = self.make_dir_tree(root_dir, dirs);
+				tree = self.make_dir_tree(target_dir, dirs);
 				tree = self.make_file_tree(tree, nodes);
 
 				evt.emit("got_nodes", tree);
@@ -310,7 +313,7 @@ module.exports = {
 						dir.sortkey = 0 + dir.name;
 						dir.type = "html";
 						dir.html = "<div class='node'>" 
-									+ "<img src=images/icons/filetype/folder.filetype.png class=\"directory_icon file\" />"
+									+ "<img src=images/icons/filetype/folder.filetype.png class=\"directory_icon folder\" />"
 									+ dir.name
 									+ "<div class=\"fullpath\" style=\"display:none;\">" + dir.root + dir.name + "</div>"
 								 + "</div>";
@@ -327,8 +330,12 @@ module.exports = {
 			
 			// root directory for get_dir_nodes only
 			var dir_tree = {};
+			var dir_tree_name = root_dir;
+			if(dir_tree_name && dir_tree_name[dir_tree_name.length-1] == '/') dir_tree_name = dir_tree_name.substring(0, dir_tree_name.length-1);
+			
 			dir_tree.root = "";
-			dir_tree.name = root_dir.replace(/\//g, "");
+			//dir_tree.name = root_dir.replace(/\//g, "");
+			dir_tree.name = dir_tree_name;
 			dir_tree.parent_label = dir_tree.root;
 			dir_tree.cls = "dir";
 			dir_tree.expanded = true;
@@ -341,7 +348,7 @@ module.exports = {
 			}
 
 			dir_tree.html = "<div class='node'>" 
-						+ "<img src=images/icons/filetype/folder.filetype.png class=\"directory_icon file\" />"
+						+ "<img src=images/icons/filetype/folder.filetype.png class=\"directory_icon folder\" />"
 						+ temp_label
 						+ "<div class=\"fullpath\" style=\"display:none;\">" + dir_tree.root + dir_tree.name + "</div>"
 					 + "</div>";
@@ -379,7 +386,7 @@ module.exports = {
 
 			// files on root
 			for (var j=0; j<files.length; j++) {
-				if (files[j].root == root_dir) {
+				if (files[j].root == target_dir) {
 					marked.push(j);
 					tree.push(files[j]);
 				}

@@ -204,6 +204,58 @@ span.CodeMirror-matchhighlight {
 	background: #e7e4ff !important;
 }
 
-.activeline {
+.cm-s-default .activeline {
 	background: #e8f2ff !important;
+}
+
+.cm-s-ambiance .activeline {
+	background: none repeat scroll 0% 0% rgba(255, 255, 255, 0.031) !important;
+}
+
+.cm-s-blackboard .activeline {
+  background: #0D3261 !important;
+}
+
+.cm-s-cobalt .activeline {
+  background: #687D97 !important;
+}
+
+.cm-s-eclipse .activeline {
+  background: #E7E7E7 !important;
+}
+
+.cm-s-erlang-dark .activeline {
+  background: #486779 !important;
+}
+
+.cm-s-lesser-dart .activeline {
+  background: #eee !important;
+}
+
+.cm-s-monokai .activeline {
+  background: #5C5E56 !important;
+}
+
+.cm-s-rubyblue .activeline {
+  background: #3E7087 !important;
+}
+
+.cm-s-vibrant-ink .activeline {
+  background: #002240 !important;
+}
+
+.cm-s-xq-dark .activeline {
+  background: #1A0052 !important;
+}
+
+.cm-s-elegant .activeline {
+  background: rgba(255, 221, 221, 0.3) !important;
+}
+
+.cm-s-neat .activeline {
+  background: rgba(255, 255, 255, 0.3) !important;
+}
+
+.cm-s-night .activeline {
+  background: #041B61 !important;
 }

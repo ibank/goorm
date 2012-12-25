@@ -151,7 +151,7 @@ org.goorm.core.project.explorer.prototype = {
 						var project_root = [{
 							cls: "dir",
 							expanded: true,
-							html: "<div class='node'><img src=images/icons/filetype/folder.filetype.png class='directory_icon file' />"+temp_project_path+"<div class='fullpath' style='display:none;'>/"+temp_project_path+"</div></div>",
+							html: "<div class='node'><img src=images/icons/filetype/folder.filetype.png class='directory_icon folder' />"+temp_project_path+"<div class='fullpath' style='display:none;'>/"+temp_project_path+"</div></div>",
 							name: temp_project_path,
 							parent_label: "/",
 							root: "/",

@@ -171,9 +171,9 @@ goorm.get('/scm', check_auth, routes.scm);
 
 //for plugin
 goorm.get('/plugin/get_list', check_auth, routes.plugin.get_list);
-goorm.get('/plugin/install', check_auth, routes.plugin.install);
+//goorm.get('/plugin/install', check_auth, routes.plugin.install);
 goorm.get('/plugin/new', check_auth, routes.plugin.do_new);
-goorm.get('/plugin/debug', check_auth, routes.plugin.debug);
+//goorm.get('/plugin/debug', check_auth, routes.plugin.debug);
 goorm.get('/plugin/run', check_auth, routes.plugin.run);
 
 //for filesystem
@@ -182,7 +182,7 @@ goorm.get('/file/new_folder', check_auth, routes.file.do_new_folder);
 goorm.get('/file/new_untitled_text_file', check_auth, routes.file.do_new_untitled_text_file);
 goorm.get('/file/new_other', check_auth, routes.file.do_new_other);
 goorm.get('/file/load', check_auth, routes.file.do_load);
-goorm.get('/file/save', check_auth, routes.file.do_save);
+//goorm.get('/file/save', check_auth, routes.file.do_save);
 goorm.get('/file/save_as', check_auth, routes.file.do_save_as);
 goorm.get('/file/delete', check_auth, routes.file.do_delete);
 goorm.get('/file/get_contents', check_auth, routes.file.get_contents);

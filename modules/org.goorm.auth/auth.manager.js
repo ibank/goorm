@@ -139,7 +139,6 @@ module.exports = {
 		});
 	},
 	
-	// for admin
 	user_get : function(user, callback){
 		var self = this;
 		

@@ -283,10 +283,9 @@ exports.file.put_contents = function(req, res){
 };
 
 exports.file.get_nodes = function(req, res){
-	console.log("session : %s", req.loggedIn);
-
 	var evt = new EventEmitter();
 	var path = req.query.path;
+	var type = req.query.type || null;
 	path = path.replace(/\/\//g, "/");
 
 	//res.setHeader("Content-Type", "application/json");
@@ -302,13 +301,14 @@ exports.file.get_nodes = function(req, res){
 		}
 	});
 	
-	g_file.get_nodes(__workspace+'/' + path, evt);
+	g_file.get_nodes(__workspace+'/' + path, evt, type);
 };
 
 exports.file.get_dir_nodes = function(req, res){
 	var evt = new EventEmitter();
 	var path = req.query.path;
 	path = path.replace(/\/\//g, "/");
+
 
 	//res.setHeader("Content-Type", "application/json");
 	
@@ -556,15 +556,16 @@ exports.auth = function(req, res){
 };
  
 exports.auth.get_info = function(req, res){
-	//console.log(req.session.auth.google.user);
 	var available_list = g_auth.get_list();
 	var evt = new EventEmitter();
+	var is_ret = true;
 
 	if (req.session.auth && req.session.auth.loggedIn) {
 		evt.on("auth_get_info", function(evt, i){
 			if(available_list[i]){
 				var type = available_list[i];
-				if(req.session.auth[type]){
+				if(req.session.auth[type] && is_ret){
+					is_ret = false;
 					res.json(req.session.auth[type].user);
 				}
 				else{
@@ -575,16 +576,8 @@ exports.auth.get_info = function(req, res){
 				res.json({});
 			}
 		});
+		
 		evt.emit("auth_get_info", evt, 0);
-		// for(var type in req.session.auth){
-			// if(available_list.indexOf(type) != -1){
-				// req.session.auth[type].user.type = type;
-				// res.json(req.session.auth[type].user);
-				// break;
-			// }
-		// }
-		// res.json(req.session.auth[type].user);
-		// res.json(req.session.auth.google.user);
 	}
 	else {
 		res.json({});
@@ -723,7 +716,21 @@ exports.user.set = function(req, res){
 		}
 	});
 	
-	g_auth_manager.set_check(req.body, evt);
+	if(req.session.auth && req.session.auth.loggedIn && req.body.id == req.session.user.id){
+		g_auth_manager.set_check(req.body, evt);
+	}
+	else{
+		var data = {
+			'result' : false,
+			'code' : 4 // no session or id unmatch
+		}
+		
+		res.json({
+			'type' : 'check',
+			'data' : data
+		});
+	}
+		
 }
 
 exports.user.list = function(req, res){
