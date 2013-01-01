@@ -26,6 +26,7 @@
 
 #communication .communication_user_item:hover{
 	background-color:#B3D4FF;
+	cursor:pointer;
 }
 
 #communication .communication_message_social_area {

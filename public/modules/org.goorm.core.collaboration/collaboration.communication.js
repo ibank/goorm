@@ -106,14 +106,11 @@ org.goorm.core.collaboration.communication.prototype = {
  			self.user_list = data.list;
  			
  			for(var i=0; i<data.list.length; i++){
- 				var user_data = data.list[i].split(',');
- 				var user_id = user_data[0];
- 				var user_nick = user_data[1];
- 				var user_type = user_data[2];
+ 				var user_data = JSON.parse(data.list[i]);
 
 				var item_id = "communication_user_item"+i
- 				var user_item = '<div id="'+item_id+'" class="communication_user_item" user_id="'+user_id+'" user_type="'+user_type+'" user_nick="'+user_nick+'">'+user_nick+'</div>';
- 				
+ 				var user_item = self.get_user_item(user_data, item_id);
+
  				self.attach_context_menu(i, item_id);
  				$("#" + self.target).find(".communication_user_container").append(user_item);
  			}
@@ -128,13 +125,10 @@ org.goorm.core.collaboration.communication.prototype = {
  			self.user_list = data.list;
  			
  			for(var i=0; i<data.list.length; i++){
- 				var user_data = data.list[i].split(',');
- 				var user_id = user_data[0];
- 				var user_nick = user_data[1];
- 				var user_type = user_data[2];
+ 				var user_data = JSON.parse(data.list[i]);
 
 				var item_id = "communication_user_item"+i
- 				var user_item = '<div id="'+item_id+'" class="communication_user_item" user_id="'+user_id+'" user_type="'+user_type+'" user_nick="'+user_nick+'">'+user_nick+'</div>';
+ 				var user_item = self.get_user_item(user_data, item_id);
 
  				self.attach_context_menu(i, item_id);
  				$("#" + self.target).find(".communication_user_container").append(user_item);
@@ -217,6 +211,16 @@ org.goorm.core.collaboration.communication.prototype = {
 		return timeString;
 	},
 	
+	get_user_item : function(user_data, item_id){
+		var user_item = "";
+		user_item	+=	'<div id="'+item_id+'" class="communication_user_item" user_id="'+user_data.user+'" user_type="'+user_data.type+'" user_nick="'+user_data.nick+'">'
+		user_item	+=		'<div class="communication_user_item_context_button" style="float:right">▼</div>'
+		user_item	+=		user_data.nick
+		user_item	+=	'</div>'
+		
+		return user_item;
+	},
+	
 	attach_context_menu : function(i, trigger){
 		var self = this;
 		
@@ -237,18 +241,18 @@ org.goorm.core.collaboration.communication.prototype = {
 				var communication = core.module.layout.communication;
 				var user = communication.selected_user;
 				if(user){
-					var target_user = user.id+','+user.nick+','+user.type;
+					var target_user = '{"user":"'+user.id+'", "nick":"'+user.nick+'", "type":"'+user.type+'"}';
 					
 					communication.message_state = 'whisper';
 					communication.message_interface_data['whisper'] = {
 						'target_user' : target_user
 					}
-					$("#" + communication.target + " #input_chat_message").val('[To. '+user.nick+'] ')
+					$("#" + communication.target + " #input_chat_message").val('[@'+user.nick+'] ')
 					$("#" + communication.target + " #input_chat_message").focus();
 				}
 			});
 			
-			self.context_menu[i].menu.subscribe('show', function(){
+			self.context_menu[i].menu.subscribe('beforeShow', function(){
 				var user_id = $('.communication_user_select').attr('user_id');
 				var user_nick = $('.communication_user_select').attr('user_nick')
 				var user_type = $('.communication_user_select').attr('user_type')
@@ -257,12 +261,23 @@ org.goorm.core.collaboration.communication.prototype = {
 					'id' : user_id,
 					'nick' : user_nick,
 					'type' : user_type
-				};
-			}, null, null)
+				};			}, null, null)
 			
 			self.context_menu[i].menu.subscribe('hide', function(){
 				self.selected_user = null;
 			}, null, null);
+			
+			$('.communication_user_item_context_button').unbind('click')
+			$('.communication_user_item_context_button').click(function(e){
+				var parent = $(this).parent();
+				var offset = $(this).offset();
+				
+				parent.addClass('communication_user_select');
+
+				self.context_menu[i].menu.cfg.setProperty('x', offset.left)
+				self.context_menu[i].menu.cfg.setProperty('y', offset.top)				
+				self.context_menu[i].menu.show();
+			});
 		});
 	},
 	
@@ -271,18 +286,10 @@ org.goorm.core.collaboration.communication.prototype = {
 		
 		function get_user_index(target, type){
 			var user_list = self.user_list;
-			var type_number = -1;
-			
-			if(type == 'id'){
-				type_number = 0;
-			}
-			else if(type == 'nick'){
-				type_number = 1;
-			}
 			
 			for(var i=0; i<user_list.length; i++){
-				var data = user_list[i].split(',');
-				if(data[type_number] == target){
+				var data = JSON.parse(user_list[i]);
+				if(data[type] == target){
 					return i;
 				}
 			}
@@ -310,14 +317,14 @@ org.goorm.core.collaboration.communication.prototype = {
 			if(self.message_state == 'whisper'){
 				if((evt.keyCode || evt.which) == 32){ // space key
 					var messages = message.split(' ');
-					var user_index = get_user_index(messages[1], 'id')
+					var user_index = get_user_index(messages[1], 'user')
 					
 					if(messages.length == 3 && ( user_index != -1)){
 						self.message_interface_data['whisper'] = {
 							'target_user' : self.user_list[user_index]
 						}
 						
-						$("#" + self.target + " #input_chat_message").val('[To. '+messages[1]+'] ');
+						$("#" + self.target + " #input_chat_message").val('[@'+messages[1]+'] ');
 					}
 				}
 			}
@@ -329,12 +336,16 @@ org.goorm.core.collaboration.communication.prototype = {
 		
 		if (self.socket.socket.connected) {
 			if(self.message_state){
-				if(self.message_state == 'whisper'){
+				if(self.message_state == 'whisper' && message.indexOf(']') != -1){
 					var sessionid = self.socket.socket.sessionid;
 					var message = message.substring(message.indexOf(']')+1)
 					var encodedMsg = encodeURIComponent(message);
 					
-					self.socket.emit("message", '{"channel": "communication", "action":"send_whisper_message", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "workspace": "'+ core.status.current_project_name +'", "message":"' + encodedMsg + '", "sessionid":"'+sessionid+'", "target_user":"'+self.message_interface_data['whisper'].target_user+'"}');
+					self.socket.emit("message", '{"channel": "communication", "action":"send_whisper_message", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "workspace": "'+ core.status.current_project_name +'", "message":"' + encodedMsg + '", "sessionid":"'+sessionid+'", "target_user":'+JSON.stringify(self.message_interface_data['whisper'].target_user)+'}');
+				}
+				else{
+					self.message_state = null;
+					self.message_process(message);
 				}
 			}
 			else{

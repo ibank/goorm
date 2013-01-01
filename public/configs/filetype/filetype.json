@@ -131,5 +131,12 @@
 		"description": "Extensible Markup Language",
 		"type": "xml",
 		"mode": "application/xml"
+	},
+	{
+		"file_extension": "python",
+		"editor": "Editor",
+		"description": "test",
+		"type": "Code",
+		"mode": "text/x-python"
 	}
 ]

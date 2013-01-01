@@ -1227,3 +1227,38 @@ YUI PANEL STYLE CUSTOMIZATION
 	
 	border-bottom: solid 1px #BBB;
 }
+
+#toast1234 .bd {
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	-khtml-border-radius: 6px;
+	border-radius: 6px;
+	
+	font-size: 11px;
+	
+	background: rgba(0, 0, 0, .4);
+}
+#toast1234 .bd .window_thumb{
+	float: left;
+}
+
+#toast1234 .bd .window_thumb .window_console{
+	width: 64px;
+	height: 64px;
+}
+
+#toast1234 .bd .window_thumb #window_filename{
+	color: white;
+	padding: 0px 10px;
+	text-align: center;
+}
+
+
+#toast1234 .bd .window_thumb #window_filename.select{
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	-khtml-border-radius: 8px;
+	border-radius: 8px;
+	background: rgba(255,255,255,.5);
+}
+

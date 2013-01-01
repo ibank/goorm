@@ -1266,13 +1266,13 @@ org.goorm.core.menu.action.prototype = {
 			var communication = core.module.layout.communication;
 			var user = communication.selected_user;
 			if(user){
-				var target_user = user.id+','+user.nick+','+user.type;
+				var target_user = '{"user":"'+user.id+'", "nick":"'+user.nick+'", "type":"'+user.type+'"}';
 				
 				communication.message_state = 'whisper';
 				communication.message_interface_data['whisper'] = {
 					'target_user' : target_user
 				}
-				$("#" + communication.target + " #input_chat_message").val('[To. '+user.nick+'] ')
+				$("#" + communication.target + " #input_chat_message").val('[@'+user.nick+'] ')
 				$("#" + communication.target + " #input_chat_message").focus();
 			}
 		});

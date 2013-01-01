@@ -11,6 +11,7 @@ var user_schema = {
 };
 
 var EventEmitter = require("events").EventEmitter;
+var crypto = require('crypto');
 var User = mongoose.model('user', new Schema(user_schema));
 
 var g_admin = require('../org.goorm.admin/admin.js')
@@ -38,10 +39,13 @@ module.exports = {
 			// else{
 				var doc = new User();
 				var user = req.body;
+				var sha_pw = crypto.createHash('sha1');
 				
 				for(var attrname in user_schema){
 					doc[attrname] = user[attrname];
 				}
+				sha_pw.update(doc.pw);
+				doc.pw = sha_pw.digest('hex');
 				doc.deleted = false;
 				doc.type = 'password';
 				doc.level = 'Admin';
@@ -111,11 +115,16 @@ module.exports = {
 		
 		var doc = new User();
 		var user = userdata;
+		var sha_pw = crypto.createHash('sha1');
 		
 		for(var attrname in user_schema){
 			doc[attrname] = user[attrname];
 		}
 		doc.deleted = false;
+		if(doc.pw){
+			sha_pw.update(doc.pw);
+			doc.pw = sha_pw.digest('hex');
+		}
 		
 		doc.save(function(err){
 			if(!err){
@@ -270,10 +279,13 @@ module.exports = {
 	
 	login : function(user, req, callback){
 		var self = this;
+		var sha_pw = crypto.createHash('sha1');
 		
 		self.get(user, function(user_data){
 			if(user_data && !user_data.deleted){
-				if(user_data.pw == user.pw){
+				sha_pw.update(user.pw);
+
+				if(user_data.pw == sha_pw.digest('hex')){
 					self.update_session(req.session, user_data);
 					callback({
 						result : true
@@ -475,6 +487,7 @@ module.exports = {
 	
 	update_session : function(session, user){
 		var user_data = {};
+
 		for(var attr in user_schema){
 			if(attr == 'pw' || attr == 'deleted' || attr == 'permission')
 				continue;

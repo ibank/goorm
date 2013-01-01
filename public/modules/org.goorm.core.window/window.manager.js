@@ -20,11 +20,15 @@ org.goorm.core.window.manager = function () {
 	this.active_filename = "";
 	this.maximized = false;
 	this.window_list = null;
+	this.transition_manager = null;
 };
 
 org.goorm.core.window.manager.prototype = {
 	init: function(container) {
 		var self = this;
+		this.transition_manager = new org.goorm.core.window.manager.transition();
+		this.transition_manager.init();
+
 		
 		this.window = [];
 		this.tab = [];
@@ -654,6 +658,4 @@ org.goorm.core.window.manager.prototype = {
 		
 		this.window.remove(0, this.window.length-1);	
 	}
-	
-
 };

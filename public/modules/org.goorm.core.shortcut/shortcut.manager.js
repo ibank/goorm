@@ -7,12 +7,12 @@
  **/
 
 org.goorm.core.shortcut.manager = function () {
-
+	this.on_transition = false
 };
 
 org.goorm.core.shortcut.manager.prototype = {
 	init: function () {
-
+		var self = this;
 		//Prevent Backspace Key
 		$(document).bind('keydown', 'Backspace', function (e) {
 			if (core.status.focus_on_editor) {
@@ -31,7 +31,7 @@ org.goorm.core.shortcut.manager.prototype = {
 			 
 		$(document).bind('keyup', function (e) {
 			core.status.keydown = false;
-		  	
+			
 		  	if (e.keyCode != 27 && e.keyCode != 13) {
 				e.stopPropagation();
 				e.preventDefault();
@@ -741,5 +741,69 @@ org.goorm.core.shortcut.manager.prototype = {
 			return false;
 		});
 		
+		//Ctrl + Tab
+		$(document).bind('keydown', 'Alt+Tab', function (e) {
+			var window_manager = core.module.layout.workspace.window_manager;
+
+			if(!self.on_transition){
+				self.on_transition = true;
+				window_manager.transition_manager.load_windows();
+				window_manager.transition_manager.load_css();
+				window_manager.transition_manager.show();
+			}
+			
+			var next_window = (window_manager.active_window+1) % window_manager.window.length;
+			
+			window_manager.transition_manager.focus(next_window);
+			window_manager.window[next_window].activate();
+			window_manager.active_window = next_window;
+			
+			e.stopPropagation();
+			e.preventDefault();
+			return false;
+		});
+		//Ctrl + Shift + Tab
+		$(document).bind('keydown', 'Alt+Shift+Tab', function (e) {
+			var window_manager = core.module.layout.workspace.window_manager;
+			var next_window;
+			if(!self.on_transition){
+				self.on_transition = true;
+				window_manager.transition_manager.load_windows();
+				window_manager.transition_manager.load_css();
+				window_manager.transition_manager.show();
+			}
+			
+			if(window_manager.active_window == 0){
+				next_window = window_manager.window.length-1;
+			}
+			else{
+				next_window = window_manager.active_window-1;
+			}
+
+			window_manager.transition_manager.focus(next_window);
+			window_manager.window[next_window].activate();
+			window_manager.active_window = next_window;
+			
+
+			window_manager.transition_manager.hide();
+			e.stopPropagation();
+			e.preventDefault();
+			return false;
+		});		
+		//Ctrl + Tab
+		$(document).bind('keyup', 'Alt', function (e) {
+			if(self.on_transition == true){
+				var window_manager = core.module.layout.workspace.window_manager;
+					
+				window_manager.transition_manager.hide();
+				self.on_transition = false;
+			}
+			
+			e.stopPropagation();
+			e.preventDefault();
+			return false;
+		});
+
+
 	}
 };

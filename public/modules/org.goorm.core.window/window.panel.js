@@ -49,7 +49,10 @@ org.goorm.core.window.panel.prototype = {
 			this.type = "codemirror_editor";
 			filename = filepath;
 		}
-		
+		else if(filetype == "py"){
+			filetype = "python";
+		}
+
 		this.filepath = filepath;
 		this.filename = filename;
 		this.filetype = filetype;

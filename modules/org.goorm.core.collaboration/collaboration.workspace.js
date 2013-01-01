@@ -21,13 +21,15 @@ module.exports = {
 		var index = 0;
 		
 		if ((index = this.workspaces.inArray(msg.workspace)) > -1) {
-			if(this.users[index].list.inArray(msg.user+','+msg.nick+','+msg.type) == -1)
-				this.users[index].list.push(msg.user+','+msg.nick+','+msg.type);
+			var data = '{"user":"'+msg.user+'", "nick":"'+msg.nick+'", "type":"'+msg.type+'"}';
+			
+			if(this.users[index].list.inArray(data) == -1)
+				this.users[index].list.push(data);
 		}
 		else {
 			this.workspaces.push(msg.workspace);
 			this.users.push({workspace:msg.workspace, list:[]});
-			this.users[this.users.length-1].list.push(msg.user+','+msg.nick+','+msg.type);
+			this.users[this.users.length-1].list.push('{"user":"'+msg.user+'", "nick":"'+msg.nick+'", "type":"'+msg.type+'"}');
 			index = this.users.length - 1;
 		}
 		
@@ -54,7 +56,7 @@ module.exports = {
 		if ((index = this.workspaces.inArray(msg.workspace)) > -1) {
 			var user_index = 0;
 			
-			if ((user_index = this.users[index].list.inArray(msg.user+','+msg.nick+','+msg.type)) > -1) {
+			if ((user_index = this.users[index].list.inArray('{"user":"'+msg.user+'", "nick":"'+msg.nick+'", "type":"'+msg.type+'"}')) > -1) {
 				this.users[index].list.remove(user_index);
 			
 				var return_msg = {

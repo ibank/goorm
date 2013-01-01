@@ -10,9 +10,12 @@ module.exports = {
 	init_config : function(callback){
 		Admin_config.find({}, function(err, result){
 			if(result && result.length > 0){
+				// callback({
+					// code : 20,
+					// result : false
+				// });
 				callback({
-					code : 20,
-					result : false
+					result : true
 				});
 			}
 			else{
@@ -24,7 +27,7 @@ module.exports = {
 					if(!err){
 						callback({
 							result : true
-						})
+						});
 					}
 					else{
 						callback({
@@ -52,8 +55,6 @@ module.exports = {
 			if(config[attrname] && config[attrname] == 'true') config[attrname] = true;
 			else if(config[attrname] && config[attrname] == 'false') config[attrname] = false;
 		}
-		
-		console.log(config);
 		
 		Admin_config.update({}, config, null, function(err){
 			if(!err) callback(true);

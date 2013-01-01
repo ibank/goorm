@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
  * Code licensed under the GPL v3 License:

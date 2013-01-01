@@ -1,0 +1,6 @@
+{
+	"plugin.python.main" : 	"index.py",
+	"plugin.python.source_path" : 	"src/",
+	"plugin.python.build_path" : 	"bin/",
+	"plugin.python.build_option" : "-g"
+}
