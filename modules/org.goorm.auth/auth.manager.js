@@ -496,8 +496,8 @@ module.exports = {
 		
 		session.auth = {};
 		session.auth.loggedIn = true;
-		session.auth['password'] = {};
-		session.auth['password'].user = user_data;
+		session.auth[user.type.toLowerCase()] = {};
+		session.auth[user.type.toLowerCase()].user = user_data;
 	},
 	
 	get_user_schema : function(){

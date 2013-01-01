@@ -715,8 +715,10 @@ exports.user.set = function(req, res){
 			});
 		}
 	});
+
+	var type = (req.body.type).toLowerCase();
 	
-	if(req.session.auth && req.session.auth.loggedIn && req.body.id == req.session.user.id){
+	if(req.session.auth && req.session.auth.loggedIn && req.body.id == req.session.auth[type].user.id){
 		g_auth_manager.set_check(req.body, evt);
 	}
 	else{

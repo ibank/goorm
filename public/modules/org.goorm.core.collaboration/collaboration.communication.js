@@ -133,7 +133,7 @@ org.goorm.core.collaboration.communication.prototype = {
  				self.attach_context_menu(i, item_id);
  				$("#" + self.target).find(".communication_user_container").append(user_item);
  			}
-
+ 			
  			$("#" + self.target).find(".communication_message_container").append("<div>" + data.nick + " leaved this workspace!</div>");
  			// $("#" + self.target).find(".communication_user_container").html(data.list.join("<br />"));
  		});
@@ -278,6 +278,8 @@ org.goorm.core.collaboration.communication.prototype = {
 				self.context_menu[i].menu.cfg.setProperty('y', offset.top)				
 				self.context_menu[i].menu.show();
 			});
+			
+			core.module.localization.refresh()
 		});
 	},
 	
