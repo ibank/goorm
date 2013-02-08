@@ -21,17 +21,27 @@ org.goorm.core.admin.user_manager.manager.prototype = {
 		var treeview = new YAHOO.widget.TreeView(self.treeview_source);
 		
 		var core = new YAHOO.widget.TextNode(json.core.label, treeview.getRoot(), json.core.expanded);
+		// var project = new YAHOO.widget.TextNode(json.project.label, treeview.getRoot(), json.project.expanded);
 
 		var tmpid = core.labelElId;
 		self.localization_ids.push({
 			'id' : tmpid,
 			'localization_key' : json.core.localization_key
 		});
-		
+		// var tmpid = project.labelElId;
+		// self.localization_ids.push({
+		// 	'id' : tmpid,
+		// 	'localization_key' : json.project.localization_key
+		// });
+
 		// add subtrees
 		$.each(json.core.child, function(index, object){
 			self.add_treeview(core, object);
 		});
+		// add subtrees
+		// $.each(json.project.child, function(index, object){
+		// 	self.add_treeview(project, object);
+		// });
 		
 		treeview.render();
 		this.treeview = treeview;
@@ -62,6 +72,9 @@ org.goorm.core.admin.user_manager.manager.prototype = {
 		$.each(json.core.child, function(index, object) {
 			self.add_tabview(object);
 		});
+		// $.each(json.project.child, function(index, object) {
+		// 	self.add_tabview(object);
+		// });
 	},
 	
 	// add tabview node reculsively

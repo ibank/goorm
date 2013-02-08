@@ -8,7 +8,7 @@ var github_manager = null;
 
 var social = function(social_type){
 	this.social_type = social_type;
-	this.api = eval( social_type + '_manager' );
+	//this.api = eval( social_type + '_manager' );
 	this.init_data = eval( '__social_key.' + social_type );
 }
 
@@ -20,7 +20,7 @@ social.prototype = {
 		this.api.init(this.init_data);
 		this.api.trigger(method_type, api_root, data, callback);
 	},
-	
+
 	login : function(req, callback){
 		var self = this;
 		

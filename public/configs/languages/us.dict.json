@@ -128,11 +128,11 @@
 	"avaliable_blind" : {
 		"value" : "Available & Blind"
 	},
-	"Projects" : {
-		"value" : "Projects"
+	"All_project" : {
+		"value" : "All"
 	},
-	"Files" : {
-		"value" : "Files"
+	"set_collaboration_project" : {
+		"value" : "Collaboration"
 	},
 	"apply" : {
 		"value" : "Apply"
@@ -223,5 +223,20 @@
 	},
 	"github_login" : {
 		"value" : "+ github"
+	},
+	"setting" : {
+		"value" : "Setting"
+	},
+	"project_setting" : {
+		"value" : "Project setting"
+	},
+	"cloud" : {
+		"value" : "Cloud"
+	},
+	"google_drive" : {
+		"value" : "Google Drive"
+	},
+	"refresh" : {
+		"value" : "Refresh"
 	}
 }

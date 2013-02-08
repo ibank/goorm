@@ -13,11 +13,11 @@ org.goorm.core.admin.user_manager.all.prototype = {
 	init : function() {
 		var self = this;
 		
-		this.load();
-		
 		this.add_button =  new YAHOO.widget.Button("user_management_add", { onclick: { fn: function(){ self.add() }  }, label:'<span localization_key="add">Add</span>' });
 		this.del_button =  new YAHOO.widget.Button("user_management_delete", { onclick: { fn: function(){ self.del() } }, label:'<span localization_key="delete">Delete</span>' });
 		this.register_button = new YAHOO.widget.Button("user_management_register", { onclick: { fn: function(){ self.register() } }, label:'<span localization_key="register">Register</span>' });
+
+		this.load();
 	},
 	
 	load : function(){
@@ -47,6 +47,8 @@ org.goorm.core.admin.user_manager.all.prototype = {
 				});
 			}
 		});
+
+		$('#user_management_register').hide();
 	},
 	
 	load_default : function(){
@@ -205,6 +207,8 @@ org.goorm.core.admin.user_manager.all.prototype = {
 							}
 						});
 					}
+
+					$('#user_management_register').hide();
 				}, no: function () {
 				}
 			});
@@ -238,7 +242,7 @@ org.goorm.core.admin.user_manager.all.prototype = {
 				}
 			}
 			else if(add_result.type == 'check'){
-				if(!add_result.data.result) core.module.auth.signup.toast_error_message(add_result.data);
+				if(!add_result.data.result) core.module.auth.display_error_message(add_result.data, 'toast');
 			}
 		});
 	},

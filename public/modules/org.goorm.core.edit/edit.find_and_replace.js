@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -57,7 +57,7 @@ org.goorm.core.edit.find_and_replace.prototype = {
 
 		this.dialog = new org.goorm.core.edit.find_and_replace.dialog();
 		this.dialog.init({
-			localization_key:"title_find_replace",
+			localization_key: "title_find_replace",
 			title : "Find/Replace",
 			path : "configs/dialogs/org.goorm.core.edit/edit.find_and_replace.html",
 			width : 550,

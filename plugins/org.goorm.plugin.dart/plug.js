@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -38,13 +38,13 @@ org.goorm.plugin.dart.prototype = {
 	
 	
 	add_project_item: function () {
-		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='dartp'><div class='project_type_icon'><img src='/org.goorm.plugin.dart/images/dart.png' class='project_icon' /></div><div class='project_type_title'>DART Project</div><div class='project_type_description'>Dart Project (HTML5/Javascript)</div></div>");
+		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project_type='dartp'><div class='project_type_icon'><img src='/org.goorm.plugin.dart/images/dart.png' class='project_icon' /></div><div class='project_type_title'>DART Project</div><div class='project_type_description'>Dart Project (HTML5/Javascript)</div></div>");
 		
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all dartp' description='  Create default Dart project' projecttype='dart' plugin_name='org.goorm.plugin.dart'><img src='/org.goorm.plugin.dart/images/dart_console.png' class='project_item_icon' /><br /><a>Default Dart project</a></div>");
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all dartp' description='  Create sample Clock project' projecttype='dart' plugin_name='org.goorm.plugin.dart'><img src='/org.goorm.plugin.dart/images/dart_console.png' class='project_item_icon' /><br /><a>Clock sample</a></div>");
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all dartp' description='  Create sample Sunflower project' projecttype='dart' plugin_name='org.goorm.plugin.dart'><img src='/org.goorm.plugin.dart/images/dart_console.png' class='project_item_icon' /><br /><a>Sunflower sample</a></div>");
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all dartp' description='  Create sample Spirodraw project' projecttype='dart' plugin_name='org.goorm.plugin.dart'><img src='/org.goorm.plugin.dart/images/dart_console.png' class='project_item_icon' /><br /><a>Spirodraw sample</a></div>");
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all dartp' description='  Create sample Solar project' projecttype='dart' plugin_name='org.goorm.plugin.dart'><img src='/org.goorm.plugin.dart/images/dart_console.png' class='project_item_icon' /><br /><a>Solar sample</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all dartp' description='  Create default Dart project' project_type='dart' plugin_name='org.goorm.plugin.dart'><img src='/org.goorm.plugin.dart/images/dart_console.png' class='project_item_icon' /><br /><a>Default Dart project</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all dartp' description='  Create sample Clock project' project_type='dart' plugin_name='org.goorm.plugin.dart'><img src='/org.goorm.plugin.dart/images/dart_console.png' class='project_item_icon' /><br /><a>Clock sample</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all dartp' description='  Create sample Sunflower project' project_type='dart' plugin_name='org.goorm.plugin.dart'><img src='/org.goorm.plugin.dart/images/dart_console.png' class='project_item_icon' /><br /><a>Sunflower sample</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all dartp' description='  Create sample Spirodraw project' project_type='dart' plugin_name='org.goorm.plugin.dart'><img src='/org.goorm.plugin.dart/images/dart_console.png' class='project_item_icon' /><br /><a>Spirodraw sample</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all dartp' description='  Create sample Solar project' project_type='dart' plugin_name='org.goorm.plugin.dart'><img src='/org.goorm.plugin.dart/images/dart_console.png' class='project_item_icon' /><br /><a>Solar sample</a></div>");
 		
 		$(".project_dialog_type").append("<option value='dart'>Dart Projects</option>").attr("selected", "");
 		
@@ -61,8 +61,8 @@ org.goorm.plugin.dart.prototype = {
 		$("a[action=new_file_dart]").unbind("click");
 		$("a[action=new_file_dart]").click(function () {
 			core.dialog.new_project.show();
-			$(".project_wizard_first_button[project-type=dartp]").trigger("click");
-			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project-type=dartp]").position().top - 100);
+			$(".project_wizard_first_button[project_type=dartp]").trigger("click");
+			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project_type=dartp]").position().top - 100);
 		});
 	},
 	

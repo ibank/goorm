@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -238,16 +238,20 @@ org.goorm.core.collaboration.editing.prototype = {
 				$(this.target).find(".CodeMirror-scroll").prepend("<span class='user_name_" + user_name + " user_name' style='top:" + (top - 8) + "px; left:" + (left + 5) + "px;'>" + user_name + "</span>");
 				$(this.target).find(".CodeMirror-scroll").prepend("<span class='user_cursor_" + user_name + " user_cursor' style='top:" + top + "px; left:" + left + "px;'></span>");
 				
-				var red = Math.floor(Math.random()*206) - Math.floor(Math.random()*30);
-				var green = Math.floor(Math.random()*206) - Math.floor(Math.random()*30);
-				var blue = Math.floor(Math.random()*206) - Math.floor(Math.random()*30);
+				// var red = Math.floor(Math.random()*206) - Math.floor(Math.random()*30);
+				// var green = Math.floor(Math.random()*206) - Math.floor(Math.random()*30);
+				// var blue = Math.floor(Math.random()*206) - Math.floor(Math.random()*30);
+// 				
+				// var light_red = (red + 90 >= 255)? 255 : red + 90;
+				// var light_green = (red + 90 >= 255)? 255 : green + 90;
+				// var light_blue = (red + 90 >= 255)? 255 : blue + 90;
+// 				
+				// var color = '#' + red.toString(16) + green.toString(16) + blue.toString(16);
+				// var light_color = '#' + light_red.toString(16) + light_green.toString(16) + light_blue.toString(16);
+				// --> moved to collaboration.communication.js
 				
-				var light_red = (red + 90 >= 255)? 255 : red + 90;
-				var light_green = (red + 90 >= 255)? 255 : green + 90;
-				var light_blue = (red + 90 >= 255)? 255 : blue + 90;
-				
-				var color = '#' + red.toString(16) + green.toString(16) + blue.toString(16);
-				var light_color = '#' + light_red.toString(16) + light_green.toString(16) + light_blue.toString(16);
+				var light_color = $("#communication .communication_user_item[user_nick='" + user_name +  "'] .communication_user_item_color_box").css("background-color");
+				var color = $("#communication .communication_user_item[user_nick='" + user_name +  "'] .communication_user_item_color_box").css("border-color");
 				
 				$(this.target).find(".CodeMirror-scroll").find(".user_name_" + user_name).css("background-color", light_color);
 				$(this.target).find(".CodeMirror-scroll").find(".user_name_" + user_name).css("border-color", color);

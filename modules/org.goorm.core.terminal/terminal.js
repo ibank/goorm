@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -29,7 +29,7 @@ module.exports = {
 			
 			socket.on('terminal_join', function (msg) {
 				msg = JSON.parse(msg);
-				
+			
 				socket.join(msg.workspace + '/' + msg.terminal_name);
 				
 				term.push(pty.spawn('bash', [], {
@@ -45,11 +45,9 @@ module.exports = {
 					result.stdout = data;
 					result.terminal_name = msg.terminal_name;
 					
-					//evt.emit("executed_command", result);
-					
 //					console.log("on data : " + msg.workspace + '/' + msg.terminal_name);
 					socket.emit("pty_command_result", result);
-					//io.sockets.in(msg.workspace + '/' + msg.terminal_name).emit("pty_command_result", result);
+//					io.sockets.in(msg.workspace + '/' + msg.terminal_name).emit("pty_command_result", result);
 				});
 
 				var data = {
@@ -77,8 +75,6 @@ module.exports = {
 				if (term[msg.index] != undefined) {
 					term[msg.index].destroy();
 					term[msg.index].kill('SIGTERM');
-					
-					console.log('terminal is killed');
 				}
 			});
 

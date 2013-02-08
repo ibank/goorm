@@ -419,8 +419,8 @@
     "account": {
         "value": "계정",
         "children": {
-            "account_manage": {
-                "value": "회원 관리"
+            "goorm_manage": {
+                "value": "구름 관리"
             },
             "account_profile": {
                 "value": "계정 정보"
@@ -485,6 +485,9 @@
     },
     "file_open_context": {
         "value": "열기"
+    },
+    "file_download_context": {
+        "value": "다운로드"
     },
     "file_open_as_context": {
         "value": "다음으로 열기",
@@ -565,6 +568,9 @@
     "folder_open_context": {
         "value": "열기"
     },
+    "folder_close_context": {
+        "value": "닫기"
+    },
     "project_properties_context": {
         "value": "프로젝트 속성"
     },
@@ -642,5 +648,8 @@
     },
     "communication_user_whisper_context": {
         "value": "귓속말"
+    },
+    "terminal_delete_edit_terminal": {
+        "value": "비우기"
     }
 }

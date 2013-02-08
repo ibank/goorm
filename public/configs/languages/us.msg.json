@@ -280,5 +280,32 @@
     },
     "toast_filetype_save_complete": {
         "value": "Filetype save complete!"
+    },
+    "alert_cannot_project_run": {
+        "value": "Cannot run a project. Please select a proper project."
+    },
+    "alert_cannot_project_remote_run": {
+        "value": "Cannot remote run a project. Please select a proper project."
+    },
+    "alert_cannot_project_generate": {
+        "value": "Cannot generate a project. Please select a proper project."
+    },
+    "alert_cannot_project_build": {
+        "value": "Cannot build a project. Please select a proper project."
+    },
+    "alert_cannot_project_debug": {
+        "value": "Cannot debug a project. Please select a proper project."
+    },
+    "confirmation_file_upload" : {
+        "value": "Do you really want to upload a file?"
+    },
+    "alert_file_not_defined" : {
+        "value": "Choose the file you want to upload."
+    },
+    "alert_google_drive_not_auth" : {
+        "value": "After authentication, please login again."
+    },
+    "alert_google_drive_not_selected" : {
+        "value": "Please select a proper file."
     }
 }

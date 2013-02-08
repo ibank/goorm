@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -34,9 +34,9 @@ org.goorm.plugin.web.prototype = {
 	
 	
 	add_project_item: function () {
-		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='webp'><div class='project_type_icon'><img src='/org.goorm.plugin.web/images/web.png' class='project_icon' /></div><div class='project_type_title'>Web Project</div><div class='project_type_description'>Web Project (HTML5/Javascript)</div></div>");
+		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project_type='webp'><div class='project_type_icon'><img src='/org.goorm.plugin.web/images/web.png' class='project_icon' /></div><div class='project_type_title'>Web Project</div><div class='project_type_description'>Web Project (HTML5/Javascript)</div></div>");
 		
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all webp' description='  Create New Project for web' projecttype='web' plugin_name='org.goorm.plugin.web'><img src='/org.goorm.plugin.web/images/web.png' class='project_item_icon' /><br /><a>Web Project</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all webp' description='  Create New Project for web' project_type='web' plugin_name='org.goorm.plugin.web'><img src='/org.goorm.plugin.web/images/web.png' class='project_item_icon' /><br /><a>Web Project</a></div>");
 		
 		$(".project_dialog_type").append("<option value='web'>Web Projects</option>").attr("selected", "");
 		
@@ -53,8 +53,8 @@ org.goorm.plugin.web.prototype = {
 		$("a[action=new_file_web]").unbind("click");
 		$("a[action=new_file_web]").click(function () {
 			core.dialog.new_project.show();
-			$(".project_wizard_first_button[project-type=webp]").trigger("click");
-			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project-type=webp]").position().top - 100);
+			$(".project_wizard_first_button[project_type=webp]").trigger("click");
+			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project_type=webp]").position().top - 100);
 		});
 	},
 	

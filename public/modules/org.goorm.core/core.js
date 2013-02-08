@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -296,7 +296,13 @@ org.goorm.core.prototype = {
 					
 			// $(core).trigger('dialog_localization');
 			// core.module.localization.refresh();
-		});	
+		});
+
+		$(this).bind('goorm_login_complete', function(){
+			core.module.toast.show(core.module.localization.msg['notice_welcome_goorm'])
+			core.module.layout.communication.join();
+			if(core.module.layout.history.last_init_load) core.module.layout.history.join();
+		})
 		
 		$(window).unload(function () {
 			localStorage['left_tabview_index'] = core.module.layout.left_tabview._configs.activeIndex.value;
@@ -486,7 +492,7 @@ org.goorm.core.prototype = {
 		
 		this.module.social_plugin = new org.goorm.core.social_plugin();
 		this.module.social_plugin.init();
-		
+
 		alert.init();
 		notice.init();
 	},
@@ -611,10 +617,8 @@ org.goorm.core.prototype = {
 		$('.admin_menu_item').addClass('yuimenuitem-disabled');
 		$('.admin_menu_label').addClass('yuimenuitemlabel-disabled');
 		$('.admin_menu_label').hide();
-		
-		core.module.toast.show(core.module.localization.msg['notice_welcome_goorm'])
-		core.module.layout.communication.join();
-		if(core.module.layout.history.last_init_load) core.module.layout.history.join();
+
+		$(core).trigger('goorm_login_complete')
 	},
 
 	complete: function() {
@@ -630,7 +634,7 @@ org.goorm.core.prototype = {
 		
 		core.module.auth.get_info(function(user_reg){
 			$.getJSON("auth/get_info", function(user_data){
-				if(user_data && user_data.level == 'Admin'){
+				if(user_data && (user_data.level == 'Admin' || user_data.level == 'Owner')){
 					$('.admin_menu_item').removeClass('yuimenuitem-disabled');
 					$('.admin_menu_label').removeClass('yuimenuitemlabel-disabled');
 	
@@ -642,10 +646,10 @@ org.goorm.core.prototype = {
 					
 					$('.admin_menu_label').hide();
 				}
+
+				$('.google_drive_logout_label').hide();
 				
-				core.module.toast.show(core.module.localization.msg['notice_welcome_goorm'])
-				core.module.layout.communication.join();
-				if(core.module.layout.history.last_init_load) core.module.layout.history.join();
+				$(core).trigger('goorm_login_complete')
 			});
 		});
 	},

@@ -2,8 +2,8 @@
 	"title_new_project": {
         "value": "새 프로젝트"
     },
-    "title_user_management": {
-	    "value": "회원 관리"
+    "title_goorm_management": {
+	    "value": "구름 관리"
     },
     "title_build_all": {
 	    "value": "모두 빌드"

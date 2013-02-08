@@ -422,8 +422,8 @@
     "account": {
         "value": "Account",
         "children": {
-            "account_manage": {
-                "value": "User Management"
+            "goorm_manage": {
+                "value": "Goorm Management"
             },
             "account_profile": {
                 "value": "Profile"
@@ -488,6 +488,9 @@
     },
     "file_open_context": {
         "value": "Open"
+    },
+    "file_download_context": {
+        "value": "Download"
     },
     "file_open_as_context": {
         "value": "Open As",
@@ -568,6 +571,9 @@
     "folder_open_context": {
         "value": "Open"
     },
+    "folder_close_context": {
+        "value": "Close"
+    },
     "project_properties_context": {
         "value": "Project Properties"
     },
@@ -645,5 +651,8 @@
     },
     "communication_user_whisper_context": {
         "value": "Whisper"
+    },
+    "terminal_delete_edit_terminal": {
+        "value": "Clear"
     }
 }

@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -136,9 +136,11 @@ org.goorm.core.file._new.prototype = {
 			target_name = nodes[i];
 			
 			var target_node = self.dialog_explorer.treeview.getNodesBy(get_node_by_path);
-			if(target_node){				target_node = target_node.pop();
+			if(target_node){
+				target_node = target_node.pop();
 				target_node.expand();
-			}			
+			}
+			
 			target_parent	+=	nodes[i] + '/'
 		}
 	},

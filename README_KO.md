@@ -149,4 +149,4 @@ project.goorm
         
 라이센스
 ------
-구름은 GPLv3 라이센스를 따르고 있습니다. [GNU General Public License Version 3.0(GPLv3)](http://gplv3.fsf.org/)
+구름은 AGPLv3 라이센스를 따르고 있습니다. [GNU AFFERO General Public License Version 3.0(AGPLv3)](http://opensource.org/licenses/agpl-v3.html)

@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -71,5 +71,41 @@ org.goorm.core.project.prototype = {
 		});
 		
 		return result;		
+	},
+
+	display_error_message : function(result, type){
+
+		function display_message(message){
+			if(type == 'toast'){
+				core.module.toast.show(message);
+			}
+			else if(type == 'alert'){
+				alert.show(message);
+			}
+		}
+
+		switch(result.code){
+			case 0:
+				display_message(core.module.localization.msg['alert_cannot_project_run']);
+				break;
+			case 1:
+				display_message(core.module.localization.msg['alert_cannot_project_remote_run']);
+				break;
+			case 2:
+				display_message(core.module.localization.msg['alert_cannot_project_generate']);
+				break;
+			case 3:
+				display_message(core.module.localization.msg['alert_cannot_project_build']);
+				break;
+			case 4:
+				display_message(	core.module.localization.msg['alert_select_project_item']);
+				break;
+			case 5:
+				display_message(	core.module.localization.msg['alert_project_not_opened']);
+				break;
+			case 6:
+				display_message(	core.module.localization.msg['alert_cannot_project_debug']);
+				break;
+		}
 	}
 };

@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -38,7 +38,8 @@ org.goorm.core.help.install_new_plugin.prototype = {
 			height:400,
 			modal:true,
 			// yes_text: "<span localization_key='ok'>OK</span>",
-			// no_text: "<span localization_key='close'>Close</span>",			buttons:this.buttons,
+			// no_text: "<span localization_key='close'>Close</span>",
+			buttons:this.buttons,
 			success: function () {
 				self.plugins_add_button = new YAHOO.widget.Button("plugins_add_button", {label:'<span localization_key="dialog_help_install_new_plugins_add">Add...</span>'});
 				self.select_all = new YAHOO.widget.Button("select_all", {label:'<span localization_key="common_select_all">Select All</span>'});

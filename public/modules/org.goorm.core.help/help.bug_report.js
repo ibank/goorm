@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -90,9 +90,11 @@ org.goorm.core.help.bug_report.prototype = {
 	}, 
 
 	show: function () {
-		var name = core.user.id;
+		var name = core.user.name;
 		
 		$("#bug_reports_author").val(name);
+		$("#bug_reports_author").attr('readonly', 'readonly');
+		$("#bug_reports_author").addClass('readonly')
 		$("#bug_reports_title").val("");
 		$("#bug_reports_email").val("");
 		$("#bug_reports_version").val(core.env.version);

@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -26,6 +26,8 @@ org.goorm.core.layout = function () {
 	this.tab_project = null;
 	this.tab_toolbox = null;
 	this.project_explorer = null;
+	this.tab_cloud=null;
+	this.cloud_explorer=null;
 };
 
 org.goorm.core.layout.prototype = {
@@ -168,7 +170,10 @@ org.goorm.core.layout.prototype = {
 		
 		//Tool Box
 		this.attach_toolbox(this.left_tabview);
-		
+
+		// Cloud
+		this.attach_cloud(this.left_tabview);
+
 		//////////////////////////////////////////////////////////////////////////////////////////
 		// Right
 		//////////////////////////////////////////////////////////////////////////////////////////
@@ -191,7 +196,8 @@ org.goorm.core.layout.prototype = {
 		this.attach_slide(this.inner_right_tabview);
 		
 		//History Tab
-		this.attach_history(this.inner_right_tabview);		
+		this.attach_history(this.inner_right_tabview);
+		
 		//Properties Tab
 		this.attach_properties(this.inner_right_tabview);
 		
@@ -316,6 +322,23 @@ org.goorm.core.layout.prototype = {
 		
 		delete this;
 	},
+
+	attach_cloud: function(target) {
+		var self = this;
+		
+		this.tab_cloud = new YAHOO.widget.Tab({ label: "<span localization_key='cloud'>Cloud</span>", content: "<div id='cloud_explorer'></div>" });
+		target.addTab(this.tab_cloud);
+
+		this.cloud_explorer = new org.goorm.core.cloud.explorer();
+		this.cloud_explorer.init();
+
+	},
+	
+	detach_cloud: function() {
+		this.left_tabview.removeTab(this.tab_cloud);
+		
+		delete this;
+	},
 	
 	attach_object_explorer: function(target) {
 		//attaching tab element
@@ -397,7 +420,8 @@ org.goorm.core.layout.prototype = {
 	},
 	
 	attach_history: function(target) {
-		target.addTab(new YAHOO.widget.Tab({ label: "<span localization_key='history'>History</span>", content: "<div id='history'></div>" }));		this.history = new org.goorm.core.collaboration.history();
+		target.addTab(new YAHOO.widget.Tab({ label: "<span localization_key='history'>History</span>", content: "<div id='history'></div>" }));
+		this.history = new org.goorm.core.collaboration.history();
 		this.history.init();
 	},
 	

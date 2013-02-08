@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -149,6 +149,23 @@ org.goorm.core.collaboration.history.prototype = {
  		});
  		
  		self.resize();
+        
+        // localization timing problem solution
+        var language = "";
+        if(localStorage.getItem("language")==null) {
+            if (core.server_language=="client") {
+                if(navigator.language=="ko") {
+                    language = "kor";
+                } else {
+                    language = "us";
+                }
+            } else {
+                language = core.server_language;
+            }
+            core.module.localization.change_language(language);
+        } else {
+            core.module.localization.change_language(localStorage.getItem("language"));
+        }
 	},
 	
 	queue_push: function(snapshot){
@@ -208,8 +225,6 @@ org.goorm.core.collaboration.history.prototype = {
 					if((i-1+self.queue_max)%self.queue_max == (oldest - 1 + self.queue_max) % self.queue_max){
 						for(var k=buf[j].from.line; k<=buf[j].to.line; k++){
 							self.editor.setLineClass(k, "history_line_marker", "history_line_marker");
-							// self.editor.markText(buf[j].from, buf[j].to, "history_ch_marker");
-							// self.editor.setMarker(k, " ", "history_line_marker");
 						}
 						self.editor.markText(buf[j].from, buf[j].to, "history_ch_marker");
 					}

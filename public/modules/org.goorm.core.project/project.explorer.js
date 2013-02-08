@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -43,70 +43,98 @@ org.goorm.core.project.explorer.prototype = {
 		
 		if(!core.status.current_project_path) core.status.current_project_path = "";
 		
-		var postdata = {
-			kind: "project",
-			path: "" + core.status.current_project_path
-		};
-		
-		$.get("file/get_nodes", postdata, function (data) {
-			if (data != null) {
-				var sorting_data = eval(data);
-
-				self.sort_project_treeview(sorting_data);
-
-				self.treeview = new YAHOO.widget.TreeView("project_treeview", sorting_data);
-
-				self.current_tree_data = self.treeview.getTreeDefinition();
-	
-				self.treeview.subscribe("clickEvent", function(nodedata) { return false; });
-	
-				self.treeview.subscribe("dblClickEvent", function(nodedata) {
-					if(nodedata.node.data.cls == "file") {
-						var filename = nodedata.node.data.filename;
-						var filetype = nodedata.node.data.filetype;
-						var filepath = nodedata.node.data.parent_label;
-												
-						core.module.layout.workspace.window_manager.open(filepath, filename, filetype);
-					}
-					else if(nodedata.node.data.cls == "dir") {
-						if (nodedata.node.expanded) {
-							nodedata.node.collapse();
-						}
-						else { 
-							nodedata.node.expand();
-						}
-					}
-				});
-				
-	
-				self.treeview.render();
-				//self.treeview_project.expandAll();
-				
-				
-				//$("#project_treeview").prepend("<div class='project_name'>" + core.current_project_name + "</div>");
-				
-				
-				self.treeview.subscribe("expandComplete", function () {
-					self.refresh_context_menu();
-					self.current_tree_data = self.treeview.getTreeDefinition();
-				});
-				
-				
-				self.set_context_menu();
-			}			
-		});
-		
-		$(core).bind("goorm_load_complete",function(){
-			self.current_project = {};
-			
-			if(!$.isEmptyObject(localStorage["current_project"])){
-				self.current_project = $.parseJSON(localStorage["current_project"]);
-				if(self.current_project.current_project_name != ""){
-					core.dialog.open_project.open(self.current_project.current_project_path, self.current_project.current_project_name, self.current_project.current_project_type);
-				}
+		$(core).bind('goorm_login_complete', function(){
+			var postdata = {
+				'get_list_type' : 'collaboration_list'
 			}
+
+			$.get("project/get_list", postdata, function (data) {
+				self.project_data = data;	
+				self.make_project_selectbox();
+				
+				core.workspace = {};
+				for(var i in data) {
+					data[i].name && (core.workspace[data[i].name] = data[i].contents);
+				}
+			});
+
+			var postdata = {
+				kind: "project",
+				path: "" + core.status.current_project_path
+			};
+
+			$.get("file/get_nodes", postdata, function (data) {
+				if (data != null) {
+					var sorting_data = eval(data);
+
+					self.sort_project_treeview(sorting_data);
+
+					self.treeview = new YAHOO.widget.TreeView("project_treeview", sorting_data);
+
+					self.current_tree_data = self.treeview.getTreeDefinition();
+		
+					self.treeview.subscribe("clickEvent", function(nodedata) { return false; });
+		
+					self.treeview.subscribe("dblClickEvent", function(nodedata) {
+						if(nodedata.node.data.cls == "file") {
+							var filename = nodedata.node.data.filename;
+							var filetype = nodedata.node.data.filetype;
+							var filepath = nodedata.node.data.parent_label;
+													
+							core.module.layout.workspace.window_manager.open(filepath, filename, filetype);
+						}
+						else if(nodedata.node.data.cls == "dir") {
+							if (nodedata.node.expanded) {
+								nodedata.node.collapse();
+							}
+							else { 
+								nodedata.node.expand();
+							}
+						}
+					});
+					
+		
+					self.treeview.render();
+					//self.treeview_project.expandAll();
+					
+					
+					//$("#project_treeview").prepend("<div class='project_name'>" + core.current_project_name + "</div>");
+					
+					
+					self.treeview.subscribe("expandComplete", function () {
+						self.refresh_context_menu();
+						self.current_tree_data = self.treeview.getTreeDefinition();
+					});
+					
+					
+					self.set_context_menu();
+
+					self.current_project = {};
+					
+					if(!$.isEmptyObject(localStorage["current_project"])){
+						self.current_project = $.parseJSON(localStorage["current_project"]);
+						if(self.current_project.current_project_name != ""){
+							core.dialog.open_project.open(self.current_project.current_project_path, self.current_project.current_project_name, self.current_project.current_project_type);
+						}
+					}
+					
+					// self.refresh();
+				}
+			});
 			
-			self.refresh();
+			// $(core).bind("goorm_load_complete",function(){
+			// 	self.current_project = {};
+				
+			// 	if(!$.isEmptyObject(localStorage["current_project"])){
+			// 		self.current_project = $.parseJSON(localStorage["current_project"]);
+			// 		if(self.current_project.current_project_name != ""){
+			// 			core.dialog.open_project.open(self.current_project.current_project_path, self.current_project.current_project_name, self.current_project.current_project_type);
+			// 		}
+			// 	}
+				
+			// 	self.refresh();
+			// });
+
 		});
 	},
 	
@@ -114,8 +142,12 @@ org.goorm.core.project.explorer.prototype = {
 		var self = this;
 		
 		event_emitting = typeof event_emitting !== 'undefined' ? event_emitting : true;
+
+		var postdata = {
+			'get_list_type' : 'collaboration_list'
+		}
 			
-		$.get("project/get_list", "", function (data) {
+		$.get("project/get_list", postdata, function (data) {
 			self.project_data = data;	
 			self.make_project_selectbox();
 			

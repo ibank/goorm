@@ -7,12 +7,12 @@
 			{	"label" : "UserList",
 				"localization_key" : "dialog_user_management_userlist",
 				"tab" : [
-					{	"label" : "<div localization_key='All' class='user_management_tab_action' parents='UserList' tab_action='all'>All</div>",
-						"html" : "configs/admin/list/all.html",
+					{	"label" : "<div localization_key='All' class='tab_action' parents='UserList' tab_action='all'>All</div>",
+						"html" : "configs/admin/admin.user.list/all.html",
 						"classname" : "all"
 					},
 					{	"label" : "<div localization_key='avaliable_blind' class='user_management_tab_action' parents='UserList' tab_action='available_blind'>Available & Blind</div>",
-						"html" : "configs/admin/list/available_blind.html",
+						"html" : "configs/admin/admin.user.list/available_blind.html",
 						"classname" : "available_blind"
 					}
 				]
@@ -20,9 +20,29 @@
 			{	"label" : "Configs",
 				"localization_key" : "dialog_user_management_configs",
 				"tab" : [
-					{	"label" : "<div localization_key='signup' class='user_management_tab_action' parents='Configs' tab_action='signup'>Sign-up</div>",
-						"html" : "configs/admin/config/signup.html",
+					{	"label" : "<div localization_key='signup' class='tab_action' parents='Configs' tab_action='signup'>Sign-up</div>",
+						"html" : "configs/admin/admin.user.config/signup.html",
 						"classname" : "signup"
+					}
+				]
+			}
+		]
+	},
+	"project" : {
+		"label" : "Project Management",
+		"localization_key" : "dialog_project_management",
+		"expanded" : true,
+		"child" : [
+			{	"label" : "ProjectList",
+				"localization_key" : "dialog_project_management_projectlist",
+				"tab" : [
+					{	"label" : "<div localization_key='All_project' class='tab_action' parents='ProjectList' tab_action='project_all'>All</div>",
+						"html" : "configs/admin/admin.project.list/all.html",
+						"classname" : "project_all"
+					},
+					{	"label" : "<div localization_key='set_collaboration_project' class='tab_action' parents='ProjectList' tab_action='project_collaboration'>Collaboration</div>",
+						"html" : "configs/admin/admin.project.list/collaboration.html",
+						"classname" : "project_collaboration"
 					}
 				]
 			}

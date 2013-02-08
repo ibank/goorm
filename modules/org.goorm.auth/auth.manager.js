@@ -3,11 +3,12 @@ var user_schema = {
 	pw: String,
 	name: String,
 	nick: String,
+	group : String,
 	email: String,
 	deleted: Boolean,
 	type : String,
 	level : String,
-	permission : String
+	last_access_time : Date
 };
 
 var EventEmitter = require("events").EventEmitter;
@@ -239,7 +240,7 @@ module.exports = {
 		var member = {};
 		
 		for(var attrname in user){
-			if(attrname == 'id' || attrname == 'pw' || attrname == 'type' || attrname == 'level' || attrname == 'deleted')
+			if(attrname == 'id' || attrname == 'pw' || attrname == 'type' || attrname == 'level' || attrname == 'deleted' || attrname == 'last_access_time')
 				continue;
 			member[attrname] = user[attrname];
 		}
@@ -287,6 +288,7 @@ module.exports = {
 
 				if(user_data.pw == sha_pw.digest('hex')){
 					self.update_session(req.session, user_data);
+					self.access(user);
 					callback({
 						result : true
 					});
@@ -307,6 +309,13 @@ module.exports = {
 		});
 	},
 	
+	access : function(user){
+		var member = {'last_access_time': new Date()}
+		User.update({'id':user.id, 'type':user.type}, {$set:member}, null, function(err){
+			if(err) console.log(err, 'Access Fail');
+		});
+	},
+
 	logout : function(req, callback){
 		req.session.destroy();
 		if(req.loggedIn) req.logout();	// for Social Login
@@ -468,7 +477,7 @@ module.exports = {
 	},
 	
 	check_admin : function(callback){
-		User.findOne({'level':'Admin'}, function(err, result){
+		User.findOne([{'level':'Admin'},{'level':'Owner'}], function(err, result){
 			if(result) callback(true);
 			else callback(false);
 		})
@@ -489,7 +498,7 @@ module.exports = {
 		var user_data = {};
 
 		for(var attr in user_schema){
-			if(attr == 'pw' || attr == 'deleted' || attr == 'permission')
+			if(attr == 'pw' || attr == 'deleted' || attr == 'last_access_time')
 				continue;
 			user_data[attr] = user[attr];
 		}

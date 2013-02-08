@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -37,10 +37,10 @@ org.goorm.plugin.nodejs.prototype = {
 	},
 	
 	add_project_item: function () {
-		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='nodejsp'><div class='project_type_icon'><img src='/org.goorm.plugin.nodejs/images/nodejs.png' class='project_icon' /></div><div class='project_type_title'>nodejs Project</div><div class='project_type_description'>Server-side Javascript Project with node.js</div></div>");
+		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project_type='nodejsp'><div class='project_type_icon'><img src='/org.goorm.plugin.nodejs/images/nodejs.png' class='project_icon' /></div><div class='project_type_title'>node.js Project</div><div class='project_type_description'>Server-side Javascript Project with node.js</div></div>");
 		
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all nodejsp' description='  Create New Project for nodejs' projecttype='nodejs'  plugin_name='org.goorm.plugin.nodejs'><img src='/org.goorm.plugin.nodejs/images/nodejs_console.png' class='project_item_icon' /><br /><a>Nodejs Project</a></div>");
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all nodejsp' description='  Create New Express Project for nodejs' projecttype='nodejs'  plugin_name='org.goorm.plugin.nodejs'><img src='/org.goorm.plugin.nodejs/images/nodejs_console.png' class='project_item_icon' /><br /><a>Express Project</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all nodejsp' description='  Create New Project for nodejs' project_type='nodejs'  plugin_name='org.goorm.plugin.nodejs'><img src='/org.goorm.plugin.nodejs/images/nodejs_console.png' class='project_item_icon' /><br /><a>Nodejs Project</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all nodejsp' description='  Create New Express Project for nodejs' project_type='nodejs'  plugin_name='org.goorm.plugin.nodejs'><img src='/org.goorm.plugin.nodejs/images/nodejs_console.png' class='project_item_icon' /><br /><a>Express Project</a></div>");
 		
 		$(".project_dialog_type").append("<option value='c'>nodejs Projects</option>").attr("selected", "");
 		
@@ -57,8 +57,8 @@ org.goorm.plugin.nodejs.prototype = {
 		$("a[action=new_file_nodejs]").unbind("click");
 		$("a[action=new_file_nodejs]").click(function () {
 			core.dialog.new_project.show();
-			$(".project_wizard_first_button[project-type=nodejsp]").trigger("click");
-			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project-type=nodejsp]").position().top - 100);
+			$(".project_wizard_first_button[project_type=nodejsp]").trigger("click");
+			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project_type=nodejsp]").position().top - 100);
 		});
 	},
 	
@@ -184,7 +184,9 @@ org.goorm.plugin.nodejs.prototype = {
 		var buildPath = " "+property['plugin.nodejs.source_path'];
 		
 		if(this.terminal === null) {
-			console.log("no connection!");
+			// console.log("no connection!");
+			var result = {result:false, code:6};
+			core.module.project.display_error_message(result, 'alert');
 			return ;
 		}
 				

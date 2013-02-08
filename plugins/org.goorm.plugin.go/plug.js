@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -38,11 +38,11 @@ org.goorm.plugin.go.prototype = {
 	},
 	
 	add_project_item: function () {
-		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='go'><div class='project_type_icon'><img src='/org.goorm.plugin.go/images/go.png' class='project_icon' /></div><div class='project_type_title'>GO Project</div><div class='project_type_description'>GO Project using GNU Compiler Collection</div></div>");
+		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project_type='go'><div class='project_type_icon'><img src='/org.goorm.plugin.go/images/go.png' class='project_icon' /></div><div class='project_type_title'>GO Project</div><div class='project_type_description'>GO Project using GNU Compiler Collection</div></div>");
 		
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all go' description='  Create new project for GO' projecttype='go' plugin_name='org.goorm.plugin.go'><img src='/org.goorm.plugin.go/images/go_console.png' class='project_item_icon' /><br /><a>GO default Project</a></div>");
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all go' description='  Create fobonacci project for GO' projecttype='go' plugin_name='org.goorm.plugin.go'><img src='/org.goorm.plugin.go/images/go_console.png' class='project_item_icon' /><br /><a>GO fibonacci sample</a></div>");
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all go' description='  Create concurrent prime sleve project for GO' projecttype='go' plugin_name='org.goorm.plugin.go'><img src='/org.goorm.plugin.go/images/go_console.png' class='project_item_icon' /><br /><a>GO prime sleve sample</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all go' description='  Create new project for GO' project_type='go' plugin_name='org.goorm.plugin.go'><img src='/org.goorm.plugin.go/images/go_console.png' class='project_item_icon' /><br /><a>GO default Project</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all go' description='  Create fobonacci project for GO' project_type='go' plugin_name='org.goorm.plugin.go'><img src='/org.goorm.plugin.go/images/go_console.png' class='project_item_icon' /><br /><a>GO fibonacci sample</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all go' description='  Create concurrent prime sleve project for GO' project_type='go' plugin_name='org.goorm.plugin.go'><img src='/org.goorm.plugin.go/images/go_console.png' class='project_item_icon' /><br /><a>GO prime sleve sample</a></div>");
 		
 		$(".project_dialog_type").append("<option value='go'>GO Projects</option>").attr("selected", "");
 	},
@@ -58,8 +58,8 @@ org.goorm.plugin.go.prototype = {
 		$("a[action=new_file_go]").unbind("click");
 		$("a[action=new_file_go]").click(function () {
 			core.dialog.new_project.show();
-			$(".project_wizard_first_button[project-type=go]").trigger("click");
-			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project-type=go]").position().top - 100);
+			$(".project_wizard_first_button[project_type=go]").trigger("click");
+			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project_type=go]").position().top - 100);
 		});
 	},
 	

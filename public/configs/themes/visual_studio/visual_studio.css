@@ -365,7 +365,7 @@
 	background:#2D2D30;
 	border-color:#1D1D1D;
 }
-#project_selector, #toolbox_selector {
+#project_selector, #toolbox_selector, #cloud_selector {
 	background-color:#252526 !important;
 	border-color:#1d1d1d;
 }
@@ -704,7 +704,7 @@
 }
 #workspace .yui-panel .hd {
 	background:#007ACC;
-	opacity:0.7;
+	opacity:1;
 	color:white;
 	border:1px solid black;
 	-webkit-border-top-left-radius:3px;

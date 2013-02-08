@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -13,6 +13,8 @@ var EventEmitter = require("events").EventEmitter;
 var exec = require('child_process').exec;
 
 var projects = [];
+
+var g_auth_project = require('../org.goorm.auth/auth.project');
 
 module.exports = {
 	do_new: function (query, evt) {
@@ -73,6 +75,14 @@ module.exports = {
 										data.project_author = query.project_author;
 										data.project_type = query.project_type;
 
+										var project_db_data = {
+											project_author : query.project_author,
+											project_name : query.project_name,
+											project_path : query.project_author+'_'+query.project_name,
+											project_type : query.project_type
+										}
+
+										evt.emit("project_add_db", project_db_data);
 										evt.emit("project_do_new", data);
 									}
 								});
@@ -213,63 +223,91 @@ module.exports = {
 		}
 	},
 	
-	get_list: function (evt) {
+	get_list: function (project_option, evt) {
 	
 		var self = this;
 		projects = [];
 		
+		var author = project_option['author'];
+		var get_list_type = project_option['get_list_type'];
+
 		var options = {
 			followLinks: false
 		};
 
-
 		var is_empty = true;
-		var walker = walk.walk(__workspace+'/', options);
+		var owner_roots = [];
 
-		walker.on("directories", function (root, dirStatsArray, next) {
-			is_empty = false;
-			if (root==__workspace+'/' ) {
-
-				var dir_count = 0;
-
-				var evt_dir = new EventEmitter();
-	
-				evt_dir.on("get_list", function () {
-
-					dir_count++;
-					if (dir_count<dirStatsArray.length) {
-						self.get_project_info(dirStatsArray[dir_count], evt_dir);						
-					}
-					else {
-						evt.emit("project_get_list", projects);
-					}
+		function get_project_data(callback){
+			if(get_list_type == 'collaboration_list'){
+				g_auth_project.get_collaboration_list(author, function(__data){
+					callback(__data);
 				});
+			}
+			else{ // owner_list
+				g_auth_project.get_owner_list(author, function(_data){
+					callback(_data);
+				});
+			}
+		}
 
-				self.get_project_info(dirStatsArray[dir_count], evt_dir);
+		get_project_data(function(owner_project_data){
+			for(var i=0; i<owner_project_data.length; i++){
+				owner_roots.push(owner_project_data[i].project_path);
 			}
-			
-			next();
-		});
+
+			var walker = walk.walk(__workspace+'/', options);
+
+			walker.on("directories", function (root, dirStatsArray, next) {
+				is_empty = false;
+				if (root==__workspace+'/' ) {
+
+					var dir_count = 0;
+
+					var evt_dir = new EventEmitter();
 		
-		walker.on("end", function () {
-			if (is_empty) {
-				evt.emit("project_get_list", projects);
-			}
+					evt_dir.on("get_list", function () {
+
+						dir_count++;
+						if (dir_count<dirStatsArray.length) {
+							self.get_project_info(owner_roots, dirStatsArray[dir_count], evt_dir);						
+						}
+						else {
+							evt.emit("project_get_list", projects);
+						}
+					});
+
+					self.get_project_info(owner_roots, dirStatsArray[dir_count], evt_dir);
+				}
+				
+				next();
+			});
+			
+			walker.on("end", function () {
+				if (is_empty) {
+					evt.emit("project_get_list", projects);
+				}
+			});
 		});
 	},
 	
-	get_project_info: function (dirStatsArray, evt_dir) {
-		var project = {};
-		project.name = dirStatsArray.name;
+	get_project_info: function (owner_roots, dirStatsArray, evt_dir) {
+		if( owner_roots.indexOf(dirStatsArray.name) != -1 || owner_roots.indexOf('/'+dirStatsArray.name) != -1 ) {
+			var project = {};
+			project.name = dirStatsArray.name;
 
-		fs.readFile(__workspace+'/'+project.name+"/project.json", 'utf-8', function (err, data) {
-			if (err==null) {
-				project.contents = JSON.parse(data);
+			fs.readFile(__workspace+'/'+project.name+"/project.json", 'utf-8', function (err, data) {
+				if (err==null) {
+					project.contents = JSON.parse(data);
 
-				projects.push(project);
-			}
+					projects.push(project);
+				}
+				evt_dir.emit("get_list");
+			});
+		}
+		else{
 			evt_dir.emit("get_list");
-		});
+		}
 	},
 	
 	set_property: function (query, evt) {

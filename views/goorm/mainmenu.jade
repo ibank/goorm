@@ -394,9 +394,39 @@
      .bd
       ul
        li.yuimenuitem.yuimenuitem-disabled.admin_menu_item
-        a.yuimenuitemlabel.yuimenuitemlabel-disabled.admin_menu_label(href="#", action='account_manage', localization_key='account_manage') User Management
+        a.yuimenuitemlabel.yuimenuitemlabel-disabled.admin_menu_label(href="#", action='goorm_manage', localization_key='goorm_manage') Goorm Management
        li.yuimenuitem
         a.yuimenuitemlabel(href="#", action='account_profile', localization_key='account_profile') Profile
       ul
        li.yuimenuitem
         a.yuimenuitemlabel(href="#", action='account_logout', localization_key='account_logout') Logout
+   li.yuimenubaritem
+    a.yuimenubaritemlabel(href='#cloud', localization_key='cloud') Cloud
+    #cloud.yuimenu
+     .bd
+      ul
+       li.yuimenuitem
+        a.yuimenuitemlabel(href='#submenu_cloud_google_drive', action='', localization_key='google_drive') Google Drive
+        #submenu_cloud_connection.yuimenu
+         .bd
+          h6.first-of-type(localization_key='login_logout') Login/Logout
+          ul.first-of-type
+           li.yuimenuitem
+            a.yuimenuitemlabel.google_drive_login_label(href="#", action='google_drive_login', style='background-image: url(configs/toolbars/org.goorm.core.cloud/image/login.png);', localization_key='login')
+             | Login
+           li.yuimenuitem
+            a.yuimenuitemlabel.google_drive_logout_label(href="#", action='google_drive_logout', style='background-image: url(configs/toolbars/org.goorm.core.cloud/image/logout.png);', localization_key='logout')
+             | Logout
+          h6.first-of-type.google_drive_logout_label(localization_key='treeview') Treeview
+          ul.google_drive_logout_label
+           li.yuimenuitem
+            a.yuimenuitemlabel(href="#", action='google_drive_refresh', style='background-image: url(configs/toolbars/org.goorm.core.cloud/image/refresh.png);', localization_key='refresh')
+             | Refresh
+          h6.first-of-type.google_drive_logout_label(localization_key='items') Items
+          ul.google_drive_logout_label
+           li.yuimenuitem
+            a.yuimenuitemlabel(href="#", action='google_drive_upload', style='background-image: url(configs/toolbars/org.goorm.core.cloud/image/upload.png);', localization_key='upload', style="display:none")
+             | Upload
+           li.yuimenuitem
+            a.yuimenuitemlabel(href="#", action='google_drive_delete', localization_key='delete')
+             | Delete

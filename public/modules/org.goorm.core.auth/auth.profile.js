@@ -50,7 +50,7 @@ org.goorm.core.auth.profile.prototype = {
 							}
 						}
 						else if(result.type == 'check'){
-							if(!result.data.result) core.module.auth.signup.toast_error_message(result.data);
+							if(!result.data.result) core.module.auth.display_error_message(result.data, 'toast');
 						}
 					})
 				}, no: function () {

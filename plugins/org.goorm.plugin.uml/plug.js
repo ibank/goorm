@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -82,14 +82,14 @@ org.goorm.plugin.uml.prototype = {
 
 	add_project_item: function () {
 
-		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='uml'><div class='project_type_icon'><img src='org.goorm.plugin.uml/images/uml.png' class='project_icon' /></div><div class='project_type_title'>UML Project</div><div class='project_type_description'>Unified Modeling Language Project</div></div>");
+		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project_type='uml'><div class='project_type_icon'><img src='org.goorm.plugin.uml/images/uml.png' class='project_icon' /></div><div class='project_type_title'>UML Project</div><div class='project_type_description'>Unified Modeling Language Project</div></div>");
 		
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all uml' description='  Create New UML Project for Class Diagram' projecttype='uml'><img src='org.goorm.plugin.uml/images/class_diagram.png' class='project_item_icon' /><br /><a>Class Diagram</a></div>");
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all uml' description='  Create New UML Project for State Diagram' projecttype='uml'><img src='org.goorm.plugin.uml/images/sequence_diagram.png' class='project_item_icon' /><br /><a>State Diagram</a></div>");
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all uml' description='  Create New UML Project for Sequence Diagram' projecttype='uml'><img src='org.goorm.plugin.uml/images/state_diagram.png' class='project_item_icon' /><br /><a>Sequence Diagram</a></div>");
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all uml' description='  Create New UML Project for Component Diagram' projecttype='uml'><img src='org.goorm.plugin.uml/images/state_diagram.png' class='project_item_icon' /><br /><a>Component Diagram</a></div>");
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all uml' description='  Create New UML Project for Activity Diagram' projecttype='uml'><img src='org.goorm.plugin.uml/images/state_diagram.png' class='project_item_icon' /><br /><a>Activity Diagram</a></div>");
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all uml' description='  Create New UML Project for UseCase Diagram' projecttype='uml'><img src='org.goorm.plugin.uml/images/state_diagram.png' class='project_item_icon' /><br /><a>UseCase Diagram</a></div>");	
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all uml' description='  Create New UML Project for Class Diagram' project_type='uml'><img src='org.goorm.plugin.uml/images/class_diagram.png' class='project_item_icon' /><br /><a>Class Diagram</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all uml' description='  Create New UML Project for State Diagram' project_type='uml'><img src='org.goorm.plugin.uml/images/sequence_diagram.png' class='project_item_icon' /><br /><a>State Diagram</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all uml' description='  Create New UML Project for Sequence Diagram' project_type='uml'><img src='org.goorm.plugin.uml/images/state_diagram.png' class='project_item_icon' /><br /><a>Sequence Diagram</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all uml' description='  Create New UML Project for Component Diagram' project_type='uml'><img src='org.goorm.plugin.uml/images/state_diagram.png' class='project_item_icon' /><br /><a>Component Diagram</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all uml' description='  Create New UML Project for Activity Diagram' project_type='uml'><img src='org.goorm.plugin.uml/images/state_diagram.png' class='project_item_icon' /><br /><a>Activity Diagram</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all uml' description='  Create New UML Project for UseCase Diagram' project_type='uml'><img src='org.goorm.plugin.uml/images/state_diagram.png' class='project_item_icon' /><br /><a>UseCase Diagram</a></div>");	
 	
 		$(".project_dialog_type").append("<option value='uml'>UML Project</option>").attr("selected", "");
 	},
@@ -109,8 +109,8 @@ org.goorm.plugin.uml.prototype = {
 		$("a[action=new_file_uml]").unbind("click");
 		$("a[action=new_file_uml]").click(function () {
 			core.dialog.new_project.show();
-			$(".project_wizard_first_button[project-type=uml]").trigger("click");
-			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project-type=uml]").position().top - 100);
+			$(".project_wizard_first_button[project_type=uml]").trigger("click");
+			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project_type=uml]").position().top - 100);
 		});	
 	},
 	

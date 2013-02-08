@@ -57,8 +57,8 @@ org.goorm.core.admin.user_manager.prototype = {
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}];
 		
 		this.dialog.init({
-			localization_key:"title_user_management",
-			title:"User Management", 
+			localization_key:"title_goorm_management",
+			title:"Goorm Management", 
 			path:"configs/dialogs/org.goorm.core.admin/user_management.html",
 			width:700,
 			height:500,
@@ -91,7 +91,7 @@ org.goorm.core.admin.user_manager.prototype = {
 						$('#'+local_target.id).attr('localization_key', local_target.localization_key);
 					}
 					
-					$('#user_manager_tabview').find('.user_management_tab_action').click(function(){
+					$('#user_manager_tabview').find('.tab_action').click(function(){
 						var parents = $(this).attr('parents');
 						var name = $(this).attr('tab_action');
 						

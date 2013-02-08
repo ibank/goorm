@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -119,7 +119,10 @@ org.goorm.plugin.manager.prototype = {
 		
 		}
 		else {
+			console.log(this.plugins);
+			console.log(data.project_type);
 			if($.isFunction(this.plugins["org.goorm.plugin."+data.project_type].new_project)) {
+				console.log(data);
 				this.plugins["org.goorm.plugin."+data.project_type].new_project(data);
 //				core.dialog.project_property.set_project_information();
 			}

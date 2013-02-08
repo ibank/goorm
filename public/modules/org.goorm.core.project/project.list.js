@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -55,7 +55,11 @@ org.goorm.core.project.list.prototype = {
 	add_project_list: function () {
 		var self = this;
 
-		$.getJSON("project/get_list", null, function (data) {
+		var postdata = {
+			'get_list_type' : 'owner_list'
+		}
+
+		$.getJSON("project/get_list", postdata, function (data) {
 			$(data).each(function (i) {		
 			//for(var project_idx=0; project_idx<sorting_data.length; project_idx++) {
 				var icon_str = "";

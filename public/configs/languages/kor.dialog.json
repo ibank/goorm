@@ -422,9 +422,6 @@
             "dialog_user_management_userlist": {
                 "value": "유저 목록"
              },
-            "dialog_user_management_permission": {
-                "value": "권한 관리"
-             },
             "dialog_user_management_configs": {
                 "value": "설정"
              },
@@ -445,6 +442,17 @@
              },
             "dialog_userlist_blind": {
                 "value": "차단된 유저"
+             }
+        }
+    },
+    "dialog_project_management": {
+        "value": "프로젝트 관리",
+        "children": {
+            "dialog_project_management_projectlist": {
+                "value": "프로젝트 목록"
+             },
+            "dialog_projectlist_all_select_project": {
+                "value": "프로젝트를 선택하세요"
              }
         }
     },
@@ -553,6 +561,9 @@
              },
             "dialog_project_property_checkout": {
                "value": "체크아웃"
+            },
+            "auto_build_after_save" : {
+                "value" : "저장 후 자동 빌드"
             }
         }
     },

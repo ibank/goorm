@@ -2,8 +2,8 @@
 	"title_new_project": {
         "value": "New Project"
     },
-    "title_user_management": {
-	    "value": "User Management"
+    "title_goorm_management": {
+	    "value": "Goorm Management"
     },
     "title_build_all": {
 	    "value": "Build All"

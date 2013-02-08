@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -17,9 +17,7 @@ org.goorm.core.file._export.prototype = {
 	init: function () { 
 		var self = this;
 		
-		var handle_ok = function() {
-			core.module.loading_bar.start("Export processing...");
-			
+		var handle_ok = function() {			
 			var data = self.dialog_explorer.get_data();
 
 			if(data.path=="" || data.name=="") {
@@ -35,7 +33,8 @@ org.goorm.core.file._export.prototype = {
 				path: data.path,
 				file: data.name
 			};
-			
+
+			core.module.loading_bar.start("Export processing...");
 			$.get("file/export", postdata, function (data) {
 				core.module.loading_bar.stop();
 				

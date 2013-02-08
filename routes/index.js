@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -21,6 +21,7 @@ var g_plugin = require("../modules/org.goorm.plugin/plugin");
 var g_help = require("../modules/org.goorm.help/help");
 var g_auth = require("../modules/org.goorm.auth/auth");
 var g_auth_manager = require("../modules/org.goorm.auth/auth.manager");
+var g_auth_project = require("../modules/org.goorm.auth/auth.project");
 var g_admin = require("../modules/org.goorm.admin/admin");
 var g_social = require("../modules/org.goorm.auth/social");
 var g_history = require("../modules/org.goorm.core.collaboration/collaboration.history");
@@ -51,6 +52,15 @@ exports.project.do_new = function(req, res){
 	evt.on("project_do_new", function (data) {
 		res.json(data);
 	});
+
+	evt.on("project_add_db", function (data) {
+		g_auth.get_user_data(req.session, function(user_data){
+			data.author_id = user_data.id;
+			data.author_type = user_data.type;
+
+			g_auth_project.add(data);
+		})
+	});
 	
 	g_project.do_new(req.query, evt);
 };
@@ -71,6 +81,7 @@ exports.project.do_delete = function(req, res){
 	});
 
 	g_project.do_delete(req.query, evt);
+	g_auth_project.remove(req.query);
 	g_history.empty_project_history(req.query.project_path);
 };
 
@@ -80,8 +91,15 @@ exports.project.get_list = function(req, res){
 	evt.on("project_get_list", function (data) {
 		res.json(data);
 	});
-	
-	g_project.get_list(evt);
+
+	g_auth.get_user_data(req.session, function(user_data){
+		req.query['author'] = {
+			author_id : user_data.id,
+			author_type : user_data.type
+		}
+
+		g_project.get_list(req.query, evt);
+	});
 };
 
 exports.project.do_import = function(req, res){
@@ -289,7 +307,7 @@ exports.file.get_nodes = function(req, res){
 	path = path.replace(/\/\//g, "/");
 
 	//res.setHeader("Content-Type", "application/json");
-	
+
 	evt.on("got_nodes", function (data) {
 		try {
 			res.json(data);
@@ -300,8 +318,18 @@ exports.file.get_nodes = function(req, res){
 			throw exception;
 		}
 	});
-	
-	g_file.get_nodes(__workspace+'/' + path, evt, type);
+
+	g_auth.get_user_data(req.session, function(user_data){
+		var nodes_data = {
+			path : __workspace+'/' + path,
+			author : {
+				author_id : user_data.id,
+				author_type : user_data.type
+			}
+		};
+
+		g_file.get_nodes(nodes_data, evt, type);
+	});
 };
 
 exports.file.get_dir_nodes = function(req, res){
@@ -325,7 +353,15 @@ exports.file.get_dir_nodes = function(req, res){
 		}
 	});
 	
-	g_file.get_dir_nodes(__workspace+'/' + path, evt);
+	g_auth.get_user_data(req.session, function(user_data){
+		req.query.path = __workspace+'/' + path;
+		req.query['author'] = {
+			author_id : user_data.id,
+			author_type : user_data.type
+		}
+
+		g_file.get_dir_nodes(req.query, evt);
+	});
 };
 
 exports.file.get_file = function(req, res){
@@ -556,32 +592,9 @@ exports.auth = function(req, res){
 };
  
 exports.auth.get_info = function(req, res){
-	var available_list = g_auth.get_list();
-	var evt = new EventEmitter();
-	var is_ret = true;
-
-	if (req.session.auth && req.session.auth.loggedIn) {
-		evt.on("auth_get_info", function(evt, i){
-			if(available_list[i]){
-				var type = available_list[i];
-				if(req.session.auth[type] && is_ret){
-					is_ret = false;
-					res.json(req.session.auth[type].user);
-				}
-				else{
-					evt.emit("auth_get_info", evt, ++i);
-				}
-			}
-			else{
-				res.json({});
-			}
-		});
-		
-		evt.emit("auth_get_info", evt, 0);
-	}
-	else {
-		res.json({});
-	}	
+	g_auth.get_user_data(req.session, function(user_data){
+		res.json(user_data);
+	});
 };
 
 exports.auth.login = function(req, res){
@@ -684,6 +697,28 @@ exports.admin.user_avail_blind = function(req, res){
 	g_auth_manager.avail_blind(req.body, function(result){
 		res.json(result);
 	});
+}
+
+exports.admin.project = function(req, res){
+	res.json(null);
+}
+
+exports.admin.project.get = function(req, res){
+	g_auth_project.get(req.query, function(data){
+		res.json(data);
+	})
+}
+
+exports.admin.project.list = function(req, res){
+	g_auth_project.get_all_list(req.query, function(data){
+		res.json(data);
+	})
+}
+
+exports.admin.project.push = function(req, res){
+	g_auth_project.push(req.body, function(data){
+		res.json(data);
+	})
 }
 
 exports.user = function(req, res){
@@ -796,6 +831,19 @@ exports.social.twitter = function(req, res){
 		res.json(result);
 	});
 };
+
+
+/*
+* Cloud
+*/
+
+exports.cloud = function(req, res){
+	res.send(null);
+};
+
+exports.cloud.google_drive = function(req, res){
+	res.json(global.__social_key.google_drive)
+}
 
 /*
  * API : History

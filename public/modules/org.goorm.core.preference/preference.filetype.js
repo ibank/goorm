@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -375,6 +375,7 @@ org.goorm.core.preference.filetype.prototype = {
 															"<option value='text/x-coffeescript'>text/x-coffeescript</option>"+
 															"<option value='text/x-stsrc'>text/x-stsrc</option>"+
 															"<option value='text/x-plsql'>text/x-plsql</option>"+
+															"<option value='text/x-sql'>text/x-sql</option>"+
 															"<option value='text/x-lua'>text/x-lua</option>"+
 															"<option value='text/x-scheme'>text/x-scheme</option>"+
 															"<option value='text/x-clojure'>text/x-clojure</option>"+

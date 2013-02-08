@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -24,6 +24,12 @@ org.goorm.core.project.build.project.prototype = {
 		self.is_repeat = false;
 				
 		var handle_build = function() {
+			if($("#build_project_list input[type=checkbox]:checked").length == 0){
+				var result = {result:false, code:3};
+				core.module.project.display_error_message(result, 'alert');
+				return false;
+			}
+
 			$("#build_project_list input[type=checkbox]:checked").each(function(){
 				var list = this;
 				var window_manager = core.module.layout.workspace.window_manager;

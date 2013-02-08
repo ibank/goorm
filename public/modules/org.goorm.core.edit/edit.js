@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -693,6 +693,43 @@ org.goorm.core.edit.prototype = {
 			data: data
 		};
 		
+		
+		var target_project_name=path.split("/")[0];
+		var target_project_type
+		
+		var tmpdata=core.workspace;
+
+	
+
+		if($('#building_after_save_option:checked').length!=0){
+			core.property.building_after_save_option='yes'
+			send_data.build=true;
+
+			for(var name in tmpdata){
+				if(target_project_name==name){
+					target_project_type=tmpdata[name].type;
+					break;
+				}
+			}
+		}else{
+			core.property.building_after_save_option=''
+			send_data.build=false;
+		}
+
+
+		// if(core.property.building_after_save_option=='yes'){
+		// 	send_data.build=true;
+
+		// 	for(var name in tmpdata){
+		// 		if(target_project_name==name){
+		// 			target_project_type=tmpdata[name].type;
+		// 			break;
+		// 		}
+		// 	}
+		// }else{
+		// 	send_data.build=false;
+		// }
+
 		// $.get(url, send_data, function (data) {
 		$.post(url, send_data, function (data) {
 			if(core.flag.collaboration_on == true){
@@ -712,6 +749,11 @@ org.goorm.core.edit.prototype = {
 			
 			if (option=="close") {
 				window_manager.window[window_manager.active_window].close();
+			}
+
+			if(core.property.building_after_save_option=='yes' && core.status.current_project_path==target_project_name){
+				//console.log('build after save')
+				core.module.plugin_manager.plugins["org.goorm.plugin."+target_project_type].build(target_project_name);
 			}
 		});
 

@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -236,7 +236,7 @@ org.goorm.core.project._new.prototype = {
 			$(this).addClass("selected_button");
 						
 			$(".all").hide();
-			$("."+$(this).attr("project-type")).show();
+			$("."+$(this).attr("project_type")).show();
 		});
 		
 		$(".project_wizard_second_button").click(function () {
@@ -247,7 +247,7 @@ org.goorm.core.project._new.prototype = {
 			$("#input_project_detailed_type").attr("value", "");
 			$("#input_project_plugin").attr("value", "");
 			
-			$("#input_project_type").attr("value", $(this).attr("projecttype"));
+			$("#input_project_type").attr("value", $(this).attr("project_type"));
 			$("#input_project_detailed_type").attr("value", $(this).text());
 			$("#input_project_plugin").attr("value", $(this).attr("plugin_name"));
 			
@@ -272,7 +272,9 @@ org.goorm.core.project._new.prototype = {
 		$("#input_project_type").attr("value","");
 		$("#input_project_detailed_type").val("");
 		$("#input_project_plugin").val("");
-		$("#input_project_author").val("");
+		$("#input_project_author").val(core.user.name);
+		$("#input_project_author").attr('readonly', 'readonly');
+		$("#input_project_author").addClass('readonly')
 		$("#input_project_name").val("");
 		$("#input_project_desc").val("");
 		$("#project_new_import_upload_output").empty();
@@ -291,14 +293,14 @@ org.goorm.core.project._new.prototype = {
 	
 	add_project_item: function () {
 		// for step 1
-		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='all'><div class='project_type_icon'><img src='images/org.goorm.core.project/project.png' class='project_icon' /></div><div class='project_type_title'>All</div><div class='project_type_description'>View all available<br />project items</div></div>");
+		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project_type='all'><div class='project_type_icon'><img src='images/org.goorm.core.project/project.png' class='project_icon' /></div><div class='project_type_title'>All</div><div class='project_type_description'>View all available<br />project items</div></div>");
 
 /*
-		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='goormp'><div class='project_type_icon'><img src='images/org.goorm.core.project/goorm_project.png' class='project_icon' /></div><div class='project_type_title'>goorm Project</div><div class='project_type_description'>Customization/Plugin<br />/Theme</div></div>");
+		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project_type='goormp'><div class='project_type_icon'><img src='images/org.goorm.core.project/goorm_project.png' class='project_icon' /></div><div class='project_type_title'>goorm Project</div><div class='project_type_description'>Customization/Plugin<br />/Theme</div></div>");
 		
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all goormp' description=' Create New goorm Customization Project' projecttype='goorm'><img src='images/org.goorm.core.project/customization.png' class='project_item_icon' /><br /><a>goorm Customization</a></div>");
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all goormp' description=' Create New goorm Plugin' projecttype='goorm'><img src='images/org.goorm.core.project/plugin.png' class='project_item_icon' /><br /><a>goorm Plugin</a></div>");
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all goormp' description=' Create New goorm Theme' projecttype='goorm'><img src='images/org.goorm.core.project/theme.png' class='project_item_icon' /><br /><a>goorm Theme</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all goormp' description=' Create New goorm Customization Project' project_type='goorm'><img src='images/org.goorm.core.project/customization.png' class='project_item_icon' /><br /><a>goorm Customization</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all goormp' description=' Create New goorm Plugin' project_type='goorm'><img src='images/org.goorm.core.project/plugin.png' class='project_item_icon' /><br /><a>goorm Plugin</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all goormp' description=' Create New goorm Theme' project_type='goorm'><img src='images/org.goorm.core.project/theme.png' class='project_item_icon' /><br /><a>goorm Theme</a></div>");
 */
 
 	}	

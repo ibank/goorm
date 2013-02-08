@@ -1,10 +1,12 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
  **/
+
+
 
 var mongoose_module = require('mongoose');
 Schema = mongoose_module.Schema;	//global
@@ -18,6 +20,17 @@ var express = require('express')
   , colors = require('colors')
   , everyauth = require('everyauth')
   , fs = require('fs');
+
+var port = 9999; //default
+var home = process.env.HOME;
+
+if (process.argv[2] > 0 && process.argv[2] < 100000) {
+	port = process.argv[2];
+}
+
+if(fs.existsSync(process.argv[3])){
+	home = process.argv[3];
+}
 
 mongoose.on('error', function(err){
 	global.__use_mongodb = false;
@@ -35,6 +48,7 @@ var g_collaboration = require("./modules/org.goorm.core.collaboration/collaborat
 var g_utility = require("./modules/org.goorm.core.utility/utility");
 var g_port_manager = require("./modules/org.goorm.core.utility/utility.port_manager");
 var g_configs_social = require("./configs/social");
+var g_configs_cloud = require("./configs/cloud");
 
 global.__path = __dirname+"/";
 
@@ -50,8 +64,8 @@ var users = []
 
 console.log("goormIDE:: loading config...".yellow);
 
-if (fs.existsSync(process.env.HOME + '/.goorm/config.json')) {
-	var data = fs.readFileSync(process.env.HOME + '/.goorm/config.json', 'utf8');
+if (fs.existsSync(home + '/.goorm/config.json')) {
+	var data = fs.readFileSync(home + '/.goorm/config.json', 'utf8');
 	if (data != "") {
 		config_data = JSON.parse(data);
 	}
@@ -105,10 +119,16 @@ function check_auth(req, res, next){
 
 g_configs_social.init(everyauth);
 
+// Social Init
+//
 if(global.__social_key.google) g_configs_social.attach_google(global.__social_key.google);
 if(global.__social_key.facebook) g_configs_social.attach_facebook(global.__social_key.facebook);
 if(global.__social_key.github) g_configs_social.attach_github(global.__social_key.github);
 if(global.__social_key.twitter) g_configs_social.attach_twitter(global.__social_key.twitter);
+
+// Cloud Init
+//
+if(global.__social_key.google_drive) g_configs_cloud.attach_google_drive(global.__social_key.google_drive);
 
 // Configuration
 goorm.configure(function(){
@@ -236,6 +256,10 @@ goorm.post('/admin/set_config', check_auth, routes.admin.set_config);
 goorm.post('/admin/user/add', check_auth, routes.admin.user_add);
 goorm.post('/admin/user/del', check_auth, routes.admin.user_del);
 goorm.post('/admin/user/avail_blind', check_auth, routes.admin.user_avail_blind);
+goorm.get('/admin/project/get', routes.admin.project.get)
+goorm.get('/admin/project/list', routes.admin.project.list)
+goorm.post('/admin/project/push', routes.admin.project.push)
+
 
 // for users
 goorm.post('/user/get', routes.user.get);
@@ -249,6 +273,8 @@ goorm.get('/download', check_auth, routes.download);
 goorm.get('/social/login', routes.social.login);
 goorm.get('/social/list', routes.social.possible_list);
 goorm.all('/social/twitter', check_auth, routes.social.twitter);
+
+goorm.get('/cloud/google_drive', routes.cloud.google_drive);
 
 goorm.get('/alloc_port', check_auth, function(req, res) {
 	// req : port, process_name
@@ -271,20 +297,22 @@ goorm.get('/db/is_open', function(req, res){
 	res.json(is_open);
 })
 
-server = http.createServer(goorm).listen(9999, function(){
+server = http.createServer(goorm).listen(port, function(){
 		console.log("goorm IDE server listening on port %d in %s mode", server.address().port, goorm.settings.env);
 		console.log("Open your browser and connect to");
-		console.log("'http://localhost:9999' or 'http://[YOUR IP/DOMAIN]:9999'");
+		console.log("'http://localhost:"+port+"' or 'http://[YOUR IP/DOMAIN]:"+port+"'");
 	});
 
 // everyauth.helpExpress(goorm);
 		
-io = socketio.listen(server);
+io = socketio.listen(server, {
+	'heartbeatTimeout' : 30*1000
+});
 
 g_terminal.start(io);
 g_collaboration.start(io);
 
-g_port_manager.alloc_port({ "port": 9999,
+g_port_manager.alloc_port({ "port": port,
 	"process_name": "goorm" 
 });
 

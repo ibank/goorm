@@ -1,13 +1,13 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
  **/
 
 org.goorm.core.shortcut.manager = function () {
-	this.on_transition = false
+	this.on_transition = false;
 };
 
 org.goorm.core.shortcut.manager.prototype = {
@@ -784,8 +784,6 @@ org.goorm.core.shortcut.manager.prototype = {
 			window_manager.window[next_window].activate();
 			window_manager.active_window = next_window;
 			
-
-			window_manager.transition_manager.hide();
 			e.stopPropagation();
 			e.preventDefault();
 			return false;
@@ -804,6 +802,18 @@ org.goorm.core.shortcut.manager.prototype = {
 			return false;
 		});
 
+		$(document).bind('keyup', 'Shift', function (e) {
+			if(self.on_transition == true){
+				var window_manager = core.module.layout.workspace.window_manager;
+					
+				window_manager.transition_manager.hide();
+				self.on_transition = false;
+			}
+			
+			e.stopPropagation();
+			e.preventDefault();
+			return false;
+		});
 
 	}
 };

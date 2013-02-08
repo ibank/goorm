@@ -216,6 +216,11 @@ label:hover {
 	text-shadow: -1px 1px 10px #44f, -1px 1px 10px #44f;
 }
 
+.readonly {
+	background: #e3e3e3;
+	color: #777;
+}
+
 #main_loading_image {
 	background-image:url(../images/loading.png); 
 	width:640px; 
@@ -587,6 +592,18 @@ label:hover {
 }
 
 #project_selector, #toolbox_selector {
+	overflow:hidden;
+	font-size: 12px;
+	height:27px;
+	padding-left:5px;
+	padding-right:5px;
+	padding-top:5px;
+	background-color:#eee;
+	border-bottom:1px solid #ddd;
+	text-align:center;
+}
+
+#cloud_selector {
 	overflow:hidden;
 	font-size: 12px;
 	height:27px;
@@ -1227,34 +1244,44 @@ YUI PANEL STYLE CUSTOMIZATION
 	
 	border-bottom: solid 1px #BBB;
 }
+#workspace .yui-panel-container.left{
+	-webkit-transform: rotateY(30deg) scale(0.5);
+}
+#workspace .yui-panel-container.right{
+	-webkit-transform: rotateY(-30deg) scale(0.5);
+}
+#workspace .yui-panel-container.select{
+	-webkit-transform: scale(0.7);
+}
 
-#toast1234 .bd {
+#window_transition .bd {
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
 	-khtml-border-radius: 6px;
 	border-radius: 6px;
-	
 	font-size: 11px;
-	
 	background: rgba(0, 0, 0, .4);
+	height: 84px;
 }
-#toast1234 .bd .window_thumb{
+
+#window_transition .bd .window_thumb{
+	margin: 0 5px;
 	float: left;
 }
 
-#toast1234 .bd .window_thumb .window_console{
+#window_transition .bd .window_thumb .window_console{
 	width: 64px;
 	height: 64px;
 }
 
-#toast1234 .bd .window_thumb #window_filename{
+#window_transition .bd .window_thumb #window_filename{
 	color: white;
 	padding: 0px 10px;
 	text-align: center;
 }
 
 
-#toast1234 .bd .window_thumb #window_filename.select{
+#window_transition .bd .window_thumb #window_filename.select{
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
 	-khtml-border-radius: 8px;

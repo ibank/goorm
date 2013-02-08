@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -34,9 +34,9 @@ org.goorm.plugin.php.prototype = {
 	
 	
 	add_project_item: function () {
-		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='phpp'><div class='project_type_icon'><img src='/org.goorm.plugin.php/images/php.png' class='project_icon' /></div><div class='project_type_title'>PHP Project</div><div class='project_type_description'>PHP Project (HTML5/Javascript)</div></div>");
+		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project_type='phpp'><div class='project_type_icon'><img src='/org.goorm.plugin.php/images/php.png' class='project_icon' /></div><div class='project_type_title'>PHP Project</div><div class='project_type_description'>PHP Project (HTML5/Javascript)</div></div>");
 		
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all phpp' description='  Create New Project for php' projecttype='php' plugin_name='org.goorm.plugin.php'><img src='/org.goorm.plugin.php/images/php_console.png' class='project_item_icon' /><br /><a>PHP Project</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all phpp' description='  Create New Project for php' project_type='php' plugin_name='org.goorm.plugin.php'><img src='/org.goorm.plugin.php/images/php_console.png' class='project_item_icon' /><br /><a>PHP Project</a></div>");
 		
 		$(".project_dialog_type").append("<option value='php'>php Projects</option>").attr("selected", "");
 		
@@ -53,8 +53,8 @@ org.goorm.plugin.php.prototype = {
 		$("a[action=new_file_php]").unbind("click");
 		$("a[action=new_file_php]").click(function () {
 			core.dialog.new_project.show();
-			$(".project_wizard_first_button[project-type=phpp]").trigger("click");
-			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project-type=phpp]").position().top - 100);
+			$(".project_wizard_first_button[project_type=phpp]").trigger("click");
+			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project_type=phpp]").position().top - 100);
 		});
 	},
 	

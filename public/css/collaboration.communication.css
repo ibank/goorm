@@ -29,6 +29,12 @@
 	cursor:pointer;
 }
 
+#communication .communication_user_item_color_box{
+	float:left; width:12px;	height:12px;
+	margin-left:2px; margin-top:1px; margin-right: 8px;
+	border: 1px solid;
+}
+
 #communication .communication_message_social_area {
 	padding:3px;
 	text-align:right;
@@ -54,6 +60,15 @@
 #communication .timestamp {
 	margin-right: 5px;
 	color: #CCC;
+}
+
+.communication_user_item_context_button_first {
+	width: auto !important;
+}
+
+.communication_user_item_context_button {
+	float : right;
+	width: 0px;
 }
 
 #slide_url {

@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -16,6 +16,8 @@ var exec = require('child_process').exec;
 var root_dir = ""; // project root
 var target_dir = ""; // target root
 var file_type = [];
+
+var g_auth_project = require('../org.goorm.auth/auth.project');
 
 module.exports = {
 	init: function () {
@@ -216,11 +218,13 @@ module.exports = {
 		});		
 	},
 		
-	get_nodes: function (path, evt, type) {
+	get_nodes: function (nodes_data, evt, type) {
 		var self = this;
 	
 		var evt_dir = new EventEmitter();
-				
+		var path = nodes_data['path'];
+		var author = nodes_data['author'];
+
 		var nodes = [];
 		
 		if(!type)
@@ -286,77 +290,222 @@ module.exports = {
 		
 		});
 		
-		this.get_dir_nodes(path, evt_dir);
+		var dir_data = {
+			path : path,
+			author : author
+		}
+
+		this.get_dir_nodes(dir_data, evt_dir);
 	},
 	
-	get_dir_nodes: function (path, evt) {
+	get_dir_nodes: function (dir_data, evt) {
 		var self = this;
 		
+		var path = dir_data['path'];
+		var author = dir_data['author'];
+
 		var options = {
 			followLinks: false
 		};
 		
 		var dirs = [];
-		
-		var walker = walk.walk(path, options);
-		
-		walker.on("directories", function (root, dir_stats_array, next) {
-			if (root.indexOf("\/\.")==-1) {
-				for (var i=0; i < dir_stats_array.length; i++) {
-					if (dir_stats_array[i].name.indexOf("\.") != 0 ) {				
-						var dir = {};
-						dir.root = root.replace(__workspace+'/', "") + "/";
-						dir.name = dir_stats_array[i].name;
-						dir.parent_label = dir.root;
-						dir.cls = "dir";
-						dir.expanded = false;
-						dir.sortkey = 0 + dir.name;
-						dir.type = "html";
-						dir.html = "<div class='node'>" 
-									+ "<img src=images/icons/filetype/folder.filetype.png class=\"directory_icon folder\" />"
-									+ dir.name
-									+ "<div class=\"fullpath\" style=\"display:none;\">" + dir.root + dir.name + "</div>"
-								 + "</div>";
-						dir.children = [];
-						dirs.push(dir);
-					}
+
+		var root_dirs = [];
+		var owner_roots = [];
+
+		var __root = path.replace(__workspace+'/', "") + "/"
+		var is_all_project = (__root == '/') ? true : false;
+
+		if(is_all_project){
+			g_auth_project.get_collaboration_list(author, function(owner_project_data){
+				for(var i=0; i<owner_project_data.length; i++){
+					owner_roots.push(owner_project_data[i].project_path);
 				}
-			}
-			next();
-		});
-		
-		walker.on("end", function () {
-			tree = self.make_dir_tree(root_dir, dirs);
-			
-			// root directory for get_dir_nodes only
-			var dir_tree = {};
-			var dir_tree_name = root_dir;
-			if(dir_tree_name && dir_tree_name[dir_tree_name.length-1] == '/') dir_tree_name = dir_tree_name.substring(0, dir_tree_name.length-1);
-			
-			dir_tree.root = "";
-			//dir_tree.name = root_dir.replace(/\//g, "");
-			dir_tree.name = dir_tree_name;
-			dir_tree.parent_label = dir_tree.root;
-			dir_tree.cls = "dir";
-			dir_tree.expanded = true;
-			dir_tree.sortkey = 0 + dir_tree.name;
-			dir_tree.type = "html";
 
-			var temp_label = dir_tree.name;
-			if (dir_tree.name=="") {
-				temp_label="workspace";
-			}
+				var root_walker = walk.walk(path, options);
+				var is_root = true;
 
-			dir_tree.html = "<div class='node'>" 
-						+ "<img src=images/icons/filetype/folder.filetype.png class=\"directory_icon folder\" />"
-						+ temp_label
-						+ "<div class=\"fullpath\" style=\"display:none;\">" + dir_tree.root + dir_tree.name + "</div>"
-					 + "</div>";
-			dir_tree.children = tree;
-			
-			evt.emit("got_dir_nodes", dir_tree);
-			evt.emit("got_dir_nodes_for_get_nodes", dirs);
-		});
+				root_walker.on("directories", function (root, dir_stats_array, next){
+					if(is_root){
+						is_root = false;
+
+						for(var i=0; i<dir_stats_array.length; i++){
+							if( owner_roots.indexOf(dir_stats_array[i].name) != -1 || owner_roots.indexOf('/'+dir_stats_array[i].name) != -1 ) {
+								var dir = {};
+								dir.root = root.replace(__workspace+'/', "") + '/';
+								dir.name = dir_stats_array[i].name;
+								dir.parent_label = dir.root;
+								dir.cls = "dir";
+								dir.expanded = false;
+								dir.sortkey = 0 + dir.name;
+								dir.type = "html";
+								dir.html = "<div class='node'>" 
+											+ "<img src=images/icons/filetype/folder.filetype.png class=\"directory_icon folder\" />"
+											+ dir.name
+											+ "<div class=\"fullpath\" style=\"display:none;\">" + dir.root + dir.name + "</div>"
+										 + "</div>";
+								dir.children = [];
+								dirs.push(dir);
+
+								root_dirs.push(dir_stats_array[i].name);
+							}
+						}
+						next();
+					}
+					else{
+						next();
+					}
+				})
+
+				root_walker.on('end', function(){
+					var node_evt = new EventEmitter();
+
+					node_evt.on("get_owner_nodes", function(_node_evt, i){
+						if(root_dirs[i]){
+							var node_path = __workspace + '/' + root_dirs[i];
+
+							var node_walker = walk.walk(node_path, options);
+
+							node_walker.on("directories", function(root, dir_stats_array, next){
+								if (root.indexOf("\/\.")==-1) {
+									for (var i=0; i < dir_stats_array.length; i++) {
+										if (dir_stats_array[i].name.indexOf("\.") != 0 ) {				
+											var dir = {};
+											dir.root = target_dir + root.replace(__workspace+'/', "") + "/";
+											dir.name = dir_stats_array[i].name;
+											dir.parent_label = dir.root;
+											dir.cls = "dir";
+											dir.expanded = false;
+											dir.sortkey = 0 + dir.name;
+											dir.type = "html";
+											dir.html = "<div class='node'>" 
+														+ "<img src=images/icons/filetype/folder.filetype.png class=\"directory_icon folder\" />"
+														+ dir.name
+														+ "<div class=\"fullpath\" style=\"display:none;\">" + dir.root + dir.name + "</div>"
+													 + "</div>";
+											dir.children = [];
+											dirs.push(dir);
+										}
+									}
+								}
+								next();
+							});
+
+							node_walker.on("end", function(){
+								_node_evt.emit('get_owner_nodes', _node_evt, ++i);				
+							})
+						}
+						else{
+							tree = self.make_dir_tree(root_dir, dirs);
+
+							// root directory for get_dir_nodes only
+							var dir_tree = {};
+							var dir_tree_name = root_dir;
+							if(dir_tree_name && dir_tree_name[dir_tree_name.length-1] == '/') dir_tree_name = dir_tree_name.substring(0, dir_tree_name.length-1);
+							
+							dir_tree.root = "";
+							//dir_tree.name = root_dir.replace(/\//g, "");
+							dir_tree.name = dir_tree_name;
+							dir_tree.parent_label = dir_tree.root;
+							dir_tree.cls = "dir";
+							dir_tree.expanded = true;
+							dir_tree.sortkey = 0 + dir_tree.name;
+							dir_tree.type = "html";
+
+							var temp_label = dir_tree.name;
+							if (dir_tree.name=="") {
+								temp_label="workspace";
+							}
+
+							dir_tree.html = "<div class='node'>" 
+										+ "<img src=images/icons/filetype/folder.filetype.png class=\"directory_icon folder\" />"
+										+ temp_label
+										+ "<div class=\"fullpath\" style=\"display:none;\">" + dir_tree.root + dir_tree.name + "</div>"
+									 + "</div>";
+							dir_tree.children = tree;
+
+							evt.emit("got_dir_nodes", dir_tree);
+							evt.emit("got_dir_nodes_for_get_nodes", dirs);
+						}
+					});
+
+					node_evt.emit('get_owner_nodes', node_evt, 0);				
+				});
+			});
+		}
+		else{
+			g_auth_project.get_collaboration_list(author, function(owner_project_data){
+				for(var i=0; i<owner_project_data.length; i++){
+					owner_roots.push(owner_project_data[i].project_path);
+				}
+
+				var __root = path.replace(__workspace+'/', "")
+				if(__root[0] == '/') __root = __root.substring(1, __root.length);
+				if(__root.indexOf('/') != -1) __root = __root.split('/')[0];
+
+				if(owner_roots.indexOf(__root) != -1){
+					var walker = walk.walk(path, options);
+
+					walker.on("directories", function (root, dir_stats_array, next) {
+						if (root.indexOf("\/\.")==-1) {
+							for (var i=0; i < dir_stats_array.length; i++) {
+								if (dir_stats_array[i].name.indexOf("\.") != 0 ) {				
+									var dir = {};
+									dir.root = root.replace(__workspace+'/', "") + "/";
+									dir.name = dir_stats_array[i].name;
+									dir.parent_label = dir.root;
+									dir.cls = "dir";
+									dir.expanded = false;
+									dir.sortkey = 0 + dir.name;
+									dir.type = "html";
+									dir.html = "<div class='node'>" 
+												+ "<img src=images/icons/filetype/folder.filetype.png class=\"directory_icon folder\" />"
+												+ dir.name
+												+ "<div class=\"fullpath\" style=\"display:none;\">" + dir.root + dir.name + "</div>"
+											 + "</div>";
+									dir.children = [];
+									dirs.push(dir);
+								}
+							}
+						}
+						next();
+					});
+					
+					walker.on("end", function () {
+						tree = self.make_dir_tree(root_dir, dirs);
+						
+						// root directory for get_dir_nodes only
+						var dir_tree = {};
+						var dir_tree_name = root_dir;
+						if(dir_tree_name && dir_tree_name[dir_tree_name.length-1] == '/') dir_tree_name = dir_tree_name.substring(0, dir_tree_name.length-1);
+						
+						dir_tree.root = "";
+						//dir_tree.name = root_dir.replace(/\//g, "");
+						dir_tree.name = dir_tree_name;
+						dir_tree.parent_label = dir_tree.root;
+						dir_tree.cls = "dir";
+						dir_tree.expanded = true;
+						dir_tree.sortkey = 0 + dir_tree.name;
+						dir_tree.type = "html";
+
+						var temp_label = dir_tree.name;
+						if (dir_tree.name=="") {
+							temp_label="workspace";
+						}
+
+						dir_tree.html = "<div class='node'>" 
+									+ "<img src=images/icons/filetype/folder.filetype.png class=\"directory_icon folder\" />"
+									+ temp_label
+									+ "<div class=\"fullpath\" style=\"display:none;\">" + dir_tree.root + dir_tree.name + "</div>"
+								 + "</div>";
+						dir_tree.children = tree;
+						
+						evt.emit("got_dir_nodes", dir_tree);
+						evt.emit("got_dir_nodes_for_get_nodes", dirs);
+					});
+				}		
+			});
+		}
 	},
 	
 	make_dir_tree: function (root, dirs) {

@@ -2,7 +2,7 @@
 
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -57,10 +57,13 @@ fs.readFile(__dirname+"/info_goorm.json", "utf8", function(err, contents) {
 				console.log('');
 				console.log('    + Option:');
 				console.log('');
-				console.log('      -d, --daemon          run the goorm server as a daemon using the forever module...');
+				console.log('      -d, --daemon           run the goorm server as a daemon using the forever module...');
+				console.log('      -p, --port [PORT NUM]  run the goorm server with port which you want...');
 				console.log('');
 				console.log('      $ node goorm.js start -d');
 				console.log('      $ goorm start --daemon');
+				console.log('      $ node goorm.js start -p 9999');
+				console.log('      $ goorm start --port 9999');
 				console.log('');
 				console.log('   - Restart goormIDE server:');
 				console.log('');
@@ -96,17 +99,20 @@ fs.readFile(__dirname+"/info_goorm.json", "utf8", function(err, contents) {
 				console.log('      $ node goorm.js set -t temp');
 				console.log('      $ goorm set --temp-directory temp_files');
 				console.log('');
-				console.log('      $ node goorm.js set -f appId, appSecret');
-				console.log('      $ goorm set --api-key-facebook appId, appSecret');
+				console.log('      $ node goorm.js set -f appId,appSecret');
+				console.log('      $ goorm set --api-key-facebook appId,appSecret');
 				console.log('');
-				console.log('      $ node goorm.js set -b consumerKey, consumerSecret');
-				console.log('      $ goorm set --api-key-twitter consumerKey, consumerSecret');
+				console.log('      $ node goorm.js set -b consumerKey,consumerSecret');
+				console.log('      $ goorm set --api-key-twitter consumerKey,consumerSecret');
 				console.log('');
-				console.log('      $ node goorm.js set -g appId, appSecret');
-				console.log('      $ goorm set --api-key-google appId, appSecret');
+				console.log('      $ node goorm.js set -g appId,appSecret');
+				console.log('      $ goorm set --api-key-google appId,appSecret');
 				console.log('');
-				console.log('      $ node goorm.js set -h appId, appSecret');
-				console.log('      $ goorm set --api-key-github appId, appSecret');
+				console.log('      $ node goorm.js set -h appId,appSecret');
+				console.log('      $ goorm set --api-key-github appId,appSecret');
+				console.log('');
+				console.log('      $ node goorm.js set -d clientId');
+				console.log('      $ goorm set --api-key-google_drive clientId');
 				console.log('');
 				console.log('  Command: Clean Configs');
 				console.log('');
@@ -120,8 +126,10 @@ fs.readFile(__dirname+"/info_goorm.json", "utf8", function(err, contents) {
 			.action(function (env, options) {
 				
 				var print_message = 'Do you want to send server information to developer?(yes/no) ';
-				commander.prompt(print_message, function(arg){
-					if(arg=="yes"||arg=="y"||arg=="YES"||arg=="Y") {
+				commander.confirm(print_message, function(arg){
+					process.stdin.pause();
+					
+					if(arg) {
 						send_log("server update", command_update);
 					}
 					else {
@@ -133,24 +141,48 @@ fs.readFile(__dirname+"/info_goorm.json", "utf8", function(err, contents) {
 		commander
 			.command('start [option]')
 			.option('-d, --daemon', 'run the goorm server as a daemon using the forever module...')
+			.option('-p, --port [PORT NUM]', 'run the goorm server with port which you want...')
+			.option('-s, --send-info [Y/N],', 'send server information to developer...')
+			.option('-h, --home [HOME Directory]', 'set HOME directory in server')
 			.action(function (env, options) {
-				
-				var print_message = 'Do you want to send server information to developer?(yes/no) ';
-				commander.prompt(print_message, function(arg){
-					if(arg=="yes"||arg=="y"||arg=="YES"||arg=="Y") {
-						send_log("server start", function() {});
-					}
-					if (options.daemon) {
+				var process_options = [];
+				process_options.push(options.port);
+				process_options.push(options.home);
+
+				function start_process(){
+					if (options.daemon) {							
 						forever.startDaemon(__dirname+'/server.js', {
 							'env': { 'NODE_ENV': 'production' },
-							'spawnWith': { env: process.env }
+							'spawnWith': { env: process.env },
+							'options': process_options
 						});
 						console.log("goormIDE server is started...");
 					}
 					else {
-						forever.start(__dirname+'/server.js', []);
+						forever.start(__dirname+'/server.js', {'options': [options.port]});
 					}
-				});
+				}
+
+				if(options['sendInfo']){
+					var send = options['sendInfo'];
+					if(send == 'y' || send == 'yes' || send == 'Y' || send == 'Yes'){
+						send_log("server start", function() {});
+					}
+
+					start_process();
+				}
+				else{
+					var print_message = 'Do you want to send server information to developer?(yes/no) ';
+					commander.confirm(print_message, function(arg){
+						process.stdin.pause();
+
+						if(arg) {
+							send_log("server start", function() {});
+						}
+
+						start_process();
+					});
+				}
 			});
 		
 		commander
@@ -181,6 +213,7 @@ fs.readFile(__dirname+"/info_goorm.json", "utf8", function(err, contents) {
 			.option('-b, --api-key-twitter [consumer_key],[consumer_secret]', 'Set the twitter app key(please do not enter whitespace.)')
 			.option('-g, --api-key-google [app_id],[app_secret]', 'Set the google app key(please do not enter whitespace.)')
 			.option('-h, --api-key-github [app_id],[app_secret]', 'Set the github app key(please do not enter whitespace.)')
+			.option('-d, --api-key-google_drive [client_id]', 'Set the google drive app key')
 			.action(function (env, options) {	
 				if (!fs.existsSync(process.env.HOME + '/.goorm/')) {
 					fs.mkdirSync(process.env.HOME + '/.goorm/');
@@ -260,6 +293,16 @@ fs.readFile(__dirname+"/info_goorm.json", "utf8", function(err, contents) {
 						social_key['github']['appId'] = data[0] || social_key['github']['appId'] || "";
 						social_key['github']['appSecret'] = data[1] || social_key['github']['appSecret'] || "";
 					}
+
+
+					if(options['apiKeyGoogle_drive'])	{
+						if(!social_key['google_drive']) social_key['google_drive'] = {};
+						
+						var raw_keys = options['apiKeyGoogle_drive'].replace(" ", "");
+						
+						social_key['google_drive']['client_id'] = raw_keys || social_key['google_drive']['client_id'] || "";
+					}
+					
 					
 					if(workspace && workspace[workspace.length - 1] != '/') workspace = workspace + '/';
 					if(temp_dir && temp_dir[temp_dir.length - 1] != '/') temp_dir = temp_dir + '/';
@@ -329,7 +372,7 @@ function send_log(title, callback) {
 	var post_data = querystring.stringify(ori_data);
 	
 	var post_options = {
-		host: 'www.goorm.org',
+		host: 'www.goorm.io',
 		port: '80',
 		path: '/api/article/write',
 		method: 'POST',

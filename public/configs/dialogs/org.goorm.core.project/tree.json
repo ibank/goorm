@@ -18,6 +18,14 @@
 						"html"	: "configs/project/default/scm.property.html"
 					}
 				]
+			},
+			{	"label" : "<span localization_key='setting' tab_action='Setting'>Setting</span>",
+				"id" : "Setting",
+				"tab" : [
+					{	"label" : "<span localization_key='project_setting'>Project setting</span>",
+						"html"	: "configs/project/default/project.setting.html"
+					}
+				]
 			}
 		]
 	},

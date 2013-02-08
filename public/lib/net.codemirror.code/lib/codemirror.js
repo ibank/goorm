@@ -1,4 +1,4 @@
-// CodeMirror version 2.36
+// CodeMirror version 2.37
 //
 // All functions that need access to the editor's state live inside
 // the CodeMirror function. Below that, at the bottom of the file,
@@ -170,6 +170,7 @@ window.CodeMirror = (function() {
         else if (option == "tabSize") updateDisplay(true);
         else if (option == "keyMap") keyMapChanged();
         else if (option == "tabindex") input.tabIndex = value;
+        else if (option == "showCursorWhenSelecting") updateSelection();
         if (option == "lineNumbers" || option == "gutter" || option == "firstLineNumber" ||
             option == "theme" || option == "lineNumberFormatter") {
           gutterChanged();
@@ -282,7 +283,9 @@ window.CodeMirror = (function() {
       lineCount: function() {return doc.size;},
       clipPos: clipPos,
       getCursor: function(start) {
-        if (start == null) start = sel.inverted;
+        if (start == null || start == "head") start = sel.inverted;
+        if (start == "anchor") start = !sel.inverted;
+        if (start == "end") start = false;
         return copyPos(start ? sel.from : sel.to);
       },
       somethingSelected: function() {return !posEq(sel.from, sel.to);},
@@ -495,8 +498,12 @@ window.CodeMirror = (function() {
 
       function doSelect(cur) {
         if (type == "single") {
-          setSelectionUser(start, cur);
-        } else if (type == "double") {
+          setSelectionUser(clipPos(start), cur);
+          return;
+        }
+        startstart = clipPos(startstart);
+        startend = clipPos(startend);
+        if (type == "double") {
           var word = findWordAt(cur);
           if (posLess(cur, startstart)) setSelectionUser(word.from, startend);
           else setSelectionUser(startstart, word.to);
@@ -621,7 +628,6 @@ window.CodeMirror = (function() {
       }, 50);
 
       var name = keyNames[e_prop(e, "keyCode")], handled = false;
-      var flipCtrlCmd = opera && mac;
       if (name == null || e.altGraphKey) return false;
       if (e_prop(e, "altKey")) name = "Alt-" + name;
       if (e_prop(e, flipCtrlCmd ? "metaKey" : "ctrlKey")) name = "Ctrl-" + name;
@@ -981,7 +987,8 @@ window.CodeMirror = (function() {
     }
 
     function focusInput() {
-      if (options.readOnly != "nocursor") input.focus();
+      if (options.readOnly != "nocursor" && (ie_lt9 || document.activeElement != input))
+        input.focus();
     }
 
     function scrollCursorIntoView() {
@@ -1246,18 +1253,20 @@ window.CodeMirror = (function() {
       var wrapOff = eltOffset(wrapper), lineOff = eltOffset(lineDiv);
       inputDiv.style.top = Math.max(0, Math.min(scroller.offsetHeight, headPos.y + lineOff.top - wrapOff.top)) + "px";
       inputDiv.style.left = Math.max(0, Math.min(scroller.offsetWidth, headPos.x + lineOff.left - wrapOff.left)) + "px";
-      if (collapsed) {
+      if (collapsed || options.showCursorWhenSelecting) {
         cursor.style.top = headPos.y + "px";
         cursor.style.left = (options.lineWrapping ? Math.min(headPos.x, lineSpace.offsetWidth) : headPos.x) + "px";
         cursor.style.display = "";
-        selectionDiv.style.display = "none";
       } else {
+        cursor.style.display = "none";
+      }
+      if (!collapsed) {
         var sameLine = fromPos.y == toPos.y, fragment = document.createDocumentFragment();
         var clientWidth = lineSpace.clientWidth || lineSpace.offsetWidth;
         var clientHeight = lineSpace.clientHeight || lineSpace.offsetHeight;
         var add = function(left, top, right, height) {
           var rstyle = quirksMode ? "width: " + (!right ? clientWidth : clientWidth - right - left) + "px"
-                                  : "right: " + right + "px";
+                                  : "right: " + (right - 1) + "px";
           fragment.appendChild(elt("div", null, "CodeMirror-selected", "position: absolute; left: " + left +
                                    "px; top: " + top + "px; " + rstyle + "; height: " + height + "px"));
         };
@@ -1272,8 +1281,9 @@ window.CodeMirror = (function() {
         if ((!sameLine || !sel.from.ch) && toPos.y < clientHeight - .5 * th)
           add(0, toPos.y, clientWidth - toPos.x, th);
         removeChildrenAndAdd(selectionDiv, fragment);
-        cursor.style.display = "none";
         selectionDiv.style.display = "";
+      } else {
+        selectionDiv.style.display = "none";
       }
     }
 
@@ -2011,6 +2021,7 @@ window.CodeMirror = (function() {
     gutter: false,
     fixedGutter: false,
     firstLineNumber: 1,
+    showCursorWhenSelecting: false,
     readOnly: false,
     dragDrop: true,
     onChange: null,
@@ -2062,7 +2073,11 @@ window.CodeMirror = (function() {
     var modeObj = mfactory(options, spec);
     if (modeExtensions.hasOwnProperty(spec.name)) {
       var exts = modeExtensions[spec.name];
-      for (var prop in exts) if (exts.hasOwnProperty(prop)) modeObj[prop] = exts[prop];
+      for (var prop in exts) {
+        if (!exts.hasOwnProperty(prop)) continue;
+        if (modeObj.hasOwnProperty(prop)) modeObj["_" + prop] = modeObj[prop];
+        modeObj[prop] = exts[prop];
+      }
     }
     modeObj.name = spec.name;
     return modeObj;
@@ -2238,12 +2253,12 @@ window.CodeMirror = (function() {
     if (textarea.form) {
       // Deplorable hack to make the submit method do the right thing.
       var rmSubmit = connect(textarea.form, "submit", save, true);
-      var realSubmit = textarea.form.submit;
+      var form = textarea.form, realSubmit = form.submit;
       textarea.form.submit = function wrappedSubmit() {
         save();
-        textarea.form.submit = realSubmit;
-        textarea.form.submit();
-        textarea.form.submit = wrappedSubmit;
+        form.submit = realSubmit;
+        form.submit();
+        form.submit = wrappedSubmit;
       };
     }
 
@@ -2266,17 +2281,23 @@ window.CodeMirror = (function() {
     return instance;
   };
 
-  var gecko = /gecko\/\d{7}/i.test(navigator.userAgent);
+  var gecko = /gecko\/\d/i.test(navigator.userAgent);
   var ie = /MSIE \d/.test(navigator.userAgent);
   var ie_lt8 = /MSIE [1-7]\b/.test(navigator.userAgent);
   var ie_lt9 = /MSIE [1-8]\b/.test(navigator.userAgent);
   var quirksMode = ie && document.documentMode == 5;
   var webkit = /WebKit\//.test(navigator.userAgent);
+  var qtwebkit = webkit && /Qt\/\d+\.\d+/.test(navigator.userAgent);
   var chrome = /Chrome\//.test(navigator.userAgent);
   var opera = /Opera\//.test(navigator.userAgent);
   var safari = /Apple Computer/.test(navigator.vendor);
   var khtml = /KHTML\//.test(navigator.userAgent);
   var mac_geLion = /Mac OS X 10\D([7-9]|\d\d)\D/.test(navigator.userAgent);
+
+  var opera_version = opera && navigator.userAgent.match(/Version\/(\d*\.\d*)/);
+  if (opera_version) opera_version = Number(opera_version[1]);
+  // Some browsers use the wrong event properties to signal cmd/ctrl on OS X
+  var flipCtrlCmd = mac && (qtwebkit || opera && (opera_version == null || opera_version < 12.11));
 
   // Utility functions for working with state. Exported because modes
   // sometimes need to do this.
@@ -2846,7 +2867,7 @@ window.CodeMirror = (function() {
     if (line.parent == null) return null;
     var cur = line.parent, no = indexOf(cur.lines, line);
     for (var chunk = cur.parent; chunk; cur = chunk, chunk = chunk.parent) {
-      for (var i = 0, e = chunk.children.length; ; ++i) {
+      for (var i = 0; ; ++i) {
         if (chunk.children[i] == cur) break;
         no += chunk.children[i].chunkSize();
       }
@@ -3165,7 +3186,7 @@ window.CodeMirror = (function() {
     for (var i = 1; i <= 12; i++) keyNames[i + 111] = keyNames[i + 63235] = "F" + i;
   })();
 
-  CodeMirror.version = "2.36";
+  CodeMirror.version = "2.37";
 
   return CodeMirror;
 })();

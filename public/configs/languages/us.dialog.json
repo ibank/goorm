@@ -457,6 +457,14 @@
              }
         }
     },
+    "dialog_project_management": {
+        "value": "Project Management",
+        "children": {
+            "dialog_project_management_projectlist": {
+                "value": "Project List"
+             }
+        }
+    },
     "dialog_search_project" : {
         "value": "",
         "children": {
@@ -562,6 +570,9 @@
              },
             "dialog_project_property_checkout": {
                "value": "Checkout"
+            },
+            "auto_build_after_save" : {
+                "value" : "Auto build after save"
             }
         }
     },

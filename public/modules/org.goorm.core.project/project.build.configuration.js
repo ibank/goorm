@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -63,8 +63,8 @@ org.goorm.core.project.build.configuration.prototype = {
 			dialog.panel.show();
 		}
 		else {
-			alert.show(core.module.localization.msg["alert_project_not_opened"]);
-			// alert.show("Project is not opened");
+			var result = {result:false, code:5};
+			core.module.project.display_error_message(result, 'alert');
 		}
 	},
 	

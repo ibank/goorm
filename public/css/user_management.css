@@ -21,3 +21,29 @@
 .user_detail_view, .target_user_detail_view, .available_blind_user {
 	cursor:pointer;
 }
+
+
+.user_management_project_span {
+	text-align: right;
+	float: left;
+	width: 100px;
+	padding: 2px;
+	margin-top: 5px;
+}
+
+.user_management_project_input {
+	padding: 3px;
+	margin: 5px;
+	width: 164px;
+}
+
+.user_management_project_div {
+	text-align: right;
+	float: left;
+	width: 100px;
+	padding: 2px;
+}
+
+.project_detail_view {
+	cursor:pointer;
+}

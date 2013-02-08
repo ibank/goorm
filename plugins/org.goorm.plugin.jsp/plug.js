@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -34,9 +34,9 @@ org.goorm.plugin.jsp.prototype = {
 	
 	
 	add_project_item: function () {
-		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='jspp'><div class='project_type_icon'><img src='/org.goorm.plugin.jsp/images/jsp.png' class='project_icon' /></div><div class='project_type_title'>JSP Project</div><div class='project_type_description'>JSP Project (HTML5/Javascript)</div></div>");
+		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project_type='jspp'><div class='project_type_icon'><img src='/org.goorm.plugin.jsp/images/jsp.png' class='project_icon' /></div><div class='project_type_title'>JSP Project</div><div class='project_type_description'>JSP Project (HTML5/Javascript)</div></div>");
 		
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all jspp' description='  Create New Project for jsp' projecttype='jsp' plugin_name='org.goorm.plugin.jsp'><img src='/org.goorm.plugin.jsp/images/jsp_console.png' class='project_item_icon' /><br /><a>JSP Project</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all jspp' description='  Create New Project for jsp' project_type='jsp' plugin_name='org.goorm.plugin.jsp'><img src='/org.goorm.plugin.jsp/images/jsp_console.png' class='project_item_icon' /><br /><a>JSP Project</a></div>");
 		
 		$(".project_dialog_type").append("<option value='jsp'>jsp Projects</option>").attr("selected", "");
 		
@@ -53,8 +53,8 @@ org.goorm.plugin.jsp.prototype = {
 		$("a[action=new_file_jsp]").unbind("click");
 		$("a[action=new_file_jsp]").click(function () {
 			core.dialog.new_project.show();
-			$(".project_wizard_first_button[project-type=jspp]").trigger("click");
-			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project-type=jspp]").position().top - 100);
+			$(".project_wizard_first_button[project_type=jspp]").trigger("click");
+			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project_type=jspp]").position().top - 100);
 		});
 	},
 	

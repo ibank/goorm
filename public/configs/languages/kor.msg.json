@@ -286,5 +286,32 @@
     },
     "toast_filetype_save_complete": {
         "value": "파일 타입을 저장하였습니다."
+    },
+    "alert_cannot_project_run": {
+        "value": "프로젝트를 실행할 수 없습니다. 적절한 프로젝트를 선택하여 주십시오."
+    },
+    "alert_cannot_project_remote_run": {
+        "value": "프로젝트를 실행할 수 없습니다. 적절한 프로젝트를 선택하여 주십시오."
+    },
+    "alert_cannot_project_generate": {
+        "value": "프로젝트를 생성할 수 없습니다. 적절한 프로젝트를 선택하여 주십시오."
+    },
+    "alert_cannot_project_build": {
+        "value": "프로젝트를 빌드할 수 없습니다. 적절한 프로젝트를 선택하여 주십시오."
+    },
+    "alert_cannot_project_debug": {
+        "value": "프로젝트를 디버그할 수 없습니다. 적절한 프로젝트를 선택하여 주십시오."
+    },
+    "confirmation_file_upload" : {
+        "value": "파일을 올리시겠습니까?"
+    },
+    "alert_file_not_defined" : {
+        "value": "파일을 선택하여 주세요."
+    },
+    "alert_google_drive_not_auth" : {
+        "value": "인증을 하신 후, 다시 로그인을 해주십시오."
+    },
+    "alert_google_drive_not_selected" : {
+        "value": "적절한 파일을 선택하여 주십시오."
     }
 }

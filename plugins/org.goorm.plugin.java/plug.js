@@ -1,6 +1,6 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v3 License:
+ * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
@@ -39,9 +39,9 @@ org.goorm.plugin.java.prototype = {
 	},
 	
 	add_project_item: function () {
-		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project-type='javap'><div class='project_type_icon'><img src='/org.goorm.plugin.java/images/java.png' class='project_icon' /></div><div class='project_type_title'>Java Project</div><div class='project_type_description'>Java Project using SUN Java Compiler Collection</div></div>");
+		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project_type='javap'><div class='project_type_icon'><img src='/org.goorm.plugin.java/images/java.png' class='project_icon' /></div><div class='project_type_title'>Java Project</div><div class='project_type_description'>Java Project using SUN Java Compiler Collection</div></div>");
 		
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all javap' description='  Create New Project for Java' projecttype='java' plugin_name='org.goorm.plugin.java'><img src='/org.goorm.plugin.java/images/java_console.png' class='project_item_icon' /><br /><a>Java Console Project</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all javap' description='  Create New Project for Java' project_type='java' plugin_name='org.goorm.plugin.java'><img src='/org.goorm.plugin.java/images/java_console.png' class='project_item_icon' /><br /><a>Java Console Project</a></div>");
 		
 		$(".project_dialog_type").append("<option value='c'>Java Projects</option>").attr("selected", "");;
 		
@@ -58,8 +58,8 @@ org.goorm.plugin.java.prototype = {
 		$("a[action=new_file_java]").unbind("click");
 		$("a[action=new_file_java]").click(function () {
 			core.dialog.new_project.show();
-			$(".project_wizard_first_button[project-type=javap]").trigger("click");
-			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project-type=javap]").position().top - 100);
+			$(".project_wizard_first_button[project_type=javap]").trigger("click");
+			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project_type=javap]").position().top - 100);
 		});
 	},
 	
@@ -95,7 +95,20 @@ org.goorm.plugin.java.prototype = {
 		var classname = property['plugin.java.main'];
 
 		var cmd1 = "java -cp "+classpath+" "+classname;
-		core.module.layout.terminal.send_command(cmd1+'\r');
+		core.module.layout.terminal.send_command(cmd1+'\r', null, function(result){
+			var reg = /(.*)\w/g;
+			var message = result.replace(cmd1, "").match(reg);
+			message.pop();
+			
+			if(/NoClassDefFoundError/g.test(message)) {
+				// 실행 실패
+				alert.show("클래스 파일이 존재하지않거나 경로가 옳바르지 않습니다.<br>프로젝트를 빌드 하시거나 경로설정을 확인하시기 바랍니다.");
+			}
+			else {
+				// 아무 메시지도 안떴으면 성공.
+				notice.show("성공적으로 실행되었습니다.");
+			}
+		});
 
 	},
 	
@@ -168,7 +181,9 @@ org.goorm.plugin.java.prototype = {
 		var buildPath = " "+property['plugin.java.build_path'];
 		
 		if(this.terminal === null) {
-			console.log("no connection!");
+			// console.log("no connection!");
+			var result = {result:false, code:6};
+			core.module.project.display_error_message(result, 'alert');
 			return ;
 		}
 		switch (cmd.mode) {
@@ -363,7 +378,29 @@ org.goorm.plugin.java.prototype = {
 		var cmd1 = "javac"+classPath+buildPath+buildOptions+" @"+workspace+projectName+"/file.list";
 
 		core.module.layout.terminal.send_command(cmd+'\r', null, function(){
-			core.module.layout.terminal.send_command(cmd1+'\r', null, function(){
+			core.module.layout.terminal.send_command(cmd1+'\r', null, function(result){
+				var reg = /(.*)\w/g;
+				var message = result.replace(cmd1, "").match(reg);
+
+				message.pop();
+
+				// For Ubuntu
+				//
+				if(message.length != 0){
+					message = message.filter(function(o){
+						return !( (/^javac/.test(o)) || (/file.list/.test(o)) || (/]0;/.test(o)) )
+					});
+				}
+
+				// message에는 빌드시 나오는 메시지가 들어있음.
+				if(message.length) {
+					// 메시지가 있다면 warning이나 실패상황
+					alert.show("빌드 실패!<br>터미널 메시지를 확인하세요.");
+				}
+				else {
+					// 아무 메시지도 안떴으면 성공.
+					notice.show("성공적으로 빌드가 완료되었습니다.!");
+				}
 				core.module.layout.project_explorer.refresh();
 			});
 		});

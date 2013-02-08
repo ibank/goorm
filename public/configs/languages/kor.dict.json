@@ -128,11 +128,11 @@
 	"avaliable_blind" : {
 		"value" : "유효 & 차단"
 	},
-	"Projects" : {
-		"value" : "프로젝트"
+	"All_project" : {
+		"value" : "모든 프로젝트"
 	},
-	"Files" : {
-		"value" : "파일들"
+	"set_collaboration_project" : {
+		"value" : "협업"
 	},
 	"apply" : {
 		"value" : "적용"
@@ -223,5 +223,20 @@
 	},
 	"github_login" : {
 		"value" : "+ 깃허브"
+	},
+	"setting" : {
+		"value" : "설정"
+	},
+	"project_setting" : {
+		"value" : "프로젝트 설정"
+	},
+	"cloud" : {
+		"value" : "클라우드"
+	},
+	"google_drive" : {
+		"value" : "구글 드라이브"
+	},
+	"refresh" : {
+		"value" : "새로고침"
 	}
 }
