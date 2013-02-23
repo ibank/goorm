@@ -67,7 +67,8 @@ org.goorm.core.file.open.prototype = {
 		        resize.on('resize', function(ev) {
 					var width = $("#open_dialog_middle").width();
 		            var w = ev.width;
-		            $("#open_dialog_center").css('width', (width - w - 9) + 'px');
+		            // $("#open_dialog_center").css('width', (width - w - 9) + 'px');
+		            $("#file_open_files").css('width', (width - w - 9) + 'px');
 		        });
 		        
 /*

@@ -13,6 +13,8 @@ org.goorm.core.edit.dictionary = function () {
 	this.contents = [];
 	this.result = [];
 	this.index = 0;
+	
+	
 };
 
 org.goorm.core.edit.dictionary.prototype = {
@@ -26,9 +28,18 @@ org.goorm.core.edit.dictionary.prototype = {
 		
 		this.contents = [];
 		this.result = [];
+		
 
-		$(this.target).append("<div class='dictionary_box'><div class='dictionary_list'></div></div>");
+		var dict_box_html='';
+		dict_box_html+="<div class='dictionary_box' >";
+		dict_box_html+=		"<div class='top_dictionary_list'  ><table><tr><td style='padding-left : 1px;width: 40px; border-right :black solid 1px;'>Type</td><td style='padding-left:4px'>Name</td></tr></table></div>";
+		dict_box_html+=		"<div class='dictionary_list'></div>";
+		dict_box_html+=		"<div class='dictionary_desc'></div>";
+		dict_box_html+="</div>";
+		//$(this.target).append("<div class='dictionary_box'><div class='has_dictionary_list'> type | name <div class='dictionary_list'></div></div> <div class='has_dictionary_desc'>description<div class='dictionary_desc' style='display : none;'></div></div> </div>");
+		$(this.target).append(dict_box_html);
 		$(this.target).find(".dictionary_box").hide();
+		
 		
 		this.load(filetype);
 		
@@ -68,6 +79,7 @@ org.goorm.core.edit.dictionary.prototype = {
 	},
 	
 	complete: function () {
+
 		var cursor = this.editor.getCursor();
 		var token = this.editor.getTokenAt(cursor);
 
@@ -81,7 +93,7 @@ org.goorm.core.edit.dictionary.prototype = {
 				from.ch += 1;
 				to.ch += 1;
 			}
-			
+			//console.log('token.string',token.string,'string',string,'from',from,'to',to);
 			this.editor.replaceRange(string, from, to);
 		}
 		
@@ -104,40 +116,102 @@ org.goorm.core.edit.dictionary.prototype = {
 				});
 			}
 		});
-		
-//		 if (filetype != null) {
-//			 $.getJSON("configs/dictionary/" + filetype + ".json", function(data) {
-//				 self.contents = eval(data);
-//			 });
-//		 }
+	
 	},
 	
 	set: function () {
 		var self = this;
 		
-		$(this.target).find(".dictionary_list").empty();
-		
-		if(this.result.length == 0){
-			var not_data = {
-				'is_not_data' : true,
-				'keyword' : core.module.localization.msg['alert_no_have_data']
-			}
-			this.result.push(not_data);
-		}
-		
-		$(this.result).each(function (i) {
-			$(self.target).find(".dictionary_list").append("<div class='dictionary_element'>" + this.keyword + "</div>");
-		});
+		//$(this.target).find(".dictionary_list").empty();
+		$(".dictionary_list").empty();
 
+		 if(this.result.length == 0){
+		 	var not_data = {
+				'is_not_data' : true,
+		 		'keyword' : core.module.localization.msg['alert_no_have_data']
+			}
+		 	this.result.push(not_data);
+		 }
+
+
+		//$(self.target).find('.dictionary_desc').empty();
+		$('.dictionary_desc').empty();
+		$(self.target).find('.dictionary_desc').css("display","none");
+		$(this.result).each(function (i) {
+			var ele_id="dict_"+i;
+			
+
+			//empty data
+			if(this.is_not_data){
+				this.type='';
+			}
+			//too long keyword
+			
+			var print_key='';
+			print_key+=this.keyword;
+			
+			if(print_key.length>18){
+				print_key=print_key.substring(0,14);
+				print_key+="...";
+			}
+		
+			var ele_html="";
+			ele_html+="<div class='dictionary_element' id='"+ele_id+"'>";
+			ele_html+=	"<table><tr>";
+			ele_html+=		"<td width='40px' style='font-size:9px' >"+this.type+"</td><td width='90px'>"+print_key+"</td>"
+			ele_html+=	"</tr></table>"
+			ele_html+="</div>";
+			$(self.target).find(".dictionary_list").append(ele_html);
+
+
+			var desc_id=ele_id+"_desc";
+			var desc_html="";
+			desc_html+="<div class='dictionary_desc_list' id='"+desc_id+"'>";
+			desc_html+=		"<div style='background:gray;font-size:11px;' >Description</div>";
+			desc_html+=		this.description;
+			desc_html+="</div>";
+			$(self.target).find(".dictionary_desc").append(desc_html);
+
+			$('.dictionary_desc_list').css("display","none");
+
+		});
 		$(this.target).find(".dictionary_list .dictionary_element").hover(
 			function () {
+				//hover
 				$(self.target).find(".dictionary_list .hovered").removeClass("hovered");
 				$(this).addClass("hovered");
+
+				var g_ele_target=$(this).attr('id');
+				display_desc=function(ele_target){
+					if($('#'+ele_target).hasClass('hovered')){
+						///still hovered
+						$(self.target).find('.dictionary_desc').css("display","");
+						var desc_target=ele_target+"_desc";
+						$(self.target).find('#'+desc_target).css("display","");
+					
+					}
+				
+				}
+
+				setTimeout(function(){
+					display_desc(g_ele_target);
+				},500);
 			},
 			function () {
+				//unhover
+
+				var desc_target=$(this).attr('id')+"_desc";
+				$(self.target).find('#'+desc_target).css("display","none");
+				$(self.target).find('.dictionary_desc').css("display","none");
+
 				$(this).removeClass("hovered");
 			}
 		);
+		
+	 	if(this.result[0].is_not_data==true){
+	 			$(this.target).find(".dictionary_list .dictionary_element").unbind();
+	 	}
+	 
 		
 		$(this.target).find(".dictionary_list .dictionary_element").each(function (i) {
 			if($(this).attr('filter')!='not_data'){
@@ -231,9 +305,12 @@ org.goorm.core.edit.dictionary.prototype = {
 		dictionary_box.show();
 		
 		var dictionary_desc = $(this.target).find(".dictionary_desc");
-		dictionary_desc.css('left', left + dictionary_box.width());
-		dictionary_desc.css('top', top);
-		dictionary_desc.show();
+		var tmpleft=20+dictionary_box.width();
+		//console.log(tmpleft);
+		tmpleft+="";
+		dictionary_desc.css('left', tmpleft+"px");
+		//dictionary_desc.css('display','none');
+		//dictionary_desc.show();
 		
 		$(this.target).find(".dictionary_list .hovered").removeClass("hovered");
 		$(this.target).find(".dictionary_list .dictionary_element:first").addClass("hovered");
@@ -249,17 +326,80 @@ org.goorm.core.edit.dictionary.prototype = {
 	},
 	
 	search: function (keyword) {
-		var self = this;
-		this.result = [];
-		var reg_exp = new RegExp('^' + keyword, '');
 		
-		$(this.contents).each(function (i) {
-			if (reg_exp.test(this.keyword)) {
-				self.result.push(this);
-			}
+		var self = this;
+		self.result = [];
+		var reg_exp = new RegExp('^' + keyword, '');
+
+		self.get_dictionary(keyword,function(){
+			$(self.contents).each(function (i) {
+				if (reg_exp.test(this.keyword)) {
+					self.result.push(this);
+				}
+			});
+			
+		self.set();
 		});
 		
-		this.set();
+	},
+	get_dictionary : function(keyword,callback){
+		var self=this;
+		var reg_exp = new RegExp('^' + keyword, '');
+		$.get('/edit/get_dictionary'
+			,{
+				selected_file_path :  core.module.layout.workspace.window_manager.active_filename
+			}
+			,function(data){
+				//console.log(data);
+				if(data.v!=undefined){
+					for(var i=0;i<data.v.length;i++){
+						if(reg_exp.test(data.v[i])){
+							self.result.push({
+								'description' : data.v[i]+"<br>variable<br>",
+								'keyword' : data.v[i],
+								'type': 'var'
+							});
+						}
+					}
+				}//var
+				if(data.f!=undefined){
+					for(var i=0;i<data.f.length;i++){
+						if(reg_exp.test(data.f[i])){
+							self.result.push({
+								'description' : data.f[i]+"<br>function<br>",
+								'keyword' : data.f[i],
+								'type': 'func'
+							});
+						}
+					}
+				}//function
+				if(data.m!=undefined){
+					for(var i=0;i<data.m.length;i++){
+						if(reg_exp.test(data.m[i])){
+							self.result.push({
+								'description' : data.m[i]+"<br>method<br>",
+								'keyword' : data.m[i],
+								'type': 'method'
+							});
+						}
+					}
+				}//method
+				if(data.c!=undefined){
+					for(var i=0;i<data.c.length;i++){
+						if(reg_exp.test(data.c[i])){
+							self.result.push({
+								'description' : data.c[i]+"<br>className<br>",
+								'keyword' : data.c[i],
+								'type': 'class'
+							});
+						}
+					}
+				}//class
+				 if( typeof callback === "function" ) {
+					callback();
+				}
+			}
+		);
 	}
 
 };

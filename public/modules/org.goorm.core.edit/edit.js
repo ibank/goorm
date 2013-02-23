@@ -27,6 +27,7 @@ org.goorm.core.edit = function () {
 	this.undo_depth = 40;
 	this.highlight_current_cursor_line = true;
 	this.current_cursor_line = null; // for cursor line
+	
 	this.highlighted_line = null; // for debuging
 	this.preference = null;
 	this.context_menu = null;
@@ -36,6 +37,10 @@ org.goorm.core.edit = function () {
 	this.breakpoints = [];
 	this.vim_mode = false;
 	this.fold_func = null;
+
+	this.history_ch = null;
+	this.history_line=null;
+	
 };
 
 org.goorm.core.edit.prototype = {
@@ -65,6 +70,7 @@ org.goorm.core.edit.prototype = {
 		this.object_tree = new YAHOO.widget.TreeView("object_tree");
 		
 		this.editor = CodeMirror.fromTextArea($(target).find(".code_editor")[0], {
+
 			lineNumbers: true,
 			lineWrapping: true,
 			wordWrap: true,
@@ -81,11 +87,14 @@ org.goorm.core.edit.prototype = {
 					cm.closeTag(cm, '/'); 
 				},
 				"Ctrl-Space": function(cm) {
-					var cursor = cm.getCursor();
+				
+					var cursor = cm.getCursor(); 
 					var token = cm.getTokenAt(cursor);
 					
 					self.dictionary.search(token.string);
+					
 					self.dictionary.show(cm);
+					
 				}
 			},
 			onScroll: function(i ,e) {
@@ -96,6 +105,7 @@ org.goorm.core.edit.prototype = {
 			},
 			onKeyEvent: function(i, e) {
 				/* HISTORY start */
+				//console.log('e',e);
 				if(e.type=="keydown"){
 					var only = !self.editor.somethingSelected();
 					if(e.keyCode==8 && only) self.history.pressed_key = "backspace";
@@ -159,6 +169,7 @@ org.goorm.core.edit.prototype = {
 				
 			},
 			onChange: function(i, e, a){	// i = CodeMirror object, e = change informations
+				//console.log('onChange')
 				if(self.history.mode == "history") return;
 				if(dont_update_first){
 					if(self.collaboration.updating_process_running == false){
@@ -220,6 +231,14 @@ org.goorm.core.edit.prototype = {
 			  	window_manager.tab[window_manager.active_window].set_modified();
 			},
 			onCursorActivity: function () {
+				//by sim
+				if(!(self.editor.getCursor().line==self.history_line && self.editor.getCursor().ch==self.history_ch+1)){
+					$('.dictionary_box').hide();
+				}
+				self.history_ch=self.editor.getCursor().ch;
+				self.history_line=self.editor.getCursor().line;
+				//by sim
+
 				if (self.highlight_current_cursor_line) {
 					self.editor.setLineClass(self.current_cursor_line, null, null);
 					self.current_cursor_line =	self.editor.setLineClass(self.editor.getCursor().line, "current_line", "activeline");
@@ -228,7 +247,7 @@ org.goorm.core.edit.prototype = {
 				//$("#" + self.target + " .CodeMirror-gutter-text pre .current_line").removeClass("current_line");
 				// $(self.target).find(".CodeMirror-gutter-text pre").removeClass("current_line");
 				// $(self.target).find(".CodeMirror-gutter-text pre:nth-child(" + (self.editor.getCursor().line + 1) + ")").addClass("current_line");
-// 				
+				
 				// $(self.target).parent().parent().find(".ft").find(".editor_message").html("Line: " + (parseInt(self.editor.getCursor().line) + 1) + " | Col: " + self.editor.getCursor().ch);
 				
 				self.collaboration.update_cursor({
@@ -254,6 +273,7 @@ org.goorm.core.edit.prototype = {
 				core.status.focus_on_editor = false;
 			},
 			onGutterClick: function(cm, n) {
+				//console.log('onGutterClick')
 				var info = cm.lineInfo(n);
 				
 				if ($(self.target).find(".CodeMirror-gutter-text pre:eq(" + n + ")").find(".breakpoint").length > 0) {
@@ -573,6 +593,9 @@ org.goorm.core.edit.prototype = {
 		if (this.indent_with_tabs != undefined) {
 			this.editor.setOption("indentWithTabs", this.indent_with_tabs);
 		}
+		if (!this.highlight_current_cursor_line) {
+			this.editor.setLineClass(this.current_cursor_line, null, null);
+		}
 //		deprecated tabMode
 //		if (this.tab_mode != undefined) {
 //			this.editor.setOption("tabMode", this.tab_mode);		
@@ -700,35 +723,24 @@ org.goorm.core.edit.prototype = {
 		var tmpdata=core.workspace;
 
 	
+		if(core.status.current_project_path!="") //project should be chosen in select box
+		{
+			if($('#building_after_save_option:checked').length!=0){
+				core.property.building_after_save_option=true;
+				send_data.build=true;
 
-		if($('#building_after_save_option:checked').length!=0){
-			core.property.building_after_save_option='yes'
-			send_data.build=true;
-
-			for(var name in tmpdata){
-				if(target_project_name==name){
-					target_project_type=tmpdata[name].type;
-					break;
+				for(var name in tmpdata){
+					if(target_project_name==name){
+						target_project_type=tmpdata[name].type;
+						break;
+					}
 				}
+			}else{
+				core.property.building_after_save_option=false;
+				send_data.build=false;
 			}
-		}else{
-			core.property.building_after_save_option=''
-			send_data.build=false;
 		}
 
-
-		// if(core.property.building_after_save_option=='yes'){
-		// 	send_data.build=true;
-
-		// 	for(var name in tmpdata){
-		// 		if(target_project_name==name){
-		// 			target_project_type=tmpdata[name].type;
-		// 			break;
-		// 		}
-		// 	}
-		// }else{
-		// 	send_data.build=false;
-		// }
 
 		// $.get(url, send_data, function (data) {
 		$.post(url, send_data, function (data) {
@@ -750,10 +762,12 @@ org.goorm.core.edit.prototype = {
 			if (option=="close") {
 				window_manager.window[window_manager.active_window].close();
 			}
-
-			if(core.property.building_after_save_option=='yes' && core.status.current_project_path==target_project_name){
-				//console.log('build after save')
-				core.module.plugin_manager.plugins["org.goorm.plugin."+target_project_type].build(target_project_name);
+			//this is auto build after save
+			if(core.status.current_project_path!="") //project should be chosen in select box
+			{
+				if(core.property.building_after_save_option==true && core.status.current_project_path==target_project_name){
+					core.module.plugin_manager.plugins["org.goorm.plugin."+target_project_type].build(target_project_name);
+				}
 			}
 		});
 
@@ -992,10 +1006,9 @@ org.goorm.core.edit.prototype = {
 		if(this.history.wait_for_loading == true) return;
 		if((this.filepath + this.filename) == this.history.last_init_load) this.history.activated = true;
 		if(this.history.activated == false) return;
-		if(this.history.filename==this.filepath + this.filename) return;
+		if(this.history.filename == "/" + this.filepath + this.filename) return;
 
 		// valid activation! manipulation start!
-		// console.log("on_activated", core.module.layout.workspace.window_manager.active_filename);
 		this.history.init_history(this);
 		this.editor.setOption("readOnly",false);
 	}

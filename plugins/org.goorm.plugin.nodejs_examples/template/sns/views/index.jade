@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  #main
+    #title SOCIAL NETWORK SERVICE Example
+    #message
+      .left
+        .photo(style="background-image:url('#{picture}');")
+        input#author.author(type='text', value='#{name}')
+      .right
+        textarea
+        br
+        input#write_button(type='button', value='WRITE')
+    #wall
+      .item

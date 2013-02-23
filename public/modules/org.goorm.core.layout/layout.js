@@ -188,10 +188,7 @@ org.goorm.core.layout.prototype = {
 		
 		//Communication Tab
 		this.attach_communication(this.inner_right_tabview);
-		
-//		//Facebook Tab
-//		this.attach_facebook(this.inner_right_tabview);
-		
+				
 		//Slide Show Tab
 		this.attach_slide(this.inner_right_tabview);
 		
@@ -386,8 +383,10 @@ org.goorm.core.layout.prototype = {
 	},
 	
 	attach_communication: function(target) {
+		
 		//attaching tab element
 		target.addTab(new YAHOO.widget.Tab({ label: "<span localization_key='communication' class='tab_area' >Communication</span>", content: "<div id='communication' class='layout_right_communication_tab'></div>" }));
+
 /*
 		$("#communication").append("<div class='communication_user_container' style='height:100px; border-bottom:1px #CCC solid; padding:5px;'></div>");		
 		$("#communication").append("<div class='communication_message_container' style='height:200px; border-bottom:1px #CCC solid; padding:5px;'></div>");
@@ -402,13 +401,7 @@ org.goorm.core.layout.prototype = {
 		$(".layout_right_communication_tab").parent("div").attr("id",project_id);
 		this.communication.init(project_id);
 	},
-	
-	attach_facebook: function(target) {
-		//attaching tab element
-		target.addTab(new YAHOO.widget.Tab({ label: "Facebook", content: "<div id='slide' class='layout_right_facebook_tab'><iframe src='http://www.facebook.com/pages' width='100%' height='100%' style='border:none; margin:none; padding:none;'/></div>" }));
 
-		
-	},
 	
 	attach_slide: function(target) {
 		//attaching tab element
@@ -420,7 +413,10 @@ org.goorm.core.layout.prototype = {
 	},
 	
 	attach_history: function(target) {
-		target.addTab(new YAHOO.widget.Tab({ label: "<span localization_key='history'>History</span>", content: "<div id='history'></div>" }));
+		target.addTab(new YAHOO.widget.Tab({
+			label: "<span localization_key='history'>History</span>",
+			content: "<div id='history'></div>"
+		}));
 		this.history = new org.goorm.core.collaboration.history();
 		this.history.init();
 	},
@@ -457,6 +453,17 @@ org.goorm.core.layout.prototype = {
 		$("#goorm_left").find(".yui-content").height(layout_left_height);
 		$("#goorm_left").find("#project_explorer").height(layout_left_height-6);
 		$("#goorm_left").find("#project_treeview").height(layout_left_height-35);
+
+		$("#goorm_left").find("#cloud_explorer").height(layout_left_height-6);
+		$("#goorm_left").find("#cloud_treeview").height(layout_left_height-35);
+		
+		var cloud_treeview_child=$("#goorm_left").find("#cloud_treeview").children();
+		for(var i=0;i<cloud_treeview_child.length;i++){
+			$(cloud_treeview_child[i]).width($("#goorm_left").find("#cloud_treeview").width());
+			$(cloud_treeview_child[i]).height(layout_left_height-35);
+		}
+
+
 		
 		var project_selector_width = $(".yui-layout-unit-left").find(".yui-layout-wrap").find("#project_selector").width();
 		$("#goorm_left").find("#project_selectbox").width(project_selector_width-19);
@@ -465,6 +472,9 @@ org.goorm.core.layout.prototype = {
 		
 		$("#goorm_left").find("#toolbox_selectbox").width(project_selector_width-19);
 		$("#goorm_left").find("#toolbox_selectbox").next().width(project_selector_width-10);
+
+		$("#goorm_left").find("#cloud_selectbox").width(project_selector_width-19);
+		$("#goorm_left").find("#cloud_selectbox").next().width(project_selector_width-10);
 		
 		
 		var layout_right_height = $(".yui-layout-unit-right").find(".yui-layout-wrap").height() - 25;

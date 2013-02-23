@@ -1,0 +1,17 @@
+{
+	"core" : {
+		"label" : "<span localization_key='project_management'>Project Management</span>",
+		"expanded" : true,
+		"child" : [
+			{	"label" : "<span localization_key='project_collaboration' tab_action='Project Collaboration'>Project Collaboration</span>",
+				"id" : "Project Collaboration",
+				"tab" : [
+					{
+						"label" : "<span localization_key='project_list'>Project List</span>",
+						"html"	: "configs/auth/org.goorm.core.project/project.collaboration.html"
+					}
+				]
+			}
+		]
+	}
+}

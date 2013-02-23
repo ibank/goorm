@@ -85,7 +85,7 @@ org.goorm.core.file.property.prototype = {
 		}
 		else {
 			// alert.show("Not Selected");
-			alert.show(core.module.localization.msg['alert_project_not_selected'])
+			alert.show(core.module.localization.msg['alert_file_not_select'])
 		}
 	}	
 };

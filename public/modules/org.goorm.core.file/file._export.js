@@ -82,7 +82,8 @@ org.goorm.core.file._export.prototype = {
 		        resize.on('resize', function(ev) {
 					var width = $("#file_export_dialog_middle").width();
 		            var w = ev.width;
-		            $("#file_export_dialog_center").css('width', (width - w - 9) + 'px');
+		            // $("#file_export_dialog_center").css('width', (width - w - 9) + 'px');
+		            $('#file_export_files').css('width', (width - w - 9) + 'px');
 		        });
 			}
 		});

@@ -1,0 +1,22 @@
+{
+  "name": "rst_editor",
+  "author": "xenoz0718 <xenoz0718@gmail.com>",
+  "description": "Realtime Collaboration Editor Example",
+  "version": "1.0.1",
+  "scripts": {
+    "start": "node app"
+  },
+  "main": "rst_editor.js",
+  "bin": "./rst_editor.js",
+  "keywords": [
+    "node example",
+    "realtime editor"
+  ],
+  "license": "LGPL",
+  "dependencies": {
+    "express": "3.0.5",
+    "jade": "*",
+    "forever": "*",
+    "commander": "*"
+  }
+}

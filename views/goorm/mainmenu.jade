@@ -245,6 +245,8 @@
         a.yuimenuitemlabel(href="#", action='export_project', localization_key='project_export', style='background-image: url(configs/toolbars/org.goorm.core.project/image/export.png);') Export Project
       ul
        li.yuimenuitem
+        a.yuimenuitemlabel(href="#", action='share_project', localization_key='project_share') Share This Project
+       li.yuimenuitem
         a.yuimenuitemlabel(href="#", action='delete_project', localization_key='project_delete', style='background-image: url(configs/toolbars/org.goorm.core.project/image/delete.png);') Delete Project
       ul
        li.yuimenuitem
@@ -274,6 +276,36 @@
        li.yuimenuitem
         a.yuimenuitemlabel(href="#", action='debug_step_out', localization_key='debug_step_out', style='background-image: url(configs/toolbars/org.goorm.core.debug/image/step_out.png);')
          | Step out  
+   li.yuimenubaritem
+    a.yuimenubaritemlabel(href='#cloud', localization_key='cloud') Cloud
+    #cloud.yuimenu
+     .bd
+      ul
+       li.yuimenuitem
+        a.yuimenuitemlabel(href='#submenu_cloud_google_drive', action='', localization_key='google_drive') Google Drive
+        #submenu_cloud_connection.yuimenu
+         .bd
+          h6.first-of-type(localization_key='login_logout') Login/Logout
+          ul.first-of-type
+           li.yuimenuitem
+            a.yuimenuitemlabel.google_drive_login_label(href="#", action='google_drive_login', style='background-image: url(configs/toolbars/org.goorm.core.cloud/image/login.png);', localization_key='login')
+             | Login
+           li.yuimenuitem
+            a.yuimenuitemlabel.google_drive_logout_label(href="#", action='google_drive_logout', style='background-image: url(configs/toolbars/org.goorm.core.cloud/image/logout.png);', localization_key='logout')
+             | Logout
+          h6.first-of-type.google_drive_logout_label(localization_key='treeview') Treeview
+          ul.google_drive_logout_label
+           li.yuimenuitem
+            a.yuimenuitemlabel(href="#", action='google_drive_refresh', style='background-image: url(configs/toolbars/org.goorm.core.cloud/image/refresh.png);', localization_key='refresh')
+             | Refresh
+          h6.first-of-type.google_drive_logout_label(localization_key='items') Items
+          ul.google_drive_logout_label
+           li.yuimenuitem
+            a.yuimenuitemlabel(href="#", action='google_drive_upload', style='background-image: url(configs/toolbars/org.goorm.core.cloud/image/upload.png);', localization_key='upload')
+             | Upload
+           li.yuimenuitem
+            a.yuimenuitemlabel(href="#", action='google_drive_delete', localization_key='delete')
+             | Delete
    li.yuimenubaritem
     a.yuimenubaritemlabel(href='#window', localization_key='window') Window 
     #window.yuimenu
@@ -311,8 +343,8 @@
              | Show Project Explorer
              em.helptext Shift + Alt + 1
            li.yuimenuitem
-            a.yuimenuitemlabel(href="#", action='left_tool_box_show', localization_key='window_left_layout_toggle_tool_box')
-             | Show Project Explorer
+            a.yuimenuitemlabel(href="#", action='left_tool_box_show', localization_key='window_left_layout_toggle_toolbox')
+             | Show Toolbox
              em.helptext Shift + Alt + 2
           h6(localization_key='window_right_layout') Right Layout
           ul
@@ -352,6 +384,10 @@
          | Full Workspace
          em.helptext Shift + Alt + W
        li.yuimenuitem
+        a.yuimenuitemlabel(href="#", action='slide_show_mode', style='background-image: url(configs/toolbars/org.goorm.core.window/image/slideshow.png)', localization_key='window_slide_show_mode')
+         | Slide Show Mode
+         em.helptext Shift + F5
+       li.yuimenuitem
         a.yuimenuitemlabel(href="#", action='hide_all_windows', localization_key='window_hide_all_window')
          | Hide All Window
          em.helptext Shift + Alt + H
@@ -374,6 +410,18 @@
        li.yuimenuitem
         a.yuimenuitemlabel(href="#", action='help_install_new_plugin', style='background-image: url(configs/toolbars/org.goorm.core.help/image/plugin.png);', localization_key='plugin_install_new_plugin') Install New Plugin...
    li.yuimenubaritem
+    a.yuimenubaritemlabel(href='#Account', localization_key='account') Account
+    #Account.yuimenu
+     .bd
+      ul
+       li.yuimenuitem.yuimenuitem-disabled.admin_menu_item
+        a.yuimenuitemlabel.yuimenuitemlabel-disabled.admin_menu_label(href="#", action='goorm_manage', localization_key='goorm_manage') Goorm Management
+       li.yuimenuitem
+        a.yuimenuitemlabel(href="#", action='account_profile', localization_key='account_profile') Profile
+      ul
+       li.yuimenuitem
+        a.yuimenuitemlabel(href="#", action='account_logout', localization_key='account_logout') Logout
+   li.yuimenubaritem
     a.yuimenubaritemlabel(href='#Help', localization_key='help') Help 
     #Help.yuimenu
      .bd
@@ -388,45 +436,3 @@
         a.yuimenuitemlabel(href="#", action='help_bug_report', style='background-image: url(configs/toolbars/org.goorm.core.help/image/bug_report.png);', localization_key='help_bug_report') Send Bug Report
        li.yuimenuitem
         a.yuimenuitemlabel(href="#", action='help_about', style='background-image: url(configs/toolbars/org.goorm.core.help/image/about.png);', localization_key='help_about_goorm') About goorm
-   li.yuimenubaritem
-    a.yuimenubaritemlabel(href='#Account', localization_key='account') Account
-    #Account.yuimenu
-     .bd
-      ul
-       li.yuimenuitem.yuimenuitem-disabled.admin_menu_item
-        a.yuimenuitemlabel.yuimenuitemlabel-disabled.admin_menu_label(href="#", action='goorm_manage', localization_key='goorm_manage') Goorm Management
-       li.yuimenuitem
-        a.yuimenuitemlabel(href="#", action='account_profile', localization_key='account_profile') Profile
-      ul
-       li.yuimenuitem
-        a.yuimenuitemlabel(href="#", action='account_logout', localization_key='account_logout') Logout
-   li.yuimenubaritem
-    a.yuimenubaritemlabel(href='#cloud', localization_key='cloud') Cloud
-    #cloud.yuimenu
-     .bd
-      ul
-       li.yuimenuitem
-        a.yuimenuitemlabel(href='#submenu_cloud_google_drive', action='', localization_key='google_drive') Google Drive
-        #submenu_cloud_connection.yuimenu
-         .bd
-          h6.first-of-type(localization_key='login_logout') Login/Logout
-          ul.first-of-type
-           li.yuimenuitem
-            a.yuimenuitemlabel.google_drive_login_label(href="#", action='google_drive_login', style='background-image: url(configs/toolbars/org.goorm.core.cloud/image/login.png);', localization_key='login')
-             | Login
-           li.yuimenuitem
-            a.yuimenuitemlabel.google_drive_logout_label(href="#", action='google_drive_logout', style='background-image: url(configs/toolbars/org.goorm.core.cloud/image/logout.png);', localization_key='logout')
-             | Logout
-          h6.first-of-type.google_drive_logout_label(localization_key='treeview') Treeview
-          ul.google_drive_logout_label
-           li.yuimenuitem
-            a.yuimenuitemlabel(href="#", action='google_drive_refresh', style='background-image: url(configs/toolbars/org.goorm.core.cloud/image/refresh.png);', localization_key='refresh')
-             | Refresh
-          h6.first-of-type.google_drive_logout_label(localization_key='items') Items
-          ul.google_drive_logout_label
-           li.yuimenuitem
-            a.yuimenuitemlabel(href="#", action='google_drive_upload', style='background-image: url(configs/toolbars/org.goorm.core.cloud/image/upload.png);', localization_key='upload', style="display:none")
-             | Upload
-           li.yuimenuitem
-            a.yuimenuitemlabel(href="#", action='google_drive_delete', localization_key='delete')
-             | Delete

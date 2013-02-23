@@ -57,6 +57,14 @@ org.goorm.core.collaboration.editing.prototype = {
  		this.timer = window.setInterval(check_for_updates, 500);
  		this.set_collaboration_data("!refresh");
  		
+		// initialize other's cursors
+		this.socket.on("editing_get_cursors", function (cursors) {
+			if (cursors == undefined || cursors == null) return;
+			for (var i = 0; i < cursors.length; i++) {
+				self.task_queue.push(cursors[i]);
+			}
+		});
+		
 		this.socket.on("editing_message", function (data) {
  			if(!data) {
  				return false;
@@ -81,6 +89,7 @@ org.goorm.core.collaboration.editing.prototype = {
 		});
 		
 		this.socket.on("editing_someone_leaved", function (name) {
+			console.log("someone leaved in editing", name);
 			$(self.target).find(".CodeMirror-scroll").find(".user_name_" + name).remove();
 			$(self.target).find(".CodeMirror-scroll").find(".user_cursor_" + name).remove();
 		});
@@ -146,7 +155,6 @@ org.goorm.core.collaboration.editing.prototype = {
 	},
 	
 	update_cursor: function(data) {
-		
 		var self = this;
 		if(this.socket != null){
 			if (self.socket.socket.connected) {
@@ -175,41 +183,6 @@ org.goorm.core.collaboration.editing.prototype = {
 		};
 	},
 	
-	// check_other_cursor : function(message){
-		// var self = this;
-// 		
-		// var coords = this.editor.charCoords({line:message.line, ch:message.ch});
-		// var top = parseInt(coords.y) - parseInt($(this.target).find(".CodeMirror-scroll").offset().top);
-		// var left = parseInt(coords.x) - parseInt($(this.target).find(".CodeMirror-scroll").offset().left);
-// 		
-		
-// 		
-		// for(var i=0; i<self.cursor_location.length; i++){
-// 			
-		// }
-	// },
-
-	
-	// set_cursor_info : function(data){
-		// var self = this;
-// 
-		// var get_cursor_location_position = function(user){
-			// for(var i=0; i<self.cursor_location.length; i++){
-				// if(self.cursor_location[i].user == user) return i;
-			// }
-			// return self.cursor_location.length;
-		// }
-// 
-		// var location_data = {
-			// user : data.user,
-			// line : data.line,
-			// top : data.top,
-			// left : data.left
-		// };
-// 		
-		// this.cursor_location[get_cursor_location_position(data.user)] = location_data;
-	// },
-	
 	set_cursor: function(message) {
 		if(message.user != core.user.id){
 			var coords = this.editor.charCoords({line:message.line, ch:message.ch});
@@ -218,13 +191,6 @@ org.goorm.core.collaboration.editing.prototype = {
 			var top = parseInt(coords.y) - parseInt($(this.target).find(".CodeMirror-scroll").offset().top) + scroll.y;
 			var left = parseInt(coords.x) - parseInt($(this.target).find(".CodeMirror-scroll").offset().left)  + scroll.x;
 
-			// this.set_cursor_info({
-				// user : message.user,
-				// line : message.line,
-				// top : top,
-				// left : left
-			// });
-			
 			var user_name = message.nick;
 			
 			if ($(this.target).find(".CodeMirror-scroll").find(".user_name_" + user_name).length > 0) {
@@ -237,18 +203,6 @@ org.goorm.core.collaboration.editing.prototype = {
 			else {
 				$(this.target).find(".CodeMirror-scroll").prepend("<span class='user_name_" + user_name + " user_name' style='top:" + (top - 8) + "px; left:" + (left + 5) + "px;'>" + user_name + "</span>");
 				$(this.target).find(".CodeMirror-scroll").prepend("<span class='user_cursor_" + user_name + " user_cursor' style='top:" + top + "px; left:" + left + "px;'></span>");
-				
-				// var red = Math.floor(Math.random()*206) - Math.floor(Math.random()*30);
-				// var green = Math.floor(Math.random()*206) - Math.floor(Math.random()*30);
-				// var blue = Math.floor(Math.random()*206) - Math.floor(Math.random()*30);
-// 				
-				// var light_red = (red + 90 >= 255)? 255 : red + 90;
-				// var light_green = (red + 90 >= 255)? 255 : green + 90;
-				// var light_blue = (red + 90 >= 255)? 255 : blue + 90;
-// 				
-				// var color = '#' + red.toString(16) + green.toString(16) + blue.toString(16);
-				// var light_color = '#' + light_red.toString(16) + light_green.toString(16) + light_blue.toString(16);
-				// --> moved to collaboration.communication.js
 				
 				var light_color = $("#communication .communication_user_item[user_nick='" + user_name +  "'] .communication_user_item_color_box").css("background-color");
 				var color = $("#communication .communication_user_item[user_nick='" + user_name +  "'] .communication_user_item_color_box").css("border-color");

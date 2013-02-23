@@ -1,0 +1,47 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+#chat {
+	height:350px; 
+	border:1px solid #eee;
+}
+#user_list {
+	height:100px;
+	overflow-y:auto;
+	border-bottom:1px solid #eee;
+	background-color: #f9f9f9;
+	padding:5px;
+}
+
+#messages {
+	height:200px;
+	padding:5px;
+	overflow-y: auto;
+}
+
+.user {
+	font-size: 12px;
+}
+.message {
+	font-size: 12px;
+}
+
+.alarm {
+	font-size: 12px;
+	color: red;
+}
+
+#input {
+	height:25px;
+	text-align: center;
+}
+
+#input input {
+	width: 95%;
+}

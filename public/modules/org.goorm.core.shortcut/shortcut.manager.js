@@ -46,7 +46,10 @@ org.goorm.core.shortcut.manager.prototype = {
 				if($(e.currentTarget).attr('id') == 'goorm_id' || $(e.currentTarget).attr('id') == 'goorm_pw'){
 					core.module.auth.login();
 				}
-				
+				else if($(e.currentTarget).attr('id') == 'user_search_input'){
+					core.dialog.share_project.user_add();
+				}
+
 				$(document).trigger(e);
 				
 				e.stopPropagation();
@@ -705,6 +708,19 @@ org.goorm.core.shortcut.manager.prototype = {
 		$(document).bind('keydown', 'Alt+Shift+W', function (e) {
 			if (!core.status.keydown) {
 				$($("a[action=toggle_full_workspace]").get(0)).trigger("click");
+				core.status.keydown = true;
+			}
+			
+			core.module.layout.mainmenu.blur();
+			
+			e.stopPropagation();
+			e.preventDefault();
+			return false;
+		});
+
+		$(document).bind('keydown', 'Shift+F5', function (e) {
+			if (!core.status.keydown) {
+				$($("a[action=slide_show_mode]").get(0)).trigger("click");
 				core.status.keydown = true;
 			}
 			

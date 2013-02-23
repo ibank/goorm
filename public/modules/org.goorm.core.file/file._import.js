@@ -52,7 +52,8 @@ org.goorm.core.file._import.prototype = {
 		        resize.on('resize', function(ev) {
 					var width = $("#import_dialog_middle").width();
 		            var w = ev.width;
-		            $("#import_dialog_center").css('width', (width - w - 9) + 'px');
+		            // $("#import_dialog_center").css('width', (width - w - 9) + 'px');
+		            $("#file_import_files").css('width', (width - w - 9) + 'px');
 		        });
 			
 				var form_options = {

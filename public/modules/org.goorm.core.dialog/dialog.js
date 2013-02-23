@@ -172,5 +172,4 @@ org.goorm.core.dialog.prototype = {
 		
 		return this;
 	}
-	
 };

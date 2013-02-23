@@ -1,55 +1,59 @@
 <html>
-        <head>
-                <title>Slideshare</title>
-                <script type="text/javascript" src="swfobject_playerapi.js"></script>
-                <link rel="stylesheet" type="text/css" href="slideshare.css" />
-                
-                <script type="text/javascript">
-                        var flashMovie;
+	<head>
+		<title>Slideshare</title>
+		<script type="text/javascript" src="swfobject_playerapi.js"></script>
+		<link rel="stylesheet" type="text/css" href="slideshare.css" />                
+		<script type="text/javascript">
+			var flashMovie;
+			//Load the flash player. Properties for the player can be changed here.
+			function loadPlayer(doc, start) {
+				if(!doc) doc = "rohitbhargavaspeakingpresentation-120909214559-phpapp01";
+				if(!start) start = 1;
+				//allowScriptAccess from other domains
+				var params = { allowScriptAccess: "always", wmode : "opaque", scale : "default" };
+				var atts = { id: "player" , style : "z-index : 2;" };
 
-                        //Load the flash player. Properties for the player can be changed here.
-                        function loadPlayer(doc, start) {
-								if(!doc) doc = "rohitbhargavaspeakingpresentation-120909214559-phpapp01";
-								if(!start) start = 1;
-                                //allowScriptAccess from other domains
-                                var params = { allowScriptAccess: "always" };
-                                var atts = { id: "player" };
+				//doc: The path of the file to be used
+				//startSlide: The number of the slide to start from
+				//rel: Whether to show a screen with related slideshows at the end or not. 0 means false and 1 is true..
+				var flashvars = { doc : doc, startSlide : start, rel : 0 };
 
-                                //doc: The path of the file to be used
-                                //startSlide: The number of the slide to start from
-                                //rel: Whether to show a screen with related slideshows at the end or not. 0 means false and 1 is true..
-                                var flashvars = { doc : doc, startSlide : start, rel : 0 };
+				//Generate the embed SWF file
+				swfobject.embedSWF("http://static.slidesharecdn.com/swf/ssplayer2.swf", "player", "100%", "100%", "8", null, flashvars, params, atts);
 
-                                //Generate the embed SWF file
-                                swfobject.embedSWF("http://static.slidesharecdn.com/swf/ssplayer2.swf", "player", "100%", "100%", "8", null, flashvars, params, atts);
+				//Get a reference to the player
+				flashMovie = document.getElementById("player");
+			}
+			//Jump to the appropriate slide
+			function jumpTo(){
+					flashMovie.jumpTo(parseInt(document.getElementById("slidenumber").value));
+			}
 
-                                //Get a reference to the player
-                                flashMovie = document.getElementById("player");
-                        }
+			//Update the slide number in the field for the same
+			function updateSlideNumber(){
+					document.getElementById("slidenumber").value = flashMovie.getCurrentSlide();
+			}
 
-                        //Jump to the appropriate slide
-                        function jumpTo(){
-                                flashMovie.jumpTo(parseInt(document.getElementById("slidenumber").value));
-                        }
+			function get_canvas() {
+				return document.getElementById("drawing-canvas");
+			}
 
-                        //Update the slide number in the field for the same
-                        function updateSlideNumber(){
-                                document.getElementById("slidenumber").value = flashMovie.getCurrentSlide();
-                        }
-                        
-
+			function get_document(){
+				return document;
+			}
                 </script>
         </head>
-        <body oncontextmenu="return false;">
-        	<div id="main">  
+        <body oncontextmenu="return false;" class="yui-skin-sam">
+            <div id="main">  
                 <div id="container">
-				    <div id="dummy"></div>
-				    <div id="player">
-				    	<br /><br /><br /><br /><br />
-				        Press presentation button.
-				    </div>
-				</div>
-        	</div>
+                    <div id="dummy"></div>
+                    <div id="player">
+                    <br /><br /><br /><br /><br />
+                    Press presentation button.
+                    </div>
+                    <canvas id="drawing-canvas" style="z-index:1"></canvas>
+                </div>
+            </div>
                 <!--div style="margin-left: 150px; margin-top: 10px;">
                        <button onclick="flashMovie.first();updateSlideNumber();" type="button" value="First">First</button>
                        <button onclick="flashMovie.previous();updateSlideNumber();" type="button" value="Previous">Previous</button>
@@ -58,5 +62,5 @@
                        <button onclick="flashMovie.next();updateSlideNumber();" type="button" value="Next">Next</button>
                        <button onclick="flashMovie.last();updateSlideNumber();" type="button" value="Last">Last</button>
                </div-->
-        </body>
+	</body>
 </html>

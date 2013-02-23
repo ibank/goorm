@@ -1,42 +1,58 @@
 [
 	{
 		"keyword": "int",
-		"type": "Type",
-		"description": "?"
+		"type": "key",
+		"description": "int<br> Integer."
 	},
 	{
 		"keyword": "char",
-		"type": "Type",
-		"description": "?"
+		"type": "key",
+		"description": "char<br> Character or small integer."
 	},
 	{
 		"keyword": "float",
-		"type": "Type",
-		"description": "?"
+		"type": "key",
+		"description": "float<br> Floating point number."
 	},
 	{
 		"keyword": "double",
-		"type": "Type",
-		"description": "?"
+		"type": "key",
+		"description": "double<br> Double precision floating point number."
 	},
 	{
 		"keyword": "#include",
-		"type": "Type",
-		"description": "?"
+		"type": "key",
+		"description": "#include<br>Preprocessor including header file"
 	},
 	{
 		"keyword": "#define",
-		"type": "Type",
-		"description": "?"
+		"type": "key",
+		"description": "#define<br>Preprocessor defining some..."
 	},
 	{
 		"keyword": "scanf",
-		"type": "Type",
-		"description": "?"
+		"type": "func",
+		"description": "scanf<br>function<br>int scanf ( const char * format, ... );<br>Reads data from stdin and stores them according to the parameter format into the locations pointed by the additional arguments."
 	},
 	{
 		"keyword": "printf",
-		"type": "Function",
-		"description": "The parseInt() function parses a string and returns an integer.<br/><br/>The radix parameter is used to specify which numeral system to be used, for example, a radix of 16 (hexadecimal) indicates that the number in the string should be parsed from a hexadecimal number to a decimal number.<br/><br/>If the radix parameter is omitted, JavaScript assumes the following:<br/><br/>If the string begins with \"0x\", the radix is 16 (hexadecimal)<br/>If the string begins with \"0\", the radix is 8 (octal). This feature is deprecated<br/>If the string begins with any other value, the radix is 10 (decima3l)"
+		"type": "func",
+		"description": "printf<br>function<br>int printf ( const char * format, ... );<br>Writes the C string pointed by format to the standard output (stdout). If format includes format specifiers (subsequences beginning with %), the additional arguments following format are formatted and inserted in the resulting string replacing their respective specifiers. "
+	},
+	{
+		"keyword":"return",
+		"type":"key",
+		"description":"return<br>return some value or terminate function"
+	},
+	{
+		"keyword" : "stdio.h",
+		"type" : "file",
+		"description" : "stdio.h<br>header file <br>This library uses what are called streams to operate with physical devices such as keyboards, printers, terminals or with any other type of files supported by the system."
+	},
+	{
+		"keyword" : "stdlib.h",
+		"type" : "file",
+		"description" : "stdlib.h<br>header file <br>This header defines several general purpose functions, including dynamic memory management, random number generation, communication with the environment, integer arthmetics, searching, sorting and converting."
 	}
+
 ]

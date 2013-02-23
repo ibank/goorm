@@ -55,12 +55,12 @@ org.goorm.core.project._new.prototype = {
 					return false;
 				}
 			}
-			else if (!/^[\w-]*$/.test($("#input_project_author").attr("value"))) {
+			else if (!/^[\w-_ 가-힣]*$/.test($("#input_project_author").attr("value"))) {
 				alert.show(core.module.localization.msg["alert_allow_character"]);
 				// alert.show("error");
 				return false;
 			}
-			else if (!/^[\w-]*$/.test($("#input_project_name").attr("value"))) {
+			else if (!/^[\w-_]*$/.test($("#input_project_name").attr("value"))) {
 				alert.show(core.module.localization.msg["alert_allow_character"]);
 				// alert.show("error");
 				return false;
@@ -272,7 +272,7 @@ org.goorm.core.project._new.prototype = {
 		$("#input_project_type").attr("value","");
 		$("#input_project_detailed_type").val("");
 		$("#input_project_plugin").val("");
-		$("#input_project_author").val(core.user.name);
+		$("#input_project_author").val(core.user.name.replace(/ /g, "_"));
 		$("#input_project_author").attr('readonly', 'readonly');
 		$("#input_project_author").addClass('readonly')
 		$("#input_project_name").val("");

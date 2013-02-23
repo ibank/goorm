@@ -573,6 +573,11 @@ org.goorm.core.menu.action.prototype = {
 			core.dialog.delete_project.show();
 		});
 
+		$("a[action=share_project]").unbind("click");
+		$("a[action=share_project]").click(function() {
+			core.dialog.share_project.show();
+		});
+
 		$("a[action=show_properties]").unbind("click");
 		$("a[action=show_properties]").click(function() {
 			core.dialog.project_property.show();
@@ -961,6 +966,21 @@ org.goorm.core.menu.action.prototype = {
 			}
 		});
 
+		$("a[action=slide_show_mode]").unbind("click");
+		$("a[action=slide_show_mode]").click(function() {
+			core.module.layout.layout.getUnitByPosition("left").collapse();
+			core.module.layout.inner_layout.getUnitByPosition("bottom").collapse();
+
+			core.module.layout.inner_layout.getUnitByPosition("right").expand();
+			core.module.layout.inner_right_tabview.selectTab(1);
+
+			var window_width = $(window).width();
+			var window_height = $(window).height();
+
+			var right_width = window_width * ( window_width / (window_width + window_height) );
+			core.module.layout.inner_layout._units.right.set('width', right_width - 30);
+		});
+
 		$("a[action=hide_all_windows]").unbind("click");
 		$("a[action=hide_all_windows]").click(function() {
 			core.module.layout.workspace.window_manager.hide_all_windows();
@@ -1269,6 +1289,22 @@ org.goorm.core.menu.action.prototype = {
 			core.module.layout.cloud_explorer.context_menu_file.menu.hide();
 		});
 
+
+		$("a[action=upload_google_drive_context]").unbind("click");
+		$("a[action=upload_google_drive_context]").click(function(e) {
+			var target = $("#google_drive_treeview").find(".ygtvfocus")[0];
+			var file_id = core.module.layout.cloud_explorer.treeview.getNodeByElement(target).data.file_id;
+			//console.log('!!!!!!!target',target,'file_id',file_id);
+			core.dialog.upload_file.show(file_id);
+
+			//console.log(core.module.layout.cloud_explorer.treeview.getNodeByElement(target).data);
+			core.module.layout.cloud_explorer.context_menu_file.menu.hide();
+		});
+
+
+
+
+
 		//////////////////////////////////////////////////
 		//Context Menu : SCM
 		//////////////////////////////////////////////////
@@ -1322,6 +1358,11 @@ org.goorm.core.menu.action.prototype = {
 			core.dialog.user_manager.show();
 		});
 		
+		$("a[action=account_manage]").unbind("click");
+		$("a[action=account_manage]").click(function(e) {
+			core.dialog.auth_manage.dialog.panel.show();
+		});
+
 		$("a[action=account_profile]").unbind("click");
 		$("a[action=account_profile]").click(function(e) {
 			core.module.auth.get_info(function(result){
@@ -1404,6 +1445,83 @@ org.goorm.core.menu.action.prototype = {
 			else{
 				alert.show(core.module.localization.msg['alert_google_drive_not_selected'])
 			}
+		});
+
+		$("a[action=google_drive_upload]").unbind('click');
+		$("a[action=google_drive_upload]").click(function(e){
+			core.dialog.upload_file.show();
+		});
+
+
+		//////////////////////////////////////////////////
+		//SlideShare_Canvas
+		//////////////////////////////////////////////////
+
+		// $('a[action="slideshare_draw"]').unbind('click');
+		// $('a[action="slideshare_draw"]').click(function(e){
+		// 	if($(this).hasClass('slide_button_pressed')){
+		// 		$(this).removeClass('slide_button_pressed')
+		// 	}
+		// 	else{
+		// 		$(this).addClass('slide_button_pressed')
+		// 	}
+		// })
+		$("a[action=slideshare_paint]").unbind('click');
+		$("a[action=slideshare_paint]").click(function(e){
+			$("a[action=slideshare_erase] div").removeClass('slide_button_pressed')
+			$(this).find('div').addClass('slide_button_pressed')
+
+			$("#paint").val("paint");
+		});
+		$("a[action=slideshare_erase]").unbind('click');
+		$("a[action=slideshare_erase]").click(function(e){
+			$("a[action=slideshare_paint] div").removeClass('slide_button_pressed')
+			$(this).find('div').addClass('slide_button_pressed')
+
+			$("#paint").val("erase");
+		});
+		/*$("a[action=slideshare_erase_size]").unbind('click');
+		$("a[action=slideshare_erase_size]").click(function(e){
+			if($(this).find('div').hasClass('slide_button_pressed')){
+				$(this).find('div').removeClass('slide_button_pressed')
+				$("#brush_container").hide();
+			} else {
+				$(this).find('div').addClass('slide_button_pressed');
+				$("#brush_container").show();
+			}
+			$("a[action=slideshare_palette]").find('div').removeClass('slide_button_pressed');
+			$("a[action=slideshare_brush]").find('div').removeClass('slide_button_pressed');
+			$("#slideshare_palette_container").hide();
+		});*/
+		$("a[action=slideshare_palette]").unbind('click');
+		$("a[action=slideshare_palette]").click(function(e){
+			if($(this).find('div').hasClass('slide_button_pressed')){
+				$(this).find('div').removeClass('slide_button_pressed');
+			} else {
+				$(this).find('div').addClass('slide_button_pressed');
+			}
+			$("#slideshare_palette_container").toggle();
+			//$("a[action=slideshare_erase_size]").find('div').removeClass('slide_button_pressed');
+			$("a[action=slideshare_brush]").find('div').removeClass('slide_button_pressed');
+			$("#brush_container").hide();
+		});
+
+		$("a[action=slideshare_brush]").unbind('click');
+		$("a[action=slideshare_brush]").click(function(e){
+			if($(this).find('div').hasClass('slide_button_pressed')){
+				$(this).find('div').removeClass('slide_button_pressed');
+			} else {
+				$(this).find('div').addClass('slide_button_pressed');
+			}
+			$("#brush_container").toggle();
+			//$("a[action=slideshare_erase_size]").find('div').removeClass('slide_button_pressed');
+			$("a[action=slideshare_palette]").find('div').removeClass('slide_button_pressed');
+			$("#slideshare_palette_container").hide();
+		});
+		
+		$("a[action=slideshare_erase_all]").unbind('click');
+		$("a[action=slideshare_erase_all]").click(function(e){
+			$("#erase_all").trigger("click");
 		});
 	}
 }

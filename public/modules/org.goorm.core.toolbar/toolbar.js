@@ -143,6 +143,36 @@ org.goorm.core.toolbar.prototype = {
 				var div_name = name.split(".").pop(); 
 				$("div[id='"+div_name+".toolbar']").prepend("<div id='toolbar_handle_"+name+"' class='toolbar_moving_handle'><div class='toolbar_handle'></div></div>");
 				
+				/*self.index_check++;
+				if(self.index_check == self.order.length){
+					$(self).trigger("toolbarLoaded");
+				}*/
+				
+				//$("#"+container).append(data);
+				//self.context_menu = 
+				//self.context_menu = new org.goorm.core.menu.context();
+				//self.context_menu.init("../../config/menu/org.goorm.core.window/window.panel.titlebar.html", "window.panel.titlebar", $("#"+container).find(".titlebar"), this.title);
+			}
+		});
+	},
+
+	add_to_slideshare : function(path, name, container){
+		var self = this;
+		var url = "file/get_contents";
+		var index = this.index++;
+		
+		$.ajax({
+			url: url,
+			type: "GET",
+			data: "path="+path,
+			async: false,
+			success: function(data) {
+				//$("#toolbar_"+index).replaceWith(data);
+				
+				container.append(data);
+				var div_name = name.split(".").pop(); 
+				//$("div[id='"+div_name+".toolbar']").prepend("<div id='toolbar_handle_"+name+"' class='toolbar_moving_handle'><div class='toolbar_handle'></div></div>");
+				
 				self.index_check++;
 				if(self.index_check == self.order.length){
 					$(self).trigger("toolbarLoaded");
@@ -153,8 +183,7 @@ org.goorm.core.toolbar.prototype = {
 				//self.context_menu = new org.goorm.core.menu.context();
 				//self.context_menu.init("../../config/menu/org.goorm.core.window/window.panel.titlebar.html", "window.panel.titlebar", $("#"+container).find(".titlebar"), this.title);
 			}
-		});
-	},
+		});	},
 
 	switch_state: function(type){
 		switch(type){

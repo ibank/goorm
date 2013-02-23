@@ -40,12 +40,23 @@ module.exports = {
 					env: process.env
 				}));
 				
+				var toHex = function (str) {
+				    var hex = '';
+				    for(var i=0;i<str.length;i++) {
+				        hex += ' 0x'+str.charCodeAt(i).toString(16);
+				    }
+				    return hex;
+				}
+				
 				term[term.length-1].on('data', function (data) {
 					var result = {};
 					result.stdout = data;
 					result.terminal_name = msg.terminal_name;
 					
 //					console.log("on data : " + msg.workspace + '/' + msg.terminal_name);
+					// console.log("data: " + data);
+					// console.log("hex: " + toHex(data));
+					
 					socket.emit("pty_command_result", result);
 //					io.sockets.in(msg.workspace + '/' + msg.terminal_name).emit("pty_command_result", result);
 				});

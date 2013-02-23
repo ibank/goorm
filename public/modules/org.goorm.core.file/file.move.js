@@ -82,7 +82,8 @@ org.goorm.core.file.move.prototype = {
 		        resize.on('resize', function(ev) {
 					var width = $("#move_dialog_middle").width();
 		            var w = ev.width;
-		            $("#move_dialog_center").css('width', (width - w - 9) + 'px');
+		            // $("#move_dialog_center").css('width', (width - w - 9) + 'px');
+		            $("#file_move_files").css('width', (width - w - 9) + 'px');
 		        });
 		        
 		        $("#file_move_project_type").change(function() {
@@ -109,6 +110,7 @@ org.goorm.core.file.move.prototype = {
 	
 		var self = this;
 		self.dialog_explorer.init("#file_move", false);
+		self.is_alive_window = false;
 
 		if (context) {
 			if("/"+core.status.current_project_path == core.status.selected_file) {

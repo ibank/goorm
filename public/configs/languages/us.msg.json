@@ -195,7 +195,7 @@
         "value": "Please enter an ID."
     },
     "alert_user_unfit_reg_id": {
-        "value": "It is invalid to ID form.(4~15 digits, Alphabet+Number)."
+        "value": "The format of the id is not valid. (4~15 digits, Alphabet+Number)."
     },
     "alert_user_duplicate_id": {
         "value": "The ID is duplicated"
@@ -216,25 +216,25 @@
         "value": "Please recheck your password. They are not a match."
     },
     "alert_user_unfit_req_password": {
-        "value": "It is invalid to Password form.(8~15 digits, Alphabet+Number)."
+        "value": "The format of the password is not valid. (8~15 digits, Alphabet+Number)."
     },
     "alert_user_undefined_email": {
-        "value": "Please enter an E-mail."
+        "value": "Please enter an Email."
     },
     "alert_user_unfit_email": {
-        "value": "It is invalid to E-mail form. (ex) goorm@skima.co.kr)."
+        "value": "The format of the email is not valid. (ex: goorm@goorm.io)"
     },
     "alert_user_undefined_name": {
         "value": "Please enter a Name."
     },
     "alert_user_unfit_name": {
-        "value": "It is invalid to Name form.(3~15 digits, Hangul/Alphabet/Number/Special characters(-/_/.))."
+        "value": "The format of the name is not valid. (3~15 digits, Hangul/Alphabet/Number/Special characters(-/_/./ /))."
     },
     "alert_user_undefined_nick": {
         "value": "Please enter a Nickname."
     },
     "alert_user_unfit_nick": {
-        "value": "It is invalid to Nickname form.(3~20 digits, Hangul/Alphabet/Number/Special characters(-/_/.))."
+        "value": "The format of the nickname is not valid. (3~20 digits, Hangul/Alphabet/Number/Special characters(-/_/./ /))."
     },
     "alert_confirm_logout": {
         "value": "Are you sure you want to logout?"
@@ -307,5 +307,23 @@
     },
     "alert_google_drive_not_selected" : {
         "value": "Please select a proper file."
+    },
+    "alert_confirm_duplicate_login" : {
+        "value" : "Duplicate login has occurred. Do you really want to login?"
+    },
+    "alert_force_logout" : {
+        "value" : "Duplicate login has occurred. you will be logout."
+    },
+    "alert_confirm_delete_co_developer" : {
+        "value" : "Do you really want to fire the co-developer?"
+    },
+    "alert_confirm_invite_co_developer" : {
+        "value" : "Do you really want to invite the co-developer?"
+    },
+    "alert_no_display_to_data" : {
+        "value" : "There are no registered developers."
+    },
+    "alert_select_project" : {
+        "value" : "Please select your project."
     }
 }

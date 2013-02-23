@@ -1,7 +1,58 @@
 [
 	{
-		keyword: "cout",
-		type: "Function",
-		description: "The parseInt() function parses a string and returns an integer.<br/><br/>The radix parameter is used to specify which numeral system to be used, for example, a radix of 16 (hexadecimal) indicates that the number in the string should be parsed from a hexadecimal number to a decimal number.<br/><br/>If the radix parameter is omitted, JavaScript assumes the following:<br/><br/>If the string begins with \"0x\", the radix is 16 (hexadecimal)<br/>If the string begins with \"0\", the radix is 8 (octal). This feature is deprecated<br/>If the string begins with any other value, the radix is 10 (decimal)"
+		"keyword": "int",
+		"type": "key",
+		"description": "int<br> Integer."
+	},
+	{
+		"keyword": "char",
+		"type": "key",
+		"description": "char<br> Character or small integer."
+	},
+	{
+		"keyword": "float",
+		"type": "key",
+		"description": "float<br> Floating point number."
+	},
+	{
+		"keyword": "double",
+		"type": "key",
+		"description": "double<br> Double precision floating point number."
+	},
+	{
+		"keyword": "cout",
+		"type": "func",
+		"description": "cout<br>function<br>output value on console"
+	},
+	{
+		"keyword": "class",
+		"type": "key",
+		"description": "class"
+	},
+	{
+		"keyword": "iostream",
+		"type": "class",
+		"description": "iostream<br>Input/Output Stream<br>iostream objects inherit all members from both istream and ostream, thus being able to perform both input and output operations. "
+	},
+	{
+		"keyword": "string",
+		"type": "class",
+		"description": "string<br>Strings are objects that represent sequences of characters.<br>The standard string class provides support for such objects with an interface similar to that of standard containers, but adding features specifically designed to operate with strings of characters."
+	},
+	{
+		"keyword": "namespace",
+		"type": "key",
+		"description": "namespace<br>Namespaces allow to group entities like classes, objects and functions under a name. This way the global scope can be divided in 'sub-scopes', each one with its own name."
+	},
+
+	{
+		"keyword" : "cstdio",
+		"type" : "file",
+		"description" : "cstdio<br>header file <br>This library uses what are called streams to operate with physical devices such as keyboards, printers, terminals or with any other type of files supported by the system."
+	},
+	{
+		"keyword" : "cstdlib",
+		"type" : "file",
+		"description" : "cstdlib<br>header file <br>This header defines several general purpose functions, including dynamic memory management, random number generation, communication with the environment, integer arthmetics, searching, sorting and converting."
 	}
 ]

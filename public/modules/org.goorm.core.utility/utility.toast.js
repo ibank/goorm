@@ -40,6 +40,6 @@ org.goorm.core.utility.toast.prototype = {
 		
 		setTimeout(function () {
 			self.panel.hide();
-		},1000);
+		},2000);
 	}
 };

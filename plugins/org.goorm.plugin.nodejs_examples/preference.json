@@ -1,0 +1,5 @@
+{
+	"plugin.nodejs_examples.main" : 		"main",
+	"plugin.nodejs_examples.source_path" : 	"./",
+	"plugin.nodejs_examples.debug_option" : ""
+}

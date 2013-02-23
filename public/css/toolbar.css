@@ -23,6 +23,11 @@ version: 3.0.0
 	margin-left: -3px;
 }	
 
+.main_toolbar .slideshare_toolbar {
+	float: center !important;
+	margin-top: 0px !important;
+}
+
 .main_toolbar .toolbar_button img {
 	
 }
@@ -89,4 +94,11 @@ version: 3.0.0
 .main_toolbar .toolbar_moving_handle {
 	cursor:move;
 	float:left;
+}
+
+.main_toolbar .slide_button_pressed {
+	-moz-box-shadow: inset 0px 1px 8px -2px #333;
+	-webkit-box-shadow: inset 0px 1px 8px -2px #333;
+	box-shadow: inset 0px 1px 10px -2px #333;
+	border-radius: 3px;
 }

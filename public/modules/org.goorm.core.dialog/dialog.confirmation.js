@@ -28,7 +28,8 @@ org.goorm.core.dialog.confirmation.prototype = {
 
 		this.title = option["title"];
 		this.message = option["message"];
-		
+		this.zIndex = option["zIndex"] || 2;
+
 		this.yes_text = option["yes_text"];
 		this.no_text = option["no_text"];
 		
@@ -60,7 +61,8 @@ org.goorm.core.dialog.confirmation.prototype = {
 		this.panel = new YAHOO.widget.SimpleDialog(
 			"panelContainer_" + this.title, { 
 				width: '400px',
-				visible: false, 
+				visible: false,
+				zIndex: self.zIndex, 
 				underlay: "none",
 				close: true,
 				draggable: true,

@@ -240,6 +240,9 @@
             "project_delete": {
                 "value": "프로젝트 제거"
             },
+            "project_share" : {
+                "value" : "프로젝트 공유"
+            },
             "project_properties": {
                 "value": "속성"
             }
@@ -301,7 +304,7 @@
                 "value": "이전 창"
             },
             "window_next_window": {
-                "value": "이전 창"
+                "value": "다음 창"
             },
             "window_previous_tab": {
                 "value": "이전 탭"
@@ -368,6 +371,9 @@
             "window_toggle_full_workspace": {
                 "value": "작업 공간을 전체 화면으로 전환"
             },
+            "window_slide_show_mode": {
+                "value": "슬라이드 쇼 모드로 전환"
+            },
             "window_hide_all_window": {
                 "value": "모든 창 숨기기"
             },
@@ -421,6 +427,12 @@
         "children": {
             "goorm_manage": {
                 "value": "구름 관리"
+            },
+            "account_manage" : {
+                "value": "계정 관리"
+            },
+            "account_project": {
+                "value": "프로젝트 관리"
             },
             "account_profile": {
                 "value": "계정 정보"
@@ -568,6 +580,9 @@
     "folder_open_context": {
         "value": "열기"
     },
+    "cloud_upload_context" : {
+        "value" : "업로드"
+    },
     "folder_close_context": {
         "value": "닫기"
     },
@@ -651,5 +666,11 @@
     },
     "terminal_delete_edit_terminal": {
         "value": "비우기"
-    }
+    },
+    "history_save": {
+    	"value": "히스토리 재생중 해당 스냅샷에서 지정된 시간만큼 멈춥니다."
+	},
+    "history_delete": {
+    	"value": "현재 스냅샷을 이전 스냅샷과 병합 후 삭제합니다."
+	}
 }

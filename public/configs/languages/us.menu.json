@@ -240,6 +240,9 @@
             "project_delete": {
                 "value": "Delete Project"
             },
+            "project_share" : {
+                "value" : "Share This Project"
+            },
             "project_properties": {
                 "value": "Properties"
             }
@@ -368,6 +371,9 @@
             "window_toggle_full_workspace": {
                 "value": "Toggle Full Workspace"
             },
+            "window_slide_show_mode": {
+                "value": "Slide Show Mode"
+            },
             "window_hide_all_window": {
                 "value": "Hide All Window"
             },
@@ -424,6 +430,12 @@
         "children": {
             "goorm_manage": {
                 "value": "Goorm Management"
+            },
+            "account_manage" : {
+                "value": "Account Management"
+            },
+            "account_project": {
+                "value": "Project Management"
             },
             "account_profile": {
                 "value": "Profile"
@@ -571,6 +583,10 @@
     "folder_open_context": {
         "value": "Open"
     },
+    "cloud_upload_context" : {
+        "value" : "Upload"
+    },
+
     "folder_close_context": {
         "value": "Close"
     },
@@ -654,5 +670,11 @@
     },
     "terminal_delete_edit_terminal": {
         "value": "Clear"
-    }
+    },
+    "history_save": {
+    	"value": "Pause history playback with this snapshot."
+	},
+    "history_delete": {
+    	"value": "Merge this snapshot with previous one, and delete."
+	}
 }

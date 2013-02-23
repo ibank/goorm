@@ -17,12 +17,14 @@ var User = mongoose.model('user', new Schema(user_schema));
 
 var g_admin = require('../org.goorm.admin/admin.js')
 var g_admin_permission = require('../org.goorm.admin/admin.permission.js')
+var g_collaboration = require('../org.goorm.core.collaboration/collaboration.js')
+var g_collaboration_communication = require('../org.goorm.core.collaboration/collaboration.communication.js')
 
 var check_form = {
 	regular_expression_id : /^[0-9a-zA-Z]{4,15}$/,
 	regular_expression_password : /^(?=([a-zA-Z]+[0-9]+[a-zA-Z0-9]*|[0-9]+[a-zA-Z]+[a-zA-Z0-9]*)$).{8,15}$/,
-	regular_expression_name : /^[가-힣0-9a-zA-Z._-]{2,15}$/,
-	regular_expression_nick : /^[가-힣0-9a-zA-Z._-]{2,20}$/,
+	regular_expression_name : /^[가-힣 0-9a-zA-Z._-]{2,15}$/,
+	regular_expression_nick : /^[가-힣 0-9a-zA-Z._-]{2,20}$/,
 	regular_expression_email : /^([0-9a-zA-Z._-]+)@([0-9a-zA-Z_-]+)(\.[a-zA-Z0-9]+)(\.[a-zA-Z]+)?$/
 }
 
@@ -84,27 +86,39 @@ module.exports = {
 		if(mode == 'admin') self.admin_registeration(req, callback);
 		else {
 			g_admin.get_config(function(config){
-				if(config && config.general_signup_config){
-					req.body.level = 'Member';
-					self.add(req.body, function(add_result){
-						if(add_result){
-							self.update_session(req.session, req.body)
-							callback({
-								result : true
-							});
-						}
-						else{
-							callback({
-								code : 0,
-								result : false
-							})
-						}
-					})
+				if(config){
+					if(config.general_signup_config){
+						req.body.level = 'Member';
+						self.add(req.body, function(add_result){
+							if(add_result){
+								self.update_session(req.session, req.body)
+								callback({
+									result : true
+								});
+							}
+							else{
+								callback({
+									code : 0,
+									result : false
+								})
+							}
+						})
+					}
+					else{
+						callback({
+							code : 30,
+							result : false
+						})
+					}
 				}
 				else{
-					callback({
-						code : 30,
-						result : false
+					g_admin.init_config(function(config_result){
+						if(config_result.result){
+							self.register(req, callback);
+						}
+						else{
+							callback(config_result);
+						}
 					})
 				}
 			});
@@ -126,7 +140,7 @@ module.exports = {
 			sha_pw.update(doc.pw);
 			doc.pw = sha_pw.digest('hex');
 		}
-		
+
 		doc.save(function(err){
 			if(!err){
 				callback(true);
@@ -179,6 +193,14 @@ module.exports = {
 		});
 	},
 	
+	get_match_list : function(option, callback){
+		var query = option['query'];
+
+		User.find({ $or: [{'id' : {$regex:query, $options: 'g'} }, {'name' : {$regex:query, $options: 'g'} }, {'nick' : {$regex:query, $options: 'g'}}] }, function(err, user_list){
+			callback(user_list);
+		});
+	},
+
 	avail_blind : function(users, callback){
 		var self = this;
 		var data = users.data;
@@ -287,10 +309,28 @@ module.exports = {
 				sha_pw.update(user.pw);
 
 				if(user_data.pw == sha_pw.digest('hex')){
-					self.update_session(req.session, user_data);
-					self.access(user);
-					callback({
-						result : true
+					self.duplicate_login_check(user_data, function(can_be_login){
+						if(can_be_login){
+
+							// Update Session
+							//
+							self.update_session(req.session, user_data);
+
+							//	Access User
+							//
+							self.access(user);
+							callback({
+								result : true
+							});
+						}
+						else{
+							// duplicate login process
+							//
+							callback({
+								code : 2,
+								result : false
+							})
+						}
 					});
 				}
 				else{
@@ -511,6 +551,59 @@ module.exports = {
 	
 	get_user_schema : function(){
 		return user_schema;
+	},
+
+	duplicate_login_check : function(user, callback){
+		var io = g_collaboration.get_io();
+
+		var userdata = [{
+			'id' : user.id,
+			'type' : user.type
+		}]
+
+		var is_connect = function(){
+			callback(false);
+		}
+
+		var is_not_connect = function(){
+			callback(true);
+		}
+
+		g_collaboration_communication.is_connected(io, userdata, is_connect, is_not_connect);
+	},
+
+	disconnect_user_and_login : function(user, callback){
+		var io = g_collaboration.get_io();
+
+		var userdata = [{
+			'id' : user.id,
+			'type' : user.type
+		}]
+
+		var is_connect = function(data){
+			for(var sid in store.sessions){
+				var session = JSON.parse(store.sessions[sid]);
+
+				if(session.auth && session.auth.loggedIn){
+					var session_user = session.auth[user.type.toLowerCase()].user;
+
+					if(session_user.id == user.id && session_user.type == user.type){
+						store.destroy(sid, function(){
+							callback(true);
+						})
+					}
+				}
+			}
+
+			io.sockets.sockets[data.client.id].emit("force_disconnect");
+			io.sockets.sockets[data.client.id].disconnect();
+		}
+
+		var is_not_connect = function(data){
+			callback(true);
+		}
+
+		g_collaboration_communication.is_connected(io, userdata, is_connect, is_not_connect);
 	}
 }
 

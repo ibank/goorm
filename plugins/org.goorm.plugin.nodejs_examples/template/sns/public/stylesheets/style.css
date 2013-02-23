@@ -1,0 +1,140 @@
+body {
+  padding: 50px;
+  font: 12px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+#main {
+	margin-left: auto;
+	margin-right: auto;
+	width: 800px;
+}
+
+#title {
+	font-size: 16px;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+#message {
+	border: 1px solid #ccc;
+	height: 140px;
+	margin-bottom: 10px;
+	padding: 10px;
+	min-height:100%;
+	text-align: right;
+}
+
+.left {
+	float: left;
+	text-align: center;
+}
+
+.right {
+	float: right;
+}
+
+#message .photo {
+	border: 1px solid #ccc;
+	width: 120px;
+	height: 110px;
+	margin-bottom: 5px;
+	background-size: 120px 120px;
+}
+
+#message .author {
+	width: 110px;
+	text-align: center;
+	font-size: 11px;
+}
+
+#message textarea {
+	width: 630px;
+	height: 110px;
+	float: right;
+	margin-bottom: 5px;
+}
+
+#wall {
+	border-left: 1px dashed #ccc;
+	border-right: 1px dashed #ccc;
+}
+
+#wall .item {
+	margin:10px;
+	min-height: 100px;
+	clear: both;
+}
+
+#wall .comments {
+	margin:10px;
+	padding: 5px;
+	border: 1px solid #aaa;
+	background-color: #f8f8f8;
+}
+
+#wall .comment_item {
+	border-bottom: 1px dotted #ccc;
+	padding: 2px;
+}
+
+#wall .input_comment {
+	margin-top: 5px;
+	width: 560px;
+}
+
+#wall .input_comment input .comment_button {
+	width: 80px;
+}
+
+#wall .photo_thumb {
+	width: 100px;
+	height: 80px;
+	border: 1px solid #ccc;
+	min-height: 100px;
+	background-size: 100px 100px;
+}
+
+#wall .author {
+	width: 665px;
+	padding: 5px;
+	border-top: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	background-color: #f8f8f8;
+}
+
+.text_button {
+	font-size: 11px;
+	font-weight: bold;
+	color: #999;
+	cursor: pointer;
+}
+
+.text_button:hover {
+	text-decoration: underline;
+}
+
+#wall .contents {
+	width: 665px;
+	padding: 5px;
+	clear: both;
+}
+
+#wall .likes {
+	width: 655px;
+	margin: 5px;
+	border-top: 1px dotted #666;
+	padding: 5px;
+	clear: both;
+	font-size: 11px;
+}
+
+#wall .textarea_modify {
+	width: 665px;
+	
+	border: 1px solid #ddddcc;
+}

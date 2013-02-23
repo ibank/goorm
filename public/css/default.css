@@ -136,7 +136,7 @@ label:hover {
 }
 
 .list_item_selected { 
-	background-color: rgb(179, 212, 255);
+	background-color: rgb(179, 212, 255) !important;
 }
 
 .checkbox input {
@@ -1289,3 +1289,10 @@ YUI PANEL STYLE CUSTOMIZATION
 	background: rgba(255,255,255,.5);
 }
 
+
+/**************************************************************************
+YUI INPUT STYLE CUSTOMIZATION
+**************************************************************************/
+#project_share_container .yui-ac-input {
+	position: relative !important;
+}

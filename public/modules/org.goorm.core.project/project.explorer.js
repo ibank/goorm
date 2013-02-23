@@ -81,6 +81,9 @@ org.goorm.core.project.explorer.prototype = {
 							var filetype = nodedata.node.data.filetype;
 							var filepath = nodedata.node.data.parent_label;
 													
+
+							console.log(filepath, filename, filetype);
+
 							core.module.layout.workspace.window_manager.open(filepath, filename, filetype);
 						}
 						else if(nodedata.node.data.cls == "dir") {
@@ -113,9 +116,30 @@ org.goorm.core.project.explorer.prototype = {
 					
 					if(!$.isEmptyObject(localStorage["current_project"])){
 						self.current_project = $.parseJSON(localStorage["current_project"]);
-						if(self.current_project.current_project_name != ""){
+						if(self.current_project.current_project_name && self.check_project_list(self.current_project.current_project_path)){
 							core.dialog.open_project.open(self.current_project.current_project_path, self.current_project.current_project_name, self.current_project.current_project_type);
 						}
+						else{
+							self.current_project = {};
+
+							core.status.current_project_name = ""
+							core.status.current_project_path = ""
+							core.status.current_project_type = ""
+
+							localStorage.current_project = ""
+
+							core.module.layout.communication.join();
+						}
+					}else{
+						self.current_project = {};
+
+						core.status.current_project_name = ""
+						core.status.current_project_path = ""
+						core.status.current_project_type = ""
+
+						localStorage.current_project = ""
+
+						core.module.layout.communication.join();
 					}
 					
 					// self.refresh();
@@ -237,6 +261,25 @@ org.goorm.core.project.explorer.prototype = {
 		});
 	},
 	
+	check_project_list : function(project_path){
+		var self = this;
+
+		if(self.project_data){
+			var project_data = self.project_data;
+
+			for(var i = 0; i<project_data.length; i++){
+				if(project_data[i].name == project_path){
+					return true;
+				}
+			}
+
+			return false;
+		}
+		else{
+			return false
+		}
+	},
+
 	make_project_selectbox: function() {
 		var self = this;
 

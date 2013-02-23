@@ -118,7 +118,7 @@ org.goorm.plugin.cpp.prototype = {
 		var debug_module = core.module.debug;
 		this.terminal = core.module.layout.workspace.window_manager.open("/", "debug", "terminal", "Terminal").terminal;
 		this.current_debug_project = path;
-		this.prompt = /(\(gdb\)[\s\n]*)$/;
+		this.prompt = /\(gdb\) $/;
 		this.terminal.debug_endstr = /exited normally/;
 		
 		// debug탭 초기화
@@ -248,9 +248,14 @@ org.goorm.plugin.cpp.prototype = {
 		this.terminal.send_command("where\r", this.prompt, function(terminal_data){
 			self.set_currentline(terminal_data);
 		});
-		this.terminal.send_command("info locals\r", this.prompt, function(terminal_data){
-			self.set_debug_variable(terminal_data);
-		});
+
+		// Timing Problem by nys
+		//
+		setTimeout(function(){
+			self.terminal.send_command("info locals\r", self.prompt, function(local_terminal_data){
+				self.set_debug_variable(local_terminal_data);
+			});
+		}, 500)
 	},
 	
 	set_currentline: function(terminal_data){
@@ -270,7 +275,7 @@ org.goorm.plugin.cpp.prototype = {
 			if(line == '') return;
 			// 현재 라인 처리
 			var regex = /at ((.*)\/)?(.*):(\d+)/;
-			
+			console.log(line);
 			if(regex.test(line)) {
 				var match = line.match(regex);
 				var filepath = match[2];
@@ -296,15 +301,140 @@ org.goorm.plugin.cpp.prototype = {
 			}
 		});
 	},
-	
+
 	set_debug_variable: function(terminal_data){
 		var lines = terminal_data.split('\n');
+		var locals = {};
 		var table_variable = core.module.debug.table_variable;
 		
+		// var analysis = {
+		// 	get_type : function(line){
+		// 		if(/=/.test(line)){
+		// 			var variable = line.slice(0, line.indexOf(" = "));
+		// 			var word = line.slice(line.indexOf(" = ")+3, line.length);
+		// 			if(word){
+		// 				if(/^{/.test(word)){
+		// 					return {
+		// 						'type' : 'array',
+		// 						'variable' : variable,
+		// 						'data' : word
+		// 					}
+		// 				}
+		// 				else if(/^0x/.test(word)){
+		// 					return {
+		// 						'type' : 'pointer',
+		// 						'variable' : variable,
+		// 						'data' : line
+		// 					}
+		// 				}
+		// 				else{
+		// 					return {
+		// 						'type' : 'number',
+		// 						'variable' : variable,
+		// 						'data' : line
+		// 					}
+		// 				}
+		// 			}
+		// 		}
+		// 		else{
+		// 			if(/^0x/.test(line)){
+		// 				return {
+		// 					'type' : 'pointer',
+		// 					'value' : line
+		// 				}
+		// 			}
+		// 			else{
+		// 				return {
+		// 					'type' : 'number',
+		// 					'value' : line
+		// 				}
+		// 			}
+		// 		}
+		// 	},
+
+		// 	get_value : function(word){
+		// 		var variable = word.split(' = ');
+		// 		console.log(variable);
+		// 		return {
+		// 			'variable' : variable[0].trim(),
+		// 			'value' : variable[1].trim()
+		// 		}
+		// 	},
+
+		// 	array_process : function(word){
+		// 		var self = this;
+
+		// 		word = word.replace("{", "");
+		// 		word = word.replace("}", "");
+
+		// 		var array = {};
+		// 		var words = word.split(',').map(function(o){ return o.trim(); });
+
+		// 		$.each(words, function(i, __word){
+		// 			var __word_type = self.get_type(__word);
+		// 			array[i] = __word_type;
+		// 		});
+
+		// 		return array;
+		// 	},
+
+		// 	pointer_process : function(word){
+		// 		var self = this;
+		// 		var data = self.get_value(word);
+
+		// 		return {
+		// 			'type' : 'pointer',
+		// 			'value' : data.value
+		// 		}
+		// 	},
+
+		// 	number_process : function(word){
+		// 		var self = this;
+		// 		var data = self.get_value(word);
+
+		// 		return {
+		// 			'type' : 'number',
+		// 			'value' : data.value
+		// 		}
+		// 	},
+
+		// 	start : function(lines){
+		// 		var self = this;
+
+		// 		$.each(lines, function(i, line){
+		// 			if(line == '' || /info locals/.test(line) || /gdb/.test(line)) return;
+
+		// 			var word = self.get_type(line);
+		// 			switch(word.type){
+		// 				case 'array':
+		// 					locals[word.variable] = self.array_process(word.data);
+		// 					break;
+
+		// 				case 'pointer':
+		// 					locals[word.variable] = self.pointer_process(word.data);
+		// 					break;
+
+		// 				case 'number':
+		// 					locals[word.variable] = self.number_process(word.data);
+		// 					break;
+
+		// 				default:
+		// 					break;
+		// 			}
+		// 		});
+		// 	},
+
+		// 	push : function(table_variable){
+
+		// 	}
+		// }
+
+
 		table_variable.initializeTable();
+
 		$.each(lines, function(i, line){
 			if(line == '') return;
-			
+
 			// local variable 추가
 			var variable = line.split(' = ');
 			if (variable.length == 2) {

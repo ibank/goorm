@@ -13,13 +13,12 @@ var editing = require('./collaboration.editing.js');
 var composing = require('./collaboration.composing.js');
 var drawing = require('./collaboration.drawing.js');
 var slideshare = require('./collaboration.slideshare.js');
-var updating = require('./collaboration.updating.js');
 var history = require('./collaboration.history.js');
 
 module.exports = {
 	start: function (io) {
 		var self = this;
-		
+		self.soc = io;
 		io.set('log level', 0);
 		io.sockets.on('connection', function (socket) {
 			socket.on('join', function (raw_msg) {
@@ -30,10 +29,11 @@ module.exports = {
 				}
 				
 				if (channel == "workspace") {
-					workspace.join(socket, msg_obj);
+					workspace.join(io, socket, msg_obj);
 				}
-				else if(channel == "history") {
+				else if(channel == "filepath") {
 					history.join(socket, msg_obj);
+					editing.send_cursors(socket, msg_obj);
 				}
 			});
 			
@@ -48,10 +48,12 @@ module.exports = {
 				if (channel == "communication") {
 					communication.msg(io, socket, msg_obj);
 				}
-				else if (channel == "editing") {      // <-- history messages are caught in here
-					//updating.push(msg_obj.workspace, msg_obj);
+				else if (channel == "editing") {
 					editing.msg(socket, msg_obj);
 					history.msg(socket, msg_obj);
+				}
+				else if (channel == "history") {
+					history.command_msg(socket, msg_obj);	// merge&delete, delay msgs..
 				}
 				else if (channel == "composing") {
 					composing.msg(socket, msg_obj);
@@ -62,10 +64,6 @@ module.exports = {
 				else if (channel == "slideshare") {
 					slideshare.msg(socket, msg_obj);
 				}
-				// deprecated
-				// else if (channel == "history") {
-					// history.msg(socket, msg_obj);
-				// }
 				else if (channel == "workspace") {
 					workspace.msg(socket, msg_obj);
 				}
@@ -79,16 +77,74 @@ module.exports = {
 				}
 				
 				if (channel == "workspace") {
-					workspace.leave(socket, msg_obj);
+					workspace.leave(io, socket, msg_obj);
 				}
-				else if(channel == "history"){
+				else if(channel == "filepath"){
+					editing.leave(io, socket, msg_obj);
 					history.leave(socket, msg_obj);
 				}
 			});
+
+			socket.on('invite', function(raw_msg) {
+				var msg_obj = JSON.parse(raw_msg);
+				var channel = "";
+				var action = "";
+				if(msg_obj["channel"] != undefined) {
+					channel = msg_obj["channel"];
+				}
+				if(msg_obj["action"] != undefined) {
+					action = msg_obj["action"];
+				}
+
+				if (channel == "workspace") {
+					if(action == "invite")
+						workspace.invite(io, socket, msg_obj);
+					else if(action == 'invitation_answer')
+						workspace.invitation_answer(io, socket, msg_obj);
+				}
+			});
+
+			socket.on('slideshare',function(raw_msg){
+				var msg_obj = JSON.parse(raw_msg);
+				var channel = "";
+				if(msg_obj["channel"]!=undefined){
+					channel = msg_obj["channel"];
+				}
+				socket.broadcast.to(msg_obj.workspace).emit('slideshare_get',JSON.stringify(msg_obj));
+				/*switch(channel){
+					
+				}*/
+			});
+			/*
+			// Quiz
+			//
+			socket.on('quiz', function(raw_msg){
+				var msg_obj = JSON.parse(raw_msg);
+				var channel = "";
+				if(msg_obj["channel"] != undefined) {
+					channel = msg_obj["channel"];
+				}
+
+				if (channel == "start") {
+					io.sockets.emit('quiz_start', JSON.stringify(msg_obj));
+				}
+				else if(channel == 'stop') {
+					io.sockets.emit('quiz_stop', JSON.stringify(msg_obj));
+				}
+			})
+			*/
 		}); 
 		
 		io.sockets.on('close', function (socket) {
 			
 		});
+	},
+
+	get_io : function(){
+		return this.soc;
+	},
+
+	lecture : function(path, file_name, file_type){
+		this.soc.sockets.emit('open_source_code',{path: path, file_name: file_name, file_type: file_type});
 	}
 };

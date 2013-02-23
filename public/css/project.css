@@ -81,3 +81,91 @@
 	border:1px dotted #999;
 	padding:4px;	
 }
+
+.project_invite_span {
+	text-align: right;
+	float: left;
+	width: 130px;
+	padding: 5px;
+	font-size: 11px;
+}
+
+.project_invite_input {
+	padding: 3px;
+	margin: 3px;
+	width: 220px;
+}
+
+#project_share_container #project_share_select_list {
+	width:374px;
+}
+
+#project_share_container #user_list_container {
+	padding: 5px;
+}
+
+#project_share_container #user_list_container .user_list {
+	width: 367px;
+	height: 250px;
+	padding: 2px;
+	border: 1px solid #ccc;
+	background-color: #fff;
+	overflow: auto;
+	font-size: 11px;
+	margin: 0 auto;
+	margin-left: -2px;
+}
+
+#project_share_container #user_search_input {
+	vertical-align: middle;
+	width: 300px;
+}
+
+#project_share_container #user_add_button {
+	vertical-align: middle;
+}
+
+#project_share_container .user_item {
+	float: left;
+	width: 350px;
+	padding: 8px;
+	margin-top: 3px;
+}
+
+#project_share_container .user_info_form {
+	float: left;
+}
+
+#project_share_container .user_tool_form {
+	cursor: pointer;
+}
+
+#project_share_container .added_user {
+	background-color: #EEFAAF;
+}
+
+#project_share_container .user_info_form .user_info_name {
+	vertical-align:middle;
+	padding: 5px;
+	font-weight: bold;
+}
+
+#project_share_container .user_info_form .user_info_email {
+	vertical-align:middle;	
+	padding: 5px;
+	color: #555;
+}
+
+#project_share_container .user_tool_form {
+	float: right;
+}
+
+#project_share_container .yui-ac-container .yui-ac-content {
+	width: 310px !important;
+}
+
+#project_share_container .display_guide {
+	padding: 3px;
+	font-weight: bold;
+	text-decoration: underline;
+}

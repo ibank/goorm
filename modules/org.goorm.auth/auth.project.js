@@ -6,11 +6,12 @@ var project_fields = {
 	project_type : String,
 	author_id : String,
 	author_type : String,
-	collaboration_list : Array
+	collaboration_list : Array,
+	invitation_list : Array
 };
 
 var db = {
-	project : mongoose.model('project', new Schema(project_fields))
+	project : mongoose.model('project', new Schema(project_fields)),
 }
 
 module.exports = {
@@ -23,13 +24,20 @@ module.exports = {
 		doc.collaboration_list = [];
 		doc.collaboration_list.push(project.author_id+'_'+project.author_type)
 
-		doc.save(function(err){
-			if(err) {
-				console.log(err, 'Project Add Fail');
+		this.get(project, function(exist_project){
+			if(exist_project){
+				console.log('Project already exists !');
 				if(callback) callback(false);
+			}else{
+				doc.save(function(err){
+					if(err) {
+						console.log(err, 'Project Add Fail');
+						if(callback) callback(false);
+					}
+					else if(callback) callback(true)
+				});
 			}
-			else if(callback) callback(true)
-		});
+		})
 	},
 
 	// option : {} 
@@ -53,6 +61,54 @@ module.exports = {
 		});
 	},
 
+	pull : function(option, callback){
+		var project_path = option['project_path'];
+		var target_id = option['target_id'];
+		var target_type = option['target_type'];
+
+		db.project.update({'project_path':project_path}, { $pull : { 'collaboration_list' : target_id+'_'+target_type } }, function(err){
+			if(err){
+				console.log(err);
+				if(callback) callback(false)
+			}
+			else if(callback){
+				 callback(true)
+			}
+		});
+	},
+
+	invitation_push : function(option, callback){
+		var project_path = option['project_path'];
+		var target_id = option['target_id'];
+		var target_type = option['target_type'];
+
+		db.project.update({'project_path':project_path}, { $addToSet : { 'invitation_list' : target_id+'_'+target_type } }, function(err){
+			if(err){
+				console.log(err);
+				if(callback) callback(false)
+			}
+			else if(callback){
+				 callback(true)
+			}
+		});
+	},
+
+	invitation_pull : function(option, callback){
+		var project_path = option['project_path'];
+		var target_id = option['target_id'];
+		var target_type = option['target_type'];
+
+		db.project.update({'project_path':project_path}, { $pull : { 'invitation_list' : target_id+'_'+target_type } }, function(err){
+			if(err){
+				console.log(err);
+				if(callback) callback(false)
+			}
+			else if(callback){
+				 callback(true)
+			}
+		});
+	},
+
 	get : function(option, callback){
 		db.project.findOne({'project_path':option['project_path']}, function(err, data){
 			callback(data);
@@ -64,6 +120,36 @@ module.exports = {
 	get_all_list : function(option, callback){
 		db.project.find({}, function(err, data){
 			callback(data);
+		});
+	},
+
+	// option
+	//	project_path : project_path
+	//	query : id or name or nick
+	//
+	get_no_co_developers_list : function(option, callback){
+		var self = this;
+		var user_list = option['user_list'];
+
+		this.get(option, function(project_data){
+			if(project_data && user_list){
+				user_list = user_list.filter(function(o){
+					var user_id_type = o.id + '_' + o.type;
+					var collaboration_list = project_data.collaboration_list;
+
+					if(collaboration_list.indexOf(user_id_type) != -1){
+						return false
+					}
+					else{
+						return true
+					}
+				})
+
+				callback(user_list);
+			}
+			else{
+				callback([]);
+			}
 		});
 	},
 

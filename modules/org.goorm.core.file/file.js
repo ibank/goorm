@@ -673,7 +673,7 @@ module.exports = {
 				}
 				else {
 					data.err_code = 20;
-					data.message = "Cannot extract zip file";
+					data.message = "Cannot import a file";
 					
 					evt.emit("file_do_import", data);
 				}

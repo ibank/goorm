@@ -47,3 +47,7 @@
 .project_detail_view {
 	cursor:pointer;
 }
+
+[name='project_invitation_input'] {
+	position: relative !important;
+}

@@ -79,10 +79,14 @@ org.goorm.core = function() {
 		new_folder: null,
 		new_untitled_textfile: null,
 		open_file: null,
+		//by sim
+		upload_file: null,
+		//by sim
 		open_url: null,
 		save_as_file: null,
 		rename_file: null,
 		move_file: null,
+		file_select: null,
 		print: null,
 		switch_workspace: null,
 		import_file: null,
@@ -110,6 +114,7 @@ org.goorm.core = function() {
 		help_bug_report: null,
 		user_manager: null,
 		loaded_count:0		
+
 	};
 	
 	this.flag = {
@@ -300,7 +305,6 @@ org.goorm.core.prototype = {
 
 		$(this).bind('goorm_login_complete', function(){
 			core.module.toast.show(core.module.localization.msg['notice_welcome_goorm'])
-			core.module.layout.communication.join();
 			if(core.module.layout.history.last_init_load) core.module.layout.history.join();
 		})
 		
@@ -309,7 +313,7 @@ org.goorm.core.prototype = {
 			localStorage['inner_bottom_tabview_index'] = core.module.layout.inner_bottom_tabview._configs.activeIndex.value;
 			localStorage['inner_right_tabview_index'] = core.module.layout.inner_right_tabview._configs.activeIndex.value;
 		});
-		
+
 		//Toolbar
 		this.module.toolbar = new org.goorm.core.toolbar();
 		this.module.toolbar.init();		
@@ -361,7 +365,7 @@ org.goorm.core.prototype = {
 	},
 	
 	main: function() {
-		
+
 		this.dialog.new_project = new org.goorm.core.project._new();
 		this.dialog.new_project.init();
 		
@@ -382,7 +386,10 @@ org.goorm.core.prototype = {
 		
 		this.dialog.open_file = new org.goorm.core.file.open();
 		this.dialog.open_file.init();
-		
+		//by sim
+		this.dialog.upload_file = new org.goorm.core.file.upload();
+		this.dialog.upload_file.init();
+		//by sim
 		this.dialog.open_url = new org.goorm.core.file.open_url();
 		this.dialog.open_url.init();
 		
@@ -394,6 +401,9 @@ org.goorm.core.prototype = {
 		
 		this.dialog.move_file = new org.goorm.core.file.move();
 		this.dialog.move_file.init();
+		
+		this.dialog.file_select = new org.goorm.core.file.select();
+		this.dialog.file_select.init();
 				
 		this.dialog.print = new org.goorm.core.printer();
 		this.dialog.print.init();
@@ -416,6 +426,9 @@ org.goorm.core.prototype = {
 		this.dialog.delete_project = new org.goorm.core.project._delete();
 		this.dialog.delete_project.init();
 		
+		this.dialog.share_project = new org.goorm.core.project.share();
+		this.dialog.share_project.init();
+
 		this.dialog.build_all = new org.goorm.core.project.build.all();
 		this.dialog.build_all.init();
 		

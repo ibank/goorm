@@ -2,9 +2,20 @@
 	font-size:11px;
 }
 
+#communication .communication_toolbar {
+	overflow: hidden;
+	height: 27px;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 7px;
+	background-color: #eee;
+	border-bottom: 1px solid #ddd;
+	text-align: right;
+}
+
 #communication .communication_user_container {
 	background-color: #FAFAFA;
-	height:100px; 
+	height:90px; 
 	border-bottom:1px #CCC solid; 
 	padding:5px;
 	overflow: auto;
@@ -13,15 +24,77 @@
 #communication .communication_message_container {
 	height:200px; 
 	border-bottom:1px #CCC solid; 
-	padding:5px;
+	padding:9px;
 	overflow: auto;
 }
 
 #communication .communication_message_input_container {
-	height:50px; 
-	padding:5px;
+	height:30px; 
+	padding-top:10px;
 	background-color:#EFEFEF; 
 	text-align:center;
+}
+
+#communication .message_number {
+	cursor:pointer;
+}
+
+#message_container {
+	width: 100%;
+	position: absolute;
+	top:58px;
+	left:0px;
+	background-color: #fafafa;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #eee;
+	text-align: left;
+}
+
+#message_list {
+	padding: 6px;
+}
+
+#message_list .message_list_item {
+	border-bottom: 1px dashed #eee;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+#message_list .message_list_item:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+#message_list .message_list_item .checked {
+	color: silver;
+}
+
+#message_list .message_list_item .message_head {
+	font-weight: bold;
+}
+
+.answer_head {
+	font-weight: bold;
+}
+
+.answer_content {
+	font-size: 11px;
+	padding: 3px;
+}
+
+#message_toolbar {
+	text-align: right;
+	padding-bottom: 8px;
+	border-bottom: 1px solid #aaa;
+}
+
+#message_container_close_button {
+	cursor:pointer;
+	padding: 5px;
+}
+
+#communication .communication_user_item {
+	padding: 2px;
 }
 
 #communication .communication_user_item:hover{
@@ -68,8 +141,10 @@
 
 .communication_user_item_context_button {
 	float : right;
-	width: 0px;
-}
+	/*width: 0px;
+*/}
+
+
 
 #slide_url {
 	text-align: center;
@@ -83,10 +158,60 @@
 	border-bottom: 1px solid #DDD;
 }
 
-#slide_control {
-	text-align: center;
+#slide_menu {
+ 	float: left; width: 100%; 
 	font-size: 11px;
 	background-color: #EEE;
 	border-bottom: 1px solid #DDD;
 	padding-bottom: 2px;
+}
+
+#slide_control {
+	float: left;
+	margin-left: 15px;
+}
+
+#drawing_control {
+	float: right;
+	margin-right: 15px;
+}
+
+#sliderbg {
+	position : relative;
+	height : 28px;
+	width : 209px;
+	background : #fff url(/images/org.goorm.core.collaboration/bg-fader.gif) repeat-x 0 0;
+}
+
+#sliderthumb {
+	position : absolute;
+}
+
+#brush_thickness {
+	border: 0;
+	color: #f6931f;
+	font-weight: bold;
+	width: 25px;
+	position: relative;
+	top: -23px;
+	left: 220px;
+}
+
+#brush_container {
+	position: absolute;
+	width: 220px;
+	padding-right: 40px;
+	background: #fff;
+	height: 28px;
+	border: 1px solid #333;
+	border-radius : 3px;
+	top : 88px;
+	right : 5px;
+}
+
+#slideshare_palette_container {
+	position: absolute;
+	top : 88px;
+	right : 5px;
+
 }

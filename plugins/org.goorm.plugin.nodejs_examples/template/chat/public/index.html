@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CHAT EXAMPLE</title>
+    <script src="/javascripts/jquery.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <link rel='stylesheet' href="/stylesheets/style.css" />
+  </head>
+  <body>
+    
+    <div>CHAT EXAMPLE</div>
+    <div id="chat">
+	    <div id="user_list">
+		    
+	    </div>
+	    
+	    <div id="messages">
+			
+	    </div>
+	    
+	    <div id="input">
+			<input type='text' />
+	    </div>
+    </div>
+
+    <script>
+    	var username = "testuser" + Math.ceil(Math.random() * 100);
+    	var filepath = "untitled.txt";
+    	
+    	var dont_update_first = false;
+    	var socket = null;
+    	
+		$(document).ready(function () {
+			socket = io.connect();
+			
+			
+			socket.on("someone_joined", function (data) {
+	 			data = JSON.parse(data);
+	 			$("#user_list").empty();
+	 			
+	 			for(var i=0; i<data.length; i++){
+	 				var username = data[i];
+	
+	 				$("#user_list").append('<div class="user">' + username + '</div>');
+	 			}
+	 			
+	 			$("#messages").append("<div class='alarm'>" + username + " joined this workspace!</div>");
+	
+	 		});
+	 		
+	 		socket.on("someone_leaved", function (data) {
+	 			//data = JSON.parse(data);
+	
+	 			$("#messages").append("<div class='alarm'>" + data + " leaved this workspace!</div>");
+	 			// $("#" + self.target).find(".communication_user_container").html(data.list.join("<br />"));
+	 		});
+	 		
+	 		socket.on("communication_message", function (data) {
+	 			data = decodeURIComponent(data);
+				
+				data = ((data.replace(/&/g, '&amp;')).replace(/\"/g, '&quot;')).replace(/\'/g, '&#39;'); 
+				data = data.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+				
+	 			$("#messages").append("<div class='message'>" + data + "</div>");
+	 			$("#messages").scrollTop($("#messages").height());
+	 		});
+			
+			socket.on("refresh_userlist", function (data) {
+	 			data = JSON.parse(data);
+	 			$("#user_list").empty();
+	 			
+	 			for(var i=0; i<data.length; i++){
+	 				var username = data[i];
+	
+	 				$("#user_list").append('<div class="user">' + username + '</div>');
+	 			}
+	 		});
+	 		
+	 		$("#input input").keypress(function(evt){
+				if((evt.keyCode || evt.which) == 13){
+					evt.preventDefault();
+					
+					var encodedMsg = encodeURIComponent($(this).val());
+			
+					socket.emit("message", '{"channel": "chat", "action":"send_message", "username":"' + username + '", "message":"' + encodedMsg + '"}');
+					$(this).val("");
+				}
+			});
+			
+			$(window).unload(function() {
+	 			self.leave();
+	 		});
+			
+			socket.emit("join", '{"channel": "workspace", "action":"join", "username":"' + username + '", "message":"hello"}');
+		});
+    </script>
+
+  </body>
+</html>

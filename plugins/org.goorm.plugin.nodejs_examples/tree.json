@@ -1,0 +1,21 @@
+{
+	"preference" :
+	{
+		"label" : "node.js examples",
+		"tab" :	[
+			{	"label" : "node.js examples",
+				"html"	: "/org.goorm.plugin.nodejs_examples/preference.html"
+			}
+		]
+	},
+	
+	"property" : 
+	{
+		"label" : "node.js examples",
+		"tab" :	[
+			{	"label" : "node.js examples",
+				"html"	: "/org.goorm.plugin.nodejs_examples/property.html"
+			}
+		]
+	}
+}

@@ -101,7 +101,8 @@ org.goorm.core.file.save_as.prototype = {
 		        resize.on('resize', function(ev) {
 					var width = $("#save_as_dialog_middle").width();
 		            var w = ev.width;
-		            $("#save_as_dialog_center").css('width', (width - w - 9) + 'px');
+		            // $("#save_as_dialog_center").css('width', (width - w - 9) + 'px');
+		            $("#file_save_as_files").css('width', (width - w - 9) + 'px');
 		        });
 		        
 			}
@@ -122,6 +123,7 @@ org.goorm.core.file.save_as.prototype = {
 		if (window_manager.active_window<0) {
 			alert.show(core.module.localization.msg.alert_file_not_opened);
 			// alert.show("Could not open this file");
+			return false;
 		}
 		else {
 			if(window_manager.window[window_manager.active_window].designer != undefined) {

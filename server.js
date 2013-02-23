@@ -10,6 +10,7 @@
 
 var mongoose_module = require('mongoose');
 Schema = mongoose_module.Schema;	//global
+ObjectId = mongoose_module.Types.ObjectId; // global
 global.__use_mongodb = true;
 mongoose = mongoose_module.createConnection('mongodb://localhost/goorm_ide');	//global
 
@@ -20,6 +21,17 @@ var express = require('express')
   , colors = require('colors')
   , everyauth = require('everyauth')
   , fs = require('fs');
+
+// Session Manager
+//
+store = new express.session.MemoryStore;
+
+
+//by sim
+var utils=require('util')
+var exec=require('child_process').exec;
+
+//by sim
 
 var port = 9999; //default
 var home = process.env.HOME;
@@ -104,16 +116,7 @@ console.log("goormIDE:: starting...".yellow);
 console.log("--------------------------------------------------------".grey);
 
 function check_auth(req, res, next){
-	//console.log("has session : %s", req.loggedIn);
-/*
-	if (req.loggedIn) {
-		//console.log("this user is logged in");
-		next();
-	}
-	else {
-		res.redirect('/auth/google');
-	}
-*/
+
 	next();
 }
 
@@ -137,8 +140,8 @@ goorm.configure(function(){
 	//goorm.use(express.favicon(__dirname + '/public/favicon.ico'));
 	//goorm.use(express.logger('dev'));
 	goorm.use(express.bodyParser({ keepExtensions: true, uploadDir: __temp_dir }));
-	goorm.use(express.cookieParser('rnfmadlek'));
-	goorm.use(express.session());
+	goorm.use(express.cookieParser());
+	goorm.use(express.session({ secret : 'rnfmadlek', store:store }));
 	goorm.use(everyauth.middleware(goorm))
 	goorm.use(express.methodOverride());
 	goorm.use(goorm.router);
@@ -174,6 +177,7 @@ goorm.configure('production', function(){
 // Routes
 goorm.get('/', check_auth, routes.index);
 
+
 //for project
 goorm.get('/project/new', check_auth, routes.project.do_new);
 goorm.get('/project/load', check_auth, routes.project.do_load);
@@ -195,6 +199,7 @@ goorm.get('/plugin/get_list', check_auth, routes.plugin.get_list);
 goorm.get('/plugin/new', check_auth, routes.plugin.do_new);
 //goorm.get('/plugin/debug', check_auth, routes.plugin.debug);
 goorm.get('/plugin/run', check_auth, routes.plugin.run);
+goorm.get('/plugin/extend_function', check_auth, routes.plugin.extend_function);
 
 //for filesystem
 goorm.get('/file/new', check_auth, routes.file.do_new);
@@ -206,6 +211,7 @@ goorm.get('/file/load', check_auth, routes.file.do_load);
 goorm.get('/file/save_as', check_auth, routes.file.do_save_as);
 goorm.get('/file/delete', check_auth, routes.file.do_delete);
 goorm.get('/file/get_contents', check_auth, routes.file.get_contents);
+goorm.get('/file/get_contents2', routes.file.get_contents2);
 goorm.get('/file/get_url_contents', check_auth, routes.file.get_url_contents);
 //goorm.get('/file/put_contents', check_auth, routes.file.put_contents);
 goorm.post('/file/put_contents', check_auth, routes.file.put_contents);
@@ -245,6 +251,7 @@ goorm.get('/help/send_to_bug_report', check_auth, routes.help.send_to_bug_report
 //for Auth
 goorm.get('/auth/get_info', check_auth, routes.auth.get_info);
 goorm.post('/auth/login', routes.auth.login);
+goorm.post('/auth/login/duplicate', routes.auth.login.duplicate);
 goorm.post('/auth/logout', routes.auth.logout);
 goorm.post('/auth/signup', routes.auth.signup);
 goorm.post('/auth/signup/check', routes.auth.signup.check);
@@ -256,15 +263,26 @@ goorm.post('/admin/set_config', check_auth, routes.admin.set_config);
 goorm.post('/admin/user/add', check_auth, routes.admin.user_add);
 goorm.post('/admin/user/del', check_auth, routes.admin.user_del);
 goorm.post('/admin/user/avail_blind', check_auth, routes.admin.user_avail_blind);
-goorm.get('/admin/project/get', routes.admin.project.get)
-goorm.get('/admin/project/list', routes.admin.project.list)
-goorm.post('/admin/project/push', routes.admin.project.push)
-
 
 // for users
 goorm.post('/user/get', routes.user.get);
 goorm.post('/user/get/list', routes.user.list);
 goorm.post('/user/set', routes.user.set);
+goorm.get('/user/project/get', routes.user.project.get);
+goorm.get('/user/project/list', routes.user.project.list);
+goorm.get('/user/project/list/no_co_developers', routes.user.project.list.no_co_developers);
+goorm.post('/user/project/collaboration/push', routes.user.project.collaboration.push);
+goorm.post('/user/project/collaboration/pull', routes.user.project.collaboration.pull);
+goorm.post('/user/project/collaboration/invitation/push', routes.user.project.collaboration.invitation.push);
+goorm.post('/user/project/collaboration/invitation/pull', routes.user.project.collaboration.invitation.pull);
+
+// for messages
+goorm.get('/message/get', routes.message.get);
+goorm.get('/message/get_list', routes.message.list);
+goorm.get('/message/get_list/receive', routes.message.list.receive);
+goorm.get('/message/get_list/unchecked', routes.message.list.unchecked);
+goorm.post('/message/check', routes.message.check);
+goorm.post('/message/edit', routes.message.edit);
 
 //for download and upload
 goorm.get('/download', check_auth, routes.download);
@@ -287,17 +305,28 @@ goorm.get('/remove_port', check_auth, function(req, res) {
 });
 
 //for history
-// goorm.post('/history/add_snapshot', check_auth, routes.history.add_snapshot);
 goorm.post('/history/get_history', check_auth, routes.history.get_history);
 
+//
 goorm.get('/db/is_open', function(req, res){
 	var dbname = req.query.dbname;
 	var is_open = eval('global.__use_'+dbname);
 	
 	res.json(is_open);
-})
+});
+
+
+//////////////////////////////////by sim ctags result
+
+
+goorm.get('/edit/get_dictionary', check_auth, routes.edit.get_dictionary);
+
+
+//////////////////////////////////////////////////by sim
+
 
 server = http.createServer(goorm).listen(port, function(){
+		global.__serverport = server.address().port;
 		console.log("goorm IDE server listening on port %d in %s mode", server.address().port, goorm.settings.env);
 		console.log("Open your browser and connect to");
 		console.log("'http://localhost:"+port+"' or 'http://[YOUR IP/DOMAIN]:"+port+"'");

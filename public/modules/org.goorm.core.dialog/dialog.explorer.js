@@ -107,6 +107,9 @@ org.goorm.core.dialog.explorer.prototype = {
 
 		$.get("file/get_dir_nodes", postdata, function (data) {
 			self.treeview = new YAHOO.widget.TreeView(self.dir_tree_ori, data);
+
+			console.log('file/get_dir_nodes','postdata',postdata);
+			console.log('data',jQuery.extend(true,{},data));
 			self.treeview.subscribe("clickEvent", function(nodedata) {	
 
 				if(nodedata.node.data.cls == "dir") {
@@ -285,6 +288,26 @@ org.goorm.core.dialog.explorer.prototype = {
 				});
 			}
 			else if (self.files=="#file_export_files") {		
+				$(self.files).find(".file_item").click(function() {
+				
+					$(self.files).find(".file_item").removeClass("selected_item");
+					$(self.files).find(".folder_item").removeClass("selected_item");
+					$(this).addClass("selected_item");				
+				
+					$(self.target_name).attr("value", $(this).attr("filename"));
+					
+					self.filename = $(this).attr("filename");
+					self.filetype = $(this).attr("filetype");
+					self.filepath = $(this).attr("filepath");
+				});
+			}
+			else if (self.files=="#file_select_files") {
+				$(self.files).find(".file_item").dblclick(function() {
+					core.dialog.file_select.target.target_file = $(this).attr("filepath")+$(this).attr("filename");
+					core.dialog.file_select.target.file_list_process();
+					core.dialog.file_select.dialog.panel.hide();
+				});
+		
 				$(self.files).find(".file_item").click(function() {
 				
 					$(self.files).find(".file_item").removeClass("selected_item");

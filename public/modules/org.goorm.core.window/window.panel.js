@@ -498,9 +498,7 @@ org.goorm.core.window.panel.prototype = {
 			window_manager.index--;
 			window_manager.active_filename = "";
 			
-			$("#history_container").empty();
-			$("#history .history_header").unbind('click');
-			$("#history").empty();
+			core.module.layout.history.deactivated();
 			
 			var new_window = window_manager.window.length-1;
 			if (new_window != -1) {
@@ -510,7 +508,6 @@ org.goorm.core.window.panel.prototype = {
 				$(".tab_max_buttons").hide();
 			}
 			window_manager.active_window = new_window;
-			core.module.layout.history.filename = "";
 			
 			delete this;
 		}

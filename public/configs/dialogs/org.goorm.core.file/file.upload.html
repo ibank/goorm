@@ -1,0 +1,46 @@
+<!--<div>
+	<form id="cloud_upload_frm">
+		<input type="file" id="cloud_upload_file">
+	</form>
+
+</div>-->
+<!--this html file is for google drive upload-->
+<div class="content_header" localization_key='dialog_file_upload'>File Upload</div>
+
+<div class="content_guide_message" localization_key='dialog_file_upload_guide'>Select a file to upload</div>
+
+<div id="file_upload" style="text-align:left; font-size:11px;">
+	<form id="myFileUploadForm" action="file/upload" method="post" enctype="multipart/form-data"> 
+		<div class="wizard_step" step="1">
+			<div style="width:100%; height:21px; overflow:auto; font-size:11px;">
+		    	<div style="float:left;">
+		        	<span localization_key='common_location'>Location : </span>
+		        	<input type="text" id="file_upload_location_path" name="file_upload_location_path" style="width:560px; height:15px;" readonly="readonly" />
+		        </div>
+		        <div style="float:right;">
+		        	<span localization_key='common_target'>Target : </span>
+		            <select name='selectbox'>
+		                <option value='2'>Remote</option>
+		            </select>
+		        </div>
+		    </div>
+			<div id="upload_dialog_middle" style="width:780px; height:275px; margin-top:8px; font-size:11px;">
+				<div id="upload_dialog_left" class="dialogs_left">
+					<div id="file_upload_dir_tree" class='directory_treeview dialogs_left_inner'></div>
+				</div>
+				<div id="file_upload_files" class="dialog_center"></div>
+		    </div>
+		    <div style="margin-top:10px; border:1px solid #CCC; float:left; width:768px; padding:5px;">
+				<div style="overflow:auto; font-size:11px; float:left;">
+					<span localization_key='dialog_file_upload_file'>Select the file to upload</span>
+				</div>
+				<div style="overflow:auto; font-size:11px; float:right;">
+			    	<div style="float:left;">
+						<input type="file" name="file" id="file_upload_file">
+						<div id="upload_output"></div>
+			        </div>
+			    </div>
+			</div>
+	    </div>
+    </form>
+</div>

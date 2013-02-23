@@ -10,7 +10,7 @@ org.goorm.core.auth.dashboard.prototype = {
 		// this.socket = io.connect('http://localhost:3000');
 	},
 
-	access : function(){
+	access : function() {
 		var self = this;
 		var data = {
 			'id' : core.user.id,

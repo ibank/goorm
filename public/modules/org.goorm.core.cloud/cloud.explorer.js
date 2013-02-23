@@ -24,8 +24,8 @@ org.goorm.core.cloud.explorer.prototype = {
 		$("#cloud_explorer").prepend("<div id='cloud_selector'></div>");
 		$("#cloud_selector").append("<label class='selectbox'><select id='cloud_selectbox'></select></label>")
 		$("#cloud_selector").append("<iframe name='google_logout_frame' id='google_logout_frame' style='display:none'></iframe>")
-		$('#cloud_explorer').append('<div id="google_drive_treeview" class="directory_treeview"></div>')
-
+		$('#cloud_explorer').append("<div id='cloud_treeview' style='overflow-x:hidden'></div>");
+		
 		$("#cloud_selectbox").change(function() {
 			self.on_cloud_selectbox_change($(this).val());
 		});
@@ -52,13 +52,21 @@ org.goorm.core.cloud.explorer.prototype = {
 
 		if (which_cloud!="") {
 			if(which_cloud=="google_drive"){
+				
 				self.select('google_drive');
+				$('#cloud_treeview').empty();
+				$('#cloud_treeview').append('<div id="google_drive_treeview" class="directory_treeview "></div>')
 
 				$(document).unbind('tree_node_complete')
 				$(document).bind('tree_node_complete', function(evt, data){
 					if (data != null) {
 						var sorting_data = eval(data);
+					//	console.log('tree consist of this data', jQuery.extend(true,{},sorting_data));
+						core.cloud={};
+						core.cloud.google=jQuery.extend(true,{},sorting_data);
 
+						
+						
 						self.treeview = new YAHOO.widget.TreeView("google_drive_treeview", sorting_data);
 						self.current_tree_data = self.treeview.getTreeDefinition();
 
@@ -84,6 +92,7 @@ org.goorm.core.cloud.explorer.prototype = {
 						});
 						
 						self.treeview.render();
+				
 
 						self.set_context_menu('google_drive');
 					}

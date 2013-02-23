@@ -76,5 +76,10 @@ module.exports = {
 	run: function (req, res) {
 		var plugin = require("../../plugins/"+req.plugin+"/modules/");
 		plugin.run(req, res);
+	},
+	
+	extend_function: function (req, res) {
+		var plugin = require("../../plugins/"+req.plugin+"/modules/");
+		plugin.extend_function(req, res);
 	}
 };

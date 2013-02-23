@@ -83,7 +83,6 @@ org.goorm.core.project.list.prototype = {
 				$(self.name).val(data[idx].contents.name);
 				$(self.type).val(data[idx].contents.type);
 
-				$(self.information).empty();
 				$(self.information).append("<b>Project Type : </b>");
 				$(self.information).append(data[idx].contents.type+"<br/>");
 				$(self.information).append("<b>Project Detail : </b>");
@@ -107,6 +106,9 @@ org.goorm.core.project.list.prototype = {
 		
 		$(self.types).change(function() {
 			var type = $(self.types+" option:selected").val();
+
+			$(self.information).empty();
+
 			if(type=="All") {
 				$(self.list+" .selector_project").each(function() {
 					$(this).css("display", "block");

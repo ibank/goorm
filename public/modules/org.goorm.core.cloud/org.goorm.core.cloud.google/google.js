@@ -286,11 +286,20 @@ org.goorm.core.cloud.google.prototype ={
 	},//display end
 
 
-	upload : function(uploadFile,fileName){
+	upload : function(uploadFile,fileName,parent){
+		//console.log('upload is called')
 
 		var self=this;
+		var tmp=self.id_index[parent];
+		//console.log(parent);
+		//console.log('1',tmp);
+		 var argu_parent=true;
+		 if(parent==undefined){	//parent will be root
+		 	argu_parent=false;
+		}
 
-		function insert_file(fileData,fileName, callback) {
+		function insert_file(fileData,fileName,parents, callback) {
+			//console.log(parents);
 			  const boundary = '-------314159265358979323846';
 			  const delimiter = "\r\n--" + boundary + "\r\n";
 			  const close_delim = "\r\n--" + boundary + "--";
@@ -301,10 +310,18 @@ org.goorm.core.cloud.google.prototype ={
 			  	//console.log(fileData);
 			  	//console.log(e);
 			    var contentType = fileData.type || 'application/octet-stream';
+			    
 			    var metadata = {
 			      'title': fileName,
+			      'parents' : parents,
 			      'mimeType': contentType
 			    };
+			    if(parents==0){
+			    	metadata={
+				      'title': fileName,
+				      'mimeType': contentType
+				    };
+			    }
 
 			    var base64Data = btoa(reader.result);
 			    var multipartRequestBody =
@@ -338,9 +355,17 @@ org.goorm.core.cloud.google.prototype ={
 			    request.execute(callback);
 			 }
 		}
-
-		insert_file(uploadFile,fileName);
-
+		if(argu_parent){
+			//console.log('not root')
+			var parents=[];
+			parents[0]={
+				'id' : parent
+			}
+			insert_file(uploadFile,fileName,parents);
+		}else{
+			//console.log('root');
+			insert_file(uploadFile,fileName,0);
+		}	
 
 	},	//upload end
 

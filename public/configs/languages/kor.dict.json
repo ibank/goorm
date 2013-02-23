@@ -38,6 +38,27 @@
 	"event":{
 		"value": "이벤트"
 	},
+	"delay":{
+		"value": "지연"
+	},
+	"history_speed_normal":{
+		"value": "보통속도"
+	},
+	"history_speed_fast":{
+		"value": "빠르게"
+	},
+	"history_speed_veryfast":{
+		"value": "매우 빠르게"
+	},
+	"history_speed_slow":{
+		"value": "천천히"
+	},
+	"history_speed_veryslow":{
+		"value": "매우 천천히"
+	},
+	"history_delay":{
+		"value": "지연시간(초) "
+	},
 	"terminal": {
 		"value": "터미널"	
 	},
@@ -131,7 +152,10 @@
 	"All_project" : {
 		"value" : "모든 프로젝트"
 	},
-	"set_collaboration_project" : {
+	"project_collaboration" : {
+		"value" : "프로젝트 협업"
+	},
+	"collaboration" : {
 		"value" : "협업"
 	},
 	"apply" : {
@@ -212,6 +236,9 @@
 	"scm_configuration" : {
 		"value" : "SCM 설정"
 	},
+	"config" : {
+		"value" : "설정"
+	},
 	"general" : {
 		"value" : "일반"
 	},
@@ -238,5 +265,20 @@
 	},
 	"refresh" : {
 		"value" : "새로고침"
+	},
+	"project_management" : {
+		"value" : "프로젝트 관리"
+	},
+	"project_list" : {
+		"value" : "프로젝트 목록"
+	},
+	"project_all" : {
+		"value" : "모든 프로젝트"
+	},
+	"share" : {
+		"value" : "공유"
+	},
+	"share_and_save" : {
+		"value" : "공유 & 저장"
 	}
 }

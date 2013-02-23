@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>REAL-TIME COLLABORATIVE EDITOR</title>
+    <link rel="stylesheet" href="/codemirror/lib/codemirror.css">
+    <script src="/codemirror/lib/codemirror.js"></script>
+    <script src="/codemirror/mode/css/css.js"></script>
+    <script src="/javascripts/jquery.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/modules/editor.js"></script>
+    <script src="/modules/collaboration.js"></script>
+    <link rel="stylesheet" href="codemirror/doc/docs.css">
+    <link rel='stylesheet' href="/stylesheets/style.css" />
+  </head>
+  <body>
+    
+    <div>REAL-TIME COLLABORATIVE EDITOR</div>
+    <div id="chat">
+	    <div id="user_list">
+		    
+	    </div>
+	    
+	    <div id="messages">
+			
+	    </div>
+	    
+	    <div id="input">
+			<input type='text' />
+	    </div>
+    </div>
+    
+    <textarea id="code" name="code"></textarea>
+
+    <script>
+    	var username = "testuser" + Math.ceil(Math.random() * 100);
+    	var filepath = "untitled.txt";
+    	
+    	var dont_update_first = false;
+    	var socket = null;
+    	
+		$(document).ready(function () {
+			socket = io.connect();
+			
+			editor.init();
+			editor.load();
+			
+			collaboration.init();
+			collaboration.join();
+		});
+    </script>
+
+  </body>
+</html>

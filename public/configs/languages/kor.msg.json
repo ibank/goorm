@@ -228,19 +228,19 @@
         "value": "E-mail을 입력해주세요."
     },
     "alert_user_unfit_email": {
-        "value": "E-mail의 형식이 올바르지 않은 양식입니다(예) goorm@skima.co.kr)."
+        "value": "E-mail의 형식이 올바르지 않은 양식입니다. (예: goorm@goorm.io)"
     },
     "alert_user_undefined_name": {
         "value": "이름을 입력해주세요."
     },
     "alert_user_unfit_name": {
-        "value": "이름의 형식이 올바르지 않은 양식입니다(3~15자리, 한글/알파벳/숫자/특수문자(-/_/.))."
+        "value": "이름의 형식이 올바르지 않은 양식입니다(3~15자리, 한글/알파벳/숫자/특수문자(-/_/./ /))."
     },
     "alert_user_undefined_nick": {
         "value": "닉네임을 입력해주세요."
     },
     "alert_user_unfit_nick": {
-        "value": "닉네임의 형식이 올바르지 않은 양식입니다(3~20자리, 한글/알파벳/숫자/특수문자(-/_/.))."
+        "value": "닉네임의 형식이 올바르지 않은 양식입니다(3~20자리, 한글/알파벳/숫자/특수문자(-/_/./ /))."
     },
     "alert_confirm_logout": {
         "value": "정말로 로그아웃을 하시겠습니까?"
@@ -313,5 +313,23 @@
     },
     "alert_google_drive_not_selected" : {
         "value": "적절한 파일을 선택하여 주십시오."
+    },
+    "alert_confirm_duplicate_login" : {
+        "value" : "중복 로그인이 발생하였습니다. 로그인 하시겠습니까?"
+    },
+    "alert_force_logout" : {
+        "value" : "중복 로그인이 발생하였습니다. 로그아웃 됩니다."
+    },
+    "alert_confirm_delete_co_developer" : {
+        "value" : "정말 프로젝트 공유를 취소하시겠습니까?"
+    },
+    "alert_confirm_invite_co_developer" : {
+        "value" : "정말 프로젝트 공유를 하시겠습니까?"
+    },
+    "alert_no_display_to_data" : {
+        "value" : "등록된 개발자가 없습니다."
+    },
+    "alert_select_project" : {
+        "value" : "프로젝트를 선택하여 주십시오."
     }
 }

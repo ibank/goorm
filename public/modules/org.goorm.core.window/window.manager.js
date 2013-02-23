@@ -137,65 +137,69 @@ org.goorm.core.window.manager.prototype = {
 			});
 		});
 		
-		$(core).bind("goorm_load_complete", function () {
+		$(core).bind("goorm_login_complete", function () {
 			if(!$.isEmptyObject(localStorage["workspace_window"])){
 				var temp_window_list = $.parseJSON(localStorage["workspace_window"]);
-				var count = 0;
-				var active = 0;
-				$(temp_window_list).each(function (i) {
-					self.open(this.filepath, this.filename, this.filetype, this.editor);
-					
-					//TODO: sort by index
-					
-					//TODO: arrange windows with each position and size
-					var current_window = self.window[self.index-1];
-					
-					current_window.left = this.left;
-					current_window.top = this.top;
-					current_window.width = this.width;
-					current_window.height = this.height;
-					current_window.status = this.status;
-					current_window.project = this.project;
-					
-					if (this.status == "maximized") {						
-						$("#" + current_window.container + "_c").offset({left:$("#" + current_window.workspace_container).offset().left - 1, top:$("#" + self.workspace_container).offset().top});
-						$("#" + current_window.container + "_c").width($("#" + self.workspace_container).width());
-						$("#" + current_window.container + "_c").height($("#" + self.workspace_container).height());
+
+				self.check_file_list(temp_window_list, function(file_list){
+					var count = 0;
+					var active = 0;
+					$(file_list).each(function (i) {
+						self.open(this.filepath, this.filename, this.filetype, this.editor);
 						
-						$("#" + current_window.container).width($("#" + self.workspace_container).width());
-						$("#" + current_window.container).height($("#" + self.workspace_container).height());
+						//TODO: sort by index
 						
-						$("#" + current_window.container).find(".ft").addClass("maximized_ft");
+						//TODO: arrange windows with each position and size
+						var current_window = self.window[self.index-1];
 						
-						current_window.panel.cfg.setProperty("width", $("#" + self.workspace_container).width() + "px");
-						current_window.panel.cfg.setProperty("height", $("#" + self.workspace_container).height()+ "px");
+						current_window.left = this.left;
+						current_window.top = this.top;
+						current_window.width = this.width;
+						current_window.height = this.height;
+						current_window.status = this.status;
+						current_window.project = this.project;
 						
-						$(".tab_max_buttons").show();
-						
-						current_window.resize.lock();
-						
-						self.maximized = true;
-					}
-					else {
-						$("#" + current_window.container + "_c").offset({left:this.left, top:this.top});
-						$("#" + current_window.container + "_c").width(this.width);
-						$("#" + current_window.container + "_c").height(this.height);
-						
-						$("#" + current_window.container).width(this.width);
-						$("#" + current_window.container).height(this.height);
-						
-						current_window.panel.cfg.setProperty("width", this.width + "px");
-						current_window.panel.cfg.setProperty("height", this.height - 3 + "px");
-						
-						current_window.status = null;
-						
-						$(".tab_max_buttons").hide();
-			
-						current_window.resize.unlock();
-					}
-					current_window.resize_all();
-					current_window.set_title();
-				});
+						if (this.status == "maximized") {						
+							$("#" + current_window.container + "_c").offset({left:$("#" + current_window.workspace_container).offset().left - 1, top:$("#" + self.workspace_container).offset().top});
+							$("#" + current_window.container + "_c").width($("#" + self.workspace_container).width());
+							$("#" + current_window.container + "_c").height($("#" + self.workspace_container).height());
+							
+							$("#" + current_window.container).width($("#" + self.workspace_container).width());
+							$("#" + current_window.container).height($("#" + self.workspace_container).height());
+							
+							$("#" + current_window.container).find(".ft").addClass("maximized_ft");
+							
+							current_window.panel.cfg.setProperty("width", $("#" + self.workspace_container).width() + "px");
+							current_window.panel.cfg.setProperty("height", $("#" + self.workspace_container).height()+ "px");
+							
+							$(".tab_max_buttons").show();
+							
+							current_window.resize.lock();
+							
+							self.maximized = true;
+						}
+						else {
+							$("#" + current_window.container + "_c").offset({left:this.left, top:this.top});
+							$("#" + current_window.container + "_c").width(this.width);
+							$("#" + current_window.container + "_c").height(this.height);
+							
+							$("#" + current_window.container).width(this.width);
+							$("#" + current_window.container).height(this.height);
+							
+							current_window.panel.cfg.setProperty("width", this.width + "px");
+							current_window.panel.cfg.setProperty("height", this.height - 3 + "px");
+							
+							current_window.status = null;
+							
+							$(".tab_max_buttons").hide();
+				
+							current_window.resize.unlock();
+						}
+						current_window.resize_all();
+						current_window.set_title();
+					});
+				})
+
 			}
 			core.module.layout.history.wait_for_loading = false;
 		});
@@ -657,5 +661,27 @@ org.goorm.core.window.manager.prototype = {
 		this.active_window = -1;
 		
 		this.window.remove(0, this.window.length-1);	
+	},
+
+	check_file_list : function (temp_window_list, callback) {
+		var postdata = {
+			'get_list_type' : 'collaboration_list'
+		}
+
+		$.get("project/get_list", postdata, function (project_data) {
+
+			var files = temp_window_list.filter(function(o){
+				for(var i = 0; i<project_data.length; i++){
+					if(project_data[i].name == o.project){
+						return true;
+					}
+				}
+
+				return false;
+			});
+
+			localStorage.workspace_window = JSON.stringify(files);
+			callback(files);
+		});
 	}
 };

@@ -9,6 +9,7 @@
 var fs = require("fs");
 var rimraf = require('rimraf');
 
+
 //var g_env = require("../configs/env.js");
 
 var g_file = require("../modules/org.goorm.core.file/file");
@@ -25,6 +26,11 @@ var g_auth_project = require("../modules/org.goorm.auth/auth.project");
 var g_admin = require("../modules/org.goorm.admin/admin");
 var g_social = require("../modules/org.goorm.auth/social");
 var g_history = require("../modules/org.goorm.core.collaboration/collaboration.history");
+var g_message = require("../modules/org.goorm.core.collaboration/collaboration.message");
+var g_collaboration = require("../modules/org.goorm.core.collaboration/collaboration");
+//by sim
+var g_edit = require("../modules/org.goorm.core.edit/edit");
+//by sim
 
 var EventEmitter = require("events").EventEmitter;
 
@@ -195,6 +201,10 @@ exports.plugin.run = function(req, res){
 	g_plugin.run(req.query, res);
 };
 
+exports.plugin.extend_function = function(req, res) {
+	g_plugin.extend_function(req.query, res);	
+};
+
 /*
  * API : File System
  */
@@ -275,6 +285,14 @@ exports.file.get_contents = function(req, res){
 
 	fs.readFile(__path + path, "utf8", function(err, data) {
 		res.json(data);
+	});
+};
+
+exports.file.get_contents2 = function(req, res){
+	var path = req.query.path;
+
+	fs.readFile(__path + path, "base64",function(err, data) {
+		res.send(data);
 	});
 };
 
@@ -603,6 +621,12 @@ exports.auth.login = function(req, res){
 	});
 }
 
+exports.auth.login.duplicate = function(req, res){
+	g_auth_manager.disconnect_user_and_login(req.body, function(data){
+		res.json(true);
+	})
+}
+
 exports.auth.logout = function(req, res){
 	g_auth_manager.logout(req, function(result){
 		res.json(result);
@@ -699,28 +723,6 @@ exports.admin.user_avail_blind = function(req, res){
 	});
 }
 
-exports.admin.project = function(req, res){
-	res.json(null);
-}
-
-exports.admin.project.get = function(req, res){
-	g_auth_project.get(req.query, function(data){
-		res.json(data);
-	})
-}
-
-exports.admin.project.list = function(req, res){
-	g_auth_project.get_all_list(req.query, function(data){
-		res.json(data);
-	})
-}
-
-exports.admin.project.push = function(req, res){
-	g_auth_project.push(req.body, function(data){
-		res.json(data);
-	})
-}
-
 exports.user = function(req, res){
 	res.json(null);
 }
@@ -772,6 +774,127 @@ exports.user.set = function(req, res){
 
 exports.user.list = function(req, res){
 	g_auth_manager.get_list(function(data){
+		res.json(data);
+	});
+}
+
+exports.user.project = function(req, res){
+	res.json(null);
+}
+
+exports.user.project.get = function(req, res){
+	g_auth_project.get(req.query, function(data){
+		res.json(data);
+	})
+}
+
+exports.user.project.list = function(req, res){
+	g_auth_project.get_all_list(req.query, function(data){
+		res.json(data);
+	})
+}
+
+exports.user.project.list.no_co_developers = function(req, res){
+	g_auth_manager.get_match_list(req.query, function(user_list){
+		req.query.user_list = user_list;
+
+		g_auth_project.get_no_co_developers_list(req.query, function(data){
+			res.json(data);
+		})
+	})
+}
+
+exports.user.project.collaboration = function(req, res){
+	res.json(null);
+}
+
+exports.user.project.collaboration.push = function(req, res){
+	g_auth_project.push(req.body, function(data){
+		res.json(data);
+	})
+}
+
+exports.user.project.collaboration.pull = function(req, res){
+	g_auth_project.pull(req.body, function(data){
+		res.json(data);
+	})
+}
+
+exports.user.project.collaboration.invitation = function(req, res){
+	res.json(null);
+}
+
+exports.user.project.collaboration.invitation.push = function(req, res){
+	g_auth_project.invitation_push(req.body, function(data){
+		res.json(data);
+	})	
+}
+
+exports.user.project.collaboration.invitation.pull = function(req, res){
+	g_auth_project.invitation_pull(req.body, function(data){
+		res.json(data);
+	})	
+}
+
+
+exports.message = function(req, res){
+	res.json(null);
+}
+
+exports.message.get = function(req, res){
+	g_auth.get_user_data(req.session, function(user_data){
+		req.query.user_id = user_data.id;
+		req.query.user_type = user_data.type;
+
+		g_message.get(req.query, function(data){
+			res.json(data);
+		});
+	})
+}
+
+exports.message.list = function(req, res){
+	g_auth.get_user_data(req.session, function(user_data){
+		req.query.user_id = user_data.id;
+		req.query.user_type = user_data.type;
+
+		g_message.get_list(req.query, function(data){
+			res.json(data);
+		});
+	})
+}
+
+exports.message.list.receive = function(req, res){
+	g_auth.get_user_data(req.session, function(user_data){
+		req.query.user_id = user_data.id;
+		req.query.user_type = user_data.type;
+
+		g_message.get_receive_list(req.query, function(data){
+			res.json(data);
+		});
+	})
+}
+
+exports.message.list.unchecked = function(req, res){
+	g_auth.get_user_data(req.session, function(user_data){
+		req.query.user_id = user_data.id;
+		req.query.user_type = user_data.type;
+
+		g_message.get_unchecked(req.query, function(data){
+			res.json(data);
+		});
+	})
+}
+
+exports.message.edit = function(req, res){
+	g_message.edit(req.body, function(data){
+		res.json(data);
+	});
+}
+
+exports.message.check = function(req, res){
+	req.body.checked = true;
+
+	g_message.edit(req.body, function(data){
 		res.json(data);
 	});
 }
@@ -856,27 +979,16 @@ exports.history.get_history = function(req, res){
 	});
 };
 
-/*************************
- * 로그인 관련
- *************************/
-//id/pw 로그인
-/*
-exports.member = {};
-exports.member.login = function(req, res){
-	g_member_service.login(req, function(result) { 
-		res.send(result); 
+exports.edit = function(req,res){
+	res.send(null);
+}
+
+exports.edit.get_dictionary = function(req, res){
+	var evt = new EventEmitter();
+	
+	evt.on("edit_get_dictionary", function (data) {
+		res.json(data);
 	});
+
+	g_edit.get_dictionary(req.query, evt);
 };
-*/
-//로그아웃
-/*
-exports.member.logout = function(req, res){
-	res.send("member logout");
-};
-*/
-//현재 로그인 상태 (로그인한 계정의 정보)
-/*
-exports.member.login_status = function(req, res){
-	res.send("member login status");
-};
-*/

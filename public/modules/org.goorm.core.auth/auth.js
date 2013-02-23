@@ -9,9 +9,9 @@
 
 
 org.goorm.core.auth = function () {
-	this.signup_panel = null;
 	this.profile = null;
 	this.signup = null;
+	this.project = null;
 };
 
 org.goorm.core.auth.prototype = {					
@@ -22,8 +22,20 @@ org.goorm.core.auth.prototype = {
 		this.signup = new org.goorm.core.auth.signup();
 		this.signup.init();
 
-		this.dashboard = new org.goorm.core.auth.dashboard();
-		this.dashboard.init();
+		// this.dashboard = new org.goorm.core.auth.dashboard();
+		// this.dashboard.init();
+
+		this.message = new org.goorm.core.collaboration.message();
+		this.message.init();
+
+		this.socket = io.connect();
+		this.socket.on('force_disconnect', function(){
+			notice.show(core.module.localization.msg['alert_force_logout']);
+
+			$('#panelContainer_Notice').find('.yui-button').one('click', function(){
+				location.href = '/';
+			})
+		})
 	},
 	
 	get_info: function (callback) {
@@ -34,6 +46,7 @@ org.goorm.core.auth.prototype = {
 				core.user.name = data.name;
 				core.user.nick = data.nick || null;
 				core.user.type = data.type;
+				core.user.group = data.group || null;
 				callback(true);
 			}
 			else{
@@ -135,12 +148,42 @@ org.goorm.core.auth.prototype = {
 					case 1:
 						core.module.toast.show(core.module.localization.msg["alert_login_no_id"]);
 						break;
+					case 2:
+						self.duplicate_login(postdata);
+						break;
 					default :
 						core.module.toast.show(core.module.localization.msg["alert_login_undefined_id_or_password"]);
 						break;
 				}
 			}
 		});
+	},
+
+	duplicate_login : function(postdata){
+		confirmation.init({
+			message: core.module.localization.msg["alert_confirm_duplicate_login"],
+			yes_text: core.module.localization.msg["confirmation_yes"],
+			no_text: core.module.localization.msg["confirmation_no"],
+			title: "Confirmation",
+			zIndex: 1001, 
+
+			yes: function () {
+				$.post("/auth/login/duplicate", postdata, function(duplicate_login_result){
+					if(duplicate_login_result){
+						$.post("/auth/login", postdata, function(login_result){
+							if(login_result.result){
+								core.complete();
+							}
+						});
+					}
+				})
+			},
+			no: function () {
+				
+			}
+		});
+		
+		confirmation.panel.show();
 	},
 
 	check_admin : function(callback){

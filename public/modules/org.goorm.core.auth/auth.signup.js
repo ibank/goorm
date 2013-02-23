@@ -82,7 +82,18 @@ org.goorm.core.auth.signup.prototype = {
 					core.complete();
 				}
 				else{
-					
+					switch(signup_result.code){
+						case 0:
+							//alert.show(core.module.localization.msg['alert_user_add_fail'])
+							break;
+
+						case 30:
+							//alert.show(core.module.localization.msg['alert_signup_blind'])
+							break;
+
+						default:
+							console.log(signup_result);
+					}
 				}
 			}
 			else if(signup_result.type == 'check'){

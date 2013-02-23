@@ -43,7 +43,7 @@ org.goorm.plugin.java.prototype = {
 		
 		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all javap' description='  Create New Project for Java' project_type='java' plugin_name='org.goorm.plugin.java'><img src='/org.goorm.plugin.java/images/java_console.png' class='project_item_icon' /><br /><a>Java Console Project</a></div>");
 		
-		$(".project_dialog_type").append("<option value='c'>Java Projects</option>").attr("selected", "");;
+		$(".project_dialog_type").append("<option value='java'>Java Projects</option>").attr("selected", "");;
 		
 	},
 	
@@ -241,9 +241,14 @@ org.goorm.plugin.java.prototype = {
 		this.terminal.send_command("where\r", this.prompt, function(terminal_data){
 			self.set_currentline(terminal_data);
 		});
-		this.terminal.send_command("locals\r", this.prompt, function(terminal_data){
-			self.set_debug_variable(terminal_data);
-		});
+
+		// Timing Problem
+		//
+		setTimeout(function(){
+			self.terminal.send_command("locals\r", self.prompt, function(local_terminal_data){
+				self.set_debug_variable(local_terminal_data);
+			});
+		}, 500)
 	},
 	
 	set_currentline: function(terminal_data){

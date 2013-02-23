@@ -1,0 +1,73 @@
+[
+	{
+		"keyword": "System.out.println",
+		"type": "method",
+		"description": "System.out.println<br> Print output on console"
+	},
+	{
+		"keyword": "class",
+		"type": "key",
+		"description": "class<br> Class type keyword"
+	},
+	{
+		"keyword": "void",
+		"type": "key",
+		"description": "void<br> Void type"
+	},
+	{
+		"keyword": "int",
+		"type": "key",
+		"description": "int<br> Integer."
+	},
+	{
+		"keyword": "char",
+		"type": "key",
+		"description": "char<br> Character or small integer."
+	},
+	{
+		"keyword": "float",
+		"type": "key",
+		"description": "float<br> Floating point number."
+	},
+	{
+		"keyword": "double",
+		"type": "key",
+		"description": "double<br> Double precision floating point number."
+	},
+	{
+		"keyword": "null",
+		"type": "key",
+		"description": "null<br> null is used to denote 'no object' or 'unknown' or  'unavailable'"
+	},
+	{
+		"keyword":"String",
+		"type":"obj",
+		"description":"String<br>A String object represents a string<br>String is a sequence of Unicode characters."
+	},
+	{
+		"keyword": "new",
+		"type": "key",
+		"description": "new<br> The new keyword creates object."
+	},
+	{
+		"keyword": "public",
+		"type": "modi",
+		"description": "public<br> public modifier"
+	},
+	{
+		"keyword": "private",
+		"type": "modi",
+		"description": "private<br> private modifier"
+	},
+	{
+		"keyword": "protected",
+		"type": "modi",
+		"description": "protected<br> protected modifier"
+	},
+	{
+		"keyword":"package",
+		"type":"key",
+		"description":"package<br>"
+	}
+
+]

@@ -1,0 +1,61 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+#game {
+	width: 320px;
+	height: 300px;
+}
+
+#bingo {
+	float:left;
+}
+
+#user {
+	float:right;
+}
+
+#list {
+	border: 1px solid gray;
+	width: 140px;
+	height: 50px;
+	overflow: auto;
+	margin-bottom: 10px;
+}
+
+#logs {
+	border: 1px solid gray;
+	width: 140px;
+	height: 50px;
+	overflow: auto;
+	margin-bottom: 10px;
+}
+
+.bingo-board {
+	border-left: 1px solid gray;
+	border-top: 1px solid gray;
+	border-spacing: 0px;
+	margin-bottom: 10px;
+}
+
+.bingo-board td {
+	width: 25px;
+	height: 25px;
+	border-right: 1px solid gray;
+	border-bottom: 1px solid gray;
+	text-align: center;
+	cursor: pointer;
+}
+
+.bingo-board td:hover {
+	background-color: yellow;
+}
+
+#start_button {
+	width: 140px;
+}

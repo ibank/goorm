@@ -98,6 +98,9 @@
     "title_open_file": {
 	    "value": "파일 열기"
     },
+    "title_select_file":{
+        "value" : "파일 선택"
+    },
     "title_open_url": {
 	    "value": "URL 열기"
     },
@@ -136,5 +139,14 @@
     },
     "title_delete": {
 	    "value": "삭제"
+    },
+    "title_project_management" : {
+        "value" : "프로젝트 관리"
+    },
+    "title_account_management" : {
+        "value" : "계정 관리"
+    },
+    "title_project_share" : {
+        "value" : "프로젝트 공유"
     }
 }

@@ -1,6 +1,38 @@
+#history{
+	background-color: #EEE;
+	height: 32px;
+	border-bottom: 1px solid #DDD;
+}
+
+#history_strings > span{
+	display: none;
+}
+
+#history_player_control{
+	text-align: center;
+	font-size: 11px;
+	background-color: #EEE;
+	padding-bottom: 2px;
+	padding-top: 4px;
+}
+
+#btn_history_pause, #btn_history_stop{
+	padding: 0px;
+}
+
+#history_player_control button > img{
+	margin-top: 3px;
+}
+
+#history_selectbox{
+	vertical-align: middle;
+	margin-top: -13px;
+	margin-right: 4px;
+}
+
 #history .history_header{
 	text-align: center;
-	border-bottom:1px #BBB solid;
+	border:1px #BBB solid;
 	padding: 3px 5px 3px 5px;
 	cursor: pointer;
 }
@@ -37,6 +69,33 @@
 
 #history_container th{
 	text-align: center;
+}
+
+#history_bottom {
+	font-size: 7pt;
+	height:28px;
+	border-top: 1px solid #DDD;
+	background-color: #EEE;
+	padding: 2px 4px 0px 10px;
+}
+
+#history_bottom .toolbar_button{
+	width: 16px;
+	height: 16px;
+	background-position: center;
+}
+
+#history_bottom .toolbar_button, #history_bottom span, #history_bottom input{
+	vertical-align: middle;
+}
+
+#btn_history_delete{
+	float: right;
+}
+
+#txt_history_delay {
+	width: 28px;
+	font-size: 8pt;
 }
 
 

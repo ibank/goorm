@@ -12,7 +12,7 @@ org.goorm.core.admin.user_manager.project_all.prototype = {
 	load : function(){
 		var self = this;
 		
-		$.get("/admin/project/list", function(project_list){
+		$.get("/user/project/list", function(project_list){
 			if(project_list){
 				for(var i=0; i<project_list.length; i++){
 					var project = project_list[i];
@@ -42,7 +42,7 @@ org.goorm.core.admin.user_manager.project_all.prototype = {
 		var self = this;
 		$(".user_management_projectlist_contents").find(".user_management_project_detail [mode='view']").remove();
 		
-		$.get('/admin/project/get', project, function(project_data){
+		$.get('/user/project/get', project, function(project_data){
 			if(project_data){
 				var detail_html = self.set_detail_html('view');
 				$(".user_management_projectlist_contents").find(".user_management_project_detail").append(detail_html);

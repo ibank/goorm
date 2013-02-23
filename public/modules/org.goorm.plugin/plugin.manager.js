@@ -36,7 +36,7 @@ org.goorm.plugin.manager.prototype = {
 			async: false,
 			success: function(data) {
 				self.list = eval(data);
-				
+								
 				//statusbar.progressbar.set('value', 100);
 				/*
 				if(self.interval) {

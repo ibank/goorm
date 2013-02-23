@@ -98,6 +98,9 @@
     "title_open_file": {
 	    "value": "Open File"
     },
+    "title_select_file":{
+        "value" : "Select File"
+    },
     "title_open_url": {
 	    "value": "Open URL"
     },
@@ -136,5 +139,14 @@
     },
     "title_delete": {
 	    "value": "Delete"
+    },
+    "title_project_management" : {
+        "value" : "Project Management"
+    },
+    "title_account_management" : {
+        "value" : "Account Management"
+    },
+    "title_project_share" : {
+        "value" : "Share This Project"
     }
 }

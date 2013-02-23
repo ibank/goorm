@@ -175,6 +175,8 @@ org.goorm.core.search.prototype = {
 
 	},
 	set_search_treeview : function(data) {
+		var self = this;
+
 		core.module.layout.inner_bottom_tabview.selectTab(2);
 		var window_manager = core.module.layout.workspace.window_manager;
 
