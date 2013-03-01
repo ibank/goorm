@@ -64,6 +64,20 @@
             }
         }
     },
+     "dialog_file_cloud_upload": {
+        "value": "파일 업로드",
+        "children": {
+            "dialog_file_cloud_upload_guide": {
+                "value": "업로드할 파일을 선택해주세요."
+            },
+            "dialog_file_cloud_upload_file": {
+                "value": "선택된 파일 : "
+            },
+            "dialog_file_cloud_upload_cloud_uploadtype": {
+                "value": "파일 형식"
+            }
+        }
+    },
     "dialog_file_export": {
         "value": "파일 내보내기",
         "children": {
@@ -292,7 +306,10 @@
                 "value": "프로젝트 정보"
             },
             "dialog_new_project_author": {
-                "value": "프로젝트 생성자"
+                "value": "생성자 아이디"
+            },
+            "dialog_new_project_author_name": {
+                "value": "생성자 이름"
             },
             "dialog_new_project_name": {
                 "value": "프로젝트 이름"

@@ -57,7 +57,7 @@ org.goorm.core.layout.prototype = {
 			units:
 			[
 				{ position: 'top', height: 62, maxHeight:150, body: container+'_top', scroll: null, zIndex: 2, gutter: '0px 0px 0px 0px' },
-				{ position: 'left', width: left_width, body: container+'_left', animate: false, scroll: false, zIndex: 1, resize: true, gutter: '0px 0px 0px 0px', collapse: true, minWidth: 200 },
+				{ position: 'left', width: left_width, body: container+'_left', animate: false, scroll: false, zIndex: 1, resize: true, gutter: '0px 0px 0px 0px', collapse: true, minWidth: 200, maxWidth: 500 },
 				{ position: 'center', body: container+'_center_inner_layout', scroll: false },
 				{ position: 'bottom', height:30, body: container+'_bottom', scroll: false, gutter: '0px 0px 0px 0px' }
 			]
@@ -73,8 +73,8 @@ org.goorm.core.layout.prototype = {
 				parent: self.layout,
 				units:
 				[
-					{ position: 'right', width: right_width, resize: true, scroll: false, body: container+'_inner_layout_right', animate: false, gutter: '0px 0px 0px 0px', collapse: true },
-					{ position: 'bottom', height: bottom_height, body: container+'_inner_layout_bottom', animate: false, scroll: false, resize: true, gutter: '0px 0px 0px 0px', collapse: true },
+					{ position: 'right', width: right_width, resize: true, scroll: false, body: container+'_inner_layout_right', animate: false, gutter: '0px 0px 0px 0px', collapse: true, maxWidth: 500 },
+					{ position: 'bottom', height: bottom_height, body: container+'_inner_layout_bottom', animate: false, scroll: false, resize: true, gutter: '0px 0px 0px 0px', collapse: true, maxHeight: 550 },
 					{ position: 'center', body: container+'_inner_layout_center', scroll: false }
 				]
 			});
@@ -248,7 +248,7 @@ org.goorm.core.layout.prototype = {
 	attach_mainmenu: function(container) {
 		this.mainmenu = new YAHOO.widget.MenuBar(container, { 
 			autosubmenudisplay: true,
-			hidedelay: 750,
+			hidedelay: 500,
 			lazyload: true,
 			effect: {
 				effect: YAHOO.widget.ContainerEffect.FADE, 
@@ -258,6 +258,9 @@ org.goorm.core.layout.prototype = {
 
 		this.mainmenu.render();
 	
+		// prevent click event
+		//
+		$('.yuimenubaritemlabel').click(function(){ return false; });
 	},
 	
 	attach_project_explorer: function(target) {
@@ -431,7 +434,7 @@ org.goorm.core.layout.prototype = {
 		
 		this.terminal = new org.goorm.core.terminal();
 		
-		$(core).bind("layout_loaded", function () {
+		$(core).bind("goorm_login_complete", function () {
 			self.terminal.init($("#terminal"), "default_terminal", false);
 		});
 	},

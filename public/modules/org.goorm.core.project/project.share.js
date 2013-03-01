@@ -23,7 +23,7 @@ org.goorm.core.project.share.prototype = {
 			localization_key:"title_project_share",
 			title:"Share This Project", 
 			path:"configs/dialogs/org.goorm.core.project/project.share.html",
-			width:400,
+			width:450,
 			height:400,
 			modal:true,
 			buttons:this.buttons,
@@ -200,7 +200,10 @@ org.goorm.core.project.share.prototype = {
 			fields: ['id', 'type', 'name', 'email']
 		}
 
-		this.user_auto_complete = new YAHOO.widget.AutoComplete("user_search_input", "user_search_result_container", this.user_data_source);
+		this.user_auto_complete = new YAHOO.widget.AutoComplete("user_search_input", "user_search_result_container", this.user_data_source, {
+			'animSpeed' : 0,
+
+		});
 		this.user_auto_complete.generateRequest = function(sQuery){
 			var project_path = self.project_path;
 			return '?project_path=' + project_path + '&query=' + sQuery;
@@ -216,6 +219,28 @@ org.goorm.core.project.share.prototype = {
 				'email' : data[3]
 			}
 		});
+
+		this.user_auto_complete.itemMouseOverEvent.subscribe(function(sType, aArgs){
+			var data = aArgs[2];
+
+			self.selected_user = {
+				'id' : data[0],
+				'type' : data[1],
+				'name' : data[2],
+				'email' : data[3]
+			}
+		});
+
+		this.user_auto_complete.formatResult = function(oResultData , sQuery , sResultMatch){
+			var user = {
+				'id' : oResultData[0],
+				'type' : oResultData[1],
+				'name' : oResultData[2],
+				'email' : oResultData[3]
+			}
+
+			return '<div class="auto_complete_user_list">['+user.name+'] '+user.id+' <'+user.email+'> </div>';
+		}
 	},
 
 	set_tool_event : function(){

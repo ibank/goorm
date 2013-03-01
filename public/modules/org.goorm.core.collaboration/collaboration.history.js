@@ -72,7 +72,8 @@ org.goorm.core.collaboration.history.prototype = {
  		$(window).unload(function() {
  			self.leave();
  		});
- 		$("#history").html("<div id='history_player_control'><select id='history_selectbox'><option value='200' selected localization_key='history_speed_veryfast'>Very Fast</option><option value='600' localization_key='history_speed_fast'>Fast</option><option value='1000' selected localization_key='history_speed_normal'>Normal</option><option value='1400' localization_key='history_speed_slow'>Slow</option><option value='1800' localization_key='history_speed_veryslow'>Very Slow</select><button id='btn_history_play'><img src='images/icons/context/play.png'></button><button id='btn_history_pause'><img src='images/icons/context/pause.png'></button><button id='btn_history_stop'><img src='images/icons/context/stop.png'></button></div><div class='history_item history_header history_selected' localization_key='now'>Now</div><div id='history_container'></div><div id='history_bottom' class='main_toolbar'><span localization_key='history_delay'>Delay(sec) </span><input type='text' id='txt_history_delay'/> <a tooltip='history_save' title='save'><div id='btn_history_save' class='toolbar_button save' style=\"background:url('configs/toolbars/org.goorm.core.file/image/save.png') no-repeat;background-position: center;\"></div></a><a tooltip='history_delete' title='delete'><div id='btn_history_delete' class='toolbar_button delete' style=\"background:url('configs/toolbars/org.goorm.core.edit/image/delete.png') no-repeat;background-position: center;\"></div></a></div>");
+ 		//$("#history").html("<div id='history_player_control'><select id='history_selectbox'><option value='200' selected localization_key='history_speed_veryfast'>Very Fast</option><option value='600' localization_key='history_speed_fast'>Fast</option><option value='1000' selected localization_key='history_speed_normal'>Normal</option><option value='1400' localization_key='history_speed_slow'>Slow</option><option value='1800' localization_key='history_speed_veryslow'>Very Slow</select><button id='btn_history_play'><img src='images/icons/context/play.png'></button><button id='btn_history_pause'><img src='images/icons/context/pause.png'></button><button id='btn_history_stop'><img src='images/icons/context/stop.png'></button></div><div class='history_item history_header history_selected' localization_key='now'>Now</div><div id='history_container'></div><div id='history_bottom' class='main_toolbar'><span localization_key='history_delay'>Delay(sec) </span><input type='text' id='txt_history_delay'/> <a tooltip='history_save' title='save'><div id='btn_history_save' class='toolbar_button save' style=\"background:url('configs/toolbars/org.goorm.core.file/image/save.png') no-repeat;background-position: center;\"></div></a><a tooltip='history_delete' title='delete'><div id='btn_history_delete' class='toolbar_button delete' style=\"background:url('configs/toolbars/org.goorm.core.edit/image/delete.png') no-repeat;background-position: center;\"></div></a></div>");
+ 		$("#history").html("<div id='history_player_control'><select id='history_selectbox'><option value='200' selected localization_key='history_speed_veryfast'>Very Fast</option><option value='600' localization_key='history_speed_fast'>Fast</option><option value='1000' selected localization_key='history_speed_normal'>Normal</option><option value='1400' localization_key='history_speed_slow'>Slow</option><option value='1800' localization_key='history_speed_veryslow'>Very Slow</select><button id='btn_history_play'><img src='images/icons/context/play.png'></button><button id='btn_history_pause'><img src='images/icons/context/pause.png'></button><button id='btn_history_stop'><img src='images/icons/context/stop.png'></button></div><div class='history_item history_header history_selected' localization_key='now'>Now</div><div id='history_container'></div><div id='history_bottom' class='main_toolbar'><a tooltip='history_delete' title='delete'><div id='btn_history_delete' class='toolbar_button delete' style=\"background:url('configs/toolbars/org.goorm.core.edit/image/delete.png') no-repeat;background-position: center;\"></div></a></div>");
  		
  		/**
  		* Playback Button Event Handlers
@@ -98,7 +99,6 @@ org.goorm.core.collaboration.history.prototype = {
 							}
 							//play start
 	 						self.timer = setTimeout(function(){
-	 							//console.log(self.circular_queue[self.queue_front + ((self.circular_queue.length - 1 - self.selected_row_idx + self.QUEUE_MAX) % self.QUEUE_MAX)]);
 		 						$(self.history_datatable.getTrEl(self.selected_row_idx)).click();
 								var snapshot = self.circular_queue[self.queue_front + ((self.circular_queue.length - 1 - self.selected_row_idx + self.QUEUE_MAX) % self.QUEUE_MAX)];
 								var j = 0;
@@ -108,9 +108,12 @@ org.goorm.core.collaboration.history.prototype = {
 									if (j == snapshot.buffer.length) {
 										//play next snapshot
 										clearTimeout(self.timer);
-			 							self.timer = setTimeout(playback, Number($("#history_selectbox").attr("value")));
+										if(self.selected_row_idx==0)
+				 							self.timer = setTimeout(playback, Number($("#history_selectbox").attr("value")) + self.selected_snapshot.delay * 1000);
+				 						else
+				 							self.timer = setTimeout(playback, Number($("#history_selectbox").attr("value")));
 									}
-								}, Number($("#history_selectbox").attr("value"))*0.2);
+								}, Number($("#history_selectbox").attr("value")) / snapshot.buffer.length * 0.5);
 	 						}, delay);
  						}
 					}
@@ -156,12 +159,11 @@ org.goorm.core.collaboration.history.prototype = {
 			}));
 		});
 		
-		
 		var history_column_defs = [
 		    { key: "committer", label: self.string_userid, sortable: false},
 		    { key: "time", label: self.string_time, sortable: false},
 		    { key: "count", label: self.string_events, sortable: false},
-		    { key: "delay", label: self.string_delay, sortable: false},
+		    { key: "delay", label: self.string_delay, sortable: false, editor: new YAHOO.widget.TextboxCellEditor({ validator: YAHOO.widget.DataTable.validateNumber, disableBtns: true } )}
 		];
 		var history_data_source = new YAHOO.util.DataSource();
 		history_data_source.responseSchema = {
@@ -254,16 +256,31 @@ org.goorm.core.collaboration.history.prototype = {
 		self.history_datatable.subscribe("rowClickEvent", function(oArgs){
 			var target = oArgs.target,
 				record = this.getRecord(target);
-			//console.log("record: ", record.getData());
 			var snapshot = record.getData();
 			history_item_click_listener(snapshot.oldest, snapshot.latest);
 			self.selected_row_idx = oArgs.target.rowIndex - 2;
-			//console.log(self.selected_row_idx);
 			self.selected_snapshot = snapshot;
 			$("#txt_history_delay").attr("value", snapshot.delay);
 			$("#txt_history_delay").attr("disabled", null);
 			self.history_datatable.onEventSelectRow(oArgs);
 		});
+		
+		self.history_datatable.subscribe("cellClickEvent",self.history_datatable.onEventEditCell);
+		self.history_datatable.subscribe("cellMouseoverEvent",self.history_datatable.onEventHighlightCell);
+		self.history_datatable.subscribe("cellMouseoutEvent",self.history_datatable.onEventUnhighlightCell);
+		
+	        // Hook into custom event to customize save-flow of "radio" editor 
+        self.history_datatable.subscribe("editorSaveEvent", function(oArgs) { 
+			if (self.selected_row_idx == -1) return;
+			self.socket.emit('message', JSON.stringify({
+				channel: 'history',
+				filepath: self.filename,
+				action: 'set_delay',
+				index: self.selected_snapshot.index,
+				delay: Number (oArgs.newData)
+			}));
+        }); 
+		
 		self._set_now_status();
 	},
 	
@@ -296,7 +313,10 @@ org.goorm.core.collaboration.history.prototype = {
 	},
 	
 	deactivated: function () {
+		if(this.filename == "") return;
 		var self = this;
+ 		self.selected_row_idx = -1;
+ 		$("#history .history_header").click(); // "now" button click
 		self.history_datatable.getRecordSet().reset();
 		self.history_datatable.render();
 		$("#btn_history_play").unbind('click');
@@ -487,7 +507,6 @@ org.goorm.core.collaboration.history.prototype = {
 	_set_now_status: function () {
 		self.selected_row_idx = -1;
 		self.selected_snapshot = null;
-		//console.log(-1);
 		$("#txt_history_delay").attr("value", "");
 		$("#txt_history_delay").attr("disabled", "true");
 	},
@@ -500,7 +519,7 @@ org.goorm.core.collaboration.history.prototype = {
 	},
 	leave: function () {
 		if(core.user.id && this.socket){
-			this.socket.emit("leave", '{"channel": "filepath", "filename":"'+ this.filename +'", "user":"' + core.user.id + '", "sessionid":"' + this.socket.socket.sessionid + '", "nick":"'+core.user.nick+'", "workspace": "'+ core.status.current_project_name +'"}');
+			this.socket.emit("leave", '{"channel": "filepath", "filename":"'+ this.filename +'", "user":"' + core.user.id + '", "sessionid":"' + this.socket.socket.sessionid + '", "nick":"'+core.user.nick+'", "workspace": "'+ core.status.current_project_path +'"}');
 		}
 		clearTimeout(this.timer);	//stop playback
 	}

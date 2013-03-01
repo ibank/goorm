@@ -71,13 +71,27 @@ org.goorm.core.collaboration.invite.prototype = {
 				self.socket.emit("invite", JSON.stringify(senddata))
 			}
 
-			self.init_dialog(project_data, is_ok, is_no);
+			var message = {
+				'data' : {},
+				'fn' : function(){
+					self.init_dialog(project_data, is_ok, is_no);
+				}
+			}
+
+			core.module.auth.message.push(message);
 		})
 
 		this.socket.on('invitation_message_answer', function(data){
 			var project_data = JSON.parse(data);
 
-			self.init_answer_dialog(project_data);
+			var message = {
+				'data' : {},
+				'fn' : function(){
+					self.init_answer_dialog(project_data);
+				}
+			}
+
+			core.module.auth.message.push(message);
 		});
 	},
 
@@ -165,10 +179,10 @@ org.goorm.core.collaboration.invite.prototype = {
 
 				if(project_data.state != 'sent'){
 					if(project_data.state == 'sure'){
-						$(container_id).find('.project_invite_confirmation').append('<div class="answer_content"><span class="answer_head">[Accept] </span><span class="answer_content">You has accepted the proposition.</span></div>')
+						$(container_id).find('.project_invite_confirmation').append('<div class="answer_content"><span class="answer_head">[Accept] </span><span class="answer_content">You has accepted the invitation.</span></div>')
 					}
 					else if(project_data.state == 'refused'){
-						$(container_id).find('.project_invite_confirmation').append('<div class="answer_content"><span class="answer_head">[Refused] </span><span class="answer_content">You has refused the proposition.</span></div>')
+						$(container_id).find('.project_invite_confirmation').append('<div class="answer_content"><span class="answer_head">[Refused] </span><span class="answer_content">You has refused the invitation.</span></div>')
 					}
 				}
 
@@ -216,10 +230,10 @@ org.goorm.core.collaboration.invite.prototype = {
 
 				if(project_data.state != 'sent'){
 					if(project_data.state == 'sure'){
-						$(container_id).find('.project_invitation_answer').append('<div class="answer_content"><span class="answer_head">[Accept] </span><span class="answer_content">'+project_data.answerer_id+' has accepted the proposition.</span></div>')
+						$(container_id).find('.project_invitation_answer').append('<div class="answer_content"><span class="answer_head">[Accept] </span><span class="answer_content">'+project_data.answerer_id+' has accepted the invitation.</span></div>')
 					}
 					else if(project_data.state == 'refused'){
-						$(container_id).find('.project_invitation_answer').append('<div class="answer_content"><span class="answer_head">[Refused] </span><span class="answer_content">'+project_data.answerer_id+' has refused the proposition.</span></div>')
+						$(container_id).find('.project_invitation_answer').append('<div class="answer_content"><span class="answer_head">[Refused] </span><span class="answer_content">'+project_data.answerer_id+' has refused the invitation.</span></div>')
 					}
 				}
 

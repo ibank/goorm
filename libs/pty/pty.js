@@ -8,7 +8,6 @@ var net = require('net');
 
 var os = require('os');
 var pty = null;
-
 if(/darwin/.test(os.platform())) {
 	pty = require('./pty_darwin.node');
 }
@@ -44,7 +43,9 @@ function Terminal(file, args, opt) {
     , name
     , cols
     , rows
-    , term;
+    , term
+    , uid
+    , gid;
 
   // backward compatibility
   if (typeof args === 'string') {
@@ -67,12 +68,19 @@ function Terminal(file, args, opt) {
   env = clone(opt.env || process.env);
   cwd = opt.cwd || process.cwd();
   name = opt.name || env.TERM || 'xterm';
+  uid = parseInt(opt.uid) || null;
+  gid = parseInt(opt.gid) || null;
 
   env.TERM = name;
   env = environ(env);
 
   // fork
-  term = pty.fork(file, args, env, cwd, cols, rows);
+  if(uid != null && gid != null) {
+	  term = pty.fork(file, args, env, cwd, cols, rows, uid, gid);
+  }
+  else {
+	  term = pty.fork(file, args, env, cwd, cols, rows); 
+  }
   this.socket = new net.Socket(term.fd);
   this.socket.setEncoding('utf8');
   this.socket.resume();

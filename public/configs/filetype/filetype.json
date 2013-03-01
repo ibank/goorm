@@ -23,7 +23,7 @@
 	{
 		"file_extension": "c",
 		"editor": "Editor",
-		"description": "undefined",
+		"description": "C",
 		"type": "Code",
 		"mode": "text/x-csrc"
 	},
@@ -37,35 +37,35 @@
 	{
 		"file_extension": "java",
 		"editor": "Editor",
-		"description": "undefined",
+		"description": "java file",
 		"type": "Code",
 		"mode": "text/x-java"
 	},
 	{
 		"file_extension": "go",
 		"editor": "Editor",
-		"description": "undefined",
+		"description": "go file",
 		"type": "Code",
 		"mode": "text/x-go"
 	},
 	{
 		"file_extension": "dart",
 		"editor": "Editor",
-		"description": "undefined",
+		"description": "dart file",
 		"type": "Code",
 		"mode": "text/x-dart"
 	},
 	{
 		"file_extension": "asp",
 		"editor": "Editor",
-		"description": "undefined",
+		"description": "Active Server Page file",
 		"type": "Code",
 		"mode": "text/html"
 	},
 	{
 		"file_extension": "jsp",
 		"editor": "Editor",
-		"description": "undefined",
+		"description": "Java Server Page file",
 		"type": "Code",
 		"mode": "text/html"
 	},
@@ -93,7 +93,7 @@
 	{
 		"file_extension": "h",
 		"editor": "Editor",
-		"description": "undefined",
+		"description": "Header file",
 		"type": "Code",
 		"mode": "text/x-c++src"
 	},
@@ -119,13 +119,6 @@
 		"mode": "application/xml"
 	},
 	{
-		"file_extension": "dart",
-		"editor": "Editor",
-		"description": "Extensible Markup Language",
-		"type": "xml",
-		"mode": "application/xml"
-	},
-	{
 		"file_extension": "xml",
 		"editor": "Editor",
 		"description": "Extensible Markup Language",
@@ -135,7 +128,7 @@
 	{
 		"file_extension": "python",
 		"editor": "Editor",
-		"description": "test",
+		"description": "python",
 		"type": "Code",
 		"mode": "text/x-python"
 	}

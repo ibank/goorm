@@ -56,12 +56,11 @@ module.exports = {
 	
 	leave: function (io, socket, msg) {
 		socket.leave(msg.workspace);
-		
 		var index = 0;
 		
 		if ((index = this.workspaces.inArray(msg.workspace)) > -1) {
 			var user_index = 0;
-			
+
 			if ((user_index = this.users[index].list.inArray('{"user":"'+msg.user+'", "nick":"'+msg.nick+'", "type":"'+msg.type+'"}')) > -1) {
 				this.users[index].list.remove(user_index);
 			

@@ -86,7 +86,7 @@ org.goorm.plugin.cpp.prototype = {
 			}, 500);
 		});
 	},
-	
+
 	run: function(path) {
 		var self=this;
 		var property = core.property.plugins['org.goorm.plugin.cpp'];
@@ -96,17 +96,17 @@ org.goorm.plugin.cpp.prototype = {
 
 		var cmd1 = "./"+classpath+classname;
 		core.module.layout.terminal.send_command(cmd1+'\r', null, function(result){
-			var reg = /(.*)\w/g;
+
+			var reg = /(.*)\w(.*)/g;
 			var message = result.replace(cmd1, "").match(reg);
 			message.pop();
-			
-			if(/No such file or directory/g.test(message)) {
+			if(/No such file or directory/g.test(message)||/그런 파일이나 디렉터리가 없습니다/g.test(message)) {
 				// 실행 실패
-				alert.show("바이너리가 존재하지 않습니다.<br>프로젝트를 빌드 하시거나 경로설정을 확인하시기 바랍니다.");
+				alert.show(core.module.localization.msg['alert_plugin_run_error']);
 			}
 			else {
 				// 아무 메시지도 안떴으면 성공.
-				notice.show("성공적으로 실행되었습니다.");
+				notice.show(core.module.localization.msg['alert_plugin_run_success']);
 			}
 		});
 	},
@@ -275,13 +275,13 @@ org.goorm.plugin.cpp.prototype = {
 			if(line == '') return;
 			// 현재 라인 처리
 			var regex = /at ((.*)\/)?(.*):(\d+)/;
-			console.log(line);
+			
 			if(regex.test(line)) {
 				var match = line.match(regex);
 				var filepath = match[2];
 				var filename = match[3];
 				var line_number = match[4];
-
+				
 				var windows = core.module.layout.workspace.window_manager.window;
 								
 				for (var j=0; j<windows.length; j++) {
@@ -507,11 +507,11 @@ org.goorm.plugin.cpp.prototype = {
 				// message에는 빌드시 나오는 메시지가 들어있음.
 				if(message.length) {
 					// 메시지가 있다면 warning이나 실패상황
-					alert.show("빌드 실패!<br>터미널 메시지를 확인하세요.");
+					alert.show(core.module.localization.msg['alert_plugin_build_error']);
 				}
 				else {
 					// 아무 메시지도 안떴으면 성공.
-					notice.show("성공적으로 빌드가 완료되었습니다.!");
+					notice.show(core.module.localization.msg['alert_plugin_build_success']);
 				}
 				core.module.layout.project_explorer.refresh();
 			});

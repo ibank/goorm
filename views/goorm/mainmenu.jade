@@ -170,6 +170,10 @@
          em.helptext Alt + ?
       ul
        li.yuimenuitem
+        a.yuimenuitemlabel(href="#", action='do_share_cursor', localization_key='edit_share_cursor', style='background-image: url(configs/toolbars/org.goorm.core.edit/image/cursor.png);')
+         | Toggle Cursor Sharing
+      ul
+       li.yuimenuitem
         a.yuimenuitemlabel(href="#", action='preference', localization_key='edit_preference', style='background-image: url(configs/toolbars/org.goorm.core.edit/image/preference.png);')
          | Preference
          em.helptext Alt + P
@@ -245,9 +249,10 @@
         a.yuimenuitemlabel(href="#", action='export_project', localization_key='project_export', style='background-image: url(configs/toolbars/org.goorm.core.project/image/export.png);') Export Project
       ul
        li.yuimenuitem
-        a.yuimenuitemlabel(href="#", action='share_project', localization_key='project_share') Share This Project
-       li.yuimenuitem
         a.yuimenuitemlabel(href="#", action='delete_project', localization_key='project_delete', style='background-image: url(configs/toolbars/org.goorm.core.project/image/delete.png);') Delete Project
+      ul
+       li.yuimenuitem
+        a.yuimenuitemlabel(href="#", action='share_project', localization_key='project_share') Share This Project
       ul
        li.yuimenuitem
         a.yuimenuitemlabel(href="#", action='show_properties', localization_key='project_properties') Properties
@@ -384,10 +389,6 @@
          | Full Workspace
          em.helptext Shift + Alt + W
        li.yuimenuitem
-        a.yuimenuitemlabel(href="#", action='slide_show_mode', style='background-image: url(configs/toolbars/org.goorm.core.window/image/slideshow.png)', localization_key='window_slide_show_mode')
-         | Slide Show Mode
-         em.helptext Shift + F5
-       li.yuimenuitem
         a.yuimenuitemlabel(href="#", action='hide_all_windows', localization_key='window_hide_all_window')
          | Hide All Window
          em.helptext Shift + Alt + H
@@ -402,6 +403,11 @@
         a.yuimenuitemlabel(href="#", action='tile_vertically', style='background-image: url(configs/toolbars/org.goorm.core.window/image/tile_vertical.png);', localization_key='window_tile_vertically') Tile Vertically
        li.yuimenuitem
         a.yuimenuitemlabel(href="#", action='tile_horizontally', style='background-image: url(configs/toolbars/org.goorm.core.window/image/tile_horizontal.png);', localization_key='window_tile_horizontally') Tile Horizontally
+      ul
+       li.yuimenuitem
+        a.yuimenuitemlabel(href="#", action='slide_show_mode', style='background-image: url(configs/toolbars/org.goorm.core.window/image/slideshow.png)', localization_key='window_slide_show_mode')
+         | Slide Show Mode
+         em.helptext Shift + F5
    li.yuimenubaritem
     a.yuimenubaritemlabel(href='#menu_plugins', localization_key='plugins') Plugins 
     #menu_plugins.yuimenu

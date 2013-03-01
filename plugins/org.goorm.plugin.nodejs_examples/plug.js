@@ -59,13 +59,13 @@ org.goorm.plugin.nodejs_examples.prototype = {
 	add_mainmenu: function () {
 		var self = this;
 		
-		$("ul[id='plugin_new_project']").append("<li class=\"yuimenuitem\"><a class=\"yuimenuitemlabel\" href=\"#\" action=\"new_file_nodejs\" localizationKey='file_new_nodejs_project'>node.js examples</a></li>");
+		$("ul[id='plugin_new_project']").append("<li class=\"yuimenuitem\"><a class=\"yuimenuitemlabel\" href=\"#\" action=\"new_file_nodejsexamp\" localizationKey='file_new_nodejs_project'>node.js examples</a></li>");
 		//this.mainmenu.render();
 	},
 	
 	add_menu_action: function () {
-		$("a[action=new_file_nodejs]").unbind("click");
-		$("a[action=new_file_nodejs]").click(function () {
+		$("a[action=new_file_nodejsexamp]").unbind("click");
+		$("a[action=new_file_nodejsexamp]").click(function () {
 			core.dialog.new_project.show();
 			$(".project_wizard_first_button[project_type=nodejsexamp]").trigger("click");
 			$("#project_new").find(".project_types").scrollTop($(".project_wizard_first_button[project_type=nodejsexamp]").position().top - 100);

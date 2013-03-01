@@ -11,6 +11,18 @@
 	"cancel": {
 		"value": "Cancel"	
 	},
+	"find_info": {
+		"value": "Find id/pw"	
+	},
+	"forgot_id": {
+		"value": "Find id"	
+	},
+	"forgot_pw": {
+		"value": "Find password"	
+	},
+	"send": {
+		"value": "Send"	
+	},
 	"close": {
 		"value": "Close"	
 	},
@@ -162,10 +174,10 @@
 		"value" : "Local Mode"
 	},
 	"restore_default" : {
-		"value" : "Restore Default"
+		"value" : "Restore to Default"
 	},
 	"language_pack_download" : {
-		"value" : "Download Another Language Pack"
+		"value" : "Download others Language Pack"
 	},
 	"preview" : {
 		"value" : "Preview"
@@ -180,7 +192,7 @@
 		"value" : "Official Site"
 	},
 	"features" : {
-		"value" : "Features"
+		"value" : "Features Introduce"
 	},
 	"getting_started" : {
 		"value" : "Getting Started"

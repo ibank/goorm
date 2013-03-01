@@ -3,6 +3,11 @@ org.goorm.core.collaboration.message = function () {
 	this.container = "#communication .communication_toolbar";
 
 	this.invite = null;
+
+	// message queue
+	//
+	this.updating_process_running = false;	
+	this.message_queue = [];
 }
 
 org.goorm.core.collaboration.message.prototype = {
@@ -28,6 +33,7 @@ org.goorm.core.collaboration.message.prototype = {
 			});
 			
 			self.load_message();
+			self.trigger();
 		})
 
 	},
@@ -88,5 +94,36 @@ org.goorm.core.collaboration.message.prototype = {
 		$.get('/message/get_list/unchecked', function(data){
 			callback(data);
 		})
+	},
+
+	push : function(option){
+		var self = this;
+
+		var message = {
+			'data' : option['data'], // object
+			'fn' : option['fn'] // function
+		}
+
+		this.message_queue.push(message)
+	},
+
+	trigger : function(){
+		var self = this;
+
+		var check_for_updates = function() {
+			while(self.message_queue.length > 0 && self.updating_process_running == false) {
+				var current_message = self.message_queue.shift(); 
+				self.updating_process_running = true;
+
+				var data = current_message['data']
+				var fn = current_message['fn'];
+
+				if(fn){
+					fn.call(this, data);
+				}
+			}
+		};
+ 		
+ 		this.timer = window.setInterval(check_for_updates, 500);		
 	}
 }

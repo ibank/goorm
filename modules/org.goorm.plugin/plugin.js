@@ -55,7 +55,6 @@ module.exports = {
 			console.log("debug server connected");
 			
 			evt.on("response", function (data) {
-				console.log(data);
 				socket.emit("debug_response", data);
 			});
 			

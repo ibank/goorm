@@ -82,7 +82,8 @@ org.goorm.core.project.list.prototype = {
 				$(self.path).val(data[idx].name);
 				$(self.name).val(data[idx].contents.name);
 				$(self.type).val(data[idx].contents.type);
-
+				
+				$(self.information).empty();
 				$(self.information).append("<b>Project Type : </b>");
 				$(self.information).append(data[idx].contents.type+"<br/>");
 				$(self.information).append("<b>Project Detail : </b>");
@@ -92,7 +93,7 @@ org.goorm.core.project.list.prototype = {
 				$(self.information).append("<b>Project Name : </b>");
 				$(self.information).append(data[idx].contents.name+"<br/>");
 				$(self.information).append("<b>Project Description : </b>");
-				$(self.information).append(data[idx].contents.about+"<br/>");
+				$(self.information).append(data[idx].contents.description+"<br/>");
 				$(self.information).append("<b>Project Date : </b>");
 				$(self.information).append(data[idx].contents.date+"<br/>");
 			});

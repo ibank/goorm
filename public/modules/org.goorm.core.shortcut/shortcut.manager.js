@@ -57,6 +57,13 @@ org.goorm.core.shortcut.manager.prototype = {
 				return false;				
 			}
 		});
+		
+		
+		$(document).bind('keydown', 'Ctrl+W', function (e) {
+			e.stopPropagation();
+			e.preventDefault();
+			return false;
+		});
 
 		//////////////////////////////////////////////////
 		//Main Menu Selection

@@ -38,13 +38,18 @@ org.goorm.core.project._new.prototype = {
 				// alert.show("You must input author name");
 				return false;
 			}
+			else if ($("#input_project_author_name").attr("value")=="") {
+				alert.show(core.module.localization.msg["alert_project_author_name"]);
+				// alert.show("You must input author name");
+				return false;
+			}
 			else if ($("#input_project_name").attr("value")=="") {
 				alert.show(core.module.localization.msg["alert_project_name"]);
 				// alert.show("You must input project name");
 				return false;
 			}
 			else if ($("#input_project_desc").attr("value")=="") {
-				alert.show(core.module.localization.msg["alert_project_about"]);
+				alert.show(core.module.localization.msg["alert_project_desc"]);
 				// alert.show("You must input a description of this project");
 				return false;
 			}
@@ -55,7 +60,7 @@ org.goorm.core.project._new.prototype = {
 					return false;
 				}
 			}
-			else if (!/^[\w-_ 가-힣]*$/.test($("#input_project_author").attr("value"))) {
+			else if (!/^[\w가-힣 0-9a-zA-Z._-]*$/.test($("#input_project_author_name").attr("value"))) {
 				alert.show(core.module.localization.msg["alert_allow_character"]);
 				// alert.show("error");
 				return false;
@@ -77,6 +82,7 @@ org.goorm.core.project._new.prototype = {
 				var input_project_type = $("#input_project_type").attr("value");
 				var input_project_detailed_type = $("#input_project_detailed_type").attr("value");
 				var input_project_author = $("#input_project_author").attr("value");
+				var input_project_author_name = $("#input_project_author_name").attr("value");
 				var input_project_name = $("#input_project_name").attr("value");
 				
 				core.status.current_project_path = input_project_author+"_"+input_project_name;
@@ -95,19 +101,30 @@ org.goorm.core.project._new.prototype = {
 				var plugin_name = $("#input_project_plugin").attr("value");
 				var plugin = {};
 				core.preference.plugins[plugin_name] && (plugin[plugin_name] = core.preference.plugins[plugin_name])
-				 
+				
+				var project_desc = $("#input_project_desc").attr("value");
+				project_desc = project_desc.replace(/&(lt|gt);/g, function (strMatch, p1){
+					return (p1 == "lt")? "<" : ">";
+				});
+				project_desc = project_desc.replace(/<\/?[^>]+(>|$)/g, "");
+
+				
 				var senddata = {
 					project_type: $("#input_project_type").attr("value"),
 					project_detailed_type: $("#input_project_detailed_type").attr("value"),
 					project_author: $("#input_project_author").attr("value"),
+					project_author_name: $("#input_project_author_name").attr("value"),
 					project_name: $("#input_project_name").attr("value"),
-					project_desc: $("#input_project_desc").attr("value"),
+					project_desc: project_desc,
 					use_collaboration: use_collaboration,
 					plugins: plugin
 				};
 
 				$.get("project/new", senddata, function (data) {
 					if(data.err_code==0) {
+						
+						core.module.layout.communication.leave();
+
 						/*
 						 * for plugin, moyara 12.8.6
 						 */
@@ -272,9 +289,12 @@ org.goorm.core.project._new.prototype = {
 		$("#input_project_type").attr("value","");
 		$("#input_project_detailed_type").val("");
 		$("#input_project_plugin").val("");
-		$("#input_project_author").val(core.user.name.replace(/ /g, "_"));
+		$("#input_project_author").val(core.user.id.replace(/ /g, "_"));
 		$("#input_project_author").attr('readonly', 'readonly');
 		$("#input_project_author").addClass('readonly')
+		$("#input_project_author_name").attr('readonly', 'readonly');
+		$("#input_project_author_name").addClass('readonly')
+		$("#input_project_author_name").val(core.user.name.replace(/ /g, "_"));
 		$("#input_project_name").val("");
 		$("#input_project_desc").val("");
 		$("#project_new_import_upload_output").empty();

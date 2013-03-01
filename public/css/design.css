@@ -121,7 +121,7 @@ version: 3.0.0
 	margin-top: -1px;
 }
 
-.design_toolbar_container .toolbar_buttonPressed {
+.design_toolbar_container .toolbar_button_pressed {
 	background-color: #ccc;
 	border: 1px solid #fff;
 	border-top: 1px solid #999;
@@ -162,7 +162,7 @@ version: 3.0.0
 	margin-left: -3px;
 }	
 
-.design_status_container .toolbar_buttonPressed {
+.design_status_container .toolbar_button_pressed {
 	background-color: #ccc;
 	border: 1px solid #fff;
 	border-top: 1px solid #999;

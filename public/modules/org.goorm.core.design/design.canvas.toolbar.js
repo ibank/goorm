@@ -27,12 +27,12 @@ org.goorm.core.design.canvas.toolbar.prototype = {
 		$(this.target).parent().append("<div class='design.preview_container'></div>");
 		//$(this.target).append("<div class='design_status_container'></div>");
 		
-		$(this.target).parent().find(".design_toolbar_container").append("<img src='images/org.goorm.core.design/grid.png' action='gridOnOff' class='toolbar_button toolbar_buttonPressed' border='0' />"); 
+		$(this.target).parent().find(".design_toolbar_container").append("<img src='images/org.goorm.core.design/grid.png' action='gridOnOff' class='toolbar_button toolbar_button_pressed' border='0' />"); 
 		$(this.target).parent().find(".design_toolbar_container").append("<img src='images/org.goorm.core.design/grid-snap.png' action='snap_to_grid' class='toolbar_button' border='0' />"); 
 		$(this.target).parent().find(".design_toolbar_container").append("<img src='images/org.goorm.core.design/resize.png' action='resize' class='toolbar_button' border='0' />"); 
 		$(this.target).parent().find(".design_toolbar_container").append("<img src='images/org.goorm.core.design/printer.png' class='toolbar_button' border='0' />"); 
-		$(this.target).parent().find(".design_toolbar_container").append("<img src='images/org.goorm.core.design/ruler_onoff.png' action='rulerOnOff' class='toolbar_button toolbar_buttonPressed' border='0' />"); 
-		$(this.target).parent().find(".design_toolbar_container").append("<img src='images/org.goorm.core.design/preview.png' action='previewOnOff' class='toolbar_button toolbar_buttonPressed' border='0' />"); 
+		$(this.target).parent().find(".design_toolbar_container").append("<img src='images/org.goorm.core.design/ruler_onoff.png' action='rulerOnOff' class='toolbar_button toolbar_button_pressed' border='0' />"); 
+		$(this.target).parent().find(".design_toolbar_container").append("<img src='images/org.goorm.core.design/preview.png' action='previewOnOff' class='toolbar_button toolbar_button_pressed' border='0' />"); 
 		$(this.target).parent().find(".design_toolbar_container").append("<img src='images/org.goorm.core.design/zoom-fit.png' action='zoomFit' class='toolbar_button' border='0' />"); 
 		$(this.target).parent().find(".design_toolbar_container").append("<img src='images/org.goorm.core.design/zoom-in.png' action='zoomIn' class='toolbar_button' border='0' />"); 
 		$(this.target).parent().find(".design_toolbar_container").append("<img src='images/org.goorm.core.design/zoom-out.png' action='zoomOut' class='toolbar_button' border='0' />"); 
@@ -61,12 +61,12 @@ org.goorm.core.design.canvas.toolbar.prototype = {
 //				
 //				//TO-DO: Change to event-based
 //				self.canvas.set_collaboration_off();
-//				$(self.target).find(".design_toolbar_container").find("img[action='collaborationOnOff']").removeClass("toolbar_buttonPressed");
+//				$(self.target).find(".design_toolbar_container").find("img[action='collaborationOnOff']").removeClass("toolbar_button_pressed");
 //			}
 //			else {
 //				self.is_collaboration_on = true;
 //				self.canvas.set_collaboration_on();
-//				$(self.target).find(".design_toolbar_container").find("img[action='collaborationOnOff']").addClass("toolbar_buttonPressed");
+//				$(self.target).find(".design_toolbar_container").find("img[action='collaborationOnOff']").addClass("toolbar_button_pressed");
 //			}
 //		});
 		
@@ -138,12 +138,12 @@ org.goorm.core.design.canvas.toolbar.prototype = {
 		var self = this;
 		if (self.is_preview_on) {
 			self.is_preview_on = false;
-			$(self.target).parent().find(".design_toolbar_container").find("img[action='previewOnOff']").removeClass("toolbar_buttonPressed");
+			$(self.target).parent().find(".design_toolbar_container").find("img[action='previewOnOff']").removeClass("toolbar_button_pressed");
 			$(self.target).parent().find(".design.preview_container").hide();
 		}
 		else {
 			self.is_preview_on = true;
-			$(self.target).parent().find(".design_toolbar_container").find("img[action='previewOnOff']").addClass("toolbar_buttonPressed");
+			$(self.target).parent().find(".design_toolbar_container").find("img[action='previewOnOff']").addClass("toolbar_button_pressed");
 			$(self.target).parent().find(".design.preview_container").show();
 		}
 	},
@@ -152,12 +152,12 @@ org.goorm.core.design.canvas.toolbar.prototype = {
 		var self = this;
 		if (self.is_ruler_on) {
 			self.is_ruler_on = false;
-			$(self.target).parent().find(".design_toolbar_container").find("img[action='rulerOnOff']").removeClass("toolbar_buttonPressed");
+			$(self.target).parent().find(".design_toolbar_container").find("img[action='rulerOnOff']").removeClass("toolbar_button_pressed");
 			self.canvas.parent.ruler.show(false);
 		}
 		else {
 			self.is_ruler_on = true;
-			$(self.target).parent().find(".design_toolbar_container").find("img[action='rulerOnOff']").addClass("toolbar_buttonPressed");
+			$(self.target).parent().find(".design_toolbar_container").find("img[action='rulerOnOff']").addClass("toolbar_button_pressed");
 			self.canvas.parent.ruler.show(true);
 		}
 		
@@ -168,11 +168,11 @@ org.goorm.core.design.canvas.toolbar.prototype = {
 		var self = this;
 		if (self.canvas.snap_to_grid) {
 			self.canvas.snap_to_grid = false;
-			$(self.target).parent().find(".design_toolbar_container").find("img[action='snap_to_grid']").removeClass("toolbar_buttonPressed");
+			$(self.target).parent().find(".design_toolbar_container").find("img[action='snap_to_grid']").removeClass("toolbar_button_pressed");
 		}
 		else {
 			self.canvas.snap_to_grid = true;
-			$(self.target).parent().find(".design_toolbar_container").find("img[action='snap_to_grid']").addClass("toolbar_buttonPressed");
+			$(self.target).parent().find(".design_toolbar_container").find("img[action='snap_to_grid']").addClass("toolbar_button_pressed");
 		}
 	},
 	
@@ -181,12 +181,12 @@ org.goorm.core.design.canvas.toolbar.prototype = {
 		if (self.is_grid_on) {
 			self.is_grid_on = false;
 			$(self.target).find(".grid").hide();
-			$(self.target).find(".design_toolbar_container").find("img[action='gridOnOff']").removeClass("toolbar_buttonPressed");
+			$(self.target).find(".design_toolbar_container").find("img[action='gridOnOff']").removeClass("toolbar_button_pressed");
 		}
 		else {
 			self.is_grid_on = true;
 			$(self.target).find(".grid").show();
-			$(self.target).find(".design_toolbar_container").find("img[action='gridOnOff']").addClass("toolbar_buttonPressed");
+			$(self.target).find(".design_toolbar_container").find("img[action='gridOnOff']").addClass("toolbar_button_pressed");
 		}
 	},
 	

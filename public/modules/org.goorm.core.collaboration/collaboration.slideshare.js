@@ -22,6 +22,8 @@ org.goorm.core.collaboration.slideshare = function () {
 	this.datum = null;
 	this.flashMovie = null;
 	this.drawing_state = 'undraw';
+	this.slide_show_mode = false;
+	this.layout_temp_data = {}
 };
 
  org.goorm.core.collaboration.slideshare.prototype = {
@@ -33,6 +35,9 @@ org.goorm.core.collaboration.slideshare = function () {
 		var slide_body = "";
 		slide_body += "<div id='slide_url' class='layout_right_slide_tab'>";
 		slide_body +=	"URL <input id='slideshare_url' type='text' value='http://www.slideshare.net/jeg0330/goorm-15035830'/>"
+		slide_body += 	"<select id='slide_select' style='display:none'>"
+		slide_body += 		"<option>Select_url</option>"
+		slide_body += 	"</select>"
 		slide_body += "</div>";
 		slide_body += "<div id='slide_menu'>"
 		slide_body += 	"<div id='slide_control'>"
@@ -47,7 +52,7 @@ org.goorm.core.collaboration.slideshare = function () {
 		slide_body +=		"</button>"
 		slide_body +=	"</div>"
 		slide_body +=	"<div id='drawing_control'>"
-		slide_body +=		"<input type='hidden' id='paint' value='paint'/>"
+		slide_body +=		"<input type='hidden' id='paint' value=''/>"
 		slide_body +=		"<input type='hidden' id='palette' value='palette'/>"
 		slide_body +=		"<input type='hidden' id='brush' value='brush'/>"
 		slide_body +=		"<input type='hidden' id='erase_all' value='erase_all'/>"
@@ -65,20 +70,24 @@ org.goorm.core.collaboration.slideshare = function () {
 		slide_body +=		"<input type='text' id='brush_thickness'/>"
 		slide_body +=	"</div>"
 		slide_body +=	"<div id='slideshare_palette_container' style='position:absolute; display:none;'>"
-		slide_body +=		"<div id='slideshare_palette' style='width: 335px; height: 200px; background-color: #fff; border: 1px solid #333; border-radius: 3px;'></div>"
+		slide_body +=		"<div id='slideshare_palette' style='width: 335px; height: 230px; background-color: #fff; border: 1px solid #333; border-radius: 3px;'>"
+		slide_body +=			"<button id='close_slideshare_palette' style=' margin-top:200px; margin-left:300px;'>close</button>"
+		slide_body +=		"</div>"
 		slide_body +=	"</div>"
-		slide_body +=	"</div>"
+		slide_body += "</div>"
+		slide_body += "<input type='hidden' id='slide_authentic' value='true'/>"
 		slide_body += "<div id='eraser' style='display: none; position: absolute; width: 20px; height: 20px; border: 1px solid #000;background-color: #fff;'></div>"
 		slide_body += "<iframe id='iframe_slideshare' src='http://"+document.location.host+"/lib/slideshare/slide.html' width='100%' height='100%' frameborder=0 marginwidth=0 marginheight=0 scrolling=no> </iframe>"
 
 		$("#slide_body").append(slide_body);
 		core.module.toolbar.add_to_slideshare("public/configs/toolbars/org.goorm.core.slideshare/slideshare.toolbar.html","org.goorm.core.slideshare",$("#slideshare_canvas_toolbar"));
-		$("#brush_container").hide();
-		$("#brush_container").attr("state","hide");
+		//$("#brush_container").hide();
+		//$("#brush_container").attr("state","hide");
 
-		$("#slideshare_palette_container").hide();
-		$("#slideshare_palette_container").attr("state","hide");
-		$("#slideshare_palette_container").css("position","absolute");
+		//$("#slideshare_palette_container").hide();
+		//$("#slideshare_palette_container").attr("state","hide");
+		//$("#slideshare_palette_container").css("position","absolute");
+
 		$('a[action="slideshare_draw"]').attr("value","draw");
 		var slider = new YAHOO.widget.Slider.getHorizSlider("sliderbg", "sliderthumb", 0, 200);
 		slider.subscribe("slideEnd", function (){
@@ -88,8 +97,11 @@ org.goorm.core.collaboration.slideshare = function () {
 		    $( "#brush_thickness" ).val(slider.getValue()/10 );
 		});
 		var count = 0;
-		
-
+		this.connect_button = $("a[action=slideshare_connect]").find("div");
+		$('#close_slideshare_palette').click(function(e){
+			$("#slideshare_palette_container").hide();
+			$('a[action="slideshare_palette"]').find('div').removeClass('slide_button_pressed');
+		});
 		$('a[action="slideshare_draw"]').unbind('click');
 		$('a[action="slideshare_draw"]').click(function(e){
 			if($(this).find('div').hasClass('slide_button_pressed')){
@@ -105,77 +117,48 @@ org.goorm.core.collaboration.slideshare = function () {
 				$("#paint").unbind("click");
 				$(".slide_button_pressed").removeClass('slide_button_pressed');
 				$(self.canvas).css('z-index', '1');
+				if(self.connect_button.attr('state')=="connected")
+					self.connect_button.addClass('slide_button_pressed');
 			} else {
 				$(this).attr('value', 'undraw');
 				$(self.canvas).css('z-index', '4');
-
+				if($("#paint").val()=='paint'){
+					$('a[action="slideshare_paint"]').find('div').addClass('slide_button_pressed');
+				} else if ($("#paint").val()=='erase'){
+					$('a[action="slideshare_erase"]').find('div').addClass('slide_button_pressed');
+				}
 				if(count == 0) {
 					self.draw_init();
 					count++;
 				}
- 				self.draw_canvas();
+ 				//self.draw_canvas();
 
-				$("a[action=slideshare_paint]").find('div').addClass('slide_button_pressed')
-				$("#paint").val("paint");
+				//$("a[action=slideshare_paint]").find('div').addClass('slide_button_pressed')
+				//$("a[action=slideshare_erase]").find('div').removeClass('slide_button_pressed')
+				//$("#paint").val("paint");
 			}
 		})
-		
 
 		if (this.socket.socket.connected) {
-		//this.socket.emit("message", '{"channel": "slideshare", "action":"send_message", "user":"' + core.user.first_name + "_" + core.user.last_name + '", "workspace": "'+ core.status.current_project_name +'", "message":"' + encodedMsg + '"}');
+		//this.socket.emit("message", '{"channel": "slideshare", "action":"send_message", "user":"' + core.user.first_name + "_" + core.user.last_name + '", "workspace": "'+ core.status.current_project_path +'", "message":"' + encodedMsg + '"}');
 		}
-
-		this.socket.on("slideshare_message", function (data) {
-			/*
-			 * data = {slide_url, page}
-			 */
-
-			if(data.slide_url != self.current_slide_name) {
-				iframe_slideshare.loadPlayer(data.slide_url, data.page);
-				self.current_slide_name = data.slide_url;
-			}
-			if(iframe_slideshare.player && iframe_slideshare.player.jumpTo) {
-				iframe_slideshare.player.jumpTo(data.page);
-			}
-
-			$("body").trigger("share_drawing");
-		});
-
-
- 		$("body").one("share_drawing", function (data){
+			/*$("a[action=slideshare_paint]").hide();
+			$("a[action=slideshare_erase]").hide();
+			$("a[action=slideshare_palette]").hide();
+			$("a[action=slideshare_brush]").hide();
+			$("a[action=slideshare_erase_all]").hide();*/
+ 		$("body").one("share_drawing", function () {
  		
 			self.canvas = iframe_slideshare.get_canvas();
+			$(self.canvas).css('z-index', '4');
 			self.slideshare_document = iframe_slideshare.get_document();
-			self.datum = self.slideshare_document.getElementById("player");
-			self.ctx = self.canvas.getContext('2d');
-			self.ctx.canvas.width = $(self.datum).width();
-			self.ctx.canvas.height = $(self.datum).height();
-			console.log("enter")
-			self.socket.on("slideshare_get", function (raw_msg) {
-				/*
-				 * data = {channel, color, lineWidth, workspace, x, x_from, y, y_from}
-				 */
-				var msg_obj = JSON.parse(raw_msg);
-				var channel = "";
-
-				if (msg_obj["channel"] != undefined) {
-					channel = msg_obj["channel"];
-				}
-				switch (channel) {
-					case "draw" :
-						self.drawing(msg_obj);
-					break;
-					case "erase" :
-						self.erase(msg_obj);
-					break;
-					case "erase_all" :
-						self.erase_all();
-					break;
-				}
-			});
-
-
+			//self.datum = self.slideshare_document.getElementById("player");
+			if(self.ctx != null){
+				self.ctx.canvas.width = $("#iframe_slideshare").contents().find("#main").width();
+				self.ctx.canvas.height = $("#iframe_slideshare").contents().find("#main").height();
+			}
  		});
+
 		// this.button_play = new YAHOO.widget.Button("slideshare_presentation", {
 		// 	onclick: {
 		// 		fn:function(){
@@ -189,10 +172,17 @@ org.goorm.core.collaboration.slideshare = function () {
 		this.button_play = new YAHOO.widget.Button("slideshare_presentation", {
 			onclick: {
 				fn:function(){
+					if(self.ctx != null) {
+						self.erase_all();
+						self.socket_mode('slideshare','{"channel":"erase_all", "workspace": "'+ core.status.current_project_path +'"}');
+						//self.socket.emit("slideshare",'{"channel":"erase_all", "workspace": "'+ core.status.current_project_name +'"}');
+					}
+
 					var url = $("#slideshare_url").val();
 					if(url != ""){
 						self.load_slide(url);
 					}
+					
 					if(iframe_slideshare.player && iframe_slideshare.player.jumpTo) {
 						iframe_slideshare.player.jumpTo(data.page);
 					}
@@ -203,7 +193,7 @@ org.goorm.core.collaboration.slideshare = function () {
  			onclick: {
  				fn:function(){
 	 				iframe_slideshare.player.previous();
-					self.socket.emit("message", '{"channel": "slideshare", "workspace": "'+ core.status.current_project_name +'", "slide_url":"'+self.current_slide_name+'", "page":'+iframe_slideshare.player.getCurrentSlide()+'}');
+					self.socket_mode("message", '{"channel": "slideshare", "workspace": "'+ core.status.current_project_path +'", "slide_url":"'+self.current_slide_name+'", "page":'+iframe_slideshare.player.getCurrentSlide()+'}');
 				}
 			}
 		});
@@ -212,7 +202,7 @@ org.goorm.core.collaboration.slideshare = function () {
  			onclick: {
  				fn: function(){
 					iframe_slideshare.player.next();
-					self.socket.emit("message", '{"channel": "slideshare", "workspace": "'+ core.status.current_project_name +'", "slide_url":"'+self.current_slide_name+'", "page":'+iframe_slideshare.player.getCurrentSlide()+'}');
+					self.socket_mode("message", '{"channel": "slideshare", "workspace": "'+ core.status.current_project_path +'", "slide_url":"'+self.current_slide_name+'", "page":'+iframe_slideshare.player.getCurrentSlide()+'}');
 				}
 			}
 		});
@@ -227,6 +217,27 @@ org.goorm.core.collaboration.slideshare = function () {
 		
 	},
 	
+	draw_slideshare_msg : function(raw_msg) {
+		var self = this;
+		var msg_obj = (typeof(raw_msg) == "string") ? JSON.parse(raw_msg) : raw_msg;
+		var channel = "";
+
+		if (msg_obj["channel"] != undefined) {
+			channel = msg_obj["channel"];
+		}
+		switch (channel) {
+		case "draw" :
+			self.drawing(msg_obj);
+			break;
+		case "erase" :
+			self.erase(msg_obj);
+			break;
+		case "erase_all" :
+			self.erase_all();
+			break;
+		}	
+	},
+
 	/*
 	 * slideshare 주소를 알아내서 플레이어 로딩.
 	 */
@@ -246,7 +257,7 @@ org.goorm.core.collaboration.slideshare = function () {
 				iframe_slideshare.loadPlayer(slide_url[1]);
 				//  iframe_slideshare.player.getCurrentSlide()
 				self.current_slide_name = slide_url[1];
-				self.socket.emit("message", '{"channel":"slideshare", "workspace": "'+ core.status.current_project_name +'", "slide_url":"'+slide_url[1]+'", "page":1}');
+				self.socket_mode("message", '{"channel":"slideshare", "workspace": "'+ core.status.current_project_path +'", "slide_url":"'+slide_url[1]+'", "page":1}');
 			}
 		});
 	},
@@ -274,8 +285,32 @@ org.goorm.core.collaboration.slideshare = function () {
 		this.picker.on("rgbChange", function(o) {
 			self.change_color(o);
 		});
-	},
 
+	},
+	connecting: function(){
+		self = this;
+		self.socket.on("slideshare_get", function (data) {
+				self.draw_slideshare_msg(data);
+		});
+		self.socket.on("slideshare_message", function (data) {
+			/*
+			 * data = {slide_url, page}
+			 */
+			if(data.slide_url != self.current_slide_name) {
+				iframe_slideshare.loadPlayer(data.slide_url, data.page);
+				self.current_slide_name = data.slide_url;
+			}
+			if(iframe_slideshare.player && iframe_slideshare.player.jumpTo) {
+				iframe_slideshare.player.jumpTo(data.page);
+			}
+
+			$("body").trigger("share_drawing");
+		});
+	},
+	disconnecting: function(){
+		this.socket.removeAllListeners("slideshare_get");
+		this.socket.removeAllListeners("slideshare_message");
+	},
 	draw_init: function (){
 		var self = this;
 		self.coordinate = [];
@@ -284,13 +319,13 @@ org.goorm.core.collaboration.slideshare = function () {
 		//self.canvas = $("#iframe_slideshare").contents().find("#drawing-canvas");
 		self.slideshare_document = iframe_slideshare.get_document();
 		self.datum = self.slideshare_document.getElementById("player");
+		$(self.canvas).css('z-index', '4');
+		//self.main_div = self.slideshare_document.getElementById("main");
+		//self.body_top = $("#iframe_slideshare").position().top;
+		if(self.ctx==null)
+			self.ctx = self.canvas.getContext('2d');
 
-		self.main_div = self.slideshare_document.getElementById("main");
-		self.body_top = $("#iframe_slideshare").position().top;
-
-		self.ctx = self.canvas.getContext('2d');
-
-		var init_ctx = {
+		/*var init_ctx = {
 			canvas : {
 				width :	$("#iframe_slideshare").contents().find("#player").width(),
 				height :	$("#iframe_slideshare").contents().find("#player").height()
@@ -300,7 +335,14 @@ org.goorm.core.collaboration.slideshare = function () {
 			strokeStyle : "#FF0000",
 			lineWidth : 3
 		};
-		$.extend(self.ctx, init_ctx);
+		$.extend(self.ctx, init_ctx);*/ // it does not work
+
+		self.ctx.canvas.width = $("#iframe_slideshare").contents().find("#player").width();
+		self.ctx.canvas.height = $("#iframe_slideshare").contents().find("#player").height();
+		self.ctx.lineCap = 'round';
+		self.ctx.lineJoin = 'round';
+		self.strokeStyle = "#FF0000";
+		
 
 		/*self.ctx.webkitImageSmoothingEnabled = false;
 		self.ctx.mozImageSmoothingEnabled = false;*/
@@ -309,16 +351,13 @@ org.goorm.core.collaboration.slideshare = function () {
 		.on('selectstart', false);
 
 		$(self.canvas).mousedown( function (e) {
-			
 			if($("#paint").val()=='erase'){
-				/*$('#eraser').show();
-				$(self.slideshare_document).mousemove( function (e){
-					$('#eraser').css({'top':e.pageY+self.body_top+5,'left':e.pageX+5});
-				});*/
 				$(self.canvas).css('cursor', 'none');
-			}else
+				self.draw_canvas('erase');
+			}else if($("#paint").val()=='paint'){
 				$(self.canvas).css('cursor', 'crosshair');
-			self.draw_canvas($("#paint").val());
+				self.draw_canvas('paint');
+			}
 		});
 
 		$(self.canvas).mouseup( function () {
@@ -339,44 +378,26 @@ org.goorm.core.collaboration.slideshare = function () {
 			}
 			$("#brush_container").hide();
 			$("#slideshare_palette_container").hide();
-			$("#slideshare_palette_container").attr("state","hide");
+			//$("#slideshare_palette_container").attr("state","hide");
 		});
-		
-		// $(self.canvas).click( function () {
-		// 	if($('a[action="slideshare_draw"]').find('div').hasClass('slide_button_pressed')){
-		// 		if($("a[action=slideshare_connect]").find('div').hasClass('slide_button_pressed')){
-		// 			$(".slide_button_pressed").removeClass('slide_button_pressed');
-		// 			$('a[action="slideshare_draw"]').find('div').addClass('slide_button_pressed');
-		// 			$("a[action=slideshare_connect]").find('div').addClass('slide_button_pressed');
-		// 		}else{
-		// 			$(".slide_button_pressed").removeClass('slide_button_pressed');
-		// 			$('a[action="slideshare_draw"]').find('div').addClass('slide_button_pressed');
-		// 		}
-		// 	} else {
-		// 		$(".slide_button_pressed").removeClass('slide_button_pressed');
-		// 	}
-		// 	$("#brush_container").hide();
-		// 	$("#slideshare_palette_container").hide();
-		// 	$("#slideshare_palette_container").attr("state","hide");
-		// 	$("#slideshare_palette_contadraw_initiner").attr("state","hide");
-		// });
-
 		$(self.canvas).bind("resize_canvas",function(){
 			var dataURL =self.canvas.toDataURL();
 			var img = new Image;
 			img.src = dataURL;
-
 			img.onload = function (){
 				//var width = self.myctx.lineWidth;
 				//var style = self.myctx.strokeStyle;
-				self.ctx.canvas.width = $(self.main_div).width();
-				self.ctx.canvas.height = $(self.main_div).height();
+				// self.ctx.canvas.width = $(self.main_div).width();
+				// self.ctx.canvas.height = $(self.main_div).height();
+				self.ctx.canvas.width = $("#iframe_slideshare").contents().find("#main").width();
+				self.ctx.canvas.height = $("#iframe_slideshare").contents().find("#main").height();
 				self.ctx.strokeStyle=self.myctx.strokeStyle;
 				self.ctx.lineWidth = self.myctx.lineWidth;
-				self.ctx.drawImage(img, 0, 0,$(self.datum).width(),$(self.datum).height());
+				self.ctx.drawImage(img, 0, 0,$("#iframe_slideshare").contents().find("#main").width(),$("#iframe_slideshare").contents().find("#main").height());
 			}
-			self.body_top = $("#iframe_slideshare").position().top;
+			//self.body_top = $("#iframe_slideshare").position().top;
 		});
+
 		$(self.canvas).mouseleave(function(e){
 			self.mouseState = 0;
 			$(self.canvas).css('cursor', 'default');
@@ -389,8 +410,9 @@ org.goorm.core.collaboration.slideshare = function () {
 			self.ctx.beginPath();
 			self.ctx.clearRect( 0, 0, self.ctx.canvas.width, self.ctx.canvas.height);
 			self.ctx.closePath();
-			self.socket.emit("slideshare",'{"channel":"erase_all", "workspace": "'+ core.status.current_project_name +'"}');
+			self.socket.emit("slideshare",'{"channel":"erase_all", "workspace": "'+ core.status.current_project_path +'"}');
 		});
+		
 		if(self.picker==null){
 			self.picker = new YAHOO.widget.ColorPicker("slideshare_palette", {
 				showhsvcontrols: false,
@@ -405,7 +427,6 @@ org.goorm.core.collaboration.slideshare = function () {
 		self.picker.on("rgbChange", function(o) {
 			self.change_color(o);
 		});
-
 	},
 
 	show_canvas : function(){
@@ -426,76 +447,95 @@ org.goorm.core.collaboration.slideshare = function () {
 		var self = this;
 		var ctx = self.ctx;
 		var position = $(self.canvas).position();
-		var relative_width = self.canvas.width;
-		var relative_height = self.canvas.height;
+		// var relative_width = self.canvas.width;
+		// var relative_height = self.canvas.height;
+		var data = {};
 		self.mouseState = 0;
 		$(self.slideshare_document).unbind('mousemove');
 		switch( mode ){
-			case 'paint' :
-				$(self.slideshare_document).mousemove( function (e) {
+		case 'paint' :
+			$(self.slideshare_document).mousemove( function (e) {
 
-					if (self.mouseState == 0) {
-						self.mouseState = 1;
-						x_from = e.pageX - position.left;
-						y_from = e.pageY - position.top;
-					}
-					x = e.pageX - position.left;
-					y = e.pageY - position.top;
+				if (self.mouseState == 0) {
+					self.mouseState = 1;
+					x_from = e.pageX - position.left;
+					y_from = e.pageY - position.top;
+				}
+				x = e.pageX - position.left;
+				y = e.pageY - position.top;
 
-					if (x<0 || y<0 || x>self.ctx.canvas.width || y>self.ctx.canvas.height) {
-						$(self.canvas).trigger('mouseup');
-						return;
-					}
+				data = {
+					"channel" : "draw",
+					"workspace" : core.status.current_project_path,
+					"x" : x/self.canvas.width,
+					"y" : y/self.canvas.height,
+					"x_from" : x_from/self.canvas.width,
+					"y_from" : y_from/self.canvas.height,
+					"lineWidth" : self.myctx.lineWidth/self.canvas.width,
+					"color" : self.myctx.strokeStyle
+				};
 
-					var data = {
-						"channel" : "draw",
-						"workspace" : core.status.current_project_name,
-						"x" : x/self.canvas.width,
-						"y" : y/self.canvas.height,
-						"x_from" : x_from/self.canvas.width,
-						"y_from" : y_from/self.canvas.height,
-						"lineWidth" : self.myctx.lineWidth/self.canvas.width,
-						"color" : self.myctx.strokeStyle
-					};
+				self.drawing(data);
+				self.socket_mode('slideshare',JSON.stringify(data));
 
-					self.drawing(data);
-					self.socket_mode(JSON.stringify(data));
-					// self.ctx.lineCap = 'round';
-					// self.ctx.lineJoin = "round";
-					// self.ctx.beginPath();	
-					// self.ctx.moveTo( x_from, y_from);
-					// self.ctx.lineTo( x, y);
-					// self.ctx.closePath();
-					// self.ctx.stroke();
-					//self.socket.emit("slideshare",'{"channel":"draw", "workspace": "'+ core.status.current_project_name +'", "x_from":"'+(x_from*relative_width)+'","y_from":"'+(y_from*relative_height)+'","x":"'+(x*relative_width)+'","y":"'+(y*relative_height)+'","lineWidth":"'+self.ctx.lineWidth+'","color":"'+self.ctx.strokeStyle+'"}');
-					//self.socket_mode('{"channel":"draw", "workspace": "'+ core.status.current_project_name +'", "x_from":"'+(x_from*relative_width)+'","y_from":"'+(y_from*relative_height)+'","x":"'+(x*relative_width)+'","y":"'+(y*relative_height)+'","lineWidth":"'+self.ctx.lineWidth+'","color":"'+self.ctx.strokeStyle+'"}');
-					//self.socket_mode('{"channel":"draw", "workspace": "'+ core.status.current_project_name +'", "x_from":"'+(x_from/relative_width)+'","y_from":"'+(y_from/relative_height)+'","x":"'+(x/relative_width)+'","y":"'+(y/relative_height)+'","lineWidth":"'+self.ctx.lineWidth/relative_width+'","color":"'+self.ctx.strokeStyle+'"}');
-					
-					x_from = x;
-					y_from = y;
-				});
+				x_from = x;
+				y_from = y;
+			});
+			break;
+		case 'erase' :
+			$(self.slideshare_document).mousemove( function (e) {
+				$('#eraser').show();
+				$('#eraser').css({ 'top' : e.pageY + $("#iframe_slideshare").position().top+5, 'left' : e.pageX+5 });
 
-				break;
-			case 'erase' :
-				$(self.slideshare_document).mousemove( function (e){
-					$('#eraser').show();
-					$('#eraser').css({'top':e.pageY+self.body_top+5,'left':e.pageX+5});
-					self.ctx.beginPath();
-					self.ctx.clearRect( e.pageX, e.pageY, self.erase_size, self.erase_size);//clear partly
-					self.ctx.closePath();
+				data = {
+					"channel" : "erase",
+					"workspace" : core.status.current_project_path,
+					"x" : e.pageX/self.canvas.width,
+					"y" : e.pageY/self.canvas.height,
+					"relative_width" : self.canvas.width,
+					"relative_height" : self.canvas.height
+				};
 
-					//self.socket.emit("slideshare",'{"channel":"erase", "workspace": "'+ core.status.current_project_name +'", "x":"'+(e.pageX*relative_width)+'","y":"'+(e.pageY*relative_height)+'"}');
-					//self.socket_mode('{"channel":"erase", "workspace": "'+ core.status.current_project_name +'", "x":"'+(e.pageX*relative_width)+'","y":"'+(e.pageY*relative_height)+'"}');
-					self.socket_mode('{"channel":"erase", "workspace": "'+ core.status.current_project_name +'", "x":"'+(e.pageX/relative_width)+'","y":"'+(e.pageY/relative_height)+'","relative_width":"'+relative_width+'","relative_height":"'+relative_height+'"}');
-				});
-				break;
+				self.erase(data);
+				self.socket_mode('slideshare',JSON.stringify(data));
+			});
+			break;
+		/*case 'highlight' :
+			$(self.slideshare_document).mousemove( function (e) {
+
+				if (self.mouseState == 0) {
+					self.mouseState = 1;
+					x_from = e.pageX - position.left;
+					y_from = e.pageY - position.top;
+				}
+				x = e.pageX - position.left;
+				y = e.pageY - position.top;
+
+				data = {
+					"channel" : "highlight",
+					"workspace" : core.status.current_project_path,
+					"x" : x/self.canvas.width,
+					"y" : y/self.canvas.height,
+					"x_from" : x_from/self.canvas.width,
+					"y_from" : y_from/self.canvas.height,
+					"lineWidth" : self.myctx.lineWidth/self.canvas.width,
+					"color" : self.myctx.strokeStyle
+				};
+
+				self.highlight(data);
+				self.socket_mode('slideshare',JSON.stringify(data));
+
+				x_from = x;
+				y_from = y;
+			});
+			break;*/
 		}
 	},
 
-	socket_mode: function(message){
-		//if(this.connect_button.attr('state')=="connected"){
-			this.socket.emit("slideshare",message);
-		//}
+	socket_mode: function(key,message){
+		if(this.connect_button.attr('state')=="connected" && $('#slide_authentic').val()=='true'){
+			this.socket.emit(key,message);
+		}
 	},
 
 	change_brush_thickness: function (lineWidth) {
@@ -507,8 +547,8 @@ org.goorm.core.collaboration.slideshare = function () {
 			$('#eraser').css({'width':lineWidth/6,'height':lineWidth/6});
 			this.erase_size = lineWidth/6;
 		}
-		//this.socket.emit("slideshare",'{"channel":"thickness", "workspace": "'+ core.status.current_project_name +'", "lineWidth":"'+this.ctx.lineWidth+'"}');
-		//this.socket_mode('{"channel":"thickness", "workspace": "'+ core.status.current_project_name +'", "lineWidth":"'+this.myctx.lineWidth+'"}');
+		//this.socket.emit("slideshare",'{"channel":"thickness", "workspace": "'+ core.status.current_project_path +'", "lineWidth":"'+this.ctx.lineWidth+'"}');
+		//this.socket_mode('{"channel":"thickness", "workspace": "'+ core.status.current_project_path +'", "lineWidth":"'+this.myctx.lineWidth+'"}');
 	},
 
 	change_color: function(data){
@@ -538,9 +578,21 @@ org.goorm.core.collaboration.slideshare = function () {
 	
 	erase : function (data) {
 		this.ctx.beginPath();
-		this.ctx.clearRect( data["x"]*this.canvas.width, data["y"]*this.canvas.height, 30*this.canvas.width/data["relative_width"], 30*this.canvas.height/data["relative_height"]);
+		this.ctx.clearRect( data["x"]*this.canvas.width, data["y"]*this.canvas.height, this.erase_size*this.canvas.width/data["relative_width"], this.erase_size*this.canvas.height/data["relative_height"]);
 		this.ctx.closePath();
 	},
+	/*highlight: function(data){
+		this.ctx.lineCap = 'round';
+		this.ctx.lineJoin = "round";
+		this.ctx.beginPath();
+		this.ctx.globalAlpha = 0.;
+		this.ctx.lineWidth = data.lineWidth*this.canvas.width;
+		this.ctx.strokeStyle = data.color;
+		this.ctx.moveTo(data["x_from"]*this.canvas.width, data["y_from"]*this.canvas.height);
+		this.ctx.lineTo(data["x"]*this.canvas.width, data["y"]*this.canvas.height);
+		this.ctx.closePath();
+		this.ctx.stroke();
+	},*/
 	erase_all : function () {
 		this.ctx.beginPath();
 		this.ctx.clearRect( 0, 0, this.ctx.canvas.width, this.ctx.canvas.height);

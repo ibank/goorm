@@ -39,7 +39,7 @@
 .project_wizard_second_button {
 	float:left;
 	width:80px;
-	height:90px;
+	min-height: 110px;
 	margin:5px;
 	padding:5px;
 	cursor:pointer;
@@ -113,7 +113,7 @@
 	overflow: auto;
 	font-size: 11px;
 	margin: 0 auto;
-	margin-left: -2px;
+	margin-left: 22px;
 }
 
 #project_share_container #user_search_input {
@@ -168,4 +168,9 @@
 	padding: 3px;
 	font-weight: bold;
 	text-decoration: underline;
+}
+
+.auto_complete_user_list {
+	text-align: left;
+	cursor: pointer;
 }

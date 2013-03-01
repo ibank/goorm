@@ -36,7 +36,7 @@
                         "value": "goorm Customization Project"
                     },
                     "file_new_file": {
-                        "value": "File"
+                        "value": "New File"
                     },
                     "file_new_folder": {
                         "value": "Folder"
@@ -50,7 +50,7 @@
                 }
             },
             "file_open_project": {
-                "value": "Open_Project"
+                "value": "Open Project"
             },
             "file_open_file": {
                 "value": "Open File"
@@ -151,11 +151,14 @@
 				"value": "Auto Formatting"
 			},
 			"edit_comment_selected": { 
-				"value": "Comment_Selected"
+				"value": "Comment Selected"
 			},
 			"edit_uncomment_selected": { 
-				"value": "Uncomment_Selected"
+				"value": "Uncomment Selected"
 			},
+			"edit_share_cursor": {
+                "value": "Toggle Cursor Sharing"
+            },
 			"edit_search": { 
 				"value": "Search"
 			}
@@ -241,7 +244,7 @@
                 "value": "Delete Project"
             },
             "project_share" : {
-                "value" : "Share This Project"
+                "value" : "Share the Project"
             },
             "project_properties": {
                 "value": "Properties"
@@ -369,7 +372,7 @@
                 }
             },
             "window_toggle_full_workspace": {
-                "value": "Toggle Full Workspace"
+                "value": "Toggle Workspace Full Screen"
             },
             "window_slide_show_mode": {
                 "value": "Slide Show Mode"

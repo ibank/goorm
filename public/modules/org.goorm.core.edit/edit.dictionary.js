@@ -167,7 +167,7 @@ org.goorm.core.edit.dictionary.prototype = {
 			var desc_id=ele_id+"_desc";
 			var desc_html="";
 			desc_html+="<div class='dictionary_desc_list' id='"+desc_id+"'>";
-			desc_html+=		"<div style='background:gray;font-size:11px;' >Description</div>";
+			desc_html+=		"<div style='background:#ccc;font-size:11px;' >Description</div>";
 			desc_html+=		this.description;
 			desc_html+="</div>";
 			$(self.target).find(".dictionary_desc").append(desc_html);
@@ -355,13 +355,24 @@ org.goorm.core.edit.dictionary.prototype = {
 					for(var i=0;i<data.v.length;i++){
 						if(reg_exp.test(data.v[i])){
 							self.result.push({
-								'description' : data.v[i]+"<br>variable<br>",
+								'description' : data.v[i]+"<br>global variable<br>",
 								'keyword' : data.v[i],
-								'type': 'var'
+								'type': 'global'
 							});
 						}
 					}
-				}//var
+				}//global var end
+				if(data.l!=undefined){
+					for(var i=0;i<data.l.length;i++){
+						if(reg_exp.test(data.l[i])){
+							self.result.push({
+								'description' : data.l[i]+"<br>local variable<br>",
+								'keyword' : data.l[i],
+								'type': 'local'
+							});
+						}
+					}
+				}//local var end				
 				if(data.f!=undefined){
 					for(var i=0;i<data.f.length;i++){
 						if(reg_exp.test(data.f[i])){
@@ -372,7 +383,7 @@ org.goorm.core.edit.dictionary.prototype = {
 							});
 						}
 					}
-				}//function
+				}//function end
 				if(data.m!=undefined){
 					for(var i=0;i<data.m.length;i++){
 						if(reg_exp.test(data.m[i])){
@@ -383,7 +394,7 @@ org.goorm.core.edit.dictionary.prototype = {
 							});
 						}
 					}
-				}//method
+				}//method end
 				if(data.c!=undefined){
 					for(var i=0;i<data.c.length;i++){
 						if(reg_exp.test(data.c[i])){

@@ -36,7 +36,7 @@ org.goorm.plugin.manager.prototype = {
 			async: false,
 			success: function(data) {
 				self.list = eval(data);
-								
+
 				//statusbar.progressbar.set('value', 100);
 				/*
 				if(self.interval) {
@@ -45,6 +45,7 @@ org.goorm.plugin.manager.prototype = {
 				*/
 				
 				//statusbar.stop();
+				
 				$(core).trigger("plugin_loaded");
 				
 				//$(core).trigger("goorm_loading");
@@ -119,10 +120,7 @@ org.goorm.plugin.manager.prototype = {
 		
 		}
 		else {
-			console.log(this.plugins);
-			console.log(data.project_type);
 			if($.isFunction(this.plugins["org.goorm.plugin."+data.project_type].new_project)) {
-				console.log(data);
 				this.plugins["org.goorm.plugin."+data.project_type].new_project(data);
 //				core.dialog.project_property.set_project_information();
 			}

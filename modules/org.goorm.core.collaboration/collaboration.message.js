@@ -135,7 +135,7 @@ module.exports = {
 			'type':user_type
 		})
 
-		db.message.find({ $or : [{'from':{$in:[user]}}, {'to':{$in:[user]}}] }).sort({'create_time':1}).limit(10).exec(function(err, data){
+		db.message.find({ $or : [{'from':{$in:[user]}}, {'to':{$in:[user]}}] }).sort({'create_time':-1}).limit(10).exec(function(err, data){
 			if(data){
 				data = data.map(function(o){
 					return format.parse(o);
@@ -155,7 +155,7 @@ module.exports = {
 			'type':user_type
 		})
 
-		db.message.find({'to':{$in:[user]}}).sort({'create_time':1}).limit(10).exec(function(err, data){
+		db.message.find({'to':{$in:[user]}}).sort({'create_time':-1}).limit(10).exec(function(err, data){
 			if(data){
 				data = data.map(function(o){
 					return format.parse(o);

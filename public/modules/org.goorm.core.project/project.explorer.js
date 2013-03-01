@@ -80,9 +80,6 @@ org.goorm.core.project.explorer.prototype = {
 							var filename = nodedata.node.data.filename;
 							var filetype = nodedata.node.data.filetype;
 							var filepath = nodedata.node.data.parent_label;
-													
-
-							console.log(filepath, filename, filetype);
 
 							core.module.layout.workspace.window_manager.open(filepath, filename, filetype);
 						}
@@ -165,7 +162,7 @@ org.goorm.core.project.explorer.prototype = {
 	refresh: function(event_emitting) {
 		var self = this;
 		
-		event_emitting = typeof event_emitting !== 'undefined' ? event_emitting : true;
+		//event_emitting = typeof event_emitting !== 'undefined' ? event_emitting : true;
 
 		var postdata = {
 			'get_list_type' : 'collaboration_list'
@@ -235,9 +232,9 @@ org.goorm.core.project.explorer.prototype = {
 					
 					self.refresh_context_menu();
 					
-					if (event_emitting) {
-						$(core).trigger("project_explorer_refreshed");
-					}
+					//if (event_emitting) {
+					//	$(core).trigger("project_explorer_refreshed");
+					//}
 				}
 			});
 /*
@@ -287,7 +284,7 @@ org.goorm.core.project.explorer.prototype = {
 		
 		$("#project_selectbox").append("<option value='' selected>Select Project</option>");
 		
-		var max_num = parseInt($("#project_selector").width()/8);
+		// var max_num = parseInt($("#project_selector").width()/8);
 
 		if(self.project_data){
 			for(var project_idx=0; project_idx<self.project_data.length; project_idx++) {
@@ -295,10 +292,11 @@ org.goorm.core.project.explorer.prototype = {
 				
 
 	
-				if(temp_name.length > max_num) {
-					temp_name = temp_name.substring(0, max_num-2);
-					temp_name += "…";
-				}
+				// if(temp_name.length > max_num) {
+				// 	temp_name = temp_name.substring(0, max_num-2);
+				// 	temp_name += "…";
+				// 	console.log(temp_name, max_num);
+				// }
 
 
 				
@@ -315,6 +313,8 @@ org.goorm.core.project.explorer.prototype = {
 	on_project_selectbox_change: function (project_idx) {
 		var self = this;
 		// need modify. NullA
+
+		core.module.layout.communication.leave();
 		
 		if (project_idx!="") {
 			

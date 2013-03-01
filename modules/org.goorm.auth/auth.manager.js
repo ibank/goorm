@@ -8,7 +8,9 @@ var user_schema = {
 	deleted: Boolean,
 	type : String,
 	level : String,
-	last_access_time : Date
+	last_access_time : Date,
+	uid : Number,
+	gid : Array
 };
 
 var EventEmitter = require("events").EventEmitter;
@@ -357,9 +359,29 @@ module.exports = {
 	},
 
 	logout : function(req, callback){
-		req.session.destroy();
-		if(req.loggedIn) req.logout();	// for Social Login
-		callback(true);
+		//////////////////////////////////////////////////
+		// for firefox
+		//////////////////////////////////////////////////
+		var io = g_collaboration.get_io();
+		var user_list = [{
+			'id' : req.body.id,
+			'type' : req.body.type
+		}]
+
+		var is_connect = function(data){
+			io.sockets.sockets[data.client.id].emit("logout_disconnect");
+			req.session.destroy();	
+			if(req.loggedIn) req.logout();	// for Social Login
+			callback(true);
+		}
+
+		var is_not_connect = function(data){
+			req.session.destroy();	
+			if(req.loggedIn) req.logout();	// for Social Login
+			callback(true);
+		}
+
+		g_collaboration_communication.is_connected(io,  user_list, is_connect,  is_not_connect)
 	},
 	
 	set_check : function(user, evt){
@@ -547,6 +569,10 @@ module.exports = {
 		session.auth.loggedIn = true;
 		session.auth[user.type.toLowerCase()] = {};
 		session.auth[user.type.toLowerCase()].user = user_data;
+
+		// Redis Store
+		//
+		// store.client.set(user_data.id, JSON.stringify(session));
 	},
 	
 	get_user_schema : function(){
@@ -574,15 +600,35 @@ module.exports = {
 
 	disconnect_user_and_login : function(user, callback){
 		var io = g_collaboration.get_io();
-
+		var self = this;
 		var userdata = [{
 			'id' : user.id,
 			'type' : user.type
-		}]
+		}];
 
 		var is_connect = function(data){
-			for(var sid in store.sessions){
-				var session = JSON.parse(store.sessions[sid]);
+
+			//console.log(store);
+
+			// store.sessions : express MemoryStore
+			//
+			var sessions = store.sessions
+
+			// store.destroy : RedisStore
+			//
+			// store.client.get(user.id, function(null_obj, session){
+				// var util = require('util'); console.log(util.inspect(JSON.parse(session), false, null));
+
+				// if(session.auth[user.type.toLowerCase()].user.id == user.id){
+					// store.destroy(user.id, function(){
+						// console.log(session.auth)
+						// console.log(express_store);
+					// })
+				// }
+			// })
+
+			for(var sid in sessions){
+				var session = JSON.parse(sessions[sid]);
 
 				if(session.auth && session.auth.loggedIn){
 					var session_user = session.auth[user.type.toLowerCase()].user;

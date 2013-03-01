@@ -17,6 +17,9 @@
     "title_register": {
 	    "value": "회원가입"
     },
+     "title_forgot": {
+        "value": "아이디/비밀번호 분실"
+    },
     "title_join_online_project": {
 	    "value": "온라인 프로젝트 참여"
     },

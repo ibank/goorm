@@ -21,53 +21,63 @@ org.goorm.core.preference.filetype.prototype = {
 		this.init_filetype_tab();
 		
 		this.is_adding = false;
+		core.module.auth.get_info(function(user_reg){
+			$.getJSON("auth/get_info", function(user_data){
+				if(user_data && (user_data.level == 'Admin' || user_data.level == 'Owner')){
+					self.readonly = false;
+					// Buttons on dialog
+					self.add_button =  new YAHOO.widget.Button("filetype_add", { onclick: { fn: function() { self.add(); } }, label:'<span localization_key="add">Add</span>' });
+					self.del_button =  new YAHOO.widget.Button("filetype_delete", 
+						{
+							onclick: { 
+								fn: function() { 
+									confirmation.init({
+										// title: core.module.localization.msg["confirmation_new_title"], 
+										message: core.module.localization.msg["confirmation_delete_filetype"],
+										yes_text: core.module.localization.msg["confirmation_yes"],
+										no_text: core.module.localization.msg["confirmation_no"],
+							
+										//title: "Confirmation", 
+										//message: "Exist file. Do you want to make anyway?",
+										//yes_text: "yes",
+										//no_text: "no",
+							
+										title: "Confirmation", 
+										// message: "<span localization_key='confirmation_new_message'>Exist file. Do you want to make anyway?</span>",
+										// yes_text: "<span localization_key='yes'>Yes</span>",
+										// no_text: "<span localization_key='no'>No</span>",
+							
+							
+										yes: function () {
+											self.del();
+										}, no: function () {
+										}
+									});
+									
+									confirmation.panel.show();
+								}
+							}, 
+							label:'<span localization_key="delete">Delete</span>'
+						 });
+					self.save_button =  new YAHOO.widget.Button("filetype_save", { onclick: { fn: function() { self.save(); } }, label:'<span localization_key="save">Save</span>' });
+				} else {
+					self.readonly = true;
+					$('#filetype_add').hide();
+					$('#filetype_delete').hide();
+					$('#filetype_save').hide();
+				}
+			});
+		});
 		
-		// Buttons on dialog
-		this.add_button =  new YAHOO.widget.Button("filetype_add", { onclick: { fn: function() { self.add(); } }, label:'<span localization_key="add">Add</span>' });
-		this.del_button =  new YAHOO.widget.Button("filetype_delete", 
-			{
-				onclick: { 
-					fn: function() { 
-						confirmation.init({
-							// title: core.module.localization.msg["confirmation_new_title"], 
-							message: core.module.localization.msg["confirmation_delete_filetype"],
-							yes_text: core.module.localization.msg["confirmation_yes"],
-							no_text: core.module.localization.msg["confirmation_no"],
-				
-				//						title: "Confirmation", 
-				//						message: "Exist file. Do you want to make anyway?",
-				//						yes_text: "yes",
-				//						no_text: "no",
-				
-							title: "Confirmation", 
-							// message: "<span localization_key='confirmation_new_message'>Exist file. Do you want to make anyway?</span>",
-							// yes_text: "<span localization_key='yes'>Yes</span>",
-							// no_text: "<span localization_key='no'>No</span>",
-				
-				
-							yes: function () {
-								self.del();
-							}, no: function () {
-							}
-						});
-						
-						confirmation.panel.show();
-					}
-				}, 
-				label:'<span localization_key="delete">Delete</span>'
-			 });
-		this.save_button =  new YAHOO.widget.Button("filetype_save", { onclick: { fn: function() { self.save(); } }, label:'<span localization_key="save">Save</span>' });
 	},
-	
+
 	add: function () {
 		var self = this;
 		
-		console.log(this.is_adding);
-		
-		if (this.is_adding == false) {
-			this.is_adding = true;
+		if (self.is_adding == false) {
+			self.is_adding = true;
 			
-			this.update();
+			self.update();
 			// Temporary type element is added to file type list.
 			$(".filetype_contents").find(".filetype_list").append("<div class='list_item new_extension'>New Extention</div>");
 			$(".filetype_contents").find(".filetype_list").scrollTop(9999999);
@@ -117,8 +127,6 @@ org.goorm.core.preference.filetype.prototype = {
 				// Remove this filetype from filetype list.
 				$(this).remove();
 				
-				console.log(core.filetypes);
-				
 				var filedata = JSON.stringify(core.filetypes, null, '\t');
 
 				$.ajax({
@@ -136,12 +144,14 @@ org.goorm.core.preference.filetype.prototype = {
 		$(".filetype_contents").find(".filetype_detail").children().each(function() {
 			$(this).remove();
 		});
+				
+		
 	},
 	
 	save: function() {
 		var self = this;
 		var found = false;
-		
+
 		var old_extension = $(".filetype_contents").find(".filetype_detail").find(".file_extension_hidden").val();
 		var new_extension = $(".filetype_contents").find(".filetype_detail").find(".file_extension").val();
 		
@@ -156,7 +166,7 @@ org.goorm.core.preference.filetype.prototype = {
 			alert.show(core.module.localization.msg.alert_filetype_same_name);
 		}
 		else {
-			this.update();
+			self.update();
 			
 			var filedata = JSON.stringify(core.filetypes, null, '\t');
 			
@@ -213,13 +223,10 @@ org.goorm.core.preference.filetype.prototype = {
 					type: $(".filetype_contents").find(".filetype_detail").find(".type").attr("value"),
 					mode: $(".filetype_contents").find(".filetype_detail").find(".mode").attr("value")
 				}
-				console.log("push?!")
 				core.filetypes.push(temp);
 				
 				// Temporary name in file type list have to be updated to right file type name
 				var ext = $(".filetype_contents").find(".filetype_detail").find(".file_extension").val();
-				
-				console.log(ext);
 				
 				$(".filetype_contents").find(".filetype_list").find(".new_extension").html(ext);
 				$(".filetype_contents").find(".filetype_list").find(".new_extension").addClass(ext);
@@ -315,7 +322,7 @@ org.goorm.core.preference.filetype.prototype = {
 				});
 				
 				$(".filetype_contents").find(".filetype_list").find(".list_item:eq(0)").trigger("click");
-			}
+			} 
 		});
 	},
 	
@@ -336,6 +343,8 @@ org.goorm.core.preference.filetype.prototype = {
 			if ($(this).attr("value") == editor)
 				$(this).attr("selected", "selected");
 		});
+
+
 		
 		// Creating Type fieldl
 		$(".filetype_contents").find(".filetype_detail").append("<div style='width:100%; margin-top:7px;'>Type</div>");
@@ -394,6 +403,12 @@ org.goorm.core.preference.filetype.prototype = {
 		// Creating description field.
 		$(".filetype_contents").find(".filetype_detail").append("<div style='width:100%; margin-top:7px;'>Description</div>");
 		$(".filetype_contents").find(".filetype_detail").append("<div style='width:100%; margin-top:4px;'><textarea class='description' style='resize: none; width:280px; height:84px; overflow:auto;'>" + description + "</textarea></div>");
-
+		if(this.readonly){
+			$(".filetype_contents").find(".filetype_detail").find(".file_extension").attr("readonly","readonly");
+			$(".filetype_contents").find(".filetype_detail").find(".editor").attr("disabled","disabled");
+			$(".filetype_contents").find(".filetype_detail").find(".type").attr("disabled","disabled");
+			$(".filetype_contents").find(".filetype_detail").find(".mode").attr("disabled","disabled");
+			$(".filetype_contents").find(".filetype_detail").find(".description").attr("readonly","readonly");
+		}
 	}
 };

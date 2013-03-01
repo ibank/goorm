@@ -42,11 +42,14 @@ org.goorm.core.auth.prototype = {
 		$.getJSON("auth/get_info", function (data) {
 			if (data.id != "" && data.id != undefined) {
 				core.user.id = data.id;
+				core.user.level = data.level;
 				core.user.email = data.email;
 				core.user.name = data.name;
 				core.user.nick = data.nick || null;
 				core.user.type = data.type;
 				core.user.group = data.group || null;
+				core.user.uid = data.uid || null;
+				core.user.gid = data.gid && data.gid[0] || null;
 				callback(true);
 			}
 			else{

@@ -287,7 +287,7 @@ org.goorm.core.cloud.google.prototype ={
 
 
 	upload : function(uploadFile,fileName,parent){
-		//console.log('upload is called')
+		
 
 		var self=this;
 		var tmp=self.id_index[parent];
@@ -299,7 +299,7 @@ org.goorm.core.cloud.google.prototype ={
 		}
 
 		function insert_file(fileData,fileName,parents, callback) {
-			//console.log(parents);
+		
 			  const boundary = '-------314159265358979323846';
 			  const delimiter = "\r\n--" + boundary + "\r\n";
 			  const close_delim = "\r\n--" + boundary + "--";
@@ -307,8 +307,8 @@ org.goorm.core.cloud.google.prototype ={
 			  var reader = new FileReader();
 			  reader.readAsBinaryString(fileData);
 			  reader.onload = function(e) {
-			  	//console.log(fileData);
-			  	//console.log(e);
+			 
+			  	
 			    var contentType = fileData.type || 'application/octet-stream';
 			    
 			    var metadata = {
@@ -324,6 +324,7 @@ org.goorm.core.cloud.google.prototype ={
 			    }
 
 			    var base64Data = btoa(reader.result);
+			
 			    var multipartRequestBody =
 			        delimiter +
 			        'Content-Type: application/json\r\n\r\n' +
@@ -335,6 +336,7 @@ org.goorm.core.cloud.google.prototype ={
 			        base64Data +
 			        close_delim;
 
+			
 			    var request = gapi.client.request({
 			    	'title' : fileName,
 			        'path': '/upload/drive/v2/files',
@@ -346,13 +348,19 @@ org.goorm.core.cloud.google.prototype ={
 			        'body': multipartRequestBody});
 			    if (!callback) {
 			      callback = function(file) {
-
-					$('#upload_file').show();
+			      	//console.log('callback????',file);
+					//$('#upload_file').show();
+					notice.show(core.module.localization.msg['notice_file_upload_done']);
 			        self.display();//makeApiCall_forAllData();
-				   $('#upload_file').val("")
+				  // $('#upload_file').val("")
+
 			      };
 			    }
-			    request.execute(callback);
+			   /* request.execute(callback,function(data){
+			    	console.log(data);
+			    	notice.show(core.module.localization.msg['notice_file_upload_done']);
+			    });*/
+				request.execute(callback);
 			 }
 		}
 		if(argu_parent){

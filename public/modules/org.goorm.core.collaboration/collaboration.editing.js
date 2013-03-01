@@ -89,7 +89,6 @@ org.goorm.core.collaboration.editing.prototype = {
 		});
 		
 		this.socket.on("editing_someone_leaved", function (name) {
-			console.log("someone leaved in editing", name);
 			$(self.target).find(".CodeMirror-scroll").find(".user_name_" + name).remove();
 			$(self.target).find(".CodeMirror-scroll").find(".user_cursor_" + name).remove();
 		});
@@ -106,13 +105,15 @@ org.goorm.core.collaboration.editing.prototype = {
 		});
 		
 		setInterval(function() {
-			$(self.target).find(".CodeMirror-scroll").find(".user_cursor").each(function (i) {
-				if ($(this).css('visibility') == 'hidden') {
-					$(this).css('visibility', 'visible');
-				} else {
-					$(this).css('visibility', 'hidden');
-				}
-			});
+			if (core.sharing_cursor) {
+				$(self.target).find(".CodeMirror-scroll").find(".user_cursor").each(function (i) {
+					if ($(this).css('visibility') == 'hidden') {
+						$(this).css('visibility', 'visible');
+					} else {
+						$(this).css('visibility', 'hidden');
+					}
+				});
+			}
 		}, 600);
 		
 	},
@@ -133,7 +134,7 @@ org.goorm.core.collaboration.editing.prototype = {
 			if (self.socket.socket.connected) {
 				data.user = core.user.id;
 				data.nick = core.user.nick;
-				self.socket.emit("message", '{"channel": "editing", "action":"change", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "workspace": "'+ core.status.current_project_name +'", "filepath":"' + self.filepath + '", "message":' + JSON.stringify(data) + '}');
+				self.socket.emit("message", '{"channel": "editing", "action":"change", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "workspace": "'+ core.status.current_project_path +'", "filepath":"' + self.filepath + '", "message":' + JSON.stringify(data) + '}');
 				
 				clearTimeout(this.auto_save_timer);
 				var action = function(){
@@ -160,7 +161,7 @@ org.goorm.core.collaboration.editing.prototype = {
 			if (self.socket.socket.connected) {
 				data.user = core.user.id;
 				data.nick = core.user.nick;
-				self.socket.emit("message", '{"channel": "editing", "action":"cursor", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "workspace": "'+ core.status.current_project_name +'", "filepath":"' + self.filepath + '", "message":' + JSON.stringify(data) + '}');
+				self.socket.emit("message", '{"channel": "editing", "action":"cursor", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "workspace": "'+ core.status.current_project_path +'", "filepath":"' + self.filepath + '", "message":' + JSON.stringify(data) + '}');
 			}
 			else {
 				// alert.show("Disconnected to collaboration server");
@@ -184,7 +185,7 @@ org.goorm.core.collaboration.editing.prototype = {
 	},
 	
 	set_cursor: function(message) {
-		if(message.user != core.user.id){
+		if(message.user != core.user.id && core.sharing_cursor){
 			var coords = this.editor.charCoords({line:message.line, ch:message.ch});
 			var scroll = this.editor.getScrollInfo();
 			

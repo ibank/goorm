@@ -148,6 +148,8 @@ org.goorm.core = function() {
 	this.preference = null;
 	this.property = null;
 	this.workspace = null;
+	
+	this.sharing_cursor = true;
 };
 
 org.goorm.core.prototype = {
@@ -180,9 +182,9 @@ org.goorm.core.prototype = {
 		$(this).bind("plugin_loaded", function () {
 			console.log("plugin load complete");
 			
-			this.module.plugin_manager.load(0);
-			
 			this.main();
+			
+			this.module.plugin_manager.load(0);
 		});
 		
 		// this.module.auth.get_info();		
@@ -231,9 +233,13 @@ org.goorm.core.prototype = {
 									});
 								}
 							}
-						})
-					})
+						});
+					});
+					
+					
 				}
+				
+				//$(core).trigger("plugin_loaded");
 			}
 		});
 		
@@ -446,7 +452,7 @@ org.goorm.core.prototype = {
 		
 		this.dialog.find_and_replace = new org.goorm.core.edit.find_and_replace();
 		this.dialog.find_and_replace.init();
-		
+
 		this.dialog.search = new org.goorm.core.search();
 		this.dialog.search.init();
 		
@@ -534,7 +540,7 @@ org.goorm.core.prototype = {
 		$("#goorm_dialog_container").append("<div id='loading_panel_container'></div>");
 		$("#goorm_dialog_container").append("<div id='loading_background'></div>");
 		$("#loading_panel_container").append("<div id='main_loading_image'><div id='goorm_loading_status_bar'></div></div>");
-		$("#loading_panel_container").append("<div id='developers'>Sung-tae Ryu, Noori Kim, Byeong-ung Ahn, Eungwi Jo, You-Seok Nam, Chonghyun Lee, Shinwook Gahng, Cheolhyun Park</div>");
+		//$("#loading_panel_container").append("<div id='developers'>Sung-tae Ryu, Noori Kim, Byeong-ung Ahn, Eungwi Jo, You-Seok Nam, Chonghyun Lee, Shinwook Gahng, Cheolhyun Park</div>");
 		$("#loading_panel_container").append("<div id='loading_message'></div>");
 		$("#loading_panel_container").append("<div id='login_box_bg'></div>");
 		$("#loading_panel_container").append("<div id='login_box'></div>");

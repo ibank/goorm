@@ -59,6 +59,27 @@ exports.project.do_new = function(req, res){
 		res.json(data);
 	});
 
+	evt.on("project_change_permission", function(data){
+		g_auth.get_user_data(req.session, function(user_data){
+			var uid = parseInt(user_data.uid);
+			var gid = parseInt(user_data.gid[0]); // default
+
+			// change own, grp
+			//
+			fs.chown(data.project_path, uid, gid, function(err){
+				if(err){
+					console.log(err);
+				}
+
+				fs.chmod(data.project_path, 0750, function(err){
+					if(err){
+						console.log(err);
+					}
+				})
+			})
+		});
+	});
+
 	evt.on("project_add_db", function (data) {
 		g_auth.get_user_data(req.session, function(user_data){
 			data.author_id = user_data.id;
@@ -204,7 +225,6 @@ exports.plugin.run = function(req, res){
 exports.plugin.extend_function = function(req, res) {
 	g_plugin.extend_function(req.query, res);	
 };
-
 /*
  * API : File System
  */
@@ -920,6 +940,24 @@ exports.download = function(req, res) {
 		// ...
 	});
 };
+//by sim
+exports.send_file=function(req,res){
+	res.sendfile(__temp_dir+'/'+req.query.file, function(err) {
+		
+		rimraf(__temp_dir+'/'+req.query.file, function(err) {
+			if (err!=null) {
+			}
+			else {
+				// send file remove?????????
+			}
+		});
+
+		
+	}, function (err) {
+		// ...
+	});
+};
+//by sim
 
 /*
  * Social

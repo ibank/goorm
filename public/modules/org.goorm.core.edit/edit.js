@@ -40,7 +40,6 @@ org.goorm.core.edit = function () {
 
 	this.history_ch = null;
 	this.history_line=null;
-	
 };
 
 org.goorm.core.edit.prototype = {
@@ -59,7 +58,6 @@ org.goorm.core.edit.prototype = {
 		this.preference = core.preference;
 		
 		this.dictionary = new org.goorm.core.edit.dictionary();
-		
 		this.timestamp = new Date().getTime();
 				
 		$(target).append("<textarea class='code_editor'>Loading Data...</textarea>");
@@ -105,7 +103,6 @@ org.goorm.core.edit.prototype = {
 			},
 			onKeyEvent: function(i, e) {
 				/* HISTORY start */
-				//console.log('e',e);
 				if(e.type=="keydown"){
 					var only = !self.editor.somethingSelected();
 					if(e.keyCode==8 && only) self.history.pressed_key = "backspace";
@@ -169,7 +166,6 @@ org.goorm.core.edit.prototype = {
 				
 			},
 			onChange: function(i, e, a){	// i = CodeMirror object, e = change informations
-				//console.log('onChange')
 				if(self.history.mode == "history") return;
 				if(dont_update_first){
 					if(self.collaboration.updating_process_running == false){
@@ -248,7 +244,7 @@ org.goorm.core.edit.prototype = {
 				// $(self.target).find(".CodeMirror-gutter-text pre").removeClass("current_line");
 				// $(self.target).find(".CodeMirror-gutter-text pre:nth-child(" + (self.editor.getCursor().line + 1) + ")").addClass("current_line");
 				
-				// $(self.target).parent().parent().find(".ft").find(".editor_message").html("Line: " + (parseInt(self.editor.getCursor().line) + 1) + " | Col: " + self.editor.getCursor().ch);
+				 $(self.target).parent().parent().find(".ft").find(".editor_message").html("Line: " + (parseInt(self.editor.getCursor().line) + 1) + " | Col: " + self.editor.getCursor().ch);
 				
 				self.collaboration.update_cursor({
 					line: self.editor.getCursor().line,
@@ -257,6 +253,9 @@ org.goorm.core.edit.prototype = {
 				
 				self.editor.matchHighlight("CodeMirror-matchhighlight");
 				self.history.update_selection();	// for HISTORY...
+				
+				var window_manager = core.module.layout.workspace.window_manager;
+				window_manager.window[window_manager.active_window].activate();
 			},
 			onFocus: function () {
 				core.status.focus_on_editor = true;
@@ -268,12 +267,14 @@ org.goorm.core.edit.prototype = {
 					delete self.object_tree;
 					$("#object_tree").empty();
 				}
+				
+				var window_manager = core.module.layout.workspace.window_manager;
+				window_manager.window[window_manager.active_window].activate();
 			},
 			onBlur: function () {
 				core.status.focus_on_editor = false;
 			},
 			onGutterClick: function(cm, n) {
-				//console.log('onGutterClick')
 				var info = cm.lineInfo(n);
 				
 				if ($(self.target).find(".CodeMirror-gutter-text pre:eq(" + n + ")").find(".breakpoint").length > 0) {
@@ -292,6 +293,9 @@ org.goorm.core.edit.prototype = {
 				
 				self.fold_func(cm, n);
 				self.set_foldable();
+				
+				var window_manager = core.module.layout.workspace.window_manager;
+				window_manager.window[window_manager.active_window].activate();
 			},
 			onUpdate: function () {
 				self.set_foldable();
@@ -300,6 +304,14 @@ org.goorm.core.edit.prototype = {
 			}
 		});
 		
+		$(target).mousedown(function (e) {
+			var window_manager = core.module.layout.workspace.window_manager;
+			window_manager.window[window_manager.active_window].activate();
+			
+			e.stopPropagation();
+			e.preventDefault();
+			return false;
+		});
 
 		if (this.highlight_current_cursor_line) {
 			this.current_cursor_line = this.editor.setLineClass(0, "activeline");
@@ -376,7 +388,6 @@ org.goorm.core.edit.prototype = {
 	
 	highlight_line: function (line) {
 		var self = this;
-		
 		if(this.editor && line){
 			var cursor_pos = this.editor.charCoords({line:(line-1), ch:0}, "local");
 			if(self.highlighted_line) this.editor.setLineClass(self.highlighted_line, null, null);
@@ -398,12 +409,13 @@ org.goorm.core.edit.prototype = {
 	
 	clear_highlight: function () {
 		var self = this;
-		
-		this.highlighted_line = null;
-		console.log($(self.target).find(".CodeMirror-lines .highlight_line"))
-		//$(this.target).find(".CodeMirror-lines div:first div:last pre").removeClass("highlight_line");
-		$(this.target).find(".CodeMirror-lines .highlight_line").removeClass("highlight_line");
-//		$(this.target).find('.highlight_line').hide();
+		if(this.highlighted_line){
+			var line = this.highlighted_line-1;
+			this.highlighted_line = null;
+			this.editor.setLineClass(line, null, null);
+			
+		}
+//		$(this.target).find(".CodeMirror-lines .highlight_line").removeClass("highlight_line");
 	},
 	
 	set_foldable: function () {
@@ -1009,6 +1021,7 @@ org.goorm.core.edit.prototype = {
 		if(this.history.filename == "/" + this.filepath + this.filename) return;
 
 		// valid activation! manipulation start!
+		this.history.deactivated();
 		this.history.init_history(this);
 		this.editor.setOption("readOnly",false);
 	}

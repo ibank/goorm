@@ -16,7 +16,7 @@ var parsed_data={};
 module.exports = {
 		get_dictionary : function(query,evt){
 			var self=this;
-			exec('ctags ./workspace/'+query.selected_file_path,function(err,stdout,stderr){
+			exec('ctags --c-types=+l --java-types=+l   ./workspace/'+query.selected_file_path,function(err,stdout,stderr){
 				exec('cat tags',function(err,stdout,stderr){
 					var ctags_result=stdout;
 					
@@ -49,6 +49,7 @@ module.exports = {
 			self.parsed_data={
 					type : input_type,
 					v:[],
+					l:[],
 					f:[]
 			}
 			var results=input.split("\n");
@@ -61,6 +62,9 @@ module.exports = {
 						var len=results[i].split("\t").length;
 						if(results[i].split("\t")[len-1]=='v'){
 							self.parsed_data.v.push(results[i].split("\t")[0]);
+						}
+						else if(results[i].split("\t")[len-1]=='l'){
+							self.parsed_data.l.push(results[i].split("\t")[0]);
 						}
 						else if(results[i].split("\t")[len-1]=='f'){
 							self.parsed_data.f.push(results[i].split("\t")[0]);
@@ -82,6 +86,7 @@ module.exports = {
 			self.parsed_data={
 					type : input_type,
 					v:[],
+					l:[],
 					f:[],
 					c:[]
 			}
@@ -95,6 +100,9 @@ module.exports = {
 						var len=results[i].split("\t").length;
 						if(results[i].split("\t")[len-1]=='v'){	
 							self.parsed_data.v.push(results[i].split("\t")[0]);
+						}
+						else if(results[i].split("\t")[len-1]=='l'){
+							self.parsed_data.l.push(results[i].split("\t")[0]);
 						}
 						else if(results[i].split("\t")[len-1]=='f'){
 							self.parsed_data.f.push(results[i].split("\t")[0]);
@@ -121,11 +129,14 @@ module.exports = {
 					type : input_type,
 					v:[],
 					m:[],
+					l:[],
 					c:[]
 			}
-			// f is property
+			// v is property     f will be in v....
+			// l is local 
 			// m is method
 			// c is class
+
 			var results=input.split("\n");
 			for(var i=0;i<results.length;i++){
 				if(results[i].indexOf("!")==0){
@@ -136,6 +147,9 @@ module.exports = {
 						var len=results[i].split("\t").length;
 						if(results[i].split("\t")[len-2]=='f'){	//in java f means property that is variable
 							self.parsed_data.v.push(results[i].split("\t")[0]);
+						}
+						else if(results[i].split("\t")[len-1]=='l'){
+							self.parsed_data.l.push(results[i].split("\t")[0]);
 						}
 						else if(results[i].split("\t")[len-2]=='m'){
 							self.parsed_data.m.push(results[i].split("\t")[0]);

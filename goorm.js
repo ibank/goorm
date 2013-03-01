@@ -144,10 +144,12 @@ fs.readFile(__dirname+"/info_goorm.json", "utf8", function(err, contents) {
 			.option('-p, --port [PORT NUM]', 'run the goorm server with port which you want...')
 			.option('-s, --send-info [Y/N],', 'send server information to developer...')
 			.option('-h, --home [HOME Directory]', 'set HOME directory in server')
+			.option('--service', 'run the goorm server as a service mode...')
 			.action(function (env, options) {
 				var process_options = [];
 				process_options.push(options.port);
 				process_options.push(options.home);
+				var service_mode = false;
 
 				function start_process(){
 					if (options.daemon) {							
@@ -159,10 +161,15 @@ fs.readFile(__dirname+"/info_goorm.json", "utf8", function(err, contents) {
 						console.log("goormIDE server is started...");
 					}
 					else {
-						forever.start(__dirname+'/server.js', {'options': [options.port]});
+						forever.start(__dirname+'/server.js', {'options': process_options});
 					}
 				}
-
+				
+				if(options.service){
+					service_mode = true;
+					process_options.push(service_mode);
+				}
+				
 				if(options['sendInfo']){
 					var send = options['sendInfo'];
 					if(send == 'y' || send == 'yes' || send == 'Y' || send == 'Yes'){
@@ -214,6 +221,8 @@ fs.readFile(__dirname+"/info_goorm.json", "utf8", function(err, contents) {
 			.option('-g, --api-key-google [app_id],[app_secret]', 'Set the google app key(please do not enter whitespace.)')
 			.option('-h, --api-key-github [app_id],[app_secret]', 'Set the github app key(please do not enter whitespace.)')
 			.option('-d, --api-key-google_drive [client_id]', 'Set the google drive app key')
+			.option('--set-uid [uid]', 'Set uid')
+			.option('--set-gid [gid]', 'Set gid')
 			.action(function (env, options) {	
 				if (!fs.existsSync(process.env.HOME + '/.goorm/')) {
 					fs.mkdirSync(process.env.HOME + '/.goorm/');
@@ -231,6 +240,8 @@ fs.readFile(__dirname+"/info_goorm.json", "utf8", function(err, contents) {
 					var workspace = config_data.workspace || process.env.PWD + '/' + "workspace/";
 					var temp_dir = config_data.temp_dir || process.env.PWD + '/' + "temp_files/";
 					var social_key = config_data.social_key || {};
+					var uid = config_data.uid || null;
+					var gid = config_data.gid || null;
 					
 					if (options.workspace)	 {	
 						workspace = options.workspace || process.env.PWD + '/' + "workspace/";
@@ -252,6 +263,13 @@ fs.readFile(__dirname+"/info_goorm.json", "utf8", function(err, contents) {
 						else { 
 							console.log("That directory already exists!");
 						}
+					}
+					
+					if (options['setUid'])	 {	
+						uid = options['setUid'] || null;
+					}
+					if (options['setGid'])	 {	
+						gid = options['setGid'] || null;
 					}
 					
 					if(options['apiKeyFacebook'])	{
@@ -310,7 +328,9 @@ fs.readFile(__dirname+"/info_goorm.json", "utf8", function(err, contents) {
 					var config_data = {
 						workspace: workspace,
 						temp_dir: temp_dir,
-						social_key : social_key
+						social_key : social_key,
+						uid : uid,
+						gid : gid
 					};
 			
 					fs.writeFileSync(process.env.HOME +  '/.goorm/config.json', JSON.stringify(config_data), 'utf8');

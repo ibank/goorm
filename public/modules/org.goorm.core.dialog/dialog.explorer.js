@@ -108,8 +108,8 @@ org.goorm.core.dialog.explorer.prototype = {
 		$.get("file/get_dir_nodes", postdata, function (data) {
 			self.treeview = new YAHOO.widget.TreeView(self.dir_tree_ori, data);
 
-			console.log('file/get_dir_nodes','postdata',postdata);
-			console.log('data',jQuery.extend(true,{},data));
+			//console.log('file/get_dir_nodes','postdata',postdata);
+			//console.log('data',jQuery.extend(true,{},data));
 			self.treeview.subscribe("clickEvent", function(nodedata) {	
 
 				if(nodedata.node.data.cls == "dir") {
@@ -321,6 +321,22 @@ org.goorm.core.dialog.explorer.prototype = {
 					self.filepath = $(this).attr("filepath");
 				});
 			}
+			//by sim
+			else if(self.files=="#file_cloud_upload_files"){
+				$(self.files).find(".file_item").click(function() {
+				
+					$(self.files).find(".file_item").removeClass("selected_item");
+					$(self.files).find(".folder_item").removeClass("selected_item");
+					$(this).addClass("selected_item");				
+				
+					$(self.target_name).attr("value", $(this).attr("filename"));
+					
+					self.filename = $(this).attr("filename");
+					self.filetype = $(this).attr("filetype");
+					self.filepath = $(this).attr("filepath");
+				});
+			}
+			//by sim
 			else {
 				$(self.files).find(".file_item").click(function() {
 					$(self.files).find(".file_item").removeClass("selected_item");

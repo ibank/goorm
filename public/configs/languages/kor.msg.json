@@ -14,8 +14,28 @@
     "alert_file_not_opened": {
         "value": "해당 파일이 오픈되어 있지 않습니다."
     },
+    "alert_find_id_notexist": {
+        "value": "해당 아이디가 존재 하지 않습니다."
+    },
+    "alert_find_id_exist": {
+        "value": "해당 아이디 정보는"
+    },
+    "alert_find_pw_notexist": {
+        "value": "해당 정보가 존재 하지 않습니다."
+    },
+    "alert_find_pw_exist": {
+        "value": "임시 비밀번호가 메일로 발송되었습니다."
+    },
     "alert_project_not_selected": {
         "value": "프로젝트를 선택해주세요."
+    },"alert_plugin_run_error": {
+        "value": "바이너리가 존재하지 않습니다.<br>프로젝트를 빌드 하시거나 경로설정을 확인하시기 바랍니다.<br>화면 하단의 터미널을 확인해주세요."
+    },"alert_plugin_run_success": {
+        "value": "성공적으로 실행되었습니다."
+    },"alert_plugin_build_error": {
+        "value": "빌드 실패!<br>터미널 메시지를 확인하세요."
+    },"alert_plugin_build_success": {
+        "value": "성공적으로 빌드가 완료되었습니다.!"
     },
     "alert_only_zip_allowed": {
         "value": "ZIP형식의 압축파일만 지원합니다."
@@ -104,7 +124,7 @@
     "alert_project_name": {
         "value": "프로젝트 이름을 작성 해 주세요"
     },
-    "alert_project_about": {
+    "alert_project_desc": {
         "value": "프로젝트 설명을 작성 해 주세요"
     },
     "alert_allow_character": {
@@ -118,6 +138,9 @@
     },
     "notice_file_import_done": {
         "value": "파일 가져오기 완료"
+    },
+    "notice_file_upload_done":{
+        "value" : "파일 업로드 완료"
     },
     "confirmation_new_title": {
         "value": "새로 만들기"

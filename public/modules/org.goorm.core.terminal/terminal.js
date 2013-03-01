@@ -114,9 +114,7 @@ org.goorm.core.terminal.prototype = {
 					special_key: true
 				};
 				
-				if (self.arrowed_string != "") {
-					console.log(self.arrowed_string);
-					
+				if (self.arrowed_string != "") {					
 					$(self.target).find("#results").find("pre:last").append(self.arrowed_string);
 					self.arrowed_string = "";
 				}
@@ -467,8 +465,6 @@ org.goorm.core.terminal.prototype = {
 						self.arrowed = false;
 						self.arrowed_string = self.temp_stdout;
 						
-						console.log("self.arrowed_string = " + self.arrowed_string);
-						
 						self.temp_stdout = "";
 					}
 					else if (self.temp_stdout != "\u0007") {
@@ -535,7 +531,7 @@ org.goorm.core.terminal.prototype = {
 		$(document).bind(this.terminal_name + "_closed",  function () {
 			var msg = {
 				index: self.index,
-				workspace: core.status.current_project_name,
+				workspace: core.status.current_project_path,
 				terminal_name: self.terminal_name
 			};
 			
@@ -545,7 +541,7 @@ org.goorm.core.terminal.prototype = {
 		$(window).bind("unload", function () {
 			var msg = {
 				index: self.index,
-				workspace: core.status.current_project_name,
+				workspace: core.status.current_project_path,
 				terminal_name: self.terminal_name
 			};
 			
@@ -563,8 +559,7 @@ org.goorm.core.terminal.prototype = {
 			cols = parseInt(parseInt($(this.target).parent().parent().width() - 10) / 6);
 		}
 		
-		
-		this.socket.emit("terminal_join", '{"timestamp": "' + this.timestamp + '", "cols": "' + cols + '", "workspace": "'+ core.status.current_project_name +'", "terminal_name":"' + this.terminal_name + '"}');
+		this.socket.emit("terminal_join", '{"timestamp": "' + this.timestamp + '", "cols": "' + cols + '", "workspace": "'+ core.status.current_project_path +'", "terminal_name":"' + this.terminal_name + '", "uid":'+core.user.uid+', "gid":'+core.user.gid+'}');
 		
 		
 		// context menu
@@ -724,7 +719,7 @@ org.goorm.core.terminal.prototype = {
 		}
 		
 		if(this.command_ready == true) {
-			console.log(this.stdout);
+//			console.log(this.stdout);
 			this.command_ready = false;
 			var item = this.command_queue.shift();
 			if(item) {

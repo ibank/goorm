@@ -18,15 +18,15 @@ org.goorm.core.collaboration.workspace.prototype = {
 		
 		this.socket.on("workspace_message", function (data) {
  			data = JSON.parse(data);
- 			 
- 			if (data.workspace == core.status.current_project_name && data.user != core.user.id) {
+
+ 			if (data.workspace == core.status.current_project_path && data.user != core.user.id) {
 	 			core.module.layout.project_explorer.refresh(false);
  			}
 		});
 		
 		
 		$(core).bind("project_explorer_refreshed", function () {
-			self.socket.emit("message", '{"channel": "workspace", "action":"project_explorer_refresh", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "type":"'+core.user.type+'", "workspace": "'+ core.status.current_project_name + '"}');
+			self.socket.emit("message", '{"channel": "workspace", "action":"project_explorer_refresh", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "type":"'+core.user.type+'", "workspace": "'+ core.status.current_project_path + '"}');
 		});
 		
 	}

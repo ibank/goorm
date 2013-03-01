@@ -1,6 +1,6 @@
 {
 	"alert_file_name_illegal": {
-        "value": "File name is illegal"
+        "value": "File name is wrong"
     },
     "alert_folder_name_empty": {
         "value": "Folder name is empty"
@@ -14,6 +14,18 @@
     "alert_file_not_opened": {
         "value": "Cannot find opened file"
     },
+    "alert_find_id_notexist": {
+        "value": "No ID found, Please check name, email again"
+    },
+    "alert_find_id_exist": {
+        "value": "Your ID is"
+    },
+    "alert_find_pw_notexist": {
+        "value": "No information found, Please check Id, name, email again"
+    },
+    "alert_find_pw_exist": {
+        "value": "Temporary password sent to your email account"
+    },
     "alert_project_not_selected": {
         "value": "Please select the project"
     },
@@ -22,9 +34,18 @@
     },
     "alert_project_not_opened": {
         "value": "Cannot find opened project"
+    },"alert_plugin_build_error": {
+        "value": "Fail to build project.<br>Check terminal on screen"
+    },"alert_plugin_build_success": {
+        "value": "Build success"
+    },
+    "alert_plugin_run_error": {
+        "value": "There's no binary file.<br>Please build project or check the build path.<br>Check below terminal on screen"
+    },"alert_plugin_run_success": {
+        "value": "Successfully excute"
     },
     "alert_filetype_same_name": {
-        "value": "There is same file extension"
+        "value": "There exists same file extension"
     },
     "alert_error": {
         "value": "Error : "
@@ -98,7 +119,7 @@
     "alert_project_name": {
         "value": "Insert the project name"
     },
-    "alert_project_about": {
+    "alert_project_desc": {
         "value": "Insert project about"
     },
     "alert_allow_character": {
@@ -112,6 +133,9 @@
     },
     "notice_file_import_done": {
         "value": "File import done"
+    },
+    "notice_file_upload_done":{
+        "value" : "File upload done"
     },
     "confirmation_new_title": {
         "value": "New ..."
@@ -186,7 +210,7 @@
         "value": "Could not connect to collaboration server"
     },
     "alert_select_project_item": {
-        "value": "You must select at least one project item"
+        "value": "You must select at least one project"
     },
     "alert_no_have_data": {
         "value": "No data to display"
@@ -210,7 +234,7 @@
         "value": "Please enter a Password."
     },
     "alert_user_undefined_re_password": {
-        "value": "Please enter a RePassword"
+        "value": "Please enter a Repassword"
     },
     "alert_user_undefined_password_not_match": {
         "value": "Please recheck your password. They are not a match."
@@ -255,7 +279,7 @@
 	    "value": "Welcome to goorm ide."
     },
     "alert_cannot_connect_db": {
-	    "value": "Fail to connect from database."
+	    "value": "Fail to connect with database."
     },
     "confirmation_delete_item": {
 	    "value": "Are you sure you want to delete a user?"
@@ -282,22 +306,22 @@
         "value": "Filetype save complete!"
     },
     "alert_cannot_project_run": {
-        "value": "Cannot run a project. Please select a proper project."
+        "value": "Cannot run the project. Please select a proper project."
     },
     "alert_cannot_project_remote_run": {
-        "value": "Cannot remote run a project. Please select a proper project."
+        "value": "Cannot remote run the project. Please select a proper project."
     },
     "alert_cannot_project_generate": {
-        "value": "Cannot generate a project. Please select a proper project."
+        "value": "Cannot generate the project. Please select a proper project."
     },
     "alert_cannot_project_build": {
-        "value": "Cannot build a project. Please select a proper project."
+        "value": "Cannot build the project. Please select a proper project."
     },
     "alert_cannot_project_debug": {
-        "value": "Cannot debug a project. Please select a proper project."
+        "value": "Cannot debug the project. Please select a proper project."
     },
     "confirmation_file_upload" : {
-        "value": "Do you really want to upload a file?"
+        "value": "Do you really want to upload the file?"
     },
     "alert_file_not_defined" : {
         "value": "Choose the file you want to upload."
@@ -312,7 +336,7 @@
         "value" : "Duplicate login has occurred. Do you really want to login?"
     },
     "alert_force_logout" : {
-        "value" : "Duplicate login has occurred. you will be logout."
+        "value" : "Duplicate login has occurred. you will be logging out."
     },
     "alert_confirm_delete_co_developer" : {
         "value" : "Do you really want to fire the co-developer?"
@@ -321,7 +345,7 @@
         "value" : "Do you really want to invite the co-developer?"
     },
     "alert_no_display_to_data" : {
-        "value" : "There are no registered developers."
+        "value" : "No developers share this project."
     },
     "alert_select_project" : {
         "value" : "Please select your project."

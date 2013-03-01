@@ -36,7 +36,7 @@
                         "value": "goorm Customization 프로젝트"
                     },
                     "file_new_file": {
-                        "value": "파일"
+                        "value": "새 파일"
                     },
                     "file_new_folder": {
                         "value": "폴더"
@@ -155,6 +155,9 @@
             },
             "edit_preference": {
                 "value": "기본 설정"
+            },
+            "edit_share_cursor": {
+                "value": "커서 공유 토글"
             },
             "edit_search": {
                 "value": "검색"

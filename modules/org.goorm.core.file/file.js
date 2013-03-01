@@ -316,6 +316,9 @@ module.exports = {
 		var __root = path.replace(__workspace+'/', "") + "/"
 		var is_all_project = (__root == '/') ? true : false;
 
+		root_dir = path.replace(__workspace+'/', "").split('/')[0];
+		if(root_dir[root_dir.length-1] != '/') root_dir += '/'
+
 		if(is_all_project){
 			g_auth_project.get_collaboration_list(author, function(owner_project_data){
 				for(var i=0; i<owner_project_data.length; i++){
@@ -473,7 +476,7 @@ module.exports = {
 					
 					walker.on("end", function () {
 						tree = self.make_dir_tree(root_dir, dirs);
-						
+
 						// root directory for get_dir_nodes only
 						var dir_tree = {};
 						var dir_tree_name = root_dir;
@@ -513,7 +516,7 @@ module.exports = {
 		var rest = [];
 				
 		for (var i=0; i<dirs.length; i++) {
-			if (dirs[i].root == root) {
+			if (dirs[i].root == root || dirs[i].root == root + '/') {
 				tree.push(dirs[i]);
 			}
 			else {

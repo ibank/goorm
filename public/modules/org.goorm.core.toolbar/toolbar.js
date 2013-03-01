@@ -51,7 +51,7 @@ org.goorm.core.toolbar.prototype = {
 		var Dom = YAHOO.util.Dom; 
 		var Event = YAHOO.util.Event; 
 		var DDM = YAHOO.util.DragDropMgr; 
-
+		
 		// init menu.action
 		//core.action.init();
 		
@@ -113,14 +113,14 @@ org.goorm.core.toolbar.prototype = {
 		
 		// default Button Setting.
 		if(localStorage['preference.editor.use_clipboard'] == "true") {
-			$("a[action=use_clipboard]").find("img").addClass("toolbar_buttonPressed");
+			$("a[action=use_clipboard]").find("img").addClass("toolbar_button_pressed");
 		}
 		
 		$(core).bind("on_preference_confirmed",function(){
 			if(localStorage['preference.editor.use_clipboard'] == "true") {
-				$("a[action=use_clipboard]").find("img").addClass("toolbar_buttonPressed");
+				$("a[action=use_clipboard]").find("img").addClass("toolbar_button_pressed");
 			}else {
-				$("a[action=use_clipboard]").find("img").removeClass("toolbar_buttonPressed");
+				$("a[action=use_clipboard]").find("img").removeClass("toolbar_button_pressed");
 			}
 		});
 	},
@@ -143,10 +143,10 @@ org.goorm.core.toolbar.prototype = {
 				var div_name = name.split(".").pop(); 
 				$("div[id='"+div_name+".toolbar']").prepend("<div id='toolbar_handle_"+name+"' class='toolbar_moving_handle'><div class='toolbar_handle'></div></div>");
 				
-				/*self.index_check++;
+				self.index_check++;
 				if(self.index_check == self.order.length){
 					$(self).trigger("toolbarLoaded");
-				}*/
+				}
 				
 				//$("#"+container).append(data);
 				//self.context_menu = 

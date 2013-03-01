@@ -21,7 +21,7 @@
 		"value": "Build Project"
 	},
 	"build_clean": {
-		"value": "Build Clean"
+		"value": "Clean build files"
 	},
 	"build_configuration": {
 		"value": "Build Configuration"
@@ -51,7 +51,7 @@
         "value": "Deselect All"
     },
     "dialog_collaboration": {
-        "value": "Join Online Project",
+        "value": "Online Project Collaboration",
         "children": {
             "dialog_collaboration_guide": {
                 "value": "Join the project and Enjoy the develpment with others!"
@@ -70,6 +70,20 @@
             },
             "dialog_collaboration_option_snapshot": {
                 "value": "Client-side Snapshot (Example)"
+            }
+        }
+    },
+     "dialog_file_cloud_upload": {
+        "value": "File Cloud Upload",
+        "children": {
+            "dialog_file_cloud_upload_guide": {
+                "value": "Select file to upload"
+            },
+            "dialog_file_cloud_upload_file": {
+                "value": "Selected file : "
+            },
+            "dialog_file_cloud_upload_cloud_uploadtype": {
+                "value": "File Type"
             }
         }
     },
@@ -148,7 +162,7 @@
         "value": "Open File",
         "children": {
             "dialog_file_open_file_guide": {
-                "value": "Select the file to open"
+                "value": "Select file to open"
             }
         }
     },
@@ -251,13 +265,13 @@
                 "value": "Available Software"
             },
             "dialog_help_install_new_plugins_guide": {
-                "value": "Select a site or enter the location of a site"
+                "value": "Select site or enter the site location"
             },
             "dialog_help_install_new_plugins_workwith": {
                 "value": "Work with"
             },
             "dialog_help_install_new_plugins_msg1": {
-                "value": "Find more software by working with the"
+                "value": "Find more software.."
             },
             "dialog_help_install_new_plugins_available_software_site": {
                 "value": "Available Software Site"
@@ -275,7 +289,7 @@
                 "value": "Type or select a site."
             },
             "dialog_help_install_new_plugins_type_guide": {
-                "value": "type filter text"
+                "value": "Type text to filter"
             }
         }
     },
@@ -292,7 +306,7 @@
                 "value": "Project description"
             },
             "dialog_new_project_guide2": {
-                "value": "Insert information for new project"
+                "value": "Add information for new project"
             },
             "dialog_new_project_taget": {
                 "value": "Target :"
@@ -301,19 +315,22 @@
                 "value": "Project information"
             },
             "dialog_new_project_author": {
-                "value": "Project author"
+                "value": "Author id"
+            },
+            "dialog_new_project_author_name": {
+                "value": "Author name"
             },
             "dialog_new_project_name": {
                 "value": "Project name"
             },
             "dialog_new_project_desc": {
-                "value": "Project about"
+                "value": "Project description"
             },
             "dialog_new_project_callaboration": {
-                "value": "Collaboration setting"
+                "value": "Project Collaboration setting"
             },
             "dialog_new_project_collaboration_use": {
-                "value": "Use collaboration"
+                "value": "Use Project collaboration"
             },
             "dialog_new_project_import": {
                 "value": "Project import"
@@ -322,7 +339,7 @@
                 "value": "Import project"
             },
             "dialog_new_project_import_message": {
-                "value": "Select the zip file to import"
+                "value": "Select zip file to import"
             }
         }
     },
@@ -338,7 +355,7 @@
         "value": "Clean Project",
         "children": {
             "dialog_project_clean_guide": {
-                "value": "Select the project to clean"
+                "value": "Select project to clean"
             }
         }
     },
@@ -346,7 +363,7 @@
         "value": "Build Project",
         "children": {
             "dialog_project_build_guide": {
-                "value": "Select a project to build"
+                "value": "Select project to build"
             }
         }
     },
@@ -429,7 +446,7 @@
         "value": "User Management",
         "children": {
             "dialog_user_management_userlist": {
-                "value": "UserList"
+                "value": "User List"
              },
             "dialog_user_management_permission": {
                 "value": "Permission"
@@ -441,10 +458,10 @@
                 "value": "Select User"
              },
             "dialog_config_signup_general_config": {
-                "value": "General Sign-up On/Off"
+                "value": "Turn On/Off General Sign-up"
              },
             "dialog_config_social_login_general_config": {
-                "value": "Social Login On/Off"
+                "value": "Turn On/Off Social Login "
              },
             "dialog_config_signup_guide": {
                 "value": "Sign-up Configuration"
@@ -525,7 +542,7 @@
                 "value": "Select Theme : "
              },
             "dialog_preference_filetype_guide": {
-                "value": "Modify file types"
+                "value": "Change file types"
              },
             "dialog_preference_select_language_guide": {
                 "value": "Select Language"
@@ -548,7 +565,7 @@
                 "value": "Project Name"
              },
             "dialog_project_property_project_date": {
-                "value": "Project Date"
+                "value": "Project created Date"
              },
             "dialog_project_property_project_description": {
                 "value": "Project Description"
@@ -572,7 +589,7 @@
                "value": "Checkout"
             },
             "auto_build_after_save" : {
-                "value" : "Auto build after save"
+                "value" : "Save and build"
             }
         }
     },

@@ -103,8 +103,8 @@ org.goorm.core.window.panel.prototype = {
 				constraintoviewport: true,
 				context: ["showbtn", "tl", "bl"]
 			} 
-		);	
-
+		);
+		
 		
 		//////////////////////////////////////////////////////////////////////////////////////////
 		// window setting
@@ -232,20 +232,36 @@ org.goorm.core.window.panel.prototype = {
 		}, this.panel, true);
 		
 		this.resize.on("resize", function(args) {
+			var D = YAHOO.util.Dom; 
+			var elRegion = D.getRegion(this.element); 
+			
+			var panel_left = elRegion.left;
+			var panel_top = elRegion.top;	
+			var panel_right = elRegion.left+elRegion.width;
+			var panel_bottom = elRegion.top+elRegion.height;
 			var panel_width = args.width;
 			var panel_height = args.height;
-	
-			if(panel_width != 0) {
+			if(panel_width != 0 && panel_left>= ($("#" + self.workspace_container).offset().left) && panel_right<= ($("#" + self.workspace_container).offset().left+$("#" + self.workspace_container).width()-5)) {
             	this.cfg.setProperty("width", panel_width + "px");
+			}else if(panel_width != 0&&  panel_right> ($("#" + self.workspace_container).offset().left+$("#" + self.workspace_container).width()-5)){
+				this.cfg.setProperty("width", (($("#" + self.workspace_container).offset().left-5+$("#" + self.workspace_container).width())-panel_left) + "px");
 			}
-			if(panel_height != 0) {
+			if(panel_height != 0&&panel_top>=$("#" + self.workspace_container).offset().top&& panel_bottom<= ($("#" + self.workspace_container).offset().top+$("#" + self.workspace_container).height()-15)) {
             	this.cfg.setProperty("height", panel_height + "px");
+			}else if(panel_height != 0&& panel_bottom> ($("#" + self.workspace_container).offset().top+$("#" + self.workspace_container).height()-15)){
+				this.cfg.setProperty("height", (($("#" + self.workspace_container).offset().top-15+$("#" + self.workspace_container).height())-panel_top) + "px");
 			}
+			if(panel_width>=$("#" + self.workspace_container).width()-5)
+						this.cfg.setProperty("width", $("#" + self.workspace_container).width()-5 + "px");
+			if(panel_height>=$("#" + self.workspace_container).height()-15)
+						this.cfg.setProperty("height", $("#" + self.workspace_container).height()-15 + "px");
+			
 			
 			self.resize_all();
 		}, this.panel, true);
 		
 		this.resize.on("endResize", function(args) {
+		
 			self.width = $("#" + self.container + "_c").width();
 			self.height = $("#" + self.container + "_c").height();
 		
@@ -325,6 +341,34 @@ org.goorm.core.window.panel.prototype = {
 		setTimeout(function(){
 			self.init_context_event();
 		}, 500)
+		
+		this.panel.dd.on("endDragEvent", function (e) {
+			var panel_x = $("#"+self.container).offset().left;
+			var panel_y = $("#"+self.container).offset().top;
+			var panel_width = parseInt($("#"+self.container).css("width"));
+			var panel_height = parseInt($("#"+self.container).css("height"));
+			
+			var workspace_x = $("#"+self.workspace_container).offset().left;
+			var workspace_y = $("#"+self.workspace_container).offset().top;
+			var workspace_width = parseInt($("#"+self.workspace_container).css("width"));
+			var workspace_height = parseInt($("#"+self.workspace_container).css("height"));
+			
+			if (panel_x < workspace_x) {
+				panel_x = workspace_x - 1;
+			}
+			else if (panel_x + panel_width > workspace_x + workspace_width) {
+				panel_x = (workspace_x + workspace_width) - panel_width;
+			}
+			
+			if (panel_y < workspace_y + 25) {
+				panel_y = workspace_y + 25;
+			}
+			else if (panel_y + panel_height > workspace_y + workspace_height) {
+				panel_y = (workspace_y + workspace_height) - panel_height;
+			}
+			
+			self.panel.moveTo(panel_x, panel_y);
+		}, this.panel.dd, true);
 	},
 	
 	connect: function(tab) {

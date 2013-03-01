@@ -375,15 +375,15 @@ org.goorm.core.design.canvas.prototype = {
 
 				//Set Status with Drawing Mode
 				if($(self.target).find(".canvas").hasClass("status_drawing_line")) {			
-					$(self.target).parent().find(".design_status_container").find(".lineDrawing").addClass("toolbar_buttonPressed");
+					$(self.target).parent().find(".design_status_container").find(".lineDrawing").addClass("toolbar_button_pressed");
 				}
 				//If square mode
 				else if($(self.target).find(".canvas").hasClass("status_drawing_square")) {
-					$(self.target).parent().find(".design_status_container").find(".squareDrawing").addClass("toolbar_buttonPressed");
+					$(self.target).parent().find(".design_status_container").find(".squareDrawing").addClass("toolbar_button_pressed");
 				}
 				else {
-					$(self.target).parent().find(".design_status_container").find(".lineDrawing").removeClass("toolbar_buttonPressed");
-					$(self.target).parent().find(".design_status_container").find(".squareDrawing").removeClass("toolbar_buttonPressed");
+					$(self.target).parent().find(".design_status_container").find(".lineDrawing").removeClass("toolbar_button_pressed");
+					$(self.target).parent().find(".design_status_container").find(".squareDrawing").removeClass("toolbar_button_pressed");
 				}
 				
 				
@@ -544,15 +544,15 @@ org.goorm.core.design.canvas.prototype = {
 				
 				//Set Status with Drawing Mode
 				if($(self.target).find(".canvas").hasClass("status_drawing_line")) {			
-					$(self.target).parent().find(".design_status_container").find(".lineDrawing").addClass("toolbar_buttonPressed");
+					$(self.target).parent().find(".design_status_container").find(".lineDrawing").addClass("toolbar_button_pressed");
 				}
 				//If square mode
 				else if($(self.target).find(".canvas").hasClass("status_drawing_square")) {
-					$(self.target).parent().find(".design_status_container").find(".squareDrawing").addClass("toolbar_buttonPressed");
+					$(self.target).parent().find(".design_status_container").find(".squareDrawing").addClass("toolbar_button_pressed");
 				}
 				else {
-					$(self.target).parent().find(".design_status_container").find(".lineDrawing").removeClass("toolbar_buttonPressed");
-					$(self.target).parent().find(".design_status_container").find(".squareDrawing").removeClass("toolbar_buttonPressed");
+					$(self.target).parent().find(".design_status_container").find(".lineDrawing").removeClass("toolbar_button_pressed");
+					$(self.target).parent().find(".design_status_container").find(".squareDrawing").removeClass("toolbar_button_pressed");
 				}
 				
 				//Objects
@@ -939,15 +939,15 @@ if  ( ( (sx - 5 <= x && x <= ex + 5) || (ex - 5 <= x && x <= sx + 5) ) && ( (sy 
 
 				//Set Status with Drawing Mode
 				if($(self.target).find(".canvas").hasClass("status_drawing_line")) {			
-					$(self.target).parent().find(".design_status_container").find(".lineDrawing").addClass("toolbar_buttonPressed");
+					$(self.target).parent().find(".design_status_container").find(".lineDrawing").addClass("toolbar_button_pressed");
 				}
 				//If square mode
 				else if($(self.target).find(".canvas").hasClass("status_drawing_square")) {
-					$(self.target).parent().find(".design_status_container").find(".squareDrawing").addClass("toolbar_buttonPressed");
+					$(self.target).parent().find(".design_status_container").find(".squareDrawing").addClass("toolbar_button_pressed");
 				}
 				else {
-					$(self.target).parent().find(".design_status_container").find(".lineDrawing").removeClass("toolbar_buttonPressed");
-					$(self.target).parent().find(".design_status_container").find(".squareDrawing").removeClass("toolbar_buttonPressed");
+					$(self.target).parent().find(".design_status_container").find(".lineDrawing").removeClass("toolbar_button_pressed");
+					$(self.target).parent().find(".design_status_container").find(".squareDrawing").removeClass("toolbar_button_pressed");
 				}
 				
 				//Objects
@@ -2078,8 +2078,8 @@ if  ( ( (sx - 5 <= x && x <= ex + 5) || (ex - 5 <= x && x <= sx + 5) ) && ( (sy 
 		$(this.target).find(".canvas").removeClass("status_resize_right");
 		
 		
-		$(this.target).parent().find(".design_status_container").find(".lineDrawing").removeClass("toolbar_buttonPressed");
-		$(this.target).parent().find(".design_status_container").find(".squareDrawing").removeClass("toolbar_buttonPressed");
+		$(this.target).parent().find(".design_status_container").find(".lineDrawing").removeClass("toolbar_button_pressed");
+		$(this.target).parent().find(".design_status_container").find(".squareDrawing").removeClass("toolbar_button_pressed");
 		
 		//If line mode
 		if(mode == "line") {			

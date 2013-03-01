@@ -57,7 +57,7 @@ module.exports = {
 									detailedtype: query.project_detailed_type,
 									author: query.project_author,
 									name: query.project_name,
-									about: query.project_desc,
+									description: query.project_desc,
 									date: date_string,
 									collaboration: query.use_collaboration,
 									plugins: query.plugins
@@ -80,6 +80,14 @@ module.exports = {
 											project_name : query.project_name,
 											project_path : query.project_author+'_'+query.project_name,
 											project_type : query.project_type
+										}
+
+										if(__service_mode){
+											var project_permission_data = {
+												project_path : __workspace + '/' + project_dir
+											}
+
+											evt.emit("project_change_permission", project_permission_data)
 										}
 
 										evt.emit("project_add_db", project_db_data);

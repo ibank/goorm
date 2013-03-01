@@ -119,7 +119,6 @@ org.goorm.core.help.contents.prototype = {
 					$(this).html(title);
 					$(this).parent().unbind("click");
 					$(this).parent().click(function () {
-						console.log(top);
 						$('#help_contents_middle').scrollTop(top);
 					});
 				}

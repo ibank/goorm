@@ -64,8 +64,13 @@ org.goorm.core.menu.action.prototype = {
 				yes_text : core.module.localization.msg['confirmation_yes'],
 				no_text : core.module.localization.msg['confirmation_no'],
 				yes : function() {
-						localStorage['user'] = "";
-						location.href = '/';
+						// localStorage['user'] = "";
+						// location.href = '/';
+						core.module.layout.communication.leave();
+
+						window.open('','_self')
+						window.close();
+
 				},
 				no : function() {
 
@@ -134,7 +139,6 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=delete_file]").click(function() {
 			if(core.status.selected_file) {
 				if("/"+core.status.current_project_path == core.status.selected_file) {
-					console.log(core.status.current_project_path);
 					alert.show("Cannot Delete!");
 					return ;
 				}
@@ -151,7 +155,6 @@ org.goorm.core.menu.action.prototype = {
 						var postdata = {
 							filename : core.status.selected_file
 						};
-						console.log(postdata);
 						$.get("file/delete", postdata, function(data) {
 							m.s("delete: " + core.status.selected_file);
 							core.module.layout.project_explorer.refresh();
@@ -226,7 +229,6 @@ org.goorm.core.menu.action.prototype = {
 
 		$("a[action=do_cut]").unbind("click");
 		$("a[action=do_cut]").click(function() {
-			console.log("cut");
 			//core.dialog.preference.preference['preference.editor.use_clipboard'];
 			var window_manager = core.module.layout.workspace.window_manager;
 
@@ -239,7 +241,6 @@ org.goorm.core.menu.action.prototype = {
 
 		$("a[action=do_copy]").unbind("click");
 		$("a[action=do_copy]").click(function() {
-			console.log("copy");
 			var window_manager = core.module.layout.workspace.window_manager;
 
 			if(window_manager.window[window_manager.active_window].designer) {
@@ -361,11 +362,11 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=use_clipboard]").click(function() {
 			
 			if(core.preference['preference.editor.use_clipboard'] == "true") {
-				$(this).find("img").removeClass("toolbar_buttonPressed");
+				$(this).find("img").removeClass("toolbar_button_pressed");
 				core.preference['preference.editor.use_clipboard'] = "false";
 				localStorage['preference.editor.use_clipboard'] = "false";
 			} else {
-				$(this).find("img").addClass("toolbar_buttonPressed");
+				$(this).find("img").addClass("toolbar_button_pressed");
 				core.preference['preference.editor.use_clipboard'] = "true";
 				localStorage['preference.editor.use_clipboard'] = "true";
 			}
@@ -376,6 +377,22 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=search]").click(function() {
 			core.dialog.search.show();
 		});
+		
+		$("a[action=do_share_cursor]").unbind("click");
+		$("a[action=do_share_cursor]").click(function() {
+			core.sharing_cursor = !core.sharing_cursor;
+			
+			if (core.sharing_cursor) {
+				$(this).find(".toolbar_button").addClass("toolbar_button_pressed");
+			}
+			else {
+				$(this).find(".toolbar_button").removeClass("toolbar_button_pressed");
+			}
+			
+			$(".user_name").toggle();
+			$(".user_cursor").css("visibility", "hidden");
+		});
+		
 		//////////////////////////////////////////////////
 		//Main Menu : Design
 		//////////////////////////////////////////////////
@@ -711,7 +728,7 @@ org.goorm.core.menu.action.prototype = {
 				core.chat_on = false;
 				core.module.layout.communication.set_chat_off();
 				$(".is_chat_on").html("Chat Off");
-				$("a[action=chat_on_off]").find("img").removeClass("toolbar_buttonPressed");
+				$("a[action=chat_on_off]").find("img").removeClass("toolbar_button_pressed");
 
 				$("a[action=chat_on_off]").each(function(i) {
 					if($(this).attr("status") == "enable") {
@@ -726,7 +743,7 @@ org.goorm.core.menu.action.prototype = {
 				//core.module.layout.chat.init();
 				core.module.layout.communication.set_chat_on();
 				$(".is_chat_on").html("Chat On");
-				$("a[action=chat_on_off]").find("img").addClass("toolbar_buttonPressed");
+				$("a[action=chat_on_off]").find("img").addClass("toolbar_button_pressed");
 
 				$("a[action=chat_on_off]").each(function(i) {
 					if($(this).attr("status") == "enable") {
@@ -748,7 +765,7 @@ org.goorm.core.menu.action.prototype = {
 				core.flag.collaboration_on = false;
 				$(".is_collaboration_on").html("Collaboration Off");
 
-				$("a[action=collaboration_edit_on_off]").find("img").removeClass("toolbar_buttonPressed");
+				$("a[action=collaboration_edit_on_off]").find("img").removeClass("toolbar_button_pressed");
 
 				$("a[action=collaboration_edit_on_off]").each(function(i) {
 					if($(this).attr("status") == "enable") {
@@ -769,7 +786,7 @@ org.goorm.core.menu.action.prototype = {
 				core.flag.collaboration_on = true;
 				$(".is_collaboration_on").html("Collaboration On");
 
-				$("a[action=collaboration_edit_on_off]").find("img").addClass("toolbar_buttonPressed");
+				$("a[action=collaboration_edit_on_off]").find("img").addClass("toolbar_button_pressed");
 
 				$("a[action=collaboration_edit_on_off]").each(function(i) {
 					if($(this).attr("status") == "enable") {
@@ -793,7 +810,7 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=collaboration_draw_on_off]").click(function() {
 			if(core.collaboration_draw_on) {
 				core.collaboration_draw_on = false;
-				$("a[action=collaboration_draw_on_off]").find("img").removeClass("toolbar_buttonPressed");
+				$("a[action=collaboration_draw_on_off]").find("img").removeClass("toolbar_button_pressed");
 
 				$("a[action=collaboration_draw_on_off]").each(function(i) {
 					if($(this).attr("status") == "enable") {
@@ -812,7 +829,7 @@ org.goorm.core.menu.action.prototype = {
 				}
 			} else {
 				core.collaboration_draw_on = true;
-				$("a[action=collaboration_draw_on_off]").find("img").addClass("toolbar_buttonPressed");
+				$("a[action=collaboration_draw_on_off]").find("img").addClass("toolbar_button_pressed");
 
 				$("a[action=collaboration_draw_on_off]").each(function(i) {
 					if($(this).attr("status") == "enable") {
@@ -968,17 +985,39 @@ org.goorm.core.menu.action.prototype = {
 
 		$("a[action=slide_show_mode]").unbind("click");
 		$("a[action=slide_show_mode]").click(function() {
-			core.module.layout.layout.getUnitByPosition("left").collapse();
-			core.module.layout.inner_layout.getUnitByPosition("bottom").collapse();
+			if(!core.module.layout.slideshare.slide_show_mode){
 
-			core.module.layout.inner_layout.getUnitByPosition("right").expand();
-			core.module.layout.inner_right_tabview.selectTab(1);
+				core.module.layout.slideshare.layout_temp_data = {
+					'left' : localStorage.layout_left_collapse,
+					'bottom' : localStorage.layout_bottom_collapse
+				}
 
-			var window_width = $(window).width();
-			var window_height = $(window).height();
+				core.module.layout.layout.getUnitByPosition("left").collapse();
+				core.module.layout.inner_layout.getUnitByPosition("bottom").collapse();
 
-			var right_width = window_width * ( window_width / (window_width + window_height) );
-			core.module.layout.inner_layout._units.right.set('width', right_width - 30);
+				core.module.layout.slideshare.slide_show_mode = true
+
+				core.module.layout.inner_layout.getUnitByPosition("right").expand();
+				core.module.layout.inner_right_tabview.selectTab(1);
+
+				var window_width = $(window).width();
+				var window_height = $(window).height();
+
+				var right_width = window_width * ( window_width / (window_width + window_height) );
+				core.module.layout.inner_layout._units.right.set('width', right_width - 30);
+			}
+			else{
+				core.module.layout.slideshare.slide_show_mode = false
+
+				if(core.module.layout.slideshare.layout_temp_data){
+					if(core.module.layout.slideshare.layout_temp_data.left == 'false')
+						core.module.layout.layout.getUnitByPosition("left").expand();
+					if(core.module.layout.slideshare.layout_temp_data.bottom == 'false')
+						core.module.layout.inner_layout.getUnitByPosition("bottom").expand();
+				}
+
+				core.module.layout.inner_layout.getUnitByPosition("right").collapse();
+			}
 		});
 
 		$("a[action=hide_all_windows]").unbind("click");
@@ -1171,12 +1210,20 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=rename_context]").click(function() {
 			core.dialog.rename_file.show("context");
 		});
-
 		$("a[action=delete_context]").unbind("click");
 		$("a[action=delete_context]").click(function() {
-			if("/"+core.status.current_project_path == core.status.selected_file) {
-				console.log(core.status.current_project_path);
-				alert.show("Cannot Delete!");
+			if(core.status.current_project_path==""){/////case select project
+				var tmp=core.status.selected_file.substring(1);		/////and select project root
+				if(tmp.indexOf('/')==-1){
+					core.dialog.delete_project.show();
+					return;
+				}
+			}
+			if("/"+core.status.current_project_path == core.status.selected_file) {		//each root
+				
+				//console.log(core.status.current_project_path);
+				//alert.show("Cannot Delete!");
+				core.dialog.delete_project.show();
 				return ;
 			}
 			confirmation.init({
@@ -1189,7 +1236,6 @@ org.goorm.core.menu.action.prototype = {
 						filename : core.status.selected_file
 					};
 					$.get("file/delete", postdata, function(data) {
-						console.log(data);
 						m.s("delete: " + core.status.selected_file);
 						core.module.layout.project_explorer.refresh();
 					});
@@ -1294,10 +1340,11 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=upload_google_drive_context]").click(function(e) {
 			var target = $("#google_drive_treeview").find(".ygtvfocus")[0];
 			var file_id = core.module.layout.cloud_explorer.treeview.getNodeByElement(target).data.file_id;
-			//console.log('!!!!!!!target',target,'file_id',file_id);
+		//	console.log('target is',target);
+		//	console.log('file_id is',file_id);
+		
 			core.dialog.upload_file.show(file_id);
 
-			//console.log(core.module.layout.cloud_explorer.treeview.getNodeByElement(target).data);
 			core.module.layout.cloud_explorer.context_menu_file.menu.hide();
 		});
 
@@ -1403,7 +1450,12 @@ org.goorm.core.menu.action.prototype = {
 				title: "Confirmation", 
 
 				yes: function () {
-					$.post('/auth/logout', function(result){
+					var postdata = {
+						'id' : core.user.id,
+						'type' : core.user.type
+					}
+
+					$.post('/auth/logout', postdata, function(result){
 						if(result) location.href = '/';
 					})
 				}, no: function () {
@@ -1468,18 +1520,30 @@ org.goorm.core.menu.action.prototype = {
 		// })
 		$("a[action=slideshare_paint]").unbind('click');
 		$("a[action=slideshare_paint]").click(function(e){
-			$("a[action=slideshare_erase] div").removeClass('slide_button_pressed')
+			$("a[action=slideshare_erase] div").removeClass('slide_button_pressed');
+			//$("a[action=slideshare_highlight] div").removeClass('slide_button_pressed');
 			$(this).find('div').addClass('slide_button_pressed')
 
 			$("#paint").val("paint");
 		});
+
 		$("a[action=slideshare_erase]").unbind('click');
 		$("a[action=slideshare_erase]").click(function(e){
-			$("a[action=slideshare_paint] div").removeClass('slide_button_pressed')
+			$("a[action=slideshare_paint] div").removeClass('slide_button_pressed');
+			//$("a[action=slideshare_highlight] div").removeClass('slide_button_pressed');
 			$(this).find('div').addClass('slide_button_pressed')
 
 			$("#paint").val("erase");
 		});
+
+		/*$("a[action=slideshare_highlight]").unbind('click');
+		$("a[action=slideshare_highlight]").click(function(e){
+			$("a[action=slideshare_paint] div").removeClass('slide_button_pressed');
+			$("a[action=slideshare_erase] div").removeClass('slide_button_pressed');
+			$(this).find('div').addClass('slide_button_pressed');
+
+			$("#paint").val("highlight");
+		});*/
 		/*$("a[action=slideshare_erase_size]").unbind('click');
 		$("a[action=slideshare_erase_size]").click(function(e){
 			if($(this).find('div').hasClass('slide_button_pressed')){
@@ -1493,6 +1557,7 @@ org.goorm.core.menu.action.prototype = {
 			$("a[action=slideshare_brush]").find('div').removeClass('slide_button_pressed');
 			$("#slideshare_palette_container").hide();
 		});*/
+
 		$("a[action=slideshare_palette]").unbind('click');
 		$("a[action=slideshare_palette]").click(function(e){
 			if($(this).find('div').hasClass('slide_button_pressed')){
@@ -1522,6 +1587,22 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=slideshare_erase_all]").unbind('click');
 		$("a[action=slideshare_erase_all]").click(function(e){
 			$("#erase_all").trigger("click");
+		});
+		$("a[action=slideshare_connect]").unbind('click');
+		$("a[action=slideshare_connect]").click(function(e){
+			if($(this).find('div').hasClass('slide_button_pressed')){
+				$(this).find('div').css("background","url('configs/toolbars/org.goorm.core.slideshare/image/disconnect.png') no-repeat");
+				$(this).find('div').css("background-position","center");
+				$(this).find('div').removeClass('slide_button_pressed');
+				$(this).find('div').attr('state','disconnected');
+				core.module.layout.slideshare.disconnecting();
+			} else {
+				$(this).find('div').css("background","url('configs/toolbars/org.goorm.core.slideshare/image/connect.png') no-repeat");
+				$(this).find('div').css("background-position","center");
+				$(this).find('div').addClass('slide_button_pressed');
+				$(this).find('div').attr('state','connected');
+				core.module.layout.slideshare.connecting();
+			}
 		});
 	}
 }

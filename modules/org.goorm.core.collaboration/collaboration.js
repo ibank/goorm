@@ -115,7 +115,7 @@ module.exports = {
 					
 				}*/
 			});
-			/*
+			
 			// Quiz
 			//
 			socket.on('quiz', function(raw_msg){
@@ -132,7 +132,6 @@ module.exports = {
 					io.sockets.emit('quiz_stop', JSON.stringify(msg_obj));
 				}
 			})
-			*/
 		}); 
 		
 		io.sockets.on('close', function (socket) {

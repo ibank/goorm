@@ -25,7 +25,8 @@ var express = require('express')
 // Session Manager
 //
 store = new express.session.MemoryStore;
-
+//var RedisStore = require('connect-redis')(express)
+//store = new RedisStore
 
 //by sim
 var utils=require('util')
@@ -35,6 +36,7 @@ var exec=require('child_process').exec;
 
 var port = 9999; //default
 var home = process.env.HOME;
+global.__service_mode = false;
 
 if (process.argv[2] > 0 && process.argv[2] < 100000) {
 	port = process.argv[2];
@@ -42,6 +44,10 @@ if (process.argv[2] > 0 && process.argv[2] < 100000) {
 
 if(fs.existsSync(process.argv[3])){
 	home = process.argv[3];
+}
+
+if (process.argv[4]) {
+	global.__service_mode = true;
 }
 
 mongoose.on('error', function(err){
@@ -69,7 +75,9 @@ var io = null;
 var config_data = {
 	workspace: undefined,
 	temp_dir: undefined,
-	social_key: undefined
+	social_key: undefined,
+	uid: undefined,
+	gid: undefined
 };
 
 var users = []
@@ -106,6 +114,15 @@ else {
 	global.__social_key['possible_list'] = [];
 }
 
+if (config_data.uid != undefined) {
+	global.__uid = config_data.uid;
+}
+else global.__uid = null;
+
+if (config_data.gid != undefined) {
+	global.__gid = config_data.gid;
+}
+else global.__gid = null;
 
 console.log("--------------------------------------------------------".grey);
 console.log("workspace_path: " + __workspace);
@@ -195,6 +212,7 @@ goorm.get('/scm', check_auth, routes.scm);
 
 //for plugin
 goorm.get('/plugin/get_list', check_auth, routes.plugin.get_list);
+goorm.post('/slide/lecture_url',routes.plugin.lecture_url);
 //goorm.get('/plugin/install', check_auth, routes.plugin.install);
 goorm.get('/plugin/new', check_auth, routes.plugin.do_new);
 //goorm.get('/plugin/debug', check_auth, routes.plugin.debug);
@@ -286,6 +304,10 @@ goorm.post('/message/edit', routes.message.edit);
 
 //for download and upload
 goorm.get('/download', check_auth, routes.download);
+//by sim
+goorm.get('/send_file',check_auth, routes.send_file);
+//by sim
+
 
 //for Social API
 goorm.get('/social/login', routes.social.login);

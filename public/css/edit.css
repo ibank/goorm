@@ -101,7 +101,7 @@ version: 3.0.0
 	background-color: #B3D4FF;
 }
 .top_dictionary_list{
-	background-color: gray;
+	background-color: #ccc;
 	font-size: 11px;
 	padding: 1px;
 }

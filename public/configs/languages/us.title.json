@@ -17,6 +17,9 @@
     "title_register": {
 	    "value": "Register"
     },
+     "title_forgot": {
+        "value": "Forgot id/pw"
+    },
     "title_join_online_project": {
 	    "value": "Join Online Project"
     },
@@ -93,7 +96,7 @@
 	    "value": "Help Contents"
     },
     "title_install_new_plugins": {
-	    "value": "Install New Plugins"
+	    "value": "Install New Plugins..."
     },
     "title_open_file": {
 	    "value": "Open File"
@@ -147,6 +150,6 @@
         "value" : "Account Management"
     },
     "title_project_share" : {
-        "value" : "Share This Project"
+        "value" : "Share the Project"
     }
 }

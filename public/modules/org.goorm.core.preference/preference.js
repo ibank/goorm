@@ -241,8 +241,7 @@ org.goorm.core.preference.prototype = {
 		$.each(targets, function(index, div){
 			if($(targets[index]).attr('plugin') == 'null') {
 				key = preference;
-			}
-			else {
+			} else {
 				key = preference.plugins[$(targets[index]).attr('plugin')];
 			}
 			
@@ -333,6 +332,7 @@ org.goorm.core.preference.prototype = {
 					self.manager.treeview.subscribe("clickEvent", function(nodedata){
 						var label = nodedata.node.html;
 						label = label.replace(/[/#. ]/,"");
+						label = label.replace(/\s/g, '');
 						if(/localization_key/.test(label)) label = $('#'+nodedata.node.contentElId).children().attr('tab_action');
 						
 						$("#preference_tabview > *").hide();

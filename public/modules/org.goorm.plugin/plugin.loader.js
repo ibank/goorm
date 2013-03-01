@@ -16,11 +16,13 @@ org.goorm.plugin.loader.prototype = {
 	},
 	
 	load: function (path) {
+/*
 		$.getScript('plugins/' + 'org.goorm.core.design.uml' + '/plug.js', function () {
 			var plug = new org.goorm.core.design.uml();
 			
 			plug.init();
 		});
+*/
 	},
 	
 	attach: function () {

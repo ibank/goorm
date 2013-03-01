@@ -364,7 +364,7 @@
 	background:url('images/left_project_treeview_selected.png');
 	color:white;
 }
-#project_treeview,#cloud_treeview {
+#project_treeview {
 	background-color:#DBE0E6 !important;
 }
 .yui-skin-sam .yui-layout .yui-layout-unit-left div.yui-layout-hd .collapse {

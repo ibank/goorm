@@ -31,13 +31,28 @@ module.exports = {
 				msg = JSON.parse(msg);
 			
 				socket.join(msg.workspace + '/' + msg.terminal_name);
+				var uid, gid;
+				if(global.__service_mode) {
+					uid = msg.uid;
+					gid = msg.gid;
+				}
 				
+				
+				if(uid == null){
+					uid = global.__uid; 
+				}
+				if(gid == null){
+					gid = global.__gid;
+				}
+								
 				term.push(pty.spawn('bash', [], {
 					name: 'xterm-color',
 					cols: parseInt(msg.cols),
 					rows: 30,
 					cwd: process.env.HOME,
-					env: process.env
+					env: process.env,
+					uid: uid,
+					gid: gid
 				}));
 				
 				var toHex = function (str) {
@@ -56,6 +71,8 @@ module.exports = {
 //					console.log("on data : " + msg.workspace + '/' + msg.terminal_name);
 					// console.log("data: " + data);
 					// console.log("hex: " + toHex(data));
+					
+					//console.log(result.stdout);
 					
 					socket.emit("pty_command_result", result);
 //					io.sockets.in(msg.workspace + '/' + msg.terminal_name).emit("pty_command_result", result);
@@ -112,7 +129,7 @@ module.exports = {
 				term.write(command);
 			}
 			else {
-				term.write(command + '\r');
+				term.write(command);
 			}
 		}
 		else {

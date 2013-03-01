@@ -136,6 +136,11 @@ org.goorm.core.project.property.prototype = {
 	save: function(callback) {
 		var path = core.status.current_project_path, 
 			property = core.property;
+			
+		property.description = property.description.replace(/&(lt|gt);/g, function (strMatch, p1){
+			return (p1 == "lt")? "<" : ">";
+		});
+		property.description = property.description.replace(/<\/?[^>]+(>|$)/g, "");
 		
 		$.get("project/set_property", {project_path: path, data:JSON.stringify(property)}, function (data) {
 			if (data.err_code == 0) {
@@ -308,7 +313,10 @@ org.goorm.core.project.property.prototype = {
 			self.save(function(){
 				core.module.layout.project_explorer.refresh();
 			});
+			
 			this.hide();
+			
+			self.fill_dialog();
 		};
 
 		var handle_cancel = function() { 

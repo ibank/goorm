@@ -71,8 +71,14 @@ org.goorm.core.collaboration.communication.prototype = {
 			
  			$("#" + self.target).find(".communication_message_container").append("<div class='communication_message_content'>" + data + "</div>");
  			var room = $("#" + self.target).find(".communication_message_container");
- 			$(room).scrollTop(room.height());
+ 			//$(room).scrollTop(room.height());
+ 			if ( typeof(max_scroll) == "undefined" ) {
+ 				max_scroll = $(".communication_message_container").scrollTop();
+ 			} else {
+	 			max_scroll = ($(".communication_message_container").scrollTop() > max_scroll) ? $(".communication_message_container").scrollTop() : max_scroll;
+ 			}
 
+ 			$(".communication_message_container").scrollTop(max_scroll+300);
  			if(core.module.layout.inner_layout.getUnitByPosition("right")._collapsed){
  				self.notification.show();
  			}
@@ -106,7 +112,7 @@ org.goorm.core.collaboration.communication.prototype = {
 		
  		this.socket.on("communication_someone_joined", function (data) {
  			data = JSON.parse(data);
- 			if(data.workspace != core.status.current_project_name) return;
+ 			if(data.workspace != core.status.current_project_path) return;
 
  			$("#" + self.target).find(".communication_user_container").empty();
  			self.user_list = data.list;
@@ -156,7 +162,7 @@ org.goorm.core.collaboration.communication.prototype = {
  		
  		this.socket.on("communication_someone_leaved", function (data) {
  			data = JSON.parse(data);
- 			if(data.workspace != core.status.current_project_name) return;
+ 			if(data.workspace != core.status.current_project_path) return;
 
  			$("#" + self.target).find(".communication_user_container").empty();
  			self.user_list = data.list;
@@ -187,6 +193,13 @@ org.goorm.core.collaboration.communication.prototype = {
  		this.socket.on('disconnect', function() {
  			self.leave();
  		});
+
+ 		///////////////////////////////////////////////////////////////////
+ 		//for firefox
+ 		///////////////////////////////////////////////////////////////////
+ 		this.socket.on('logout_disconnect',function(){
+ 			self.leave();
+ 		});
  		
  		$(window).unload(function() {
  			self.leave();
@@ -212,11 +225,11 @@ org.goorm.core.collaboration.communication.prototype = {
 	
 	join: function () {
 		if(core.user.id != null)
-			this.socket.emit("join", '{"channel": "workspace", "action":"join_workspace", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "type":"'+core.user.type+'", "workspace":"'+ core.status.current_project_name +'", "message":"hello"}');
+			this.socket.emit("join", '{"channel": "workspace", "action":"join_workspace", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "type":"'+core.user.type+'", "workspace":"'+ core.status.current_project_path +'", "message":"hello"}');
 	},
 	
 	leave: function () {
-		this.socket.emit("leave", '{"channel": "workspace", "action":"leave_workspace", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "type":"'+core.user.type+'", "workspace":"'+ core.status.current_project_name +'", "message":"goodbye"}');
+		this.socket.emit("leave", '{"channel": "workspace", "action":"leave_workspace", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "type":"'+core.user.type+'", "workspace":"'+ core.status.current_project_path +'", "message":"goodbye"}');
 		this.clear();
 	},
 	
@@ -396,7 +409,7 @@ org.goorm.core.collaboration.communication.prototype = {
 					var message = message.substring(message.indexOf(']')+1)
 					var encodedMsg = encodeURIComponent(message);
 					
-					self.socket.emit("message", '{"channel": "communication", "action":"send_whisper_message", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "workspace": "'+ core.status.current_project_name +'", "message":"' + encodedMsg + '", "sessionid":"'+sessionid+'", "target_user":'+JSON.stringify(self.message_interface_data['whisper'].target_user)+'}');
+					self.socket.emit("message", '{"channel": "communication", "action":"send_whisper_message", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "workspace": "'+ core.status.current_project_path +'", "message":"' + encodedMsg + '", "sessionid":"'+sessionid+'", "target_user":'+JSON.stringify(self.message_interface_data['whisper'].target_user)+'}');
 				}
 				else{
 					self.message_state = null;
@@ -407,7 +420,7 @@ org.goorm.core.collaboration.communication.prototype = {
 				//message encoding to UTF-8
 				var encodedMsg = encodeURIComponent(message);
 				
-				self.socket.emit("message", '{"channel": "communication", "action":"send_message", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "workspace": "'+ core.status.current_project_name +'", "message":"' + encodedMsg + '"}');
+				self.socket.emit("message", '{"channel": "communication", "action":"send_message", "user":"' + core.user.id + '", "nick":"'+core.user.nick+'", "workspace": "'+ core.status.current_project_path +'", "message":"' + encodedMsg + '"}');
 			}
 		}
 		else {

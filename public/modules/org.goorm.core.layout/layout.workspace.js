@@ -16,7 +16,9 @@ org.goorm.core.layout.workspace.prototype = {
 		var self = this;
 		
 		this.collaboration = new org.goorm.core.collaboration.workspace();
-		this.collaboration.init();
+		$(core).bind('goorm_login_complete', function(){
+			self.collaboration.init();
+		})
 		
 		//attaching tab element
 		$("#"+target).append("<div id='workspace'></div>");

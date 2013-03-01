@@ -99,7 +99,7 @@ org.goorm.plugin.java.prototype = {
 			var reg = /(.*)\w/g;
 			var message = result.replace(cmd1, "").match(reg);
 			message.pop();
-			
+
 			if(/NoClassDefFoundError/g.test(message)) {
 				// 실행 실패
 				alert.show("클래스 파일이 존재하지않거나 경로가 옳바르지 않습니다.<br>프로젝트를 빌드 하시거나 경로설정을 확인하시기 바랍니다.");
