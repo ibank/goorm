@@ -41,6 +41,7 @@ module.exports = {
 		});
 		
 		emittor.on("end", function () {
+			fs.chmodSync(workspace+"/make", 755);
 			evt.emit("do_new_complete", {
 				code : 200,
 				message : "success"

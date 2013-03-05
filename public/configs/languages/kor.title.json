@@ -2,6 +2,9 @@
 	"title_new_project": {
         "value": "새 프로젝트"
     },
+    "title_confirmation": {
+        "value": "확인"
+    },
     "title_goorm_management": {
 	    "value": "구름 관리"
     },
@@ -13,6 +16,9 @@
     },
     "title_profile": {
 	    "value": "계정 정보"
+    },
+    "title_exit": {
+        "value": "종료"
     },
     "title_register": {
 	    "value": "회원가입"
@@ -131,6 +137,9 @@
     "title_print": {
 	    "value": "인쇄"
     },
+    "title_delete": {
+        "value": "삭제"
+    },
     "title_delete_project": {
 	    "value": "프로젝트 제거"
     },
@@ -139,9 +148,6 @@
     },
     "title_import_project": {
 	    "value": "프로젝트 가져오기"
-    },
-    "title_delete": {
-	    "value": "삭제"
     },
     "title_project_management" : {
         "value" : "프로젝트 관리"

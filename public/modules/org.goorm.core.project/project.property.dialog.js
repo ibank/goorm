@@ -6,11 +6,9 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.project.property.dialog = function () {
-	this.dialog = null;
-};
+org.goorm.core.project.property.dialog = {
+	dialog: null,
 
-org.goorm.core.project.property.dialog.prototype = {
 	init: function (option) {
 		this.dialog = new org.goorm.core.dialog();
 		this.dialog.init(option);

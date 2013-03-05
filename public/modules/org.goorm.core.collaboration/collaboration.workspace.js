@@ -6,11 +6,9 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.collaboration.workspace = function () {
-	this.socket = null;
-};
+org.goorm.core.collaboration.workspace = {
+	socket: null,
 
-org.goorm.core.collaboration.workspace.prototype = {
 	init: function() {
 		var self = this;
 		
@@ -18,6 +16,10 @@ org.goorm.core.collaboration.workspace.prototype = {
 		
 		this.socket.on("workspace_message", function (data) {
  			data = JSON.parse(data);
+
+ 			if(data.workspace == ''){
+ 				return;
+ 			}
 
  			if (data.workspace == core.status.current_project_path && data.user != core.user.id) {
 	 			core.module.layout.project_explorer.refresh(false);

@@ -6,12 +6,10 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.utility.loading_bar = function () {
-	this.loading_bar = null
-	this.counter = 0;
-};
+org.goorm.core.utility.loading_bar = {
+	loading_bar: null,
+	counter: 0,
 
-org.goorm.core.utility.loading_bar.prototype = {
 	init: function () {
 		var self= this;
 		this.loading_bar = new YAHOO.widget.Panel("wait",  

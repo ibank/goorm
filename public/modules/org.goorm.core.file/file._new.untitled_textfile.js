@@ -6,13 +6,11 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.file._new.untitled_textfile = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.dialog_explorer = null;
-};
+org.goorm.core.file._new.untitled_textfile = {
+	dialog: null,
+	buttons: null,
+	dialog_explorer: null,
 
-org.goorm.core.file._new.untitled_textfile.prototype = {
 	init: function () { 
 		var self = this;
 		
@@ -24,6 +22,11 @@ org.goorm.core.file._new.untitled_textfile.prototype = {
 				alert.show(core.module.localization.msg["alert_filename_empty"]);
 				// alert.show("Target location is empty. Please fill it...");
 				return false;
+			}
+
+			if(data.path=="/"){
+				alert.show(core.module.localization.msg['alert_deny_make_file_in_workspace_root']);
+				return;
 			}
 
 			var postdata = {
@@ -54,7 +57,7 @@ org.goorm.core.file._new.untitled_textfile.prototype = {
 		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 
-		this.dialog = new org.goorm.core.file._new.untitled_textfile.dialog();
+		this.dialog = org.goorm.core.file._new.untitled_textfile.dialog;
 		this.dialog.init({
 			localization_key:"title_new_untitled_text_file",
 			title:"New Untitled Text File", 

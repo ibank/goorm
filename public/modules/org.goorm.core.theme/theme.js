@@ -6,18 +6,14 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.theme = function () {
-	this.theme_data = null;
-	this.previous_theme = null;
-	this.current_theme = null;
-	this.current_theme_data = null;
-	this.details_dialog = null;
-	this.apply_theme_button = null;
-	this.details_button = null;
-	
-};
-
-org.goorm.core.theme.prototype = {
+org.goorm.core.theme = {
+	theme_data: null,
+	previous_theme: null,
+	current_theme: null,
+	current_theme_data: null,
+	details_dialog: null,
+	apply_theme_button: null,
+	details_button: null,
 
 	init: function () {
 		var self = this;
@@ -32,7 +28,7 @@ org.goorm.core.theme.prototype = {
 									id:"details_button",  
 									container:"wrap_selectbox" }); 
 
-		function on_theme_apply_button_click(p_oEvent) { 
+		function on_theme_apply_button_click(p_oEvent) {
 			self.apply_theme();
 		} 
 		function on_details_button_click(p_oEvent) { 
@@ -47,13 +43,15 @@ org.goorm.core.theme.prototype = {
 			self.make_theme_selectbox();
 		});
 
+		$("#theme_selectbox").unbind("change");
 		$("#theme_selectbox").change(function() {
 			if($(this).val() == -1){
 				self.create_new_theme();
 			}
 			else{
 				self.on_theme_selectbox_change($(this).val());
-				self.get_theme_contents($(this).val());
+				//console.log("select box chanage");
+				//self.get_theme_contents($(this).val());
 			}
 		});
 	},
@@ -105,7 +103,7 @@ org.goorm.core.theme.prototype = {
 		
 /* 		$("#theme_selectbox").append("<option value='-1'>Create New Theme ...</option>"); */
 
-		self.details_dialog = new org.goorm.core.theme.details();
+		self.details_dialog = org.goorm.core.theme.details;
 		self.details_dialog.init(self);
 	},
 
@@ -143,18 +141,23 @@ org.goorm.core.theme.prototype = {
 			$("#"+self.details_button._configs.id.value).hide();
 		}
 
+		//console.log("on_theme_selectbox_change");
 		self.get_theme_contents(theme_idx);
 	},
 	get_theme_contents: function(theme_idx) { 
+
 		var self = this;
 		var path = "/public/configs/themes/"+self.current_theme.name+"/"+self.current_theme.name+".json";
-
 		$.ajax({
 			url: "theme/get_contents",			
-			type: "GET",
+			type: "POST",
 			data: { path: path },
 			success: function(data) {
+
 				self.current_theme_data = JSON.parse(data);
+				
+				//console.log(self.current_theme_data);
+				
 			}
 		});
 	},	
@@ -163,6 +166,8 @@ org.goorm.core.theme.prototype = {
 		var url = "theme/put_contents";
 		var path = self.current_theme.name + "/" + self.current_theme.name+".css";
 		var filedata = "";
+		
+		//console.log("1");
 		
 		for(var element in self.current_theme_data){
 			filedata += self.current_theme_data[element].selector + " {\n";
@@ -178,15 +183,17 @@ org.goorm.core.theme.prototype = {
 			}
 			filedata += "}\n";
 		}
+		
+		//console.log("2");
 
 		$.ajax({
 			url: url,			
-			type: "GET",
+			type: "POST",
 			data: { path: path, data: filedata },
 			success: function(data) {
 				//apply theme
 				self.load_css();
-				m.s("Save complete! (" + self.filename + ")", "org.goorm.core.theme");
+				//m.s("Save complete! (" + self.filename + ")", "org.goorm.core.theme");
 			}
 		});
 
@@ -195,7 +202,7 @@ org.goorm.core.theme.prototype = {
 
 		$.ajax({
 			url: url,			
-			type: "GET",
+			type: "POST",
 			data: { path: path, data: filedata },
 			success: function(data) {
 				//apply theme
@@ -204,7 +211,7 @@ org.goorm.core.theme.prototype = {
 		});
 
 		confirmation.init({
-			title : "Do you want to apply this theme?",
+			title : core.module.localization.msg['confirmation_theme'],
 			// message : "<span localization_key='confirmation_exit'>Do you want exit?</span>",
 			// yes_text : "<span localization_key='yes'>Yes</span>",
 			// no_text : "<span localization_key='no'>No</span>",

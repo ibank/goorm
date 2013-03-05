@@ -6,21 +6,20 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.search = function() {
-	this.dialog = null;
-	this.buttons = null;
-	this.last_pos = null;
-	this.last_query = null;
-	this.marked = [];
-	this.match_case = false;
-	this.ignore_whitespace = false;
-	this.use_regexp = false;
-	this.replace_cursor = null;
-	this.matched_file_list = [];
-	this.treeview = null;
-};
+org.goorm.core.search = {
+	dialog: null,
+	buttons: null,
+	last_pos: null,
+	last_query: null,
+	marked: [],
+	match_case: false,
+	ignore_whitespace: false,
+	use_regexp: false,
+	replace_cursor: null,
+	matched_file_list: [],
+	treeview: null,
+	query: null,
 
-org.goorm.core.search.prototype = {
 	init : function() {
 		var self = this;
 
@@ -37,7 +36,7 @@ org.goorm.core.search.prototype = {
 			}
 		}];
 
-		this.dialog = new org.goorm.core.search.dialog();
+		this.dialog = org.goorm.core.search.dialog;
 		this.dialog.init({
 			localization_key:"title_search",
 			title : "Search",
@@ -57,7 +56,12 @@ org.goorm.core.search.prototype = {
 
 				$("#search_query_inputbox").keydown(function(e) {
 					var ev = e || event;
-
+					
+					if(ev.keyCode == 27) {
+						// esc key
+						self.hide();
+					}
+					
 					if(ev.keyCode == 13) {
 						self.search();
 
@@ -65,6 +69,7 @@ org.goorm.core.search.prototype = {
 						e.preventDefault();
 						return false;
 					}
+					
 				});
 
 				self.dialog.panel.hideEvent.subscribe(function(e) {
@@ -153,7 +158,6 @@ org.goorm.core.search.prototype = {
 		var grep_option = " -r -n";
 		var text = keyword;
 		var caseFold = true;
-
 		
 		if(this.use_regexp == true){
 			grep_option += " -E";
@@ -169,8 +173,8 @@ org.goorm.core.search.prototype = {
 			if(this.ignore_whitespace == true)
 				text = text.replace(/\s*/g, '');
 		}
+		this.query = text;
 		text = "\"" + text + "\"";
-		
 		self.get_matched_file(text, grep_option);
 
 	},
@@ -192,14 +196,25 @@ org.goorm.core.search.prototype = {
 				var filetype = nodedata.node.data.filetype;
 				var filepath = nodedata.node.data.filepath;
 				var matched_line = nodedata.node.data.matched_line;
-				if(window_manager.active_window != -1)
-					window_manager.window[window_manager.active_window].editor.clear_highlight();
+//				if(window_manager.active_window != -1)
+//					window_manager.window[window_manager.active_window].editor.clear_highlight();
 
 				var window = window_manager.open(filepath, filename, filetype);
 
 				setTimeout(function(){
-					window.editor.editor.focus();
-					window.editor.highlight_line(matched_line);
+					var cm = window.editor.editor;
+					cm.focus();
+					cm.setCursor(matched_line-1);
+					
+					if(self.query){
+						for (var cursor = cm.getSearchCursor(self.query); cursor.findNext();) {
+//							console.log(cursor.from());
+//							if (!(cursor.from().line === cm.getCursor(true).line && cursor.from().ch === cm.getCursor(true).ch)){
+								self.marked.push(cm.markText(cursor.from(), cursor.to(), "searched"));
+//							}
+						}
+					}
+//					window.editor.highlight_line(matched_line);
 				}, 200);
 			});
 
@@ -209,7 +224,9 @@ org.goorm.core.search.prototype = {
 /* 			self.treeview.subscribe("expandComplete", function () {}); */
 		}
 		else{
-			window_manager.window[window_manager.active_window].editor.clear_highlight();
+			if(window_manager.window[window_manager.active_window]){
+				window_manager.window[window_manager.active_window].editor.clear_highlight();
+			}
 
 			$("#search_treeview").empty();
 			var html = "<div class='node' style='font-size: 11px; padding: 2px 5px;'>" + core.module.localization.msg['notice_no_matched_fild'] + "</div>";
@@ -223,6 +240,7 @@ org.goorm.core.search.prototype = {
 			project_path: $("#search_project_selectbox option:selected").attr("value"),
 			grep_option: grep_option
 		};
+		
 		self.matched_file_list = [];
 		// 해당 프로젝트안 모든 파일에 대해 검색, 존재할경우 파일 경로 반환
 		$.get("file/search_on_project", postdata, function (data) {

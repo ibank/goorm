@@ -318,6 +318,9 @@
             "perspectives": {
                 "value": "Perspectives",
                 "children": {
+                	"window_default_layout": {
+                        "value": "Default Layout"
+                    },
                     "window_left_layout": {
                         "value": "Left Layout"
                     },

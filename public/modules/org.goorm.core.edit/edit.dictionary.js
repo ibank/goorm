@@ -40,8 +40,17 @@ org.goorm.core.edit.dictionary.prototype = {
 		$(this.target).append(dict_box_html);
 		$(this.target).find(".dictionary_box").hide();
 		
-		
-		this.load(filetype);
+		////load by active
+		var active_filename=core.module.layout.workspace.window_manager.active_filename;
+		var t_arr=active_filename.split('.');
+		var active_filename_type=t_arr[t_arr.length-1];
+
+		if(t_arr.length>1){
+			this.load(active_filename_type);
+		}else{
+			//console.log('odd',filetype);
+			this.load(filetype);
+		}
 		
 		CodeMirror.connect($(this.target).find(".dictionary_box").get(0), "keydown", function (e) {
 			var code = e.keyCode;
@@ -86,6 +95,7 @@ org.goorm.core.edit.dictionary.prototype = {
 		if(this.result[0].is_not_data) this.result.pop();
 		if (this.result.length > 0) {
 			var string = this.result[this.index].keyword;
+			//console.log('aaaa',string);
 			
 			var from = {line:cursor.line, ch:token.start};
 			var to = {line:cursor.line, ch:token.end};
@@ -154,7 +164,10 @@ org.goorm.core.edit.dictionary.prototype = {
 				print_key=print_key.substring(0,14);
 				print_key+="...";
 			}
-		
+
+			print_key=print_key.replace('<','&lt');
+			print_key=print_key.replace('>','&gt');
+		//	console.log(print_key);
 			var ele_html="";
 			ele_html+="<div class='dictionary_element' id='"+ele_id+"'>";
 			ele_html+=	"<table><tr>";

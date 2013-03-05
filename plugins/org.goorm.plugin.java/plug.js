@@ -76,6 +76,8 @@ org.goorm.plugin.java.prototype = {
 		*/
 		var send_data = {
 				"plugin" : "org.goorm.plugin.java",
+				"uid" : core.user.uid,
+				"gid" : core.user.gid,
 				"data" : data
 		};
 		
@@ -99,7 +101,7 @@ org.goorm.plugin.java.prototype = {
 			var reg = /(.*)\w/g;
 			var message = result.replace(cmd1, "").match(reg);
 			message.pop();
-
+			console.log(result,message);
 			if(/NoClassDefFoundError/g.test(message)) {
 				// 실행 실패
 				alert.show("클래스 파일이 존재하지않거나 경로가 옳바르지 않습니다.<br>프로젝트를 빌드 하시거나 경로설정을 확인하시기 바랍니다.");
@@ -177,18 +179,20 @@ org.goorm.plugin.java.prototype = {
 		var property = core.property.plugins['org.goorm.plugin.java'];
 		var table_variable = core.module.debug.table_variable;
 		
-		var mainPath = " "+property['plugin.java.main'];
-		var buildPath = " "+property['plugin.java.build_path'];
+		var workspace = core.preference.workspace_path;
+		var projectName = core.status.current_project_path+"/";
+		var mainPath = property['plugin.java.main'];
+		var buildPath = property['plugin.java.build_path'];
 		
-		if(this.terminal === null) {
-			// console.log("no connection!");
-			var result = {result:false, code:6};
-			core.module.project.display_error_message(result, 'alert');
-			return ;
-		}
+//		if(this.terminal === null) {
+//			// console.log("no connection!");
+//			var result = {result:false, code:6};
+//			core.module.project.display_error_message(result, 'alert');
+//			return ;
+//		}
 		switch (cmd.mode) {
 		case 'init' :
-			self.terminal.send_command("jdb -classpath"+buildPath+mainPath+"\r", null);
+			self.terminal.send_command("jdb -classpath "+workspace+projectName+buildPath+" "+mainPath+"\r", null);
 			self.set_breakpoints();
 			self.terminal.send_command("run\r", />/, function(){
 				self.debug_get_status();
@@ -376,39 +380,21 @@ org.goorm.plugin.java.prototype = {
 		}
 		var plugin = property.plugins['org.goorm.plugin.java'];
 		var buildOptions = " "+plugin['plugin.java.build_option'];
-		var buildPath = " -d "+workspace+projectName+"/"+plugin['plugin.java.build_path'];
-		var classPath = " -cp "+workspace+projectName+"/"+plugin['plugin.java.source_path'];
+		var buildPath = " "+workspace+projectName+"/"+plugin['plugin.java.build_path'];
+		var sourcePath = " "+workspace+projectName+"/"+plugin['plugin.java.source_path'];
 		
-		var cmd = 'find '+workspace+projectName+"/"+plugin['plugin.java.source_path']+' -name "*.java" -print > '+workspace+projectName+'/file.list';
-		var cmd1 = "javac"+classPath+buildPath+buildOptions+" @"+workspace+projectName+"/file.list";
-
-		core.module.layout.terminal.send_command(cmd+'\r', null, function(){
-			core.module.layout.terminal.send_command(cmd1+'\r', null, function(result){
-				var reg = /(.*)\w/g;
-				var message = result.replace(cmd1, "").match(reg);
-
-				message.pop();
-
-				// For Ubuntu
-				//
-				if(message.length != 0){
-					message = message.filter(function(o){
-						return !( (/^javac/.test(o)) || (/file.list/.test(o)) || (/]0;/.test(o)) )
-					});
-				}
-
-				// message에는 빌드시 나오는 메시지가 들어있음.
-				if(message.length) {
-					// 메시지가 있다면 warning이나 실패상황
-					alert.show("빌드 실패!<br>터미널 메시지를 확인하세요.");
-				}
-				else {
-					// 아무 메시지도 안떴으면 성공.
-					notice.show("성공적으로 빌드가 완료되었습니다.!");
-				}
-				core.module.layout.project_explorer.refresh();
-			});
+		var cmd = workspace+projectName+"/"+"make"+sourcePath+buildPath+buildOptions;
+		
+		core.module.layout.terminal.send_command(cmd+'\r', null, function(result){
+			if(/Build Complete/g.test(result)){
+				notice.show(core.module.localization.msg['alert_plugin_build_success']);
+			}
+			else {
+				alert.show(core.module.localization.msg['alert_plugin_build_error']);
+			}
+			core.module.layout.project_explorer.refresh();
 		});
+		
 		if(callback) callback();
 	},
 	

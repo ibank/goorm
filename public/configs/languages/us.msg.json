@@ -26,6 +26,19 @@
     "alert_find_pw_exist": {
         "value": "Temporary password sent to your email account"
     },
+
+    "alert_forgot_id": {
+        "value": "Find ID"
+    },
+    "alert_forgot_pw": {
+        "value": "Find Password"
+    },
+    "alert_forgot_info": {
+        "value": "Find ID/PW"
+    },
+    "alert_sign_up": {
+        "value": "Register"
+    },
     "alert_project_not_selected": {
         "value": "Please select the project"
     },
@@ -34,7 +47,11 @@
     },
     "alert_project_not_opened": {
         "value": "Cannot find opened project"
-    },"alert_plugin_build_error": {
+    },
+    "alert_print_file_error": {
+        "value": "No file opened."
+    },
+    "alert_plugin_build_error": {
         "value": "Fail to build project.<br>Check terminal on screen"
     },"alert_plugin_build_success": {
         "value": "Build success"
@@ -50,11 +67,26 @@
     "alert_error": {
         "value": "Error : "
     },
+    "alert_deny_make_file_in_workspace_root" : {
+        "value" : "You cannot make a file in workspace root"
+    },
+     "alert_deny_make_folder_in_workspace_root" : {
+        "value" : "You cannot make a folder in workspace root"
+    },
     "confirmation_yes": {
         "value": "Yes"
     },
     "confirmation_cancel": {
         "value": "Cancel"
+    },
+    "confirmation_exit_title": {
+        "value": "Exit"
+    },
+    "confirmation_delete_title": {
+        "value": "Delete"
+    },
+    "confirmation_title": {
+        "value": "Confimation"
     },
     "confirmation_no": {
         "value": "No"
@@ -167,6 +199,12 @@
     "alert_collaboration_select": {
         "value": "Select the project to join"
     },
+    "alert_collaboration_save": {
+        "value": "Cannot be able to synchronize a file with other users. Do you want to save anyway?"
+    },
+    "alert_collaboration_sync": {
+        "value": "Synchronization error. Load a file again."
+    },
     "alert_title_empty": {
         "value": "Insert the title"
     },
@@ -218,11 +256,20 @@
     "alert_user_undefined_id": {
         "value": "Please enter an ID."
     },
+    "alert_user_undefined_student_id": {
+        "value": "Please enter an Student ID."
+    },
+    "alert_user_unfit_student_id": {
+        "value": "The format of the Student ID is not valid. (10 digits Number)."
+    },
     "alert_user_unfit_reg_id": {
         "value": "The format of the id is not valid. (4~15 digits, Alphabet+Number)."
     },
     "alert_user_duplicate_id": {
         "value": "The ID is duplicated"
+    },
+    "alert_user_duplicate_student_id": {
+        "value": "The Student ID is duplicated"
     },
     "alert_user_not_fount_id": {
         "value": "The ID is not found."
@@ -318,7 +365,7 @@
         "value": "Cannot build the project. Please select a proper project."
     },
     "alert_cannot_project_debug": {
-        "value": "Cannot debug the project. Please select a proper project."
+        "value": "Debug is not started or not support the debug mode for this project."
     },
     "confirmation_file_upload" : {
         "value": "Do you really want to upload the file?"
@@ -349,5 +396,14 @@
     },
     "alert_select_project" : {
         "value" : "Please select your project."
+    },
+    "collaboration_stop_message": {
+    	"value": "Collaboration Stopped"
+    },
+    "alert_quiz_is_ended" : {
+        "value" : "Quiz is ended or not started."
+    },
+    "alert_login_not_service_account" : {
+        "value" : "It's not account of the service mode. Please register a new one."
     }
 }

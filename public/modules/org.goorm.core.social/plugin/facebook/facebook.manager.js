@@ -1,12 +1,16 @@
+/**
+ * Copyright Sung-tae Ryu, Youseok Nam. All rights reserved.
+ * Code licensed under the AGPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
+ **/
 
-
-org.goorm.core.social_plugin.facebook.manager = function () {
-	this.api = null;
-}
-
-org.goorm.core.social_plugin.facebook.manager.prototype =  {
+org.goorm.core.social_plugin.facebook.manager = {
+	api: null,
+	
 	init : function(source){
-		this.api = new org.goorm.core.social_plugin.facebook();
+		this.api = org.goorm.core.social_plugin.facebook;
 		// this.api.init();
 		
 		// this.attach_button(source);
@@ -29,7 +33,7 @@ org.goorm.core.social_plugin.facebook.manager.prototype =  {
 		self.api.get_login_status(function(response){
 			if(response.code == 0){
 				self.api.post_personal_feed(postdata, function(postid){
-					console.log(postid);
+					//console.log(postid);
 				});
 			}
 			else{

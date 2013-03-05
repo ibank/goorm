@@ -27,7 +27,7 @@ org.goorm.core.file.save_as.prototype = {
 		this.buttons = [ {text:"<span localization_key='save'>Save</span>", handler:handle_save, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}];
 						 
-		this.dialog = new org.goorm.core.file.save_as.dialog();
+		this.dialog = org.goorm.core.file.save_as.dialog;
 		this.dialog.init({
 			localization_key:"title_save_as",
 			title:"Save as", 

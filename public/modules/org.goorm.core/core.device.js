@@ -6,12 +6,7 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.device = function() {
-	this.os = "";
-	this.type = "";
-};
-
-org.goorm.core.device.prototype = {
+org.goorm.core.device = {
 	init: function () {
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Get the device type / osType / is_touchable_device

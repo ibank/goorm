@@ -18,9 +18,10 @@ org.goorm.core.project.list = function () {
 };
 
 org.goorm.core.project.list.prototype = {
-	init: function (context) {
+
+	init: function (context, list_callback) {
 		var self = this;
-		
+
 		self.location = context + "_location";
 		self.types = context + "_types";
 		self.list = context + "_list";
@@ -36,7 +37,7 @@ org.goorm.core.project.list.prototype = {
 //		$("div[id='project.open']").find("#project_open_dialog_left").scrollTop(0);
 
 		
-		self.add_project_list();
+		self.add_project_list(list_callback);
 		self.add_project_item();
 	},
 	
@@ -52,7 +53,7 @@ org.goorm.core.project.list.prototype = {
 	},
 
 	
-	add_project_list: function () {
+	add_project_list: function (list_callback) {
 		var self = this;
 
 		var postdata = {
@@ -97,6 +98,10 @@ org.goorm.core.project.list.prototype = {
 				$(self.information).append("<b>Project Date : </b>");
 				$(self.information).append(data[idx].contents.date+"<br/>");
 			});
+
+			if(typeof list_callback != 'undefined') {
+				list_callback();
+			}
 		});
 	},
 	

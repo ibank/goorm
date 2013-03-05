@@ -95,7 +95,7 @@ org.goorm.plugin.jsp.prototype = {
 		$.get('/plugin/run', send_data, function(result){
 			if(result.code == 200){
 				//success 
-				window.open(run_path + path +'/'+main, 'goormjsp');
+				window.open(run_path + path +'/'+main, 'goormjsp', 'width=600 height=400');
 			}
 			else{
 				//failure
@@ -103,5 +103,51 @@ org.goorm.plugin.jsp.prototype = {
 				alert.show("Cannot run this project! <br>Check deploy path");
 			}
 		});
-	}	
+	},
+	
+	build: function (projectName, callback) {
+		var self=this;
+		var workspace = core.preference.workspace_path;
+		var property = core.property;
+		if(projectName) {
+			core.workspace[projectName] && (property = core.workspace[projectName])
+		}
+		else {
+			var projectName = core.status.current_project_path;
+		}
+		var plugin = property.plugins['org.goorm.plugin.jsp'];
+		var buildOptions = " "+plugin['plugin.jsp.build_option'];
+		var buildPath = " "+workspace+projectName+"/"+plugin['plugin.jsp.build_path'];
+		var sourcePath = " "+workspace+projectName+"/"+plugin['plugin.jsp.source_path'];
+		
+		var cmd = workspace+projectName+"/"+"make"+sourcePath+buildPath+buildOptions;
+		
+		core.module.layout.terminal.send_command(cmd+'\r', null, function(result){
+			if(/Build Complete/g.test(result)){
+				notice.show(core.module.localization.msg['alert_plugin_build_success']);
+			}
+			else {
+				alert.show(core.module.localization.msg['alert_plugin_build_error']);
+			}
+			core.module.layout.project_explorer.refresh();
+		});
+		
+		if(callback) callback();
+	},
+	
+	clean: function(project_name){
+		var workspace = core.preference.workspace_path;
+		var property = core.property;
+		if(project_name) {
+			core.workspace[project_name] && (property = core.workspace[project_name])
+		}
+		else {
+			var project_name = core.status.current_project_path;
+		}
+		var plugin = property.plugins['org.goorm.plugin.jsp'];
+		var buildPath = plugin['plugin.jsp.build_path'];
+		core.module.layout.terminal.send_command("rm -rf "+workspace+project_name+"/"+buildPath+"* \r", null, function(){
+			core.module.layout.project_explorer.refresh();
+		});
+	}
 };

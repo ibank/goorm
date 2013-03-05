@@ -6,14 +6,12 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.object.properties = function () {
-	this.target = null;
-	this.manager = null;
-	this.table = null;
-	this.object = null;
-};
+org.goorm.core.object.properties = {
+	target: null,
+	manager: null,
+	table: null,
+	object: null,
 
-org.goorm.core.object.properties.prototype = {
 	init: function (target) {
 		var self = this;
 		

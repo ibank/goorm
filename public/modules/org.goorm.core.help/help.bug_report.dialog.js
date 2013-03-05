@@ -6,11 +6,11 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.help.about.dialog = function () {
+org.goorm.core.help.bug_report.dialog = function () {
 	this.dialog = null;
 };
 
-org.goorm.core.help.about.dialog.prototype = {
+org.goorm.core.help.bug_report.dialog.prototype = {
 	init: function (option) {
 		this.dialog = new org.goorm.core.dialog();
 		this.dialog.init(option);

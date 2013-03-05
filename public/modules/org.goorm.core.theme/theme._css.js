@@ -6,14 +6,12 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.theme._css = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.parent = null;
-	this.target = null;
-};
+org.goorm.core.theme._css = {
+	dialog: null,
+	buttons: null,
+	parent: null,
+	target: null,
 
-org.goorm.core.theme._css.prototype = {
 	init: function (parent) {
 		var self = this;
 		this.parent = parent;
@@ -70,7 +68,7 @@ org.goorm.core.theme._css.prototype = {
 		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}];
 						 			 
-		this.dialog = new org.goorm.core.theme._css.dialog();
+		this.dialog = org.goorm.core.theme._css.dialog;
 		this.dialog.init({
 			localization_key:"title_add_new_css",
 			title:"Add New CSS", 

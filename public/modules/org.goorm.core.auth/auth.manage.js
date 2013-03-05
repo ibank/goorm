@@ -1,16 +1,21 @@
+/**
+ * Copyright Sung-tae Ryu, Youseok Nam. All rights reserved.
+ * Code licensed under the AGPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
+ **/
+ 
+org.goorm.core.auth.manage = {
+	dialog: null,
+	buttons: null,
 
-org.goorm.core.auth.manage = function () {
-	this.dialog = null;
-	this.buttons = null;
-}
-
-org.goorm.core.auth.manage.prototype = {
 	init : function(){
 		var self = this;
-		this.manager = new org.goorm.core.auth.manage.manager();
+		this.manager = org.goorm.core.auth.manage.manager;
 		this.manager.init();
 		
-		this.dialog = new org.goorm.core.auth.manage.dialog();
+		this.dialog = org.goorm.core.auth.manage.dialog;
 	},
 
 	init_dialog: function () {
@@ -60,7 +65,7 @@ org.goorm.core.auth.manage.prototype = {
 
 					// Collaboration
 					//
-					var collaboration = new org.goorm.core.auth.manage.collaboration();
+					var collaboration = org.goorm.core.auth.manage.collaboration;
 					collaboration.init();
 
 					$('#ProjectList [localization_key="collaboration"]').unbind('click')

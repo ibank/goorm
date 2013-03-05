@@ -34,7 +34,7 @@
         a.yuimenuitemlabel(href="#", action='open_file', localization_key='file_open_file', style='background-image: url(configs/toolbars/org.goorm.core.file/image/open_file.png);')
          | Open File...
          em.helptext Ctrl + Shift + O
-       li.yuimenuitem
+       //li.yuimenuitem
         a.yuimenuitemlabel(href="#", action='open_url', localization_key='file_open_url') Open URL...
       ul
        li.yuimenuitem
@@ -75,15 +75,16 @@
         a.yuimenuitemlabel(href="#", action='refresh_project_directory', localization_key='file_refresh')
          | Refresh
          em.helptext Ctrl + R
-      ul
+      //ul
        li.yuimenuitem
         a.yuimenuitemlabel(href="#", action='print', localization_key='file_print', style='background-image: url(configs/toolbars/org.goorm.core.file/image/print.png);')
          | Print
          em.helptext Ctrl + P
       ul
-       li.yuimenuitem.yuimenuitem-disabled
-        a.yuimenuitemlabel.yuimenuitemlabel-disabled(href="#", action='', localization_key='file_swich_workspace') 
-         | Switch workspace
+       //
+        li.yuimenuitem.yuimenuitem-disabled
+         a.yuimenuitemlabel.yuimenuitemlabel-disabled(href="#", action='', localization_key='file_swich_workspace') 
+          | Switch workspace
        li.yuimenuitem
         a.yuimenuitemlabel(href="#", action='refresh_project_directory', localization_key='file_restart') 
          | Restart
@@ -177,7 +178,7 @@
         a.yuimenuitemlabel(href="#", action='preference', localization_key='edit_preference', style='background-image: url(configs/toolbars/org.goorm.core.edit/image/preference.png);')
          | Preference
          em.helptext Alt + P
-   li.yuimenubaritem
+   //-li.yuimenubaritem
     a.yuimenubaritemlabel(href='#Design', localization_key='design') Design 
     #Design.yuimenu
      .bd
@@ -347,10 +348,11 @@
             a.yuimenuitemlabel(href="#", action='left_project_explorer_show', localization_key='window_left_layout_toggle_project_explorer')
              | Show Project Explorer
              em.helptext Shift + Alt + 1
-           li.yuimenuitem
+           //-li.yuimenuitem
             a.yuimenuitemlabel(href="#", action='left_tool_box_show', localization_key='window_left_layout_toggle_toolbox')
              | Show Toolbox
              em.helptext Shift + Alt + 2
+           -//
           h6(localization_key='window_right_layout') Right Layout
           ul
            li.yuimenuitem
@@ -383,6 +385,10 @@
             a.yuimenuitemlabel(href="#", action='bottom_search_show', localization_key='window_bottom_layout_search')
              | Show Search
              em.helptext Shift + Alt + 7
+          ul
+           li.yuimenuitem
+            a.yuimenuitemlabel(href="#", action='layout_default', localization_key='window_default_layout')
+             | Default Layout
       ul
        li.yuimenuitem
         a.yuimenuitemlabel(href="#", action='toggle_full_workspace', localization_key='window_toggle_full_workspace')
@@ -408,7 +414,7 @@
         a.yuimenuitemlabel(href="#", action='slide_show_mode', style='background-image: url(configs/toolbars/org.goorm.core.window/image/slideshow.png)', localization_key='window_slide_show_mode')
          | Slide Show Mode
          em.helptext Shift + F5
-   li.yuimenubaritem
+   //-li.yuimenubaritem
     a.yuimenubaritemlabel(href='#menu_plugins', localization_key='plugins') Plugins 
     #menu_plugins.yuimenu
      #plugin_menu_adapter.bd
@@ -431,14 +437,14 @@
     a.yuimenubaritemlabel(href='#Help', localization_key='help') Help 
     #Help.yuimenu
      .bd
-      ul
+      //-ul
        li.yuimenuitem
         a.yuimenuitemlabel(href="#", action='help_contents', style='background-image: url(configs/toolbars/org.goorm.core.help/image/help_contents.png);', localization_key='help_help_contents') Help Contents
-      ul
+      //-ul
        li.yuimenuitem
         a.yuimenuitemlabel(href="#", action='help_check_for_updates', style='background-image: url(configs/toolbars/org.goorm.core.help/image/check_for_update.png);', localization_key='help_check_for_updates') Check for Updates
       ul
-       li.yuimenuitem.yuimenuitem
+       //-li.yuimenuitem.yuimenuitem
         a.yuimenuitemlabel(href="#", action='help_bug_report', style='background-image: url(configs/toolbars/org.goorm.core.help/image/bug_report.png);', localization_key='help_bug_report') Send Bug Report
        li.yuimenuitem
         a.yuimenuitemlabel(href="#", action='help_about', style='background-image: url(configs/toolbars/org.goorm.core.help/image/about.png);', localization_key='help_about_goorm') About goorm

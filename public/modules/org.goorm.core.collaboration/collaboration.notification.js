@@ -1,10 +1,15 @@
+/**
+ * Copyright Sung-tae Ryu. All rights reserved.
+ * Code licensed under the AGPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
+ **/
+ 
+org.goorm.core.collaboration.notification = {
+	dialog: null,
+	is_init: false,
 
-org.goorm.core.collaboration.notification = function () {
-	this.dialog = null;
-	this.is_init = false;
-};
-
-org.goorm.core.collaboration.notification.prototype = {
 	init : function(){
 		var self = this;
 		
@@ -26,7 +31,7 @@ org.goorm.core.collaboration.notification.prototype = {
 		]
 		
 		
-		this.dialog = new org.goorm.core.collaboration.notification.dialog();
+		this.dialog = org.goorm.core.collaboration.notification.dialog;
 		this.dialog.init({
 			localization_key:"title_notification",
 			title: "Notification",

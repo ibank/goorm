@@ -6,14 +6,12 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.collaboration.settings = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.tabview = null;
-	this.treeview = null;
-};
+org.goorm.core.collaboration.settings = {
+	dialog: null,
+	buttons: null,
+	tabview: null,
+	treeview: null,
 
-org.goorm.core.collaboration.settings.prototype = {
 	init: function () { 
 		
 		var handle_ok = function() { 
@@ -35,7 +33,7 @@ org.goorm.core.collaboration.settings.prototype = {
 		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
-		this.dialog = new org.goorm.core.collaboration.settings.dialog();
+		this.dialog = org.goorm.core.collaboration.settings.dialog;
 		this.dialog.init({
 			localization_key:"title_settings",
 			title:"Settings", 

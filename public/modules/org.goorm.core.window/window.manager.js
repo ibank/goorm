@@ -6,24 +6,22 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.window.manager = function () {
-	this.window = null;
-	this.tab = null;
-	this.context_menu = null;
-	this.list_menu = null;
-	this.window_list_menu = null;
-	this.workspace_container = null;
-	this.window_list_container = null;
-	this.index = 0;
-	this.window_tabview = null;
-	this.active_window = -1;
-	this.active_filename = "";
-	this.maximized = false;
-	this.window_list = null;
-	this.transition_manager = null;
-};
+org.goorm.core.window.manager = {
+	window: null,
+	tab: null,
+	context_menu: null,
+	list_menu: null,
+	window_list_menu: null,
+	workspace_container: null,
+	window_list_container: null,
+	index: 0,
+	window_tabview: null,
+	active_window: -1,
+	active_filename: "",
+	maximized: false,
+	window_list: null,
+	transition_manager: null,
 
-org.goorm.core.window.manager.prototype = {
 	init: function(container) {
 		var self = this;
 		this.transition_manager = new org.goorm.core.window.manager.transition();

@@ -157,11 +157,11 @@ org.goorm.core.prototype = {
 		var self = this;
 
 		//auth
-		this.module.auth = new org.goorm.core.auth();
+		this.module.auth = org.goorm.core.auth;
 		this.module.auth.init();
 
 		// admin
-		this.module.admin = new org.goorm.core.admin();
+		this.module.admin = org.goorm.core.admin;
 		this.module.admin.init();
 
 		this.start();		
@@ -175,7 +175,11 @@ org.goorm.core.prototype = {
 			this.module.plugin_manager.get();
 		});	
 		
-		$(this).bind("preference_load_complete", function () {
+		$(this).bind("preference_loading_complete", function () {
+			//theme
+			self.module.theme = org.goorm.core.theme;
+			self.module.theme.init();
+
 			console.log("preference load complete");
 		});
 		
@@ -261,7 +265,8 @@ org.goorm.core.prototype = {
 				e.preventDefault();
 			});
 
-			
+			self.module.localization.change_language(localStorage.getItem("language"));
+						
 			self.module.action.init();
 			
 			var goorm_loading_end_time = new Date().getTime(); 
@@ -278,14 +283,7 @@ org.goorm.core.prototype = {
 			m.s("------------------------------------------------------------", "org.goorm.core");
 			m.s("Loading Time : " + (goorm_loading_end_time - goorm_loading_start_time) / 1000 + " sec.", "org.goorm.core");			
 			m.s("------------------------------------------------------------", "org.goorm.core");
-			
-			//theme
-			self.module.theme = new org.goorm.core.theme();
-			self.module.theme.init();
-			
-			
-
-		
+						
 /*
 			self.module.theme_details = new org.goorm.core.theme.details();
 			self.modile.theme_details.init();
@@ -312,7 +310,7 @@ org.goorm.core.prototype = {
 		$(this).bind('goorm_login_complete', function(){
 			core.module.toast.show(core.module.localization.msg['notice_welcome_goorm'])
 			if(core.module.layout.history.last_init_load) core.module.layout.history.join();
-		})
+		});
 		
 		$(window).unload(function () {
 			localStorage['left_tabview_index'] = core.module.layout.left_tabview._configs.activeIndex.value;
@@ -321,173 +319,170 @@ org.goorm.core.prototype = {
 		});
 
 		//Toolbar
-		this.module.toolbar = new org.goorm.core.toolbar();
+		this.module.toolbar = org.goorm.core.toolbar;
 		this.module.toolbar.init();		
 		
 		//Search Tab
-		this.module.search = new org.goorm.core.search.message();		
+		this.module.search = org.goorm.core.search.message		
 		
 		//Preference
-		this.module.preference = new org.goorm.core.preference();
+		this.module.preference = org.goorm.core.preference;
 		this.module.preference.init();
 		
 		//Project
-		this.module.project = new org.goorm.core.project();
+		this.module.project = org.goorm.core.project;
 		
 		//Project
-		this.module.scm = new org.goorm.core.scm();
+		this.module.scm = org.goorm.core.scm;
 		this.module.scm.init();
 		
 		//Plugin Loading Aspects
-		this.module.plugin_manager = new org.goorm.plugin.manager();
+		this.module.plugin_manager = org.goorm.plugin.manager;
 		this.module.plugin_manager.init();
 
 		//Shortcuts
-		this.module.shortcut_manager = new org.goorm.core.shortcut.manager();
+		this.module.shortcut_manager = org.goorm.core.shortcut.manager;
 		this.module.shortcut_manager.init();		
 		
 		//Menu Actions
-		this.module.action = new org.goorm.core.menu.action();
+		this.module.action = org.goorm.core.menu.action;
 
-		this.module.browser = new org.goorm.core.browser();
+		this.module.browser = org.goorm.core.browser;
 		this.module.browser.init();
 
-		this.module.device = new org.goorm.core.device();
+		this.module.device = org.goorm.core.device;
 		this.module.device.init();
 
-		this.module.fn = new org.goorm.core.fn();
+		this.module.fn = org.goorm.core.fn;
 		this.module.fn.init();
 		
 		this.env.touchable = this.is_touchable_device();
 		this.env.websocket_support = this.test_web_socket();
 
-		this.module.layout = new org.goorm.core.layout();
+		this.module.layout = org.goorm.core.layout;
 		this.module.layout.init(container);
 		
 		//Load ZeroClipboard libary
-		this.module.clipboard = new org.goorm.core.clipboard();
+		this.module.clipboard = org.goorm.core.clipboard;
 		this.module.clipboard.init();
 
 	},
 	
 	main: function() {
 
-		this.dialog.new_project = new org.goorm.core.project._new();
+		this.dialog.new_project = org.goorm.core.project._new;
 		this.dialog.new_project.init();
 		
-		this.dialog.open_project = new org.goorm.core.project.open();
+		this.dialog.open_project = org.goorm.core.project.open;
 		this.dialog.open_project.init();
 		
-		this.dialog.new_file = new org.goorm.core.file._new();
+		this.dialog.new_file = org.goorm.core.file._new;
 		this.dialog.new_file.init();
 		
-		this.dialog.new_other_file = new org.goorm.core.file._new.other();
+		this.dialog.new_other_file = org.goorm.core.file._new.other;
 		this.dialog.new_other_file.init();
 		
-		this.dialog.new_folder = new org.goorm.core.file._new.folder();
+		this.dialog.new_folder = org.goorm.core.file._new.folder;
 		this.dialog.new_folder.init();
 		
-		this.dialog.new_untitled_textfile = new org.goorm.core.file._new.untitled_textfile();
+		this.dialog.new_untitled_textfile = org.goorm.core.file._new.untitled_textfile;
 		this.dialog.new_untitled_textfile.init();
 		
-		this.dialog.open_file = new org.goorm.core.file.open();
+		this.dialog.open_file = org.goorm.core.file.open;
 		this.dialog.open_file.init();
 		//by sim
-		this.dialog.upload_file = new org.goorm.core.file.upload();
+		this.dialog.upload_file = org.goorm.core.file.upload;
 		this.dialog.upload_file.init();
 		//by sim
-		this.dialog.open_url = new org.goorm.core.file.open_url();
+		this.dialog.open_url = org.goorm.core.file.open_url;
 		this.dialog.open_url.init();
 		
-		this.dialog.save_as_file = new org.goorm.core.file.save_as();
+		this.dialog.save_as_file = org.goorm.core.file.save_as;
 		this.dialog.save_as_file.init();
 		
-		this.dialog.rename_file = new org.goorm.core.file.rename();
+		this.dialog.rename_file = org.goorm.core.file.rename;
 		this.dialog.rename_file.init();
 		
-		this.dialog.move_file = new org.goorm.core.file.move();
+		this.dialog.move_file = org.goorm.core.file.move;
 		this.dialog.move_file.init();
 		
-		this.dialog.file_select = new org.goorm.core.file.select();
-		this.dialog.file_select.init();
+	//	this.dialog.file_select = new org.goorm.core.file.select();
+	//	this.dialog.file_select.init();
 				
-		this.dialog.print = new org.goorm.core.printer();
+		this.dialog.print = org.goorm.core.printer;
 		this.dialog.print.init();
 		
-		this.dialog.switch_workspace = new org.goorm.core.file.switch_workspace();
+		this.dialog.switch_workspace = org.goorm.core.file.switch_workspace;
 		this.dialog.switch_workspace.init();
 
-		this.dialog.import_file = new org.goorm.core.file._import();
+		this.dialog.import_file = org.goorm.core.file._import;
 		this.dialog.import_file.init();
 		
-		this.dialog.export_file = new org.goorm.core.file._export();
+		this.dialog.export_file = org.goorm.core.file._export;
 		this.dialog.export_file.init();
 		
-		this.dialog.export_project = new org.goorm.core.project._export();
+		this.dialog.export_project = org.goorm.core.project._export;
 		this.dialog.export_project.init();
 		
-		this.dialog.import_project = new org.goorm.core.project._import();
+		this.dialog.import_project = org.goorm.core.project._import;
 		this.dialog.import_project.init();
 		
-		this.dialog.delete_project = new org.goorm.core.project._delete();
+		this.dialog.delete_project = org.goorm.core.project._delete;
 		this.dialog.delete_project.init();
 		
-		this.dialog.share_project = new org.goorm.core.project.share();
+		this.dialog.share_project = org.goorm.core.project.share;
 		this.dialog.share_project.init();
 
-		this.dialog.build_all = new org.goorm.core.project.build.all();
+		this.dialog.build_all = org.goorm.core.project.build.all;
 		this.dialog.build_all.init();
 		
-		this.dialog.build_project = new org.goorm.core.project.build.project();
+		this.dialog.build_project = org.goorm.core.project.build.project;
 		this.dialog.build_project.init();
 		
-		this.dialog.build_clean = new org.goorm.core.project.build.clean();
+		this.dialog.build_clean = org.goorm.core.project.build.clean;
 		this.dialog.build_clean.init();
 		
-		this.dialog.build_configuration = new org.goorm.core.project.build.configuration();
+		this.dialog.build_configuration = org.goorm.core.project.build.configuration;
 		this.dialog.build_configuration.init();
 		
-		this.dialog.property = new org.goorm.core.file.property();
+		this.dialog.property = org.goorm.core.file.property;
 		this.dialog.property.init();
 		
-		this.dialog.find_and_replace = new org.goorm.core.edit.find_and_replace();
+		this.dialog.find_and_replace = org.goorm.core.edit.find_and_replace;
 		this.dialog.find_and_replace.init();
 
-		this.dialog.search = new org.goorm.core.search();
+		this.dialog.search = org.goorm.core.search;
 		this.dialog.search.init();
 		
-		this.dialog.preference = this.module.preference;
-		this.dialog.preference.init_dialog();
-		
-		this.dialog.project_property = new org.goorm.core.project.property();
+		this.dialog.project_property = org.goorm.core.project.property;
 		this.dialog.project_property.init();
 		
-		this.dialog.join_project = new org.goorm.core.collaboration.join();
+		//this.dialog.join_project = new org.goorm.core.collaboration.join();
 		//this.dialog.join_project.init();
 		
-		this.dialog.collaboration_settings = new org.goorm.core.collaboration.settings();
+		//this.dialog.collaboration_settings = new org.goorm.core.collaboration.settings();
 		//this.dialog.collaboration_settings.init();
 		
-		this.dialog.help_contents = new org.goorm.core.help.contents();
+		this.dialog.help_contents = org.goorm.core.help.contents;
 		this.dialog.help_contents.init();
 		
-		this.dialog.help_search = new org.goorm.core.help.search();
-		this.dialog.help_search.init();
+		//this.dialog.help_search = org.goorm.core.help.search;
+		//this.dialog.help_search.init();
 		
-		this.dialog.help_tips_and_tricks = new org.goorm.core.help.tips_and_tricks();
-		this.dialog.help_tips_and_tricks.init();
+		//this.dialog.help_tips_and_tricks = org.goorm.core.help.tips_and_tricks;
+		//this.dialog.help_tips_and_tricks.init();
 		
-		this.dialog.help_check_for_updates = new org.goorm.core.help.check_for_updates();
+		this.dialog.help_check_for_updates = org.goorm.core.help.check_for_updates;
 		this.dialog.help_check_for_updates.init();
 		
-		this.dialog.help_install_new_plugin = new org.goorm.core.help.install_new_plugin();
+		this.dialog.help_install_new_plugin = org.goorm.core.help.install_new_plugin;
 		this.dialog.help_install_new_plugin.init();
 			
-		this.dialog.help_about = new org.goorm.core.help.about();
+		this.dialog.help_about = org.goorm.core.help.about;
 		this.dialog.help_about.init();
 		
-		this.dialog.help_bug_report = new org.goorm.core.help.bug_report();
-		this.dialog.help_bug_report.init();		
+		this.dialog.help_bug_report = org.goorm.core.help.bug_report;
+		this.dialog.help_bug_report.init();
 		
 		this.dialog.user_manager = this.module.admin.user_manager;
 		this.dialog.user_manager.init_dialog();
@@ -496,22 +491,25 @@ org.goorm.core.prototype = {
 		//module
 		////////////////////////////////////////////////////////////////////////////////////////
 		
-		this.module.code_generator = new org.goorm.core.code_generator();
-		this.module.code_generator.init();
+		//this.module.code_generator = new org.goorm.core.code_generator();
+		//this.module.code_generator.init();
 		
-		this.module.localization = new org.goorm.core.localization();
+		this.module.localization = org.goorm.core.localization;
 		this.module.localization.init();
 		//$(core).trigger("coreDialogLoaded");
 		
-		this.module.loading_bar = new org.goorm.core.utility.loading_bar();
+		this.module.loading_bar = org.goorm.core.utility.loading_bar;
 		this.module.loading_bar.init();
 		
-		this.module.toast = new org.goorm.core.utility.toast();
+		this.module.toast = org.goorm.core.utility.toast;
 		this.module.toast.init();
 		
-		this.module.social_plugin = new org.goorm.core.social_plugin();
+		this.module.social_plugin = org.goorm.core.social_plugin;
 		this.module.social_plugin.init();
 
+		this.dialog.preference = this.module.preference;
+		this.dialog.preference.init_dialog();
+		
 		alert.init();
 		notice.init();
 	},
@@ -546,8 +544,8 @@ org.goorm.core.prototype = {
 		$("#loading_panel_container").append("<div id='login_box'></div>");
 		$("#loading_panel_container").append("<div id='local_login_box'></div>");
 		
-		$("#login_box").append("<input id='goorm_id' name='goorm_id' placeholder='username' />");
-		$("#login_box").append("<input type='password' id='goorm_pw' name='goorm_pw' placeholder='password' />");
+		$("#login_box").append("<input id='goorm_id' name='goorm_id' placeholder='ID' />");
+		$("#login_box").append("<input type='password' id='goorm_pw' name='goorm_pw' placeholder='PASSWORD' />");
 		$("#login_box").append("<input type='button' id='goorm_login_button' value='Login' />");
 		$("#login_box").append("<input type='button' id='goorm_signup_button' value='Sign-up' />");
 		
@@ -563,6 +561,7 @@ org.goorm.core.prototype = {
 		
 		this.login_button =  new YAHOO.widget.Button("goorm_login_button", { onclick: { fn: function(){ self.module.auth.login() } }, label:'<span localization_key="login">Login</span>' });
 		this.signup_button =  new YAHOO.widget.Button("goorm_signup_button", { onclick: { fn: function(){ self.module.auth.show_signup() } }, label:'<span localization_key="signup">Sign-up</span>' });
+		
 		this.local_mode_button = new YAHOO.widget.Button("goorm_local_mode_button", { onclick: { fn: function(){ self.module.auth.access_local_mode() } }, label:'<span localization_key="local_mode">Local Mode</span>' });
 		
 		$(document).on("click", ".social_login_button", function(){

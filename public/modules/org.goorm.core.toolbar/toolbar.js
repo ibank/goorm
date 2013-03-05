@@ -6,14 +6,12 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.toolbar = function () {
-	this.context_menu = null;
-	this.order = null;
-	this.index = 0;
-	this.index_check = 0;
-};
+org.goorm.core.toolbar = {
+	context_menu: null,
+	order: null,
+	index: 0,
+	index_check: 0,
 
-org.goorm.core.toolbar.prototype = {
 	init: function (){
 		var self = this;
 		this.order = localStorage['toolbar.order'];

@@ -6,14 +6,12 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.file._export = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.tabview = null;
-	this.dialog_explorer = null;
-};
+org.goorm.core.file._export = {
+	dialog: null,
+	buttons: null,
+	tabview: null,
+	dialog_explorer: null,
 
-org.goorm.core.file._export.prototype = {
 	init: function () { 
 		var self = this;
 		
@@ -61,7 +59,7 @@ org.goorm.core.file._export.prototype = {
 		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
-		this.dialog = new org.goorm.core.file._export.dialog();
+		this.dialog = org.goorm.core.file._export.dialog;
 		this.dialog.init({
 			localization_key:"title_export_file",
 			title:"Export File", 

@@ -6,21 +6,19 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.edit.find_and_replace = function() {
-	this.dialog = null;
-	this.buttons = null;
-	this.editor = null;
-	this.last_pos = null;
-	this.last_query = null;
-	this.marked = [];
-	this.match_case = false;
-	this.ignore_whitespace = false;
-	this.use_regexp = false;
-	this.replace_cursor = null;
-	this.matched_file_list = [];
-};
+org.goorm.core.edit.find_and_replace = {
+	dialog: null,
+	buttons: null,
+	editor: null,
+	last_pos: null,
+	last_query: null,
+	marked: [],
+	match_case: false,
+	ignore_whitespace: false,
+	use_regexp: false,
+	replace_cursor: null,
+	matched_file_list: [],
 
-org.goorm.core.edit.find_and_replace.prototype = {
 	init : function() {
 		var self = this;
 		this.buttons = [{
@@ -55,7 +53,7 @@ org.goorm.core.edit.find_and_replace.prototype = {
 			}
 		}];
 
-		this.dialog = new org.goorm.core.edit.find_and_replace.dialog();
+		this.dialog = org.goorm.core.edit.find_and_replace.dialog;
 		this.dialog.init({
 			localization_key: "title_find_replace",
 			title : "Find/Replace",
@@ -66,9 +64,14 @@ org.goorm.core.edit.find_and_replace.prototype = {
 			buttons : this.buttons,
 			draggable : true,
 			success : function() {
-				$("#find_query_inputbox").keydown(function(e) {
+				$("#find_query_inputbox, #replace_query_inputbox").keydown(function(e) {
 					var ev = e || event;
-
+					
+					if(ev.keyCode == 27) {
+						// esc key
+						self.hide();
+					}
+					
 					if(ev.keyCode == 13) {
 						self.find();
 
@@ -81,6 +84,7 @@ org.goorm.core.edit.find_and_replace.prototype = {
 				self.dialog.panel.hideEvent.subscribe(function(e) {
 					self.unmark();
 				});
+				
 				// Checkbox event handler
 				$("#match_case").change(function() {
 					if($("#match_case")[0].checked == true)
@@ -336,7 +340,8 @@ org.goorm.core.edit.find_and_replace.prototype = {
 		var searchedWords = [];
 
 		this.unmark();
-
+		core.dialog.search.query = keyword;
+		
 		if($("#find_on_workspace")[0].checked == true){
 
 			for( var i = 0 ; i < window_manager.window.length; i++){

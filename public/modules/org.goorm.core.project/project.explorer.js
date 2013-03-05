@@ -157,6 +157,8 @@ org.goorm.core.project.explorer.prototype = {
 			// });
 
 		});
+
+		
 	},
 	
 	refresh: function(event_emitting) {
@@ -229,7 +231,6 @@ org.goorm.core.project.explorer.prototype = {
 					self.treeview.buildTreeFromObject(sorting_data);
 		
 					self.treeview.render();
-					
 					self.refresh_context_menu();
 					
 					//if (event_emitting) {
@@ -359,7 +360,6 @@ org.goorm.core.project.explorer.prototype = {
 
 		self.context_menu_project = new org.goorm.core.menu.context();
 		self.context_menu_project.init("configs/menu/org.goorm.core.project/project.explorer.html", "project.explorer", "", null, null);
-		
 		self.refresh_context_menu();
 
 		//$(core).trigger("layout_loaded");
@@ -448,6 +448,10 @@ org.goorm.core.project.explorer.prototype = {
 			return false;			
 		});
 		
+		
+		core.module.localization.change_language(localStorage.getItem("language"), true);
+		
+		//console.log(localStorage.getItem("language"));
 		
 		core.module.action.init();
 	}

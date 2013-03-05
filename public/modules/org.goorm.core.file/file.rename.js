@@ -6,15 +6,13 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.file.rename = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.tabview = null;
-	this.treeview = null;
-	this.is_alive_window = null;
-};
+org.goorm.core.file.rename = {
+	dialog: null,
+	buttons: null,
+	tabview: null,
+	treeview: null,
+	is_alive_window: null,
 
-org.goorm.core.file.rename.prototype = {
 	init: function () { 
 		
 		var self = this;
@@ -24,7 +22,7 @@ org.goorm.core.file.rename.prototype = {
 			for(var i=0; i<strings.length; i++)
 				if(dst_name.indexOf(strings[i]) != -1) return false;
 			return true;
-		}
+		};
 		
 		var handle_ok = function() { 
 			var ori_path = $("#input_rename_old_filepath").val();
@@ -81,8 +79,9 @@ org.goorm.core.file.rename.prototype = {
 		
 		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
+
 		
-		this.dialog = new org.goorm.core.file.rename.dialog();
+		this.dialog = org.goorm.core.file.rename.dialog;
 		this.dialog.init({
 			localization_key:"title_rename",
 			title:"Rename", 

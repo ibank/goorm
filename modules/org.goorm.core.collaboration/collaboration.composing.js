@@ -7,7 +7,9 @@
  **/
 
 module.exports = {
-	msg: function (socket, msg) {
-		socket.broadcast.to(msg.workspace).emit("composing_message", JSON.stringify(msg));
+	msg: function (io, socket, msg) {
+		//socket.broadcast.to(msg.workspace).emit("composing_message", JSON.stringify(msg));
+		io.sockets.in(msg.workspace).emit("composing_message", JSON.stringify(msg));
+
 	}
 };

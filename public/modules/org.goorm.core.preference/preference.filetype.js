@@ -6,14 +6,12 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.preference.filetype = function () {
-	this.add_button = null;
-	this.del_button = null;
-	this.save_button = null;
-	this.is_adding = false;
-};
+org.goorm.core.preference.filetype = {
+	add_button: null,
+	del_button: null,
+	save_button: null,
+	is_adding: false,
 
-org.goorm.core.preference.filetype.prototype = {
 	init: function () {
 		var self = this;
 		
@@ -23,7 +21,7 @@ org.goorm.core.preference.filetype.prototype = {
 		this.is_adding = false;
 		core.module.auth.get_info(function(user_reg){
 			$.getJSON("auth/get_info", function(user_data){
-				if(user_data && (user_data.level == 'Admin' || user_data.level == 'Owner')){
+				if(user_data && (user_data.level == 'Assistant')){
 					self.readonly = false;
 					// Buttons on dialog
 					self.add_button =  new YAHOO.widget.Button("filetype_add", { onclick: { fn: function() { self.add(); } }, label:'<span localization_key="add">Add</span>' });
@@ -134,7 +132,7 @@ org.goorm.core.preference.filetype.prototype = {
 					type: "GET",
 					data: { data: filedata },
 					success: function(data) {
-						console.log("Save complete! ( filetypes.json )");
+						//console.log("Save complete! ( filetypes.json )");
 					}
 				});
 			}
@@ -223,10 +221,13 @@ org.goorm.core.preference.filetype.prototype = {
 					type: $(".filetype_contents").find(".filetype_detail").find(".type").attr("value"),
 					mode: $(".filetype_contents").find(".filetype_detail").find(".mode").attr("value")
 				}
+				//console.log("push?!")
 				core.filetypes.push(temp);
 				
 				// Temporary name in file type list have to be updated to right file type name
 				var ext = $(".filetype_contents").find(".filetype_detail").find(".file_extension").val();
+				
+				//console.log(ext);
 				
 				$(".filetype_contents").find(".filetype_list").find(".new_extension").html(ext);
 				$(".filetype_contents").find(".filetype_list").find(".new_extension").addClass(ext);

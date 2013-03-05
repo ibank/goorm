@@ -6,11 +6,9 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.edit.find_and_replace.dialog = function () {
-	this.dialog = null;
-};
+org.goorm.core.edit.find_and_replace.dialog = {
+	dialog: null,
 
-org.goorm.core.edit.find_and_replace.dialog.prototype = {
 	init: function (option) {
 		this.dialog = new org.goorm.core.dialog();
 		this.dialog.init(option);

@@ -6,11 +6,9 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.collaboration.join.dialog = function () {
-	this.dialog = null;
-};
+org.goorm.core.collaboration.join.dialog = {
+	dialog: null,
 
-org.goorm.core.collaboration.join.dialog.prototype = {
 	init: function (option) {
 		this.dialog = new org.goorm.core.dialog();
 		this.dialog.init(option);

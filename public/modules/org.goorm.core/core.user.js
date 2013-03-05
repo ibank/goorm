@@ -6,10 +6,6 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.user = function () {
-	
-};
-
-org.goorm.core.user.prototype = {
+org.goorm.core.user = {
 
 };

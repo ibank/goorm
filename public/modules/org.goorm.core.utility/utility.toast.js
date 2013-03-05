@@ -6,11 +6,9 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.utility.toast = function () {
-	this.panel = null
-};
+org.goorm.core.utility.toast = {
+	panel: null,
 
-org.goorm.core.utility.toast.prototype = {
 	init: function () {
 		var self= this;
 		

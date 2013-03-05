@@ -1,10 +1,14 @@
+/**
+ * Copyright Sung-tae Ryu, Youseok Nam. All rights reserved.
+ * Code licensed under the AGPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
+ **/
 
-
-org.goorm.core.admin.user_manager.available_blind = function () {
-	this.change_list = {};
-};
-
-org.goorm.core.admin.user_manager.available_blind.prototype = {
+org.goorm.core.admin.user_manager.available_blind = {
+	change_list: {},
+	
 	init : function() {
 		var self = this;
 		

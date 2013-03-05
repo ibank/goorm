@@ -6,11 +6,6 @@
  * version: 1.0.0
  **/
 
-org.goorm.plugin = function () {
-	
-};
+org.goorm.plugin = {
 
-org.goorm.plugin.prototype = {
-
-	
 };

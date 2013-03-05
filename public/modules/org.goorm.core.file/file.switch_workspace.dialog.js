@@ -6,11 +6,9 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.file.switch_workspace.dialog = function () {
-	this.dialog = null;
-};
+org.goorm.core.file.switch_workspace.dialog = {
+	dialog: null,
 
-org.goorm.core.file.switch_workspace.dialog.prototype = {
 	init: function (option) {
 		this.dialog = new org.goorm.core.dialog();
 		this.dialog.init(option);

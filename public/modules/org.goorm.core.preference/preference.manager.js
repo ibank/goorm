@@ -6,12 +6,10 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.preference.manager = function () {
-	this.treeview = null;
-	this.preferences = null;
-};
+org.goorm.core.preference.manager = {
+	treeview: null,
+	preferences: null,
 
-org.goorm.core.preference.manager.prototype = {
 	init: function (option) {
 		this.preferences = [];
 	},

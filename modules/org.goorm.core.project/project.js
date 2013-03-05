@@ -12,8 +12,6 @@ var rimraf = require('rimraf');
 var EventEmitter = require("events").EventEmitter;
 var exec = require('child_process').exec;
 
-var projects = [];
-
 var g_auth_project = require('../org.goorm.auth/auth.project');
 
 module.exports = {
@@ -234,7 +232,7 @@ module.exports = {
 	get_list: function (project_option, evt) {
 	
 		var self = this;
-		projects = [];
+		var projects = [];
 		
 		var author = project_option['author'];
 		var get_list_type = project_option['get_list_type'];
@@ -274,18 +272,18 @@ module.exports = {
 
 					var evt_dir = new EventEmitter();
 		
-					evt_dir.on("get_list", function () {
+					evt_dir.on("get_list", function (__projects) {
 
 						dir_count++;
 						if (dir_count<dirStatsArray.length) {
-							self.get_project_info(owner_roots, dirStatsArray[dir_count], evt_dir);						
+							self.get_project_info(owner_roots, dirStatsArray[dir_count], __projects, evt_dir);
 						}
 						else {
-							evt.emit("project_get_list", projects);
+							evt.emit("project_get_list", __projects);
 						}
 					});
 
-					self.get_project_info(owner_roots, dirStatsArray[dir_count], evt_dir);
+					self.get_project_info(owner_roots, dirStatsArray[dir_count], projects, evt_dir);
 				}
 				
 				next();
@@ -299,7 +297,7 @@ module.exports = {
 		});
 	},
 	
-	get_project_info: function (owner_roots, dirStatsArray, evt_dir) {
+	get_project_info: function (owner_roots, dirStatsArray, projects, evt_dir) {
 		if( owner_roots.indexOf(dirStatsArray.name) != -1 || owner_roots.indexOf('/'+dirStatsArray.name) != -1 ) {
 			var project = {};
 			project.name = dirStatsArray.name;
@@ -310,11 +308,11 @@ module.exports = {
 
 					projects.push(project);
 				}
-				evt_dir.emit("get_list");
+				evt_dir.emit("get_list", projects);
 			});
 		}
 		else{
-			evt_dir.emit("get_list");
+			evt_dir.emit("get_list", projects);
 		}
 	},
 	

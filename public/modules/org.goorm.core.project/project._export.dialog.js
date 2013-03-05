@@ -6,11 +6,9 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.project._export.dialog = function () {
-	this.dialog = null;
-};
+org.goorm.core.project._export.dialog = {
+	dialog: null,
 
-org.goorm.core.project._export.dialog.prototype = {
 	init: function (option) {
 		this.dialog = new org.goorm.core.dialog();
 		this.dialog.init(option);

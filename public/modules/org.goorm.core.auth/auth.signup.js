@@ -1,12 +1,17 @@
-
-org.goorm.core.auth.signup = function () {
-	this.dialog = null;
-	this.buttons = null;
+/**
+ * Copyright Sung-tae Ryu, Youseok Nam. All rights reserved.
+ * Code licensed under the AGPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
+ **/
+ 
+org.goorm.core.auth.signup = {
+	dialog: null,
+	buttons: null,
 	
-	this.mode = null;
-}
-
-org.goorm.core.auth.signup.prototype = {
+	mode: null,
+	
 	init: function () {
 		
 		var self = this;
@@ -19,6 +24,8 @@ org.goorm.core.auth.signup.prototype = {
 				name : $('[name="signup_name_input"]').val(),
 				nick : $('[name="signup_nick_input"]').val(),
 				email : $('[name="signup_email_input"]').val(),
+				//student_id : $('[name="signup_student_id_input"]').val(),
+				//lecture_name : $('[name="signup_lecture_input"] option:selected').val(),
 				type : 'password'
 			}
 			
@@ -33,13 +40,13 @@ org.goorm.core.auth.signup.prototype = {
 		this.buttons = [ {text:"<span localization_key='register'>Register</span>", handler:handle_signup, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
-		this.dialog = new org.goorm.core.auth.signup.dialog();
+		this.dialog = org.goorm.core.auth.signup.dialog;
 		this.dialog.init({
 			localization_key:"title_register",
 			title:"Register", 
 			path:"configs/dialogs/org.goorm.core.auth/auth.signup.html",
 			width:380,
-			height:300,
+			height:350,
 			zindex:1001,
 			modal:true,
 			buttons:this.buttons,
@@ -58,15 +65,15 @@ org.goorm.core.auth.signup.prototype = {
 		
 		if(mode == 'admin'){
 			var panel_id = self.dialog.panel.id;
-			$('#'+panel_id).find('.hd').html('Admin Registration');
+			$('#'+panel_id).find('.hd').html(core.module.localization.msg['alert_sign_up']);
 			$('#'+panel_id).find('[localization_key="cancel"]').parent().parent().parent().hide();
 
-			self.dialog.title = 'Admin Registration';
+			self.dialog.title = core.module.localization.msg['alert_sign_up'];
 		}
 		else{
 			var panel_id = self.dialog.panel.id;
-			$('#'+panel_id).find('.hd').html('Register');
-			self.dialog.title = 'Register';
+			$('#'+panel_id).find('.hd').html(core.module.localization.msg['alert_sign_up']);
+			self.dialog.title = core.module.localization.msg['alert_sign_up'];
 		}
 		
 		this.dialog.panel.show();
@@ -92,7 +99,7 @@ org.goorm.core.auth.signup.prototype = {
 							break;
 
 						default:
-							console.log(signup_result);
+							//console.log(signup_result);
 					}
 				}
 			}

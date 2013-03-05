@@ -6,12 +6,10 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.scm = function () {
-	this.scm = null;
-	this.dialogs = null;
-};
+org.goorm.core.scm = {
+	scm: null,
+	dialogs: null,
 
-org.goorm.core.scm.prototype = {
 	init: function(){
 		this.dialogs = {};
 		this.scm = {

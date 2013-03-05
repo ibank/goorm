@@ -237,9 +237,13 @@ module.exports = {
 			};
 
 			var walker = walk.walk(path, options);
-			
 			walker.on("files", function (root, file_stats, next) {
-				if (root.indexOf("\/\.")==-1) {			
+				if(__workspace+'/'==root){
+					//	console.log('gggg'); 
+					// ignore file in root of workspace
+				}
+				else if (root.indexOf("\/\.")==-1) 
+				{			
 					for (var i=0; i < file_stats.length; i++) {
 						if (file_stats[i].name.indexOf("\.") != 0 ) {
 							var temp_filename = file_stats[i].name;
@@ -476,7 +480,7 @@ module.exports = {
 					
 					walker.on("end", function () {
 						tree = self.make_dir_tree(root_dir, dirs);
-
+						
 						// root directory for get_dir_nodes only
 						var dir_tree = {};
 						var dir_tree_name = root_dir;
@@ -702,7 +706,7 @@ module.exports = {
 					
 					var command = exec("cp " + __workspace+'/'+query.path+'/'+query.file+" "+__temp_dir+'/'+query.user+'/'+query.file, function (error, stdout, stderr) {
 						if (error == null) {
-data.path = query.user+'/'+query.file;
+									data.path = query.user+'/'+query.file;
 									evt.emit("file_do_export", data);						}
 						else {
 							data.err_code = 20;

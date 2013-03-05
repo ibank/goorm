@@ -12,13 +12,13 @@
 		"value": "Cancel"	
 	},
 	"find_info": {
-		"value": "Find id/pw"	
+		"value": "Find ID/PW"	
 	},
 	"forgot_id": {
-		"value": "Find id"	
+		"value": "Find ID"
 	},
 	"forgot_pw": {
-		"value": "Find password"	
+		"value": "Find PW"	
 	},
 	"send": {
 		"value": "Send"	
@@ -148,6 +148,9 @@
 	},
 	"modify" : {
 		"value" : "Modify"
+	},
+	"modify_pw" : {
+		"value" : "Password"
 	},
 	"All" : {
 		"value" : "All"

@@ -6,11 +6,9 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.shortcut.manager = function () {
-	this.on_transition = false;
-};
+org.goorm.core.shortcut.manager = {
+	on_transition: false,
 
-org.goorm.core.shortcut.manager.prototype = {
 	init: function () {
 		var self = this;
 		//Prevent Backspace Key

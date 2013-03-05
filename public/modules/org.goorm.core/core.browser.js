@@ -6,12 +6,7 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.browser = function() {
-	this.name = "";
-	this.version = 0;
-};
-
-org.goorm.core.browser.prototype = {
+org.goorm.core.browser = {
 	init: function() {
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Get the Browser Information

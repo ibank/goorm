@@ -6,14 +6,12 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.project.open = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.chat = null;
-	this.project_list = null;
-};
+org.goorm.core.project.open = {
+	dialog: null,
+	buttons: null,
+	chat: null,
+	project_list: null,
 
-org.goorm.core.project.open.prototype = {
 	init: function () {
 		
 		var self = this;
@@ -40,7 +38,7 @@ org.goorm.core.project.open.prototype = {
 		this.buttons = [ {text:"<span localization_key='open'>Open</span>", handler:handle_open, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
-		this.dialog = new org.goorm.core.project.open.dialog();
+		this.dialog = org.goorm.core.project.open.dialog;
 		this.dialog.init({
 			localization_key:"title_open_project",
 			title:"Open Project", 

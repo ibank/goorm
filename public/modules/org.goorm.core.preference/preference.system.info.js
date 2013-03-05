@@ -6,15 +6,11 @@
  * version: 1.0.0
  **/
  
-org.goorm.core.preference.info = function (){
-	this.browser = name;
-	this.version = 0;
-	this.version = 3.0;
-	this.is_ipad = false;
-	this.os=null;
-};
+org.goorm.core.preference.info = {
+	version: 1.0,
+	is_ipad: false,
+	os: null,
 
-org.goorm.core.preference.info.prototype = {
 	init : function() {
 		var self = this;
 		

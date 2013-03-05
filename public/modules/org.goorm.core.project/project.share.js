@@ -1,13 +1,10 @@
 
-org.goorm.core.project.share = function () {
-	this.dialog = null;
+org.goorm.core.project.share = {
+	dialog: null,
+	selected_user: null,
+	added_list: {},
+	socket: null,
 
-	this.selected_user = null;
-	this.added_list = {};
-	this.socket = null;
-}
-
-org.goorm.core.project.share.prototype = {
 	init : function(){
 		var self = this;
 
@@ -18,7 +15,7 @@ org.goorm.core.project.share.prototype = {
 		this.buttons = [ {text:"<span localization_key='share_and_save'>Share & Save</span>", handler:function(){ self.share() }, isDefault:true},
 						 {text:"<span localization_key='close'>Close</span>",  handler:handle_close}];
 
-		this.dialog = new org.goorm.core.project.share.dialog();
+		this.dialog = org.goorm.core.project.share.dialog;
 		this.dialog.init({
 			localization_key:"title_project_share",
 			title:"Share This Project", 

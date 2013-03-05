@@ -1,16 +1,20 @@
+/**
+ * Copyright Sung-tae Ryu, Youseok Nam. All rights reserved.
+ * Code licensed under the AGPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
+ **/
 
-
-org.goorm.core.admin.user_manager.manager = function () {
-	this.treeview_source = "user_manager_treeview"
-	this.tabview_source = "user_manager_tabview"
+org.goorm.core.admin.user_manager.manager = {
+	treeview_source: "user_manager_treeview",
+	tabview_source: "user_manager_tabview",
 	
-	this.treeview = null;
-	this.tabview = {};
-	this.tabview_list = {};
-	this.localization_ids = [];
-};
+	treeview: null,
+	tabview: {},
+	tabview_list: {},
+	localization_ids: [],
 
-org.goorm.core.admin.user_manager.manager.prototype = {
 	init: function () {
 	
 	},
@@ -106,7 +110,7 @@ org.goorm.core.admin.user_manager.manager.prototype = {
 							    content: data 
 							});
 							
-							self.tabview_list[label][classname] = eval('new org.goorm.core.admin.user_manager.'+classname+'()');
+							self.tabview_list[label][classname] = eval('org.goorm.core.admin.user_manager.'+classname+'');
 							tabview.addTab(tab);
 						}
 					});

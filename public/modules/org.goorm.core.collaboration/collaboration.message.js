@@ -1,20 +1,17 @@
 
-org.goorm.core.collaboration.message = function () {
-	this.container = "#communication .communication_toolbar";
-
-	this.invite = null;
+org.goorm.core.collaboration.message = {
+	container: "#communication .communication_toolbar",
+	invite: null,
 
 	// message queue
 	//
-	this.updating_process_running = false;	
-	this.message_queue = [];
-}
+	updating_process_running: false,	
+	message_queue: [],
 
-org.goorm.core.collaboration.message.prototype = {
 	init : function(){
 		var self = this;
 
-		this.invite = new org.goorm.core.collaboration.invite();
+		this.invite = org.goorm.core.collaboration.invite;
 		this.invite.init();
 
 		$(core).bind('goorm_login_complete', function() {

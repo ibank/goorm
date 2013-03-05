@@ -6,11 +6,7 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.fn = function() {
-	
-};
-
-org.goorm.core.fn.prototype = {
+org.goorm.core.fn = {
 	init: function () {
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Expand jquery function : reverse()

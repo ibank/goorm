@@ -110,7 +110,8 @@ org.goorm.core.window.panel.prototype = {
 		// window setting
 		//////////////////////////////////////////////////////////////////////////////////////////	
 		
-		this.title = title;
+//		this.title = title;
+		this.set_title();
 		this.panel.setHeader("<div style='overflow:auto' class='titlebar'><div class='window_title' style='float:left'>"+this.title+"</div><div class='window_buttons'><div class='minimize window_button'></div> <div class='maximize window_button'></div> <div class='close window_button'></div></div></div>");
 		this.panel.setBody("<div class='window_container'></div>");
 		this.panel.setFooter("<div class='.footer'>footer</div>");
@@ -141,7 +142,7 @@ org.goorm.core.window.panel.prototype = {
 			}
 
 			this.editor = new org.goorm.core.edit();
-			this.editor.init($("#"+container).find(".window_container"));
+			this.editor.init($("#"+container).find(".window_container"), null, this.filepath);
 			this.editor.load(this.filepath, this.filename, this.filetype);
 			this.editor.set_mode(mode);
 
@@ -169,9 +170,8 @@ org.goorm.core.window.panel.prototype = {
 			 	
 			if (this.type == "Editor") {
 				var mode = core.filetypes[this.inArray(this.filetype)].mode;
-				
 				this.editor = new org.goorm.core.edit();
-				this.editor.init($("#"+container).find(".window_container"));
+				this.editor.init($("#"+container).find(".window_container"), null, this.filepath);
 				this.editor.load(this.filepath, this.filename, this.filetype);
 				this.editor.set_mode(mode);
 			}
@@ -334,7 +334,7 @@ org.goorm.core.window.panel.prototype = {
 		
 		core.dialog.project_property.refresh_toolbox();
 		
-		$(core).bind("on_project_open", function () {
+		$(core).on("on_project_open.penel", function () {
 			self.set_title();
 		});
 		
@@ -462,17 +462,18 @@ org.goorm.core.window.panel.prototype = {
 
 	minimize: function () {
 		var self = this;
-		
-		if(this.status != "minimized") {			
+		console.log(this.status);
+		console.log(self.container);
+	/*	if(this.status != "minimized") {		*/	
 			$("#" + self.container + "_c").hide("fast");
 			
-			this.status = "minimized";	
+	/*		this.status = "minimized";	
 		}
 		else {
 			$("#" + self.container + "_c").show("slow");
 			
 			this.status = null;
-		}
+		}*/
 		
 		this.resize_all();
 		this.refresh();		
@@ -552,7 +553,7 @@ org.goorm.core.window.panel.prototype = {
 				$(".tab_max_buttons").hide();
 			}
 			window_manager.active_window = new_window;
-			
+			$(core).off("on_project_open.penel");
 			delete this;
 		}
 		else {
@@ -583,22 +584,25 @@ org.goorm.core.window.panel.prototype = {
 	},
 	
 	show: function() {
+		//console.log("show");
 		this.context_menu.hide();
 		$("#" + this.container + "_c").show();
 	},
 	
 	hide: function() {
+		//console.log("hide");
 		this.context_menu.hide();
 		$("#" + this.container + "_c").hide();
 	},	
-	
 	activate: function() {
 		var self = this;
+		//console.log("active");
 		if(self.editor && self.editor.filename){
 			if(core.module.layout.workspace.window_manager.active_filename
 				!=(self.editor.filepath + self.editor.filename)){
-				core.module.layout.workspace.window_manager.active_filename = self.editor.filepath + self.editor.filename;
+				
 				self.editor.on_activated();
+				core.module.layout.workspace.window_manager.active_filename = self.editor.filepath + self.editor.filename;
 			}
 		}
 		core.module.layout.workspace.window_manager.active_window = this.index;
@@ -620,17 +624,24 @@ org.goorm.core.window.panel.prototype = {
 		//core.dialog.project_property.refresh_toolbox();
 	},
 	
-	set_title: function(contents) {
-		if (contents == undefined) {
-			if (this.project != core.status.current_project_path) {
-				this.title = this.filepath + this.filename;
-				$("#" + this.container + "_c").find(".window_title").html(this.title);
-			}
-			else {
-				this.title = this.filename;
-				$("#" + this.container + "_c").find(".window_title").html(this.title);
-			}
+	set_title: function() {
+		var project = this.filepath.split("/").shift();
+		var prefix = "";
+		// 현재 프로젝트가 다른경우 협업 중지 메시지를 출력한다.
+		if(core.status.current_project_path != project  && this.filename != "debug" ) {
+			prefix = "["+core.module.localization.msg["collaboration_stop_message"]+"] ";
 		}
+		
+		// 프로젝트 내 동일한 파일이름일경우 구분불가
+//		if (this.project != core.status.current_project_path) {
+			this.title = this.filepath + this.filename;
+			if(this.filename == "debug") this.title = this.filename;
+			$("#" + this.container + "_c").find(".window_title").html(prefix + this.title);
+//		}
+//		else {
+//			this.title = this.filename;
+//			$("#" + this.container + "_c").find(".window_title").html(this.title);
+//		}
 	},
 	
 	set_body: function(contents) {

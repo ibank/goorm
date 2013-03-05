@@ -6,22 +6,26 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.file._new.other = function () {
-	this.dialog = null;
-	this.buttons = null;
-};
+org.goorm.core.file._new.other = {
+	dialog: null,
+	buttons: null,
 
-org.goorm.core.file._new.other.prototype = {
 	init: function () {
 		var self = this;
 		
 		var handle_ok = function() {
 			var file_type = $("#new_other_file_list .selected_div").attr("value");
 			
+			if(core.status.current_project_path==""){
+				alert.show(core.module.localization.msg['alert_deny_make_file_in_workspace_root']);
+				return;
+			}
+
 			var postdata = {
 				current_path: core.status.current_project_path,
 				file_name: $("#new_other_file_target").val()+"."+file_type
 			};
+
 
 			if(postdata.file_name=="") {
 				alert.show(core.module.localization.msg["alert_filename_empty"]);
@@ -48,7 +52,7 @@ org.goorm.core.file._new.other.prototype = {
 		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
-		this.dialog = new org.goorm.core.file._new.other.dialog();
+		this.dialog = org.goorm.core.file._new.other.dialog;
 		this.dialog.init({
 			localization_key:"title_new_other_file",
 			title:"New Other File", 

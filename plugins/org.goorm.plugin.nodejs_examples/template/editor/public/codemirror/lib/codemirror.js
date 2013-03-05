@@ -2819,9 +2819,10 @@ window.CodeMirror = (function() {
   option("lineNumberFormatter", function(integer) {return integer;}, guttersChanged, true);
   option("showCursorWhenSelecting", false, updateSelection, true);
   
-  option("readOnly", false, function(cm, val) {
+  option("readOnly", false, function(cm, val, flag) {
     if (val == "nocursor") {onBlur(cm); cm.display.input.blur();}
     else if (!val) resetInput(cm, true);
+    
   });
   option("dragDrop", true);
 

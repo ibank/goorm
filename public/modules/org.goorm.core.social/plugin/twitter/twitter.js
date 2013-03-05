@@ -1,11 +1,14 @@
-
-org.goorm.core.social_plugin.twitter = function () {
-	
-}
-
-org.goorm.core.social_plugin.twitter.prototype =  {
+/**
+ * Copyright Sung-tae Ryu, Youseok Nam. All rights reserved.
+ * Code licensed under the AGPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
+ **/
+ 
+org.goorm.core.social_plugin.twitter = {
 	init : function(){
-		
+		console.log("!");
 	},
 	
 	post_direct_message : function(){

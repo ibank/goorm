@@ -6,12 +6,10 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.theme.area.dialog = function () {
+org.goorm.core.theme.area.dialog = {
 	
-	this.dialog = null;
-};
+	dialog: null,
 
-org.goorm.core.theme.area.dialog.prototype = {
 	init: function (option) {
 		this.dialog = new org.goorm.core.dialog();
 		this.dialog.init(option);

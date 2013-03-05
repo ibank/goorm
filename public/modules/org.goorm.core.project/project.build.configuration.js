@@ -6,13 +6,9 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.project.build.configuration = function () {
-	this.dialog = null;
-//	this.buttons = null;
-//	this.chat = null;
-};
+org.goorm.core.project.build.configuration = {
+	dialog: null,
 
-org.goorm.core.project.build.configuration.prototype = {
 	init: function () {
 		
 		var self = this;

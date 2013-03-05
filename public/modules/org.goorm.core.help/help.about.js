@@ -6,14 +6,12 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.help.about = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.tabview = null;
-	this.treeview = null;
-};
+org.goorm.core.help.about = {
+	dialog: null,
+	buttons: null,
+	tabview: null,
+	treeview: null,
 
-org.goorm.core.help.about.prototype = {
 	init: function () {
 		var self = this;
 		

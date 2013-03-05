@@ -114,7 +114,7 @@ org.goorm.core.terminal.prototype = {
 					special_key: true
 				};
 				
-				if (self.arrowed_string != "") {					
+				if (self.arrowed_string != "") {
 					$(self.target).find("#results").find("pre:last").append(self.arrowed_string);
 					self.arrowed_string = "";
 				}
@@ -222,6 +222,20 @@ org.goorm.core.terminal.prototype = {
 				var msg = {
 					index: self.index,
 					command: '\x1A',
+					special_key: true
+				};
+				
+				self.socket.emit("pty_execute_command", JSON.stringify(msg));
+			}
+		});
+		
+		$(target).keydown(function (event) {
+			if ((event.keyCode == '99' || event.keyCode == '67') && event.ctrlKey) { //Ctrl + C
+				event.preventDefault();
+				
+				var msg = {
+					index: self.index,
+					command: '\x03',
 					special_key: true
 				};
 				
@@ -464,6 +478,8 @@ org.goorm.core.terminal.prototype = {
 						
 						self.arrowed = false;
 						self.arrowed_string = self.temp_stdout;
+						
+						console.log("self.arrowed_string = " + self.arrowed_string);
 						
 						self.temp_stdout = "";
 					}
@@ -900,6 +916,7 @@ org.goorm.core.terminal.prototype = {
 			var target_height = $(this.target).find("#results").height() + 20;
 			var prompt_width = $(this.target).find("#results").find("pre:last").find("span").width();
 
+/*
 			if(this.platform == "linux") {
 				prompt_width = 0;
 
@@ -907,6 +924,7 @@ org.goorm.core.terminal.prototype = {
 					prompt_width += $(this).width();
 				});
 			}
+*/
 
 			if (panel_width - prompt_width < 80) {
 				prompt_width = 0;
@@ -931,6 +949,7 @@ org.goorm.core.terminal.prototype = {
 			var prompt_width = $(this.target).find("#results").find("pre:last").find("span").width();
 
 
+/*
 			if(this.platform == "linux") {
 				prompt_width = 0;
 
@@ -938,6 +957,7 @@ org.goorm.core.terminal.prototype = {
 					prompt_width += $(this).width();
 				});
 			}
+*/
 
 			if (layout_bottom_width - prompt_width < 80) {
 				prompt_width = 0;

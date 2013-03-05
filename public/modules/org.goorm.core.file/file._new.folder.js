@@ -6,20 +6,21 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.file._new.folder = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.dialog_explorer = null;
-};
+org.goorm.core.file._new.folder = {
+	dialog: null,
+	buttons: null,
+	dialog_explorer: null,
 
-org.goorm.core.file._new.folder.prototype = {
 	init: function () { 
 		var self = this;
 		
 		var handle_ok = function() {
 		
 			var data = self.dialog_explorer.get_data();
-
+			if(data.path=="/"){
+				alert.show(core.module.localization.msg['alert_deny_make_folder_in_workspace_root']);
+				return;
+			}
 			if(data.path=="" || data.name=="") {
 				alert.show(core.module.localization.msg["alert_filename_empty"]);
 				// alert.show("Folder name is empty. Please fill it...");
@@ -52,7 +53,7 @@ org.goorm.core.file._new.folder.prototype = {
 		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 
-		this.dialog = new org.goorm.core.file._new.folder.dialog();
+		this.dialog = org.goorm.core.file._new.folder.dialog;
 		this.dialog.init({
 			localization_key:"title_new_folder",
 			title:"New folder", 

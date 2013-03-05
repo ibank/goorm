@@ -6,11 +6,9 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.layout.startpage = function () {
-	this.pushbutton = null;
-};
+org.goorm.core.layout.startpage = {
+	pushbutton: null,
 
-org.goorm.core.layout.startpage.prototype = {
 	init: function (target) {
 		var self = this;
 		

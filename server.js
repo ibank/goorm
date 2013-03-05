@@ -22,21 +22,10 @@ var express = require('express')
   , everyauth = require('everyauth')
   , fs = require('fs');
 
-// Session Manager
-//
-store = new express.session.MemoryStore;
-//var RedisStore = require('connect-redis')(express)
-//store = new RedisStore
-
-//by sim
-var utils=require('util')
-var exec=require('child_process').exec;
-
-//by sim
-
-var port = 9999; //default
+port = 9999; //default
 var home = process.env.HOME;
 global.__service_mode = false;
+global.__redis_mode = false;
 
 if (process.argv[2] > 0 && process.argv[2] < 100000) {
 	port = process.argv[2];
@@ -46,8 +35,12 @@ if(fs.existsSync(process.argv[3])){
 	home = process.argv[3];
 }
 
-if (process.argv[4]) {
+if (process.argv[4] && process.argv[4] == 'true') {
 	global.__service_mode = true;
+}
+
+if (process.argv[5] && process.argv[5] == 'true') {
+	global.__redis_mode = true;
 }
 
 mongoose.on('error', function(err){
@@ -77,7 +70,8 @@ var config_data = {
 	temp_dir: undefined,
 	social_key: undefined,
 	uid: undefined,
-	gid: undefined
+	gid: undefined,
+	redis_mode: undefined
 };
 
 var users = []
@@ -123,6 +117,17 @@ if (config_data.gid != undefined) {
 	global.__gid = config_data.gid;
 }
 else global.__gid = null;
+
+// Session Store
+//
+store = null;
+
+if(global.__redis_mode){
+	var RedisStore = require('connect-redis')(express)
+	store = new RedisStore
+} else {
+	store = new express.session.MemoryStore;
+}
 
 console.log("--------------------------------------------------------".grey);
 console.log("workspace_path: " + __workspace);
@@ -206,18 +211,18 @@ goorm.get('/project/export', check_auth, routes.project.do_export);
 goorm.get('/project/clean', check_auth, routes.project.do_clean);
 goorm.get('/project/get_property', check_auth, routes.project.get_property);
 goorm.get('/project/set_property', check_auth, routes.project.set_property);
-
+goorm.get('/project/get_contents', routes.project.get_contents);
 //for SCM
 goorm.get('/scm', check_auth, routes.scm);
 
 //for plugin
 goorm.get('/plugin/get_list', check_auth, routes.plugin.get_list);
-goorm.post('/slide/lecture_url',routes.plugin.lecture_url);
 //goorm.get('/plugin/install', check_auth, routes.plugin.install);
 goorm.get('/plugin/new', check_auth, routes.plugin.do_new);
 //goorm.get('/plugin/debug', check_auth, routes.plugin.debug);
 goorm.get('/plugin/run', check_auth, routes.plugin.run);
 goorm.get('/plugin/extend_function', check_auth, routes.plugin.extend_function);
+goorm.post('/plugin/extend_function_sign', check_auth, routes.plugin.extend_function_sign);
 
 //for filesystem
 goorm.get('/file/new', check_auth, routes.file.do_new);
@@ -229,7 +234,6 @@ goorm.get('/file/load', check_auth, routes.file.do_load);
 goorm.get('/file/save_as', check_auth, routes.file.do_save_as);
 goorm.get('/file/delete', check_auth, routes.file.do_delete);
 goorm.get('/file/get_contents', check_auth, routes.file.get_contents);
-goorm.get('/file/get_contents2', routes.file.get_contents2);
 goorm.get('/file/get_url_contents', check_auth, routes.file.get_url_contents);
 //goorm.get('/file/put_contents', check_auth, routes.file.put_contents);
 goorm.post('/file/put_contents', check_auth, routes.file.put_contents);
@@ -259,8 +263,8 @@ goorm.get('/preference/put_filetypes', check_auth, routes.preference.put_filetyp
 
 //for theme
 goorm.get('/theme/get_list', check_auth, routes.theme.get_list);
-goorm.get('/theme/get_contents', check_auth, routes.theme.get_contents);
-goorm.get('/theme/put_contents', check_auth, routes.theme.put_contents);
+goorm.post('/theme/get_contents', check_auth, routes.theme.get_contents);
+goorm.post('/theme/put_contents', check_auth, routes.theme.put_contents);
 
 //for help
 goorm.get('/help/get_readme_markdown', check_auth, routes.help.get_readme_markdown);
@@ -285,11 +289,14 @@ goorm.post('/admin/user/avail_blind', check_auth, routes.admin.user_avail_blind)
 // for users
 goorm.post('/user/get', routes.user.get);
 goorm.post('/user/get/list', routes.user.list);
+goorm.post('/user/get/list/group', routes.user.list.group);
 goorm.post('/user/set', routes.user.set);
+goorm.post('/user/set_pw', routes.user.set_pw);
 goorm.get('/user/project/get', routes.user.project.get);
 goorm.get('/user/project/list', routes.user.project.list);
 goorm.get('/user/project/list/no_co_developers', routes.user.project.list.no_co_developers);
 goorm.post('/user/project/collaboration/push', routes.user.project.collaboration.push);
+goorm.post('/user/project/collaboration/push/all', routes.user.project.collaboration.push.all);
 goorm.post('/user/project/collaboration/pull', routes.user.project.collaboration.pull);
 goorm.post('/user/project/collaboration/invitation/push', routes.user.project.collaboration.invitation.push);
 goorm.post('/user/project/collaboration/invitation/pull', routes.user.project.collaboration.invitation.pull);
@@ -307,7 +314,8 @@ goorm.get('/download', check_auth, routes.download);
 //by sim
 goorm.get('/send_file',check_auth, routes.send_file);
 //by sim
-
+//for slide
+goorm.get('/lecture/open_file',routes.open_source);
 
 //for Social API
 goorm.get('/social/login', routes.social.login);

@@ -102,7 +102,7 @@ module.exports = {
 			if (index > -1) files[msg.filename].users.remove(index);	// just leave
 		}
 	}
-	, msg: function(socket, msg) {
+	, msg: function(io, socket, msg) {
 		if (msg.filepath.slice(0,1) != "/") msg.filepath = "/" + msg.filepath;
 		if (msg.action!="change" || !files[msg.filepath]) return;
 		var self = this;
@@ -129,8 +129,10 @@ module.exports = {
 				}
 				self.add_snapshot(snapshot, function (err) {
 					if (!err) {
-						socket.broadcast.to("."+snapshot.filename).emit("history_message", JSON.stringify({action: 'snapshot', snapshot: snapshot}));
-						socket.emit("history_message", JSON.stringify({action: 'snapshot', snapshot: snapshot}));
+						//socket.broadcast.to("."+snapshot.filename).emit("history_message", JSON.stringify({action: 'snapshot', snapshot: snapshot}));
+						//socket.emit("history_message", JSON.stringify({action: 'snapshot', snapshot: snapshot}));
+						io.sockets.in("."+snapshot.filename).emit("history_message", JSON.stringify({action: 'snapshot', snapshot: snapshot}));
+						
 						files[msg.filepath].buffer = [];
 						files[msg.filepath].committer = [];
 					} else console.log("history snapshot failed".red);
@@ -139,7 +141,7 @@ module.exports = {
 		}, 1000);
 	}
 	
-	, command_msg: function (socket, msg) {
+	, command_msg: function (io, socket, msg) {
 		if (msg.filepath.slice(0,1) != "/") msg.filepath = "/" + msg.filepath;
 		if (!files[msg.filepath]) return;
 		var self = this;
@@ -155,8 +157,9 @@ module.exports = {
 						index: msg.index, 
 						delay: msg.delay
 					}
-					socket.broadcast.to("."+msg.filepath).emit("history_message", JSON.stringify(history_message));
-					socket.emit("history_message", JSON.stringify(history_message));
+					//socket.broadcast.to("."+msg.filepath).emit("history_message", JSON.stringify(history_message));
+					//socket.emit("history_message", JSON.stringify(history_message));
+					io.sockets.in("."+msg.filepath).emit("history_message", JSON.stringify(history_message));
 				} else console.log("history set_delay failed.".red);
 			});
 		} else if (msg.action == 'merge') {
@@ -204,8 +207,11 @@ module.exports = {
 						action: 'merge',
 						filename: msg.filepath
 					}
-					socket.broadcast.to("."+msg.filepath).emit("history_message", JSON.stringify(history_message));
-					socket.emit("history_message", JSON.stringify(history_message));
+					//socket.broadcast.to("."+msg.filepath).emit("history_message", JSON.stringify(history_message));
+					//socket.emit("history_message", JSON.stringify(history_message));
+					
+					io.sockets.in("."+msg.filepath).emit("history_message", JSON.stringify(history_message));
+					
 				} else console.log("history merge failed.".red);
 			});
 			

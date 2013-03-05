@@ -5,15 +5,12 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.collaboration.join = function () {
-	this.dialog = null;
-	this.buttons = null;	
-	this.tabview = null;
-	this.treeview = null;
-	this.chat = null;
-};
-
-org.goorm.core.collaboration.join.prototype = {
+org.goorm.core.collaboration.join = {
+	dialog: null,
+	buttons: null,	
+	tabview: null,
+	treeview: null,
+	chat: null,
 	
 	init: function () { 
 		var self = this;
@@ -44,7 +41,7 @@ org.goorm.core.collaboration.join.prototype = {
 		this.buttons = [ {text:"<span localization_key='join'>Join</span>", handler:handleJoin, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}];
 							 
-		this.dialog = new org.goorm.core.collaboration.join.dialog();
+		this.dialog = org.goorm.core.collaboration.join.dialog;
 		this.dialog.init({
 			localization_key:"title_join_online_project",
 			title:"Join Online Project", 

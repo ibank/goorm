@@ -6,11 +6,7 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.search.message = function () {
-
-};
-
-org.goorm.core.search.message.prototype = {
+org.goorm.core.search.message = {
 	m: function (fromLine, fromCh, toLine, toCh, text) {
 		var color = "#333";
 		

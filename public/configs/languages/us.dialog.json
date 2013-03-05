@@ -371,7 +371,7 @@
         "value": "Build All",
         "children": {
             "dialog_project_build_all_guide": {
-                "value": "Build projects below"
+                "value": "Build all projects below"
             }
         }
     },
@@ -606,13 +606,34 @@
                 "value": " Password : "
              },
             "dialog_goorm_profile_password_confirm": {
-                "value": " Password(Confirm) : "
+                "value": " Confirm pw : "
              },
             "dialog_goorm_profile_nick": {
                 "value": " Nickname : "
              },
             "dialog_goorm_profile_email": {
                 "value": " E-mail : "
+             },
+             "dialog_goorm_profile_student_id": {
+                "value": " Student ID : "
+             },
+             "dialog_goorm_profile_lecture": {
+                "value": " Lecture : "
+             },
+             "dialog_goorm_profile_lect_1": {
+                "value": "Practice in Computer Engineering(Mon)"
+             },
+             "dialog_goorm_profile_lect_2": {
+                "value": "Practice in Computer Engineering(Tue)"
+             },
+             "dialog_goorm_profile_lect_3": {
+                "value": "Practice in Computer Engineering(Wed)"
+             },
+             "dialog_goorm_profile_lect_4": {
+                "value": "Practice in Computer Engineering(Thd)"
+             },
+             "dialog_goorm_profile_lect_5": {
+                "value": "Practice in Computer Engineering(Fri)"
              },
             "dialog_goorm_profile_type": {
                 "value": " Type : "

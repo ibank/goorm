@@ -6,14 +6,12 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.help.bug_report = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.tabview = null;
-	this.treeview = null;
-};
+org.goorm.core.help.bug_report = {
+	dialog: null,
+	buttons: null,
+	tabview: null,
+	treeview: null,
 
-org.goorm.core.help.bug_report.prototype = {
 	init: function () {
 		var self = this;
 		
@@ -72,8 +70,9 @@ org.goorm.core.help.bug_report.prototype = {
 		
 		this.buttons = [ {text:"<span localization_key='send'>Send</span>", handler:handle_ok, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}];  
-						 
-		this.dialog = new org.goorm.core.help.about.dialog();
+		
+		this.dialog = new org.goorm.core.help.bug_report.dialog();
+		
 		this.dialog.init({
 			localization_key:"title_send_bug_report",
 			title:"Send Bug Report", 

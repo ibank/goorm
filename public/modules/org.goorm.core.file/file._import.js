@@ -6,18 +6,19 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.file._import = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.dialog_explorer = null;
-};
-
-org.goorm.core.file._import.prototype = {
+org.goorm.core.file._import = {
+	dialog: null,
+	buttons: null,
+	dialog_explorer: null,
 
 	init: function () { 
 		var self = this;
 		
 		var handle_ok = function() {		
+			if($('#file_import_location_path').val()==""){
+				alert.show(core.module.localization.msg['alert_deny_make_file_in_workspace_root']);
+				return;
+			}
 			core.module.loading_bar.start("Import processing...");
 			$('#myForm').submit();
 			this.hide(); 
@@ -31,7 +32,7 @@ org.goorm.core.file._import.prototype = {
 		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
-		this.dialog = new org.goorm.core.file._import.dialog();
+		this.dialog = org.goorm.core.file._import.dialog;
 		this.dialog.init({
 			localization_key:"title_import_file",
 			title:"Import File", 

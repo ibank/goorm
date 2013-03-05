@@ -6,32 +6,30 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.preference = function () {
-	this.dialog = null;
-	this.tabview = null;
-	this.treeview = null;
-	this.buttons = null;
-	this.manager = null;
-	this.ini = null;
-	this.plugin = null;
-	this.preference = null;
-	this.firstShow = true;
-	this.grid_opacity_slider = null;	
-	this.preference_default = null;
-};
+org.goorm.core.preference = {
+	dialog: null,
+	tabview: null,
+	treeview: null,
+	buttons: null,
+	manager: null,
+	ini: null,
+	plugin: null,
+	preference: null,
+	firstShow: true,
+	grid_opacity_slider: null,	
+	preference_default: null,
 
-org.goorm.core.preference.prototype = {
 	init: function () {
 		
 		var self = this;
-		this.manager = new org.goorm.core.preference.manager();
+		this.manager = org.goorm.core.preference.manager;
 		this.manager.init();
 		
-		this.dialog = new org.goorm.core.preference.dialog();
+		this.dialog = org.goorm.core.preference.dialog;
 		
 		this.load_default();
 		
-		console.log("default preference load complete");
+//		console.log("default preference load complete");
 //		this.manager.ini_parser();
 //		this.ini = this.manager.ini;
 //		
@@ -114,8 +112,6 @@ org.goorm.core.preference.prototype = {
 			
 		});
 */
-			
-			
 //			self.get_preference(self.xml);
 //			self.get_plugin_preference();
 		$(core).trigger("on_preference_confirmed");
@@ -166,10 +162,19 @@ org.goorm.core.preference.prototype = {
 	
 	restore_default: function(id){
 		var self=this;
+		if(id=="Theme"){//테마기본설정
+			core.module.theme.current_theme=core.module.theme.theme_data[3];
+			//$("#theme_selectbox").val(3);
+			 core.module.theme.on_theme_selectbox_change(3);
+			core.module.theme.get_theme_contents(3);
+			core.module.theme.get_theme_contents(3);
+
+		}else{
 //		var target = "#preference_tabview #"+id;
 		var target = "#preference_tabview";
 		var restore_object = {};
 		var flag=0;
+		}
 //		$(self.xml).find("item[label="+id+"] ini").each(function(){
 //			restore_object[$(this).attr("name")] = $(this).attr("default");
 //			flag++;
@@ -300,7 +305,7 @@ org.goorm.core.preference.prototype = {
 		var handle_cancel = function() { 
 
 			if (core.module.localization.before_language != localStorage.getItem("language")) {
-				core.module.localization.change_language(core.module.localization.before_language);
+				core.module.localization.change_language(core.module.localization.before_language, true);
 			}
 		
 			self.set_before();
@@ -359,13 +364,13 @@ org.goorm.core.preference.prototype = {
 						$("#grid_opacity_slider_value_text").text((self.grid_opacity_slider.getRealValue()*100)+"%");
 					});
 					
-					var info = new org.goorm.core.preference.info();
+					var info = org.goorm.core.preference.info;
 					info.init();
 					
-					var filetype = new org.goorm.core.preference.filetype();
+					var filetype = org.goorm.core.preference.filetype;
 					filetype.init();
 					
-					var language = new org.goorm.core.preference.language();
+					var language = org.goorm.core.preference.language;
 					language.init();
 					
 					// $(core).bind('dialog_localization', function(){

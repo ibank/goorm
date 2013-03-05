@@ -6,26 +6,22 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.preference.language = function () {
-	this.preference = null;
-};
+org.goorm.core.preference.language = {
+	preference: null,
 
-org.goorm.core.preference.language.prototype = {
 	init: function () {
 		var self = this;
 		
 		var language = "";
-
 		var language_button = new YAHOO.widget.Button("language_button", {type: "menu", menu: "language_select"});
 
  
 		language_button.getMenu().subscribe("click", function (type, menuitems) {
 			var event = menuitems[0];
 			var menuitem = menuitems[1];
-
 			if (menuitem) {
 				$("#language_button-button").text($(menuitem.element).text());
-				core.module.localization.change_language(menuitem.value);
+				core.module.localization.change_language(menuitem.value, true);
 			}
 		 
 		});

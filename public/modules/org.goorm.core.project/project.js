@@ -6,11 +6,9 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.project = function () {
-	this.treeview = null;
-};
+org.goorm.core.project = {
+	treeview: null,
 
-org.goorm.core.project.prototype = {
 	make_treeview: function(target) {
 		
 		this.treeview = new YAHOO.widget.TreeView(target, this.get_directories_and_files("type", "url"));

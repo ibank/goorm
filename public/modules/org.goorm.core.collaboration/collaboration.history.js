@@ -497,6 +497,7 @@ org.goorm.core.collaboration.history.prototype = {
 			}
 			
 			self.flush_friends_snapshot_buffer();
+
 			self.editor.setOption("readOnly",false);
 			self.mode = "latest";
 			self._set_now_status();

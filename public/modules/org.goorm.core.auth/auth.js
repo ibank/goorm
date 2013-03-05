@@ -1,31 +1,28 @@
 /**
- * Copyright Sung-tae Ryu. All rights reserved.
+ * Copyright Sung-tae Ryu, Youseok Nam. All rights reserved.
  * Code licensed under the AGPL v3 License:
  * http://www.goorm.io/intro/License
  * project_name : goormIDE
  * version: 1.0.0
  **/
+ 
+org.goorm.core.auth = {
+	profile: null,
+	signup: null,
+	project: null,
+	find_info: null,
 
-
-
-org.goorm.core.auth = function () {
-	this.profile = null;
-	this.signup = null;
-	this.project = null;
-};
-
-org.goorm.core.auth.prototype = {					
 	init: function () {
-		this.profile = new org.goorm.core.auth.profile();
+		this.profile = org.goorm.core.auth.profile;
 		this.profile.init();
 		
-		this.signup = new org.goorm.core.auth.signup();
+		this.signup = org.goorm.core.auth.signup;
 		this.signup.init();
 
 		// this.dashboard = new org.goorm.core.auth.dashboard();
 		// this.dashboard.init();
 
-		this.message = new org.goorm.core.collaboration.message();
+		this.message = org.goorm.core.collaboration.message;
 		this.message.init();
 
 		this.socket = io.connect();
@@ -50,6 +47,7 @@ org.goorm.core.auth.prototype = {
 				core.user.group = data.group || null;
 				core.user.uid = data.uid || null;
 				core.user.gid = data.gid && data.gid[0] || null;
+				core.user.student_id = data.student_id || null;
 				callback(true);
 			}
 			else{
@@ -122,13 +120,12 @@ org.goorm.core.auth.prototype = {
 		if(core.status.is_login){
 			return;
 		}
-
 		if(!user_id){
-			core.module.toast.show(core.module.localization.msg['alert_sigup_undefined_id'])
+			core.module.toast.show(core.module.localization.msg['alert_user_undefined_id'])
 			return
 		}
 		if(!user_pw){
-			core.module.toast.show(core.module.localization.msg['alert_sigup_undefined_password'])
+			core.module.toast.show(core.module.localization.msg['alert_user_undefined_password'])
 			return
 		}
 
@@ -153,6 +150,9 @@ org.goorm.core.auth.prototype = {
 						break;
 					case 2:
 						self.duplicate_login(postdata);
+						break;
+					case 3:
+						core.module.toast.show(core.module.localization.msg["alert_login_not_service_account"]);
 						break;
 					default :
 						core.module.toast.show(core.module.localization.msg["alert_login_undefined_id_or_password"]);
@@ -251,6 +251,15 @@ org.goorm.core.auth.prototype = {
 				break;
 			case 41:
 				display_message(core.module.localization.msg['alert_user_unfit_nick']);
+				break;
+			case 50:
+				display_message(core.module.localization.msg['alert_user_undefined_student_id']);
+				break;
+			case 51:
+				display_message(core.module.localization.msg['alert_user_unfit_student_id']);
+				break;
+			case 52:
+				display_message(core.module.localization.msg['alert_user_duplicate_student_id']);
 				break;
 		}
 	}	

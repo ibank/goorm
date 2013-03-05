@@ -8,7 +8,7 @@
 
 var fs = require("fs");
 var rimraf = require('rimraf');
-
+var exec = require('child_process').exec;
 
 //var g_env = require("../configs/env.js");
 
@@ -84,7 +84,6 @@ exports.project.do_new = function(req, res){
 		g_auth.get_user_data(req.session, function(user_data){
 			data.author_id = user_data.id;
 			data.author_type = user_data.type;
-
 			g_auth_project.add(data);
 		})
 	});
@@ -225,6 +224,17 @@ exports.plugin.run = function(req, res){
 exports.plugin.extend_function = function(req, res) {
 	g_plugin.extend_function(req.query, res);	
 };
+exports.plugin.extend_function_sign = function(req, res) {
+var evt = new EventEmitter();
+	
+	evt.on("auth_check_user_data_final", function (data) {
+console.log("asdfasdfa1");
+		res.json(data);
+	});
+
+	
+	g_plugin.extend_function_sign_check(req, evt);
+};
 /*
  * API : File System
  */
@@ -305,14 +315,6 @@ exports.file.get_contents = function(req, res){
 
 	fs.readFile(__path + path, "utf8", function(err, data) {
 		res.json(data);
-	});
-};
-
-exports.file.get_contents2 = function(req, res){
-	var path = req.query.path;
-
-	fs.readFile(__path + path, "base64",function(err, data) {
-		res.send(data);
 	});
 };
 
@@ -582,7 +584,7 @@ exports.theme.get_list = function(req, res){
 
 };
 exports.theme.get_contents = function(req, res){
-	var path = req.query.path;
+	var path = req.body.path;
 
 	fs.readFile(__path + path, "utf8", function(err, data) {
 		res.json(data);
@@ -595,7 +597,7 @@ exports.theme.put_contents = function(req, res){
 		res.json(data);
 	});
 
-	g_theme.put_contents(req.query, evt);
+	g_theme.put_contents(req.body, evt);
 	/* 	res.send(null); */
 };
 
@@ -791,9 +793,53 @@ exports.user.set = function(req, res){
 	}
 		
 }
+exports.user.set_pw = function(req, res){
+	var evt = new EventEmitter();
+	
+	evt.on("auth_set_check_user_data", function (data) {
+		if(data.result){
+			g_auth_manager.user_set(req, function(result){
+				res.json({
+					'type' : 'set',
+					'data' : result // true, false
+				});
+			});
+		}
+		else{
+			res.json({
+				'type' : 'check',
+				'data' : data // code, result
+			});
+		}
+	});
+
+	var type = (req.body.type).toLowerCase();
+	
+	if(req.session.auth && req.session.auth.loggedIn && req.body.id == req.session.auth[type].user.id){
+		g_auth_manager.set_check_pw(req.body, evt);
+	}
+	else{
+		var data = {
+			'result' : false,
+			'code' : 4 // no session or id unmatch
+		}
+		
+		res.json({
+			'type' : 'check',
+			'data' : data
+		});
+	}
+		
+}
 
 exports.user.list = function(req, res){
 	g_auth_manager.get_list(function(data){
+		res.json(data);
+	});
+}
+
+exports.user.list.group = function(req, res){
+	g_auth_manager.get_group_list(req.body, function(data){
 		res.json(data);
 	});
 }
@@ -806,6 +852,23 @@ exports.user.project.get = function(req, res){
 	g_auth_project.get(req.query, function(data){
 		res.json(data);
 	})
+}
+
+exports.project.get_contents = function(req, res){
+	var path = req.query.path;
+	var user = req.query.username;
+
+	var command = exec("cd "+__workspace+path+";zip -r " + __temp_dir+path + ".zip *", function (error, stdout, stderr) {
+		if (error == null) {
+			fs.readFile(__temp_dir+path + ".zip", "base64",function(err, data) {
+				res.send(data);
+			});
+		}
+		else {
+			console.log("error : "+error);
+			res.send("error : "+error);
+		}
+	});
 }
 
 exports.user.project.list = function(req, res){
@@ -830,6 +893,12 @@ exports.user.project.collaboration = function(req, res){
 
 exports.user.project.collaboration.push = function(req, res){
 	g_auth_project.push(req.body, function(data){
+		res.json(data);
+	})
+}
+
+exports.user.project.collaboration.push.all = function(req, res){
+	g_auth_project.push_all(req.body, function(data){
 		res.json(data);
 	})
 }
@@ -1030,3 +1099,6 @@ exports.edit.get_dictionary = function(req, res){
 
 	g_edit.get_dictionary(req.query, evt);
 };
+exports.open_source = function(req,res){
+	g_collaboration.lecture(req.path, req.name, req.type);
+}

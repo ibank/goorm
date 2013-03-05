@@ -6,11 +6,9 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.file._new.other.dialog = function () {
-	this.dialog = null;
-};
+org.goorm.core.file._new.other.dialog = {
+	dialog: null,
 
-org.goorm.core.file._new.other.dialog.prototype = {
 	init: function (option) {
 		this.dialog = new org.goorm.core.dialog();
 		this.dialog.init(option);

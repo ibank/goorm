@@ -44,7 +44,10 @@ module.exports = {
 				if(gid == null){
 					gid = global.__gid;
 				}
-								
+				
+				console.log("uid:"+uid);
+				console.log("gid:"+gid);
+				
 				term.push(pty.spawn('bash', [], {
 					name: 'xterm-color',
 					cols: parseInt(msg.cols),

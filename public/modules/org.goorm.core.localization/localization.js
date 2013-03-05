@@ -6,27 +6,27 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.localization = function () {
-	this.language = null;
-	this.data1 = null;
-	this.data2 = null;
-	this.data3 = null;
-	this.data4 = null;
-	this.data5 = null;
-	this.before_language = null;
-	this.msg = null;
-	this.dialog_localization = [];
-};
+org.goorm.core.localization = {
+	language: null,
+	data1: null,
+	data2: null,
+	data3: null,
+	data4: null,
+	data5: null,
+	before_language: null,
+	msg: null,
+	dialog_localization: [],
 
-org.goorm.core.localization.prototype = {
 	init: function () {
 		var self = this;
 	},
 
-	change_language: function (language) {	
+	change_language: function (language, flag) {	
 		var self = this;
 		var is_first = false;
 		
+		if(language == null || language) language = "us";
+
 		if ( (localStorage.getItem("language")=="null" || localStorage.getItem("language")==null) && core.server_language=="client") {
 			is_first = true;
 		}
@@ -41,62 +41,71 @@ org.goorm.core.localization.prototype = {
 			current="한국어";
 		}
 		$("#language_button-button").text(current);
-
-		$.getJSON("configs/languages/"+language+".menu.json", function (data) {
-			self.data1 = data;
-			self.apply(data);
-		});
 		
-		$.getJSON("configs/languages/"+language+".dialog.json", function (data) {
-			self.data2 = data;
-			
-			self.apply(data);
-		});
+		if(flag || !this.data1){
+			$.getJSON("configs/languages/"+language+".menu.json", function (data) {
+				self.data1 = data;
+				self.apply(data);
+			});
+		}
 		
-		$.getJSON("configs/languages/"+language+".msg.json", function (data) {
-			self.msg = data;
-			
-			if (is_first && language=="kor") {
-				confirmation.init({
-					message: core.module.localization.msg["confirmation_language_message"].value,
-					yes_text: core.module.localization.msg["confirmation_language_message_yes"].value,
-					no_text: core.module.localization.msg["confirmation_language_message_no"].value,
-
-					title: "Language Automatic Change", 
-					
-					yes: function () {
-						core.module.localization.change_language(language);
-					}, no: function () {
-						core.module.localization.change_language("us");
-					}
-				});
+		if(flag || !this.data2){
+			$.getJSON("configs/languages/"+language+".dialog.json", function (data) {
+				self.data2 = data;
 				
-				confirmation.panel.show();
-			}
-			
-			self.apply(data);
-			self.apply_message(data);
-		});
+				self.apply(data);
+			});
+		}
 		
-		$.getJSON("configs/languages/"+language+".dict.json", function (data) {
-			self.data4 = data;
-			self.apply(data);
-		});
+		if(flag || !this.msg){
+			$.getJSON("configs/languages/"+language+".msg.json", function (data) {
+				self.msg = data;
+				
+				if (is_first && language=="kor") {
+					confirmation.init({
+						message: core.module.localization.msg["confirmation_language_message"].value,
+						yes_text: core.module.localization.msg["confirmation_language_message_yes"].value,
+						no_text: core.module.localization.msg["confirmation_language_message_no"].value,
+	
+						title: "Language Automatic Change", 
+						
+						yes: function () {
+							core.module.localization.change_language(language);
+						}, no: function () {
+							core.module.localization.change_language("us");
+						}
+					});
+					
+					confirmation.panel.show();
+				}
+				
+				self.apply(data);
+				self.apply_message(data);
+			});
+		}
 		
-		$.getJSON("configs/languages/"+language+".title.json", function (data) {
-			self.data5 = data;
-			self.apply(data);
-		});
+		if(flag || !this.data4){
+			$.getJSON("configs/languages/"+language+".dict.json", function (data) {
+				self.data4 = data;
+				self.apply(data);
+			});
+		}
+		
+		if(flag || !this.data5){
+			$.getJSON("configs/languages/"+language+".title.json", function (data) {
+				self.data5 = data;
+				self.apply(data);
+			});
+		}
 
+	
 		core.dialog.help_contents.load();
 	},
 
 	apply: function (data) {
 		var self = this;
-		
 		if (data != null) {
 			$.each(data, function (key, value) {
-				
 				var helptext = $("[localization_key='" + key + "']").find(".helptext").html();
 				
 				$("[localization_key='" + key + "']").html(this.value);
@@ -126,9 +135,30 @@ org.goorm.core.localization.prototype = {
 		}
 	},
 	
-	refresh : function(){
+	refresh : function(flag){
 		var self = this;
 		var language = "";
+		if(flag){
+			if(localStorage.getItem("language")==null) {
+				if (core.server_language=="client") {
+					if(navigator.language=="ko") {
+						language = "kor";
+					}
+					else {
+						language = "us";
+					}
+				}
+				else {
+					language = core.server_language;
+				}
+				
+				self.change_language(language,true);
+			}
+			else {
+				self.change_language(localStorage.getItem("language"),true);
+			}
+
+		}else{
 		if(localStorage.getItem("language")==null) {
 			if (core.server_language=="client") {
 				if(navigator.language=="ko") {
@@ -142,10 +172,11 @@ org.goorm.core.localization.prototype = {
 				language = core.server_language;
 			}
 			
-			self.change_language(language);
-		}
-		else {
-			self.change_language(localStorage.getItem("language"));
+				self.change_language(language);
+			}
+			else {
+				self.change_language(localStorage.getItem("language"));
+			}
 		}
 	}
 };

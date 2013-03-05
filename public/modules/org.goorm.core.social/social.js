@@ -1,19 +1,24 @@
+/**
+ * Copyright Sung-tae Ryu, Youseok Nam. All rights reserved.
+ * Code licensed under the AGPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
+ **/
 
+org.goorm.core.social_plugin = {
+	source: '.communication_message_social_area',
 
-org.goorm.core.social_plugin = function () {
-	this.source = '.communication_message_social_area'
+	facebook: null,
+	twitter: null,
 
-	this.facebook = null;
-	this.twitter = null;
-}
-
-org.goorm.core.social_plugin.prototype =  {
 	init : function(){
-		this.facebook = new org.goorm.core.social_plugin.facebook.manager();
+		this.facebook = org.goorm.core.social_plugin.facebook.manager;
 		this.facebook.init(this.source);
 		
-		this.twitter = new org.goorm.core.social_plugin.twitter.manager();
-		this.twitter.init(this.source);
+		
+		//this.twitter = org.goorm.core.social_plugin.twitter.manager;
+		//this.twitter.init(this.source);
 	}
 }
 

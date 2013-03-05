@@ -15,11 +15,12 @@ module.exports = {
 	
 	leave: function(io, socket, msg) {
 		delete this.user_cursors[msg.user];
-		socket.broadcast.to(msg.workspace).emit("editing_someone_leaved", msg.nick);
+		//socket.broadcast.to(msg.workspace).emit("editing_someone_leaved", msg.nick);
+		io.sockets.in(msg.workspace).emit("editing_someone_leaved", msg.nick);
 	},
 	
-	msg: function (socket, msg) {
-		socket.broadcast.to(msg.workspace).emit("editing_message", JSON.stringify(msg));
+	msg: function (io, socket, msg) {
+		io.sockets.in(msg.workspace).emit("editing_message", JSON.stringify(msg));
 		if (msg.action == 'cursor') this.user_cursors[msg.user] = msg;
 	},
 	

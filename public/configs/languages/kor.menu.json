@@ -318,6 +318,9 @@
             "perspectives": {
                 "value": "화면 구성",
                 "children": {
+                	"window_default_layout": {
+                        "value": "기본 레이아웃"
+                    },
                     "window_left_layout": {
                         "value": "왼쪽 레이아웃"
                     },

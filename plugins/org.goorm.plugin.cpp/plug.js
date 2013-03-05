@@ -40,7 +40,8 @@ org.goorm.plugin.cpp.prototype = {
 	add_project_item: function () {
 		$("div[id='project_new']").find(".project_types").append("<div class='project_wizard_first_button' project_type='cpp'><div class='project_type_icon'><img src='/org.goorm.plugin.cpp/images/cpp.png' class='project_icon' /></div><div class='project_type_title'>C/C++ Project</div><div class='project_type_description'>C/C++ Project using GNU Compiler Collection</div></div>");
 		
-		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all cpp' description='  Create New Project for C' project_type='cpp' plugin_name='org.goorm.plugin.cpp'><img src='/org.goorm.plugin.cpp/images/cpp_console.png' class='project_item_icon' /><br /><a>C/C++ Console Project</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all cpp' description='  Create New Project for C' project_type='cpp' plugin_name='org.goorm.plugin.cpp'><img src='/org.goorm.plugin.cpp/images/cpp_console.png' class='project_item_icon' /><br /><a>C Console Project</a></div>");
+		$("div[id='project_new']").find(".project_items").append("<div class='project_wizard_second_button all cpp' description='  Create New Project for C++' project_type='cpp' plugin_name='org.goorm.plugin.cpp'><img src='/org.goorm.plugin.cpp/images/cpp_console.png' class='project_item_icon' /><br /><a>C++ Console Project</a></div>");
 		
 		$(".project_dialog_type").append("<option value='cpp'>C/C++ Projects</option>").attr("selected", "");
 
@@ -74,16 +75,33 @@ org.goorm.plugin.cpp.prototype = {
 			use_collaboration
 		   }
 		*/
+		
+		switch(data.project_detailed_type) {
+		case "C Console Project": 
+			data.project_detailed_type="c";
+			data.plugins["org.goorm.plugin.cpp"]["plugin.dart.main"] = "main";
+			break;
+		case "C++ Console Project": 
+			data.project_detailed_type="cpp";
+			data.plugins["org.goorm.plugin.cpp"]["plugin.dart.main"] = "main";
+			break;
+		default:
+			data.project_detailed_type="c";
+			data.plugins["org.goorm.plugin.cpp"]["plugin.dart.main"] = "main";
+		}
 		var send_data = {
-				"plugin" : "org.goorm.plugin."+data.project_type,
+				"plugin" : "org.goorm.plugin.cpp",
+				"uid" : core.user.uid,
+				"gid" : core.user.gid,
 				"data" : data
 		};
 		
 		$.get('/plugin/new', send_data, function(result){
-			// 가끔씩 제대로 refresh가 안됨.
-			setTimeout(function(){
+			// update project.json file
+			core.dialog.project_property.load_property(core.status.current_project_path, function(data){
+				$(core).trigger("on_project_open");
 				core.module.layout.project_explorer.refresh();
-			}, 500);
+			});
 		});
 	},
 
@@ -102,7 +120,11 @@ org.goorm.plugin.cpp.prototype = {
 			message.pop();
 			if(/No such file or directory/g.test(message)||/그런 파일이나 디렉터리가 없습니다/g.test(message)) {
 				// 실행 실패
-				alert.show(core.module.localization.msg['alert_plugin_run_error']);
+				//alert.show(core.module.localization.msg['alert_plugin_run_error']);
+			
+				core.module.project.build.project.handle_build_for_run('run');
+
+
 			}
 			else {
 				// 아무 메시지도 안떴으면 성공.
@@ -179,20 +201,22 @@ org.goorm.plugin.cpp.prototype = {
 		var property = core.property.plugins['org.goorm.plugin.cpp'];
 		var table_variable = core.module.debug.table_variable;
 		
+		var workspace = core.preference.workspace_path;
+		var projectName = core.status.current_project_path+"/";
 		var mainPath = property['plugin.cpp.main'];
 		var buildPath = property['plugin.cpp.build_path'];
 		
-		if(this.terminal === null) {
-			//console.log("no connection!");
-			var result = {result:false, code:6};
-			core.module.project.display_error_message(result, 'alert');
-			return ;
-		}
+//		if(this.terminal === null) {
+//			console.log("no connection!");
+//			var result = {result:false, code:6};
+//			core.module.project.display_error_message(result, 'alert');
+//			return ;
+//		}
 		
 		switch (cmd.mode) {
 		case 'init':
 			self.terminal.flush_command_queue();
-			self.terminal.send_command("gdb "+buildPath+mainPath+" --quiet\r", null);
+			self.terminal.send_command("gdb "+workspace+projectName+buildPath+mainPath+" --quiet\r", null);
 			self.set_breakpoints();
 			self.terminal.send_command("run\r", self.prompt, function(){
 				self.debug_get_status();
@@ -260,7 +284,8 @@ org.goorm.plugin.cpp.prototype = {
 	
 	set_currentline: function(terminal_data){
 		var self = this;
-		var lines = terminal_data.split('\n');
+		var lines = terminal_data;
+//		var lines = terminal_data.split('\n');
 		
 		// clear highlight lines
 		var windows = core.module.layout.workspace.window_manager.window;
@@ -270,14 +295,14 @@ org.goorm.plugin.cpp.prototype = {
 				window.editor && window.editor.clear_highlight();
 			}
 		}
-		
-		$.each(lines, function(i, line){
-			if(line == '') return;
+
+//		$.each(lines, function(i, line){
+			if(lines == '') return;
 			// 현재 라인 처리
 			var regex = /at ((.*)\/)?(.*):(\d+)/;
 			
-			if(regex.test(line)) {
-				var match = line.match(regex);
+			if(regex.test(lines)) {
+				var match = lines.match(regex);
 				var filepath = match[2];
 				var filename = match[3];
 				var line_number = match[4];
@@ -299,7 +324,7 @@ org.goorm.plugin.cpp.prototype = {
 					}
 				}
 			}
-		});
+//		});
 	},
 
 	set_debug_variable: function(terminal_data){
@@ -474,7 +499,8 @@ org.goorm.plugin.cpp.prototype = {
 		}
 	},
 	
-	build: function (projectName, callback) {
+	build: function (projectName,callback) {
+		var build_result=false;
 		var self=this;
 		var workspace = core.preference.workspace_path;
 		var property = core.property;
@@ -485,39 +511,28 @@ org.goorm.plugin.cpp.prototype = {
 			var projectName = core.status.current_project_path;
 		}
 		var plugin = property.plugins['org.goorm.plugin.cpp'];
+		var sourcePath = " "+workspace+projectName+"/"+plugin['plugin.cpp.source_path'];
 		var buildOptions = " "+plugin['plugin.cpp.build_option'];
-		var buildPath = " -o "+workspace+projectName+"/"+plugin['plugin.cpp.build_path']+plugin['plugin.cpp.main'];
+		var buildPath = " "+workspace+projectName+"/"+plugin['plugin.cpp.build_path']+plugin['plugin.cpp.main'];
 		
-		var cmd = 'find '+workspace+projectName+"/"+plugin['plugin.cpp.source_path']+' -name "*.cpp" -print > '+workspace+projectName+"/"+'file.list';
-		var cmd1 = "g++ @"+workspace+projectName+"/"+"file.list"+buildPath+buildOptions;
+		var cmd = workspace+projectName+"/"+"make"+sourcePath+buildPath+buildOptions;
 		
-		core.module.layout.terminal.send_command(cmd+'\r', null, function(){
-			core.module.layout.terminal.send_command(cmd1+'\r', null, function(result){
-				var reg = /(.*)\w/g;
-				var message = result.replace(cmd1, "").match(reg);
+		core.module.layout.terminal.send_command(cmd+'\r', null, function(result){
+			if(/Build Complete/g.test(result)){
+				notice.show(core.module.localization.msg['alert_plugin_build_success']);
+				build_result=true;
 
-				message.pop();
-				
-				// For Ubuntu
-				//
-				if(message.length != 0){
-					message = message.join("").replace(cmd1, "")
-				}
-
-				// message에는 빌드시 나오는 메시지가 들어있음.
-				if(message.length) {
-					// 메시지가 있다면 warning이나 실패상황
-					alert.show(core.module.localization.msg['alert_plugin_build_error']);
-				}
-				else {
-					// 아무 메시지도 안떴으면 성공.
-					notice.show(core.module.localization.msg['alert_plugin_build_success']);
-				}
-				core.module.layout.project_explorer.refresh();
-			});
+			}
+			else {
+				alert.show(core.module.localization.msg['alert_plugin_build_error']);
+				build_result=false;
+			}
+			core.module.layout.project_explorer.refresh();
+			
+			if(callback)callback(build_result);
 		});
 		
-		if(callback) callback();
+		
 	},
 	
 	clean: function(project_name){

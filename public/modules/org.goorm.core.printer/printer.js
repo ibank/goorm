@@ -6,15 +6,13 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.printer = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.tabview = null;
-	this.treeview = null;
-	this.print_window = null;
-};
+org.goorm.core.printer = {
+	dialog: null,
+	buttons: null,
+	tabview: null,
+	treeview: null,
+	print_window: null,
 
-org.goorm.core.printer.prototype = {
 	init: function () {
 		var self = this;
 		
@@ -59,7 +57,7 @@ org.goorm.core.printer.prototype = {
 						{text:"<span localization_key='cancel'>Cancel</span>", handler:handle_cancel}
 						];
 						 
-		this.dialog = new org.goorm.core.printer.dialog();
+		this.dialog = org.goorm.core.printer.dialog;
 		this.dialog.init({
 			localization_key:"title_print",
 			title:"Print", 
@@ -83,7 +81,7 @@ org.goorm.core.printer.prototype = {
 			this.dialog.panel.show();
 		}
 		else {
-			alert.show("No file opened.");
+			alert.show(core.module.localization.msg['alert_print_file_error']);
 		}
 	},
 	

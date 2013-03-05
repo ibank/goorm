@@ -1,5 +1,8 @@
 {
 	"plugin.jsp.deploy_path" : 		"/var/www/",
-	"plugin.jsp.run_path" : 		"http://localhost/",
-	"plugin.jsp.main" : 	"index.jsp"
+	"plugin.jsp.run_path" : 		"http://localhost:8080/",
+	"plugin.jsp.main" : 	"index.jsp",
+	"plugin.jsp.source_path" : 	"WEB-INF/src/",
+	"plugin.jsp.build_path" : 	"WEB-INF/classes/",
+	"plugin.jsp.build_option" : ""
 }

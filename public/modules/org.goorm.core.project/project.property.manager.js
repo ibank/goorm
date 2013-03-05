@@ -6,12 +6,10 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.project.property.manager = function () {
-	this.treeview = null;
-	this.tabview = null;
-};
+org.goorm.core.project.property.manager = {
+	treeview: null,
+	tabview: null,
 
-org.goorm.core.project.property.manager.prototype = {
 	init: function (option) {
 		
 	},

@@ -6,31 +6,28 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.layout = function () {
-	this.layout = null;
-	this.inner_layout = null;
-	this.left_tabview = null;
-	this.inner_right_tabview = null;
-	this.inner_bottom_tabview = null;
-	this.inner_center_tabview = null;
-	this.table_properties = null;
-	this.treeview_project = null;
-	this.mainmenu = null;
-	this.toolbar = null;
-	this.workspace = null;
-	this.startpage = null;
-	this.window_manager = null;
-	this.communication = null;
-	this.history = null;
-	this.console = null;
-	this.tab_project = null;
-	this.tab_toolbox = null;
-	this.project_explorer = null;
-	this.tab_cloud=null;
-	this.cloud_explorer=null;
-};
-
-org.goorm.core.layout.prototype = {
+org.goorm.core.layout = {
+	layout: null,
+	inner_layout: null,
+	left_tabview: null,
+	inner_right_tabview: null,
+	inner_bottom_tabview: null,
+	inner_center_tabview: null,
+	table_properties: null,
+	treeview_project: null,
+	mainmenu: null,
+	toolbar: null,
+	workspace: null,
+	startpage: null,
+	window_manager: null,
+	communication: null,
+	history: null,
+	console: null,
+	tab_project: null,
+	tab_toolbox: null,
+	project_explorer: null,
+	tab_cloud: null,
+	cloud_explorer: null,
 
 	init: function(container) {
 		
@@ -57,7 +54,7 @@ org.goorm.core.layout.prototype = {
 			units:
 			[
 				{ position: 'top', height: 62, maxHeight:150, body: container+'_top', scroll: null, zIndex: 2, gutter: '0px 0px 0px 0px' },
-				{ position: 'left', width: left_width, body: container+'_left', animate: false, scroll: false, zIndex: 1, resize: true, gutter: '0px 0px 0px 0px', collapse: true, minWidth: 200, maxWidth: 500 },
+				{ position: 'left', width: left_width, body: container+'_left', animate: false, scroll: false, zIndex: 1, resize: true, gutter: '0px 0px 0px 0px', collapse: true, minWidth: 200 },
 				{ position: 'center', body: container+'_center_inner_layout', scroll: false },
 				{ position: 'bottom', height:30, body: container+'_bottom', scroll: false, gutter: '0px 0px 0px 0px' }
 			]
@@ -73,8 +70,8 @@ org.goorm.core.layout.prototype = {
 				parent: self.layout,
 				units:
 				[
-					{ position: 'right', width: right_width, resize: true, scroll: false, body: container+'_inner_layout_right', animate: false, gutter: '0px 0px 0px 0px', collapse: true, maxWidth: 500 },
-					{ position: 'bottom', height: bottom_height, body: container+'_inner_layout_bottom', animate: false, scroll: false, resize: true, gutter: '0px 0px 0px 0px', collapse: true, maxHeight: 550 },
+					{ position: 'right', width: right_width, resize: true, scroll: false, body: container+'_inner_layout_right', animate: false, gutter: '0px 0px 0px 0px', collapse: true },
+					{ position: 'bottom', height: bottom_height, body: container+'_inner_layout_bottom', animate: false, scroll: false, resize: true, gutter: '0px 0px 0px 0px', collapse: true },
 					{ position: 'center', body: container+'_inner_layout_center', scroll: false }
 				]
 			});
@@ -169,7 +166,7 @@ org.goorm.core.layout.prototype = {
 		this.attach_project_explorer(this.left_tabview);
 		
 		//Tool Box
-		this.attach_toolbox(this.left_tabview);
+//		this.attach_toolbox(this.left_tabview);
 
 		// Cloud
 		this.attach_cloud(this.left_tabview);
@@ -227,7 +224,7 @@ org.goorm.core.layout.prototype = {
 		// Center
 		//////////////////////////////////////////////////////////////////////////////////////////
 		
-		this.workspace = new org.goorm.core.layout.workspace();
+		this.workspace = org.goorm.core.layout.workspace;
 		this.workspace.init(container+'_inner_layout_center');
 		//this.startpage = new org.goorm.core.layout.startpage();
 		//this.startpage.init(container+'inner_layoutCenter');
@@ -329,7 +326,7 @@ org.goorm.core.layout.prototype = {
 		this.tab_cloud = new YAHOO.widget.Tab({ label: "<span localization_key='cloud'>Cloud</span>", content: "<div id='cloud_explorer'></div>" });
 		target.addTab(this.tab_cloud);
 
-		this.cloud_explorer = new org.goorm.core.cloud.explorer();
+		this.cloud_explorer = org.goorm.core.cloud.explorer;
 		this.cloud_explorer.init();
 
 	},
@@ -349,7 +346,7 @@ org.goorm.core.layout.prototype = {
 		//attaching tab element
 		target.addTab(new YAHOO.widget.Tab({ label: "<span localization_key='properties'>Properties</span>", content: "<div id='properties'></div>", disabled: true }));
 		
-		var properties = new org.goorm.core.object.properties();
+		var properties = org.goorm.core.object.properties;
 		
 		this.table_properties = properties.init("properties");
 	},
@@ -396,7 +393,7 @@ org.goorm.core.layout.prototype = {
 		$("#communication").append("<div class='communication_message_input_container' style='height:50px; border-bottom:1px #CCC solid; padding:5px; background-color:#EFEFEF; text-align:center;'><input value='Chatting Message' style='width:90%;' /></div>");
 */
 		//$("#communication").append("<iframe src='http://localhost:8001/?room=11' width=99% height=300>");
-		this.communication = new org.goorm.core.collaboration.communication();
+		this.communication = org.goorm.core.collaboration.communication;
 		this.communication.init("communication");
 	},
 	
@@ -409,7 +406,7 @@ org.goorm.core.layout.prototype = {
 	attach_slide: function(target) {
 		//attaching tab element
 		target.addTab(new YAHOO.widget.Tab({ label: "<span localization_key='slide'>Slide</span>", content: "<div id='slide_body'></div>" }));
-		this.slideshare = new org.goorm.core.collaboration.slideshare();
+		this.slideshare = org.goorm.core.collaboration.slideshare;
 		this.slideshare.init();
 		
 		

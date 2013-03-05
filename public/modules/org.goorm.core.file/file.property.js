@@ -6,14 +6,12 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.file.property = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.tabview = null;
-	this.treeview = null;
-};
+org.goorm.core.file.property = {
+	dialog: null,
+	buttons: null,
+	tabview: null,
+	treeview: null,
 
-org.goorm.core.file.property.prototype = {
 	init: function () { 
 		
 		var handle_ok = function() { 
@@ -30,7 +28,7 @@ org.goorm.core.file.property.prototype = {
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 		
 		
-		this.dialog = new org.goorm.core.file.property.dialog();
+		this.dialog = org.goorm.core.file.property.dialog;
 		this.dialog.init({
 			localization_key:"title_property",
 			title:"Property", 

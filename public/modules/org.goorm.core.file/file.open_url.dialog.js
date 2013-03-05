@@ -6,11 +6,9 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.file.open_url.dialog = function () {
-	this.dialog = null;
-};
+org.goorm.core.file.open_url.dialog = {
+	dialog: null,
 
-org.goorm.core.file.open_url.dialog.prototype = {
 	init: function (option) {
 		this.dialog = new org.goorm.core.dialog();
 		this.dialog.init(option);

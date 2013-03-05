@@ -49,23 +49,23 @@ module.exports = {
 					communication.msg(io, socket, msg_obj);
 				}
 				else if (channel == "editing") {
-					editing.msg(socket, msg_obj);
-					history.msg(socket, msg_obj);
+					editing.msg(io, socket, msg_obj);
+					history.msg(io, socket, msg_obj);
 				}
 				else if (channel == "history") {
-					history.command_msg(socket, msg_obj);	// merge&delete, delay msgs..
+					history.command_msg(io, socket, msg_obj);	// merge&delete, delay msgs..
 				}
 				else if (channel == "composing") {
-					composing.msg(socket, msg_obj);
+					composing.msg(io, socket, msg_obj);
 				}
 				else if (channel == "drawing") {
-					drawing.msg(socket, msg_obj);
+					drawing.msg(io, socket, msg_obj);
 				}
 				else if (channel == "slideshare") {
-					slideshare.msg(socket, msg_obj);
+					slideshare.msg(io, socket, msg_obj);
 				}
 				else if (channel == "workspace") {
-					workspace.msg(socket, msg_obj);
+					workspace.msg(io, socket, msg_obj);
 				}
 			});
 			
@@ -110,7 +110,10 @@ module.exports = {
 				if(msg_obj["channel"]!=undefined){
 					channel = msg_obj["channel"];
 				}
-				socket.broadcast.to(msg_obj.workspace).emit('slideshare_get',JSON.stringify(msg_obj));
+				//socket.broadcast.to(msg_obj.workspace).emit('slideshare_get',JSON.stringify(msg_obj));
+				
+				io.sockets.in(msg_obj.workspace).emit('slideshare_get',JSON.stringify(msg_obj));
+				
 				/*switch(channel){
 					
 				}*/

@@ -55,6 +55,7 @@ module.exports = {
 			console.log("debug server connected");
 			
 			evt.on("response", function (data) {
+				console.log(data);
 				socket.emit("debug_response", data);
 			});
 			
@@ -80,5 +81,31 @@ module.exports = {
 	extend_function: function (req, res) {
 		var plugin = require("../../plugins/"+req.plugin+"/modules/");
 		plugin.extend_function(req, res);
+	},
+	extend_function_sign_check: function (req, evtt) {
+		//console.log("SDAFASFDASDFA");
+		var plugin = require("../../plugins/"+"org.goorm.plugin.lecture"+"/modules/");
+		var evt = new EventEmitter();
+		var ret={}
+		evt.on("auth_check_user_data", function (data) {
+			if(data.result){
+				var g_auth_manager = require("../org.goorm.auth/auth.manager");
+				
+				g_auth_manager.register(req, function(result){
+				
+					ret.type='signup';
+					ret.data=result;
+					evtt.emit("auth_check_user_data_final", ret);
+				
+				});
+			}
+			else{
+				ret.type='check';
+					ret.data=data;
+					evtt.emit("auth_check_user_data_final", ret);
+			}
+		});
+		
+		plugin.extend_function_sign_check(req.body, evt);
 	}
 };

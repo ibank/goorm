@@ -6,15 +6,13 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.theme.manager = function () {
-	this.parent = null;
-	this.treeview = null;
-	this.treeview_json = null;
-	this.table_variable_array = [];
-	this.table_name_array = [];
-};
+org.goorm.core.theme.manager = {
+	parent: null,
+	treeview: null,
+	treeview_json: null,
+	table_variable_array: [],
+	table_name_array: [],
 
-org.goorm.core.theme.manager.prototype = {
 	init: function (parent) {
 		this.parent = parent;
 	},

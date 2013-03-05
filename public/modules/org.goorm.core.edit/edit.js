@@ -43,9 +43,8 @@ org.goorm.core.edit = function () {
 };
 
 org.goorm.core.edit.prototype = {
-	init: function (target, title) {
+	init: function (target, title, filepath) {
 		var self = this;
-		
 		this.target = target;
 		this.title = title;
 		
@@ -59,11 +58,13 @@ org.goorm.core.edit.prototype = {
 		
 		this.dictionary = new org.goorm.core.edit.dictionary();
 		this.timestamp = new Date().getTime();
-				
+		
 		$(target).append("<textarea class='code_editor'>Loading Data...</textarea>");
 		//$(target).append("<textarea class='clipboardBuffer'></textarea>");
 		
 		this.fold_func = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
+		
+		
 		
 		this.object_tree = new YAHOO.widget.TreeView("object_tree");
 		
@@ -220,9 +221,9 @@ org.goorm.core.edit.prototype = {
 				else{
 					dont_update_first = true;
 				}
-			  
+			  	
 			  	var window_manager = core.module.layout.workspace.window_manager;
-			  
+			  	
 			  	window_manager.window[window_manager.active_window].set_modified();
 			  	window_manager.tab[window_manager.active_window].set_modified();
 			},
@@ -303,11 +304,19 @@ org.goorm.core.edit.prototype = {
 				self.highlight_line(self.highlighted_line);
 			}
 		});
+
+		///////////////////////////////////////////////////
+		//for assistant authentic, also filepath 
+		//////////////////////////////////////////////////
+		self.window_manager = core.module.layout.workspace.window_manager; 
+		$(self.window_manager).trigger('window_open',{"filepath": filepath});
 		
 		$(target).mousedown(function (e) {
 			var window_manager = core.module.layout.workspace.window_manager;
 			window_manager.window[window_manager.active_window].activate();
-			
+
+			self.context_menu.menu.hide();
+
 			e.stopPropagation();
 			e.preventDefault();
 			return false;
@@ -1014,6 +1023,7 @@ org.goorm.core.edit.prototype = {
 	},
 	
 	on_activated : function(){
+		var self = this;
 		//check duplication of activation, invalid activation, etc.
 		if(this.history.wait_for_loading == true) return;
 		if((this.filepath + this.filename) == this.history.last_init_load) this.history.activated = true;
@@ -1022,7 +1032,8 @@ org.goorm.core.edit.prototype = {
 
 		// valid activation! manipulation start!
 		this.history.deactivated();
-		this.history.init_history(this);
+		this.history.init_history(this)
 		this.editor.setOption("readOnly",false);
+		$(self.window_manager).trigger('window_open',{"filepath": this.filepath,"filename":this.filename});
 	}
 };

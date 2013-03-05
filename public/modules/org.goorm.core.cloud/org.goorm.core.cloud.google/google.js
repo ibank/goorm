@@ -252,6 +252,9 @@ org.goorm.core.cloud.google.prototype ={
 					treeview.async_loop(resp.items.length, function(loop){
 						var i = loop.iteration();
 						var id = resp.items[i].id;
+
+						console.log(id, self.id_index);
+
 						self.id_index[id]={
 							'id':resp.items[i].id,
 							'index':i

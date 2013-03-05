@@ -29,6 +29,7 @@ org.goorm.core.collaboration.editing = function () {
 	this.status = 0;
 	this.timer = null;
 	this.cursor_location = [];
+	this.is_collaborating = null;
 };
 
 org.goorm.core.collaboration.editing.prototype = {
@@ -66,6 +67,7 @@ org.goorm.core.collaboration.editing.prototype = {
 		});
 		
 		this.socket.on("editing_message", function (data) {
+			
  			if(!data) {
  				return false;
  			}
@@ -89,6 +91,7 @@ org.goorm.core.collaboration.editing.prototype = {
 		});
 		
 		this.socket.on("editing_someone_leaved", function (name) {
+			//console.log("someone leaved in editing", name);
 			$(self.target).find(".CodeMirror-scroll").find(".user_name_" + name).remove();
 			$(self.target).find(".CodeMirror-scroll").find(".user_cursor_" + name).remove();
 		});
@@ -116,6 +119,7 @@ org.goorm.core.collaboration.editing.prototype = {
 			}
 		}, 600);
 		
+		this.check_collaboration();
 	},
 
 	set_editor: function(editor){
@@ -142,7 +146,9 @@ org.goorm.core.collaboration.editing.prototype = {
 						clearTimeout(self.auto_save_timer);
 						self.auto_save_timer = setTimeout(action, 5000);
 					}else{
-						self.parent.save();
+						if(self.is_collaborating){
+							self.parent.save();
+						}
 					}
 				}
 				this.auto_save_timer = setTimeout(action, 5000);
@@ -221,7 +227,7 @@ org.goorm.core.collaboration.editing.prototype = {
 	
 	change: function(message){
 		var self = this;
-
+		
 		if (message.user != core.user.id) {
 			var textStr = "";
 			
@@ -284,5 +290,20 @@ org.goorm.core.collaboration.editing.prototype = {
     		$(this.target).find("[id='collaboration.editing']").find("div").html("<p id='line1' data-uuid='" + this.generate_uuid() + "'>&nbsp;</p>");
 		}
 
+	},
+	
+	check_collaboration: function(){
+		var self = this;
+		if(!self.parent.filepath) return ;
+		var project = self.parent.filepath.split("/").shift();
+		
+		if(core.status.current_project_path != project) {
+			self.is_collaborating = false;
+		}
+		else {
+			self.is_collaborating = true;
+		}
+		
+		return self.is_collaborating;
 	}
 };

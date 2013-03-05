@@ -1,14 +1,12 @@
 /**
  * Copyright Sung-tae Ryu. All rights reserved.
- * Code licensed under the GPL v2 License:
- * http://www.goorm.org/License
+ * Code licensed under the AGPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
  **/
 
-org.goorm.core.menu.action = function() {
-
-};
-
-org.goorm.core.menu.action.prototype = {
+org.goorm.core.menu.action = {
 	init : function() {
 		//////////////////////////////////////////////////
 		//Main Menu : File
@@ -59,7 +57,7 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=exit]").click(function() {
 
 			confirmation.init({
-				title : "Do you want exit?",
+				title : core.module.localization.msg['confirmation_exit_title'],
 				message : core.module.localization.msg['confirmation_exit'],
 				yes_text : core.module.localization.msg['confirmation_yes'],
 				no_text : core.module.localization.msg['confirmation_no'],
@@ -139,12 +137,12 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=delete_file]").click(function() {
 			if(core.status.selected_file) {
 				if("/"+core.status.current_project_path == core.status.selected_file) {
+					console.log(core.status.current_project_path);
 					alert.show("Cannot Delete!");
 					return ;
 				}
 				confirmation.init({
-					localization_key:"title_delete",
-					title : "Delete",
+					title : core.module.localization.msg['confirmation_delete_title'],
 					// message : "<span localization_key='confirmation_delete_file'>Do you want to delete this file?</span>",
 					// yes_text : "<span localization_key='yes'>Yes</span>",
 					// no_text : "<span localization_key='no'>No</span>",
@@ -155,6 +153,7 @@ org.goorm.core.menu.action.prototype = {
 						var postdata = {
 							filename : core.status.selected_file
 						};
+						console.log(postdata);
 						$.get("file/delete", postdata, function(data) {
 							m.s("delete: " + core.status.selected_file);
 							core.module.layout.project_explorer.refresh();
@@ -229,6 +228,7 @@ org.goorm.core.menu.action.prototype = {
 
 		$("a[action=do_cut]").unbind("click");
 		$("a[action=do_cut]").click(function() {
+			console.log("cut");
 			//core.dialog.preference.preference['preference.editor.use_clipboard'];
 			var window_manager = core.module.layout.workspace.window_manager;
 
@@ -241,6 +241,7 @@ org.goorm.core.menu.action.prototype = {
 
 		$("a[action=do_copy]").unbind("click");
 		$("a[action=do_copy]").click(function() {
+			console.log("copy");
 			var window_manager = core.module.layout.workspace.window_manager;
 
 			if(window_manager.window[window_manager.active_window].designer) {
@@ -506,6 +507,7 @@ org.goorm.core.menu.action.prototype = {
 			else{
 				var result = {result:false, code:0};
 				core.module.project.display_error_message(result, 'alert');
+				
 			}
 		});
 
@@ -620,8 +622,15 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=debug_continue]").unbind("click");
 		$("a[action=debug_continue]").click(function() {
 			var plugin_manager = core.module.plugin_manager.plugins["org.goorm.plugin." + core.status.current_project_type];
+			var has_terminal = false;
+			var windows = core.module.layout.workspace.window_manager.window;
+			for(var i=0; i <  windows.length; i++){
+				if(windows[i].filetype == "terminal"){
+					has_terminal = true;
+				}
+			}
 
-			if(plugin_manager != undefined && plugin_manager.debug_cmd && !$(this).hasClass('yuimenuitemlabel-disabled')) {
+			if(plugin_manager != undefined && has_terminal && !$(this).hasClass('yuimenuitemlabel-disabled')) {
 				core.module.layout.inner_bottom_tabview.selectTab(0);
 				var cmd = {
 						mode : "continue",
@@ -638,8 +647,15 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=debug_terminate]").unbind("click");
 		$("a[action=debug_terminate]").click(function() {
 			var plugin_manager = core.module.plugin_manager.plugins["org.goorm.plugin." + core.status.current_project_type];
-
-			if(plugin_manager != undefined && plugin_manager.debug_cmd && !$(this).hasClass('yuimenuitemlabel-disabled')) {
+			var has_terminal = false;
+			var windows = core.module.layout.workspace.window_manager.window;
+			for(var i=0; i <  windows.length; i++){
+				if(windows[i].filetype == "terminal"){
+					has_terminal = true;
+				}
+			}
+			
+			if(plugin_manager != undefined && has_terminal && !$(this).hasClass('yuimenuitemlabel-disabled')) {
 				core.module.layout.inner_bottom_tabview.selectTab(0);
 				var cmd = {
 						mode : "terminate",
@@ -656,8 +672,15 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=debug_step_over]").unbind("click");
 		$("a[action=debug_step_over]").click(function() {
 			var plugin_manager = core.module.plugin_manager.plugins["org.goorm.plugin." + core.status.current_project_type];
-
-			if(plugin_manager != undefined && plugin_manager.debug_cmd && !$(this).hasClass('yuimenuitemlabel-disabled')) {
+			var has_terminal = false;
+			var windows = core.module.layout.workspace.window_manager.window;
+			for(var i=0; i <  windows.length; i++){
+				if(windows[i].filetype == "terminal"){
+					has_terminal = true;
+				}
+			}
+			
+			if(plugin_manager != undefined && has_terminal && !$(this).hasClass('yuimenuitemlabel-disabled')) {
 				core.module.layout.inner_bottom_tabview.selectTab(0);
 				var cmd = {
 						mode : "step_over",
@@ -674,8 +697,15 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=debug_step_in]").unbind("click");
 		$("a[action=debug_step_in]").click(function() {
 			var plugin_manager = core.module.plugin_manager.plugins["org.goorm.plugin." + core.status.current_project_type];
-
-			if(plugin_manager != undefined && plugin_manager.debug_cmd && !$(this).hasClass('yuimenuitemlabel-disabled')) {
+			var has_terminal = false;
+			var windows = core.module.layout.workspace.window_manager.window;
+			for(var i=0; i <  windows.length; i++){
+				if(windows[i].filetype == "terminal"){
+					has_terminal = true;
+				}
+			}
+			
+			if(plugin_manager != undefined && has_terminal && !$(this).hasClass('yuimenuitemlabel-disabled')) {
 				core.module.layout.inner_bottom_tabview.selectTab(0);
 				var cmd = {
 						mode : "step_in",
@@ -692,8 +722,15 @@ org.goorm.core.menu.action.prototype = {
 		$("a[action=debug_step_out]").unbind("click");
 		$("a[action=debug_step_out]").click(function() {
 			var plugin_manager = core.module.plugin_manager.plugins["org.goorm.plugin." + core.status.current_project_type];
-
-			if(plugin_manager != undefined && plugin_manager.debug_cmd && !$(this).hasClass('yuimenuitemlabel-disabled')) {
+			var has_terminal = false;
+			var windows = core.module.layout.workspace.window_manager.window;
+			for(var i=0; i <  windows.length; i++){
+				if(windows[i].filetype == "terminal"){
+					has_terminal = true;
+				}
+			}
+			
+			if(plugin_manager != undefined && has_terminal && !$(this).hasClass('yuimenuitemlabel-disabled')) {
 				core.module.layout.inner_bottom_tabview.selectTab(0);
 				var cmd = {
 						mode : "step_out",
@@ -969,6 +1006,30 @@ org.goorm.core.menu.action.prototype = {
 			}
 			core.module.layout.inner_bottom_tabview.selectTab(2);
 		});
+		
+		$("a[action=layout_default]").unbind("click");
+		$("a[action=layout_default]").click(function() {
+			var window_width = $(window).width();
+			var window_height = $(window).height();
+
+			if(core.module.layout.inner_layout.getUnitByPosition("bottom")._collapsed) {
+				core.module.layout.inner_layout.getUnitByPosition("bottom").expand();
+			}
+			
+			if(core.module.layout.inner_layout.getUnitByPosition("right")._collapsed) {
+				core.module.layout.inner_layout.getUnitByPosition("right").expand();
+			}
+			
+			if(core.module.layout.layout.getUnitByPosition("left")._collapsed) {
+				core.module.layout.layout.getUnitByPosition("left").expand();
+			}
+
+			core.module.layout.layout._units.left.set('width', window_width * 0.18);
+			core.module.layout.inner_layout._units.right.set('width', window_width * 0.25);
+			core.module.layout.inner_layout._units.bottom.set('height', window_height * 0.25);
+			
+			
+		});
 
 		$("a[action=toggle_full_workspace]").unbind("click");
 		$("a[action=toggle_full_workspace]").click(function() {
@@ -1212,22 +1273,25 @@ org.goorm.core.menu.action.prototype = {
 		});
 		$("a[action=delete_context]").unbind("click");
 		$("a[action=delete_context]").click(function() {
+
 			if(core.status.current_project_path==""){/////case select project
 				var tmp=core.status.selected_file.substring(1);		/////and select project root
 				if(tmp.indexOf('/')==-1){
-					core.dialog.delete_project.show();
+					core.dialog.delete_project.show(function() {
+						$("#project_delete_list #selector_"+tmp.replace(core.user.id+"_", "")).click();
+					});
 					return;
 				}
 			}
+
 			if("/"+core.status.current_project_path == core.status.selected_file) {		//each root
-				
-				//console.log(core.status.current_project_path);
-				//alert.show("Cannot Delete!");
-				core.dialog.delete_project.show();
+				core.dialog.delete_project.show(function() {
+					$("#project_delete_list #selector_"+core.status.current_project_name).click();
+				});
 				return ;
 			}
 			confirmation.init({
-				title : "Delete",
+				title : core.module.localization.msg['confirmation_delete_title'],
 				message : core.module.localization.msg['confirmation_delete_file'],
 				yes_text : core.module.localization.msg['confirmation_yes'],
 				no_text : core.module.localization.msg['confirmation_no'],
@@ -1236,6 +1300,7 @@ org.goorm.core.menu.action.prototype = {
 						filename : core.status.selected_file
 					};
 					$.get("file/delete", postdata, function(data) {
+						console.log(data);
 						m.s("delete: " + core.status.selected_file);
 						core.module.layout.project_explorer.refresh();
 					});
@@ -1447,7 +1512,7 @@ org.goorm.core.menu.action.prototype = {
 				message: core.module.localization.msg["alert_confirm_logout"],
 				yes_text: core.module.localization.msg["confirmation_yes"],
 				no_text: core.module.localization.msg["confirmation_no"],
-				title: "Confirmation", 
+				title: core.module.localization.msg["confirmation_title"], 
 
 				yes: function () {
 					var postdata = {

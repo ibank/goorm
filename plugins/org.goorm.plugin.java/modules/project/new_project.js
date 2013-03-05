@@ -15,6 +15,8 @@ module.exports = {
 	do_new : function(req, evt) {
 		var workspace = __workspace + "/" + req.data.project_author + "_" + req.data.project_name;
 		var template = common.path + "template";
+		var uid = parseInt(req.uid);
+		var gid = parseInt(req.gid);
 		
 		emittor = walk.walk(template);
 		
@@ -26,7 +28,9 @@ module.exports = {
 				data = data.replace("{PROJECTNAME}", req.data.project_name);
 				fs.writeFile(workspace + abs_path, data, function(err) {
 					if (err) throw err;
-					
+					if(uid && gid) {
+						fs.chownSync(workspace+abs_path, uid, gid);
+					}
 				});
 			});
 			next();
@@ -41,6 +45,9 @@ module.exports = {
 			fs.exists(workspace+abs_path, function(exists) {
 				if(!exists) {
 					fs.mkdirSync(workspace+abs_path);
+					if(uid && gid) {
+						fs.chownSync(workspace+abs_path, uid, gid);
+					}
 				}
 				next();
 			});
@@ -49,6 +56,7 @@ module.exports = {
 		});
 		
 		emittor.on("end", function () {
+			fs.chmodSync(workspace+"/make", 755);
 			evt.emit("do_new_complete", {
 				code : 200,
 				message : "success"

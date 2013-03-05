@@ -1,11 +1,16 @@
+/**
+ * Copyright Sung-tae Ryu. All rights reserved.
+ * Code licensed under the AGPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
+ **/
+ 
+org.goorm.core.collaboration.invite = {
+	socket: null,
+	dialogs: [],
+	index: 0,
 
-org.goorm.core.collaboration.invite = function () {
-	this.socket = null;
-	this.dialogs = [];
-	this.index = 0;
-}
-
-org.goorm.core.collaboration.invite.prototype = {
 	init : function(){
 		var self = this;
 
@@ -75,6 +80,7 @@ org.goorm.core.collaboration.invite.prototype = {
 				'data' : {},
 				'fn' : function(){
 					self.init_dialog(project_data, is_ok, is_no);
+					core.module.auth.message.updating_process_running = false;
 				}
 			}
 
@@ -88,6 +94,7 @@ org.goorm.core.collaboration.invite.prototype = {
 				'data' : {},
 				'fn' : function(){
 					self.init_answer_dialog(project_data);
+					core.module.auth.message.updating_process_running = false;
 				}
 			}
 
@@ -134,6 +141,22 @@ org.goorm.core.collaboration.invite.prototype = {
 				if(is_ok)
 					is_ok.call()
 
+				// refresh project_select_box
+				//
+				var postdata = {
+					'get_list_type' : 'collaboration_list'
+				}
+
+				$.get("project/get_list", postdata, function (data) {
+					core.module.layout.project_explorer.project_data = data;
+					core.module.layout.project_explorer.make_project_selectbox();
+					
+					core.workspace = {};
+					for(var i in data) {
+						data[i].name && (core.workspace[data[i].name] = data[i].contents);
+					}
+				});
+
 				this_panel.hide();
 			});
 		}
@@ -160,7 +183,7 @@ org.goorm.core.collaboration.invite.prototype = {
 			buttons = [{text:"<span localization_key='close'>Close</span>",  handler:handle_close}]
 		}
 
-		self.dialogs[self.index] = new org.goorm.core.collaboration.invite.dialog();
+		self.dialogs[self.index] = org.goorm.core.collaboration.invite.dialog;
 		self.dialogs[self.index].init({
 			localization_key:"title_invite_project",
 			title:"Invite Project", 
@@ -211,7 +234,7 @@ org.goorm.core.collaboration.invite.prototype = {
 
 		var buttons = [{text:"<span localization_key='close'>Close</span>",  handler:handle_close}]
 
-		self.dialogs[self.index] = new org.goorm.core.collaboration.invite.dialog();
+		self.dialogs[self.index] = org.goorm.core.collaboration.invite.dialog;
 		self.dialogs[self.index].init({
 			localization_key:"title_invitation_answer",
 			title:"Invitation Answer", 

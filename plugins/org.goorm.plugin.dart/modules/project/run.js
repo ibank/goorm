@@ -25,6 +25,7 @@ module.exports = {
 		var workspace = __workspace + "/" + req.data.project_path;
 		var target_path = common.run_path + req.data.project_path;
 		var run_path = target_path.split("temp_files").pop();
+		console.log("runProject "+run_path);
 		
 		if(!fs.existsSync(__temp_dir)) {
 			fs.mkdirSync(__temp_dir);

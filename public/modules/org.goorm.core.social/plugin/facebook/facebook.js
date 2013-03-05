@@ -1,10 +1,14 @@
+/**
+ * Copyright Sung-tae Ryu, Youseok Nam. All rights reserved.
+ * Code licensed under the AGPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
+ **/
 
+org.goorm.core.social_plugin.facebook = {
+	appID: null,
 
-org.goorm.core.social_plugin.facebook = function () {
-	this.appID = null;
-}
-
-org.goorm.core.social_plugin.facebook.prototype =  {
 	init : function(appid){
 		var self = this;
 		

@@ -6,14 +6,12 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.file.switch_workspace = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.tabview = null;
-	this.treeview = null;
-};
+org.goorm.core.file.switch_workspace = {
+	dialog: null,
+	buttons: null,
+	tabview: null,
+	treeview: null,
 
-org.goorm.core.file.switch_workspace.prototype = {
 	init: function () { 
 		
 		var handle_ok = function() { 
@@ -27,7 +25,7 @@ org.goorm.core.file.switch_workspace.prototype = {
 		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
-		this.dialog = new org.goorm.core.file.switch_workspace.dialog();
+		this.dialog = org.goorm.core.file.switch_workspace.dialog;
 		this.dialog.init({
 			localization_key:"title_switch_workspace",
 			title:"Switch Workspace", 

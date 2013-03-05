@@ -6,15 +6,13 @@
  * version: 1.0.0
  **/
 
-org.goorm.plugin.manager = function () {
-	this.plugins = null;
-	this.list = 0;
-	this.interval = null;
-	this.preference = null;
-	this.toolbox_selector = null;
-};
+org.goorm.plugin.manager = {
+	plugins: null,
+	list: 0,
+	interval: null,
+	preference: null,
+	toolbox_selector: null,
 
-org.goorm.plugin.manager.prototype = {
 	init: function () {
 		this.plugins = new Object();
 		this.list = [];

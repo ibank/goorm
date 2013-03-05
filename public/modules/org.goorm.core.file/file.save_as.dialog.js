@@ -6,11 +6,9 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.file.save_as.dialog = function () {
-	this.dialog = null;
-};
+org.goorm.core.file.save_as.dialog = {
+	dialog: null,
 
-org.goorm.core.file.save_as.dialog.prototype = {
 	init: function (option) {
 		this.dialog = new org.goorm.core.dialog();
 		this.dialog.init(option);

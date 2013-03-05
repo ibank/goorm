@@ -7,12 +7,10 @@
  **/
  
 
-org.goorm.core.theme._new.dialog = function () {
+org.goorm.core.theme._new.dialog = {
 	
-	this.dialog = null;
-};
+	dialog: null,
 
-org.goorm.core.theme._new.dialog.prototype = {
 	init: function (option) {
 		this.dialog = new org.goorm.core.dialog();
 		this.dialog.init(option);

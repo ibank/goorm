@@ -6,13 +6,10 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.project.build.all = function () {
-	this.dialog = null;
-	this.buttons = null;
+org.goorm.core.project.build.all = {
+	dialog: null,
+	buttons: null,
 
-};
-
-org.goorm.core.project.build.all.prototype = {
 	init: function () {
 		
 		var self = this;
@@ -39,7 +36,7 @@ org.goorm.core.project.build.all.prototype = {
 		this.buttons = [ {text:"<span localization_key='build'>Build</span>", handler:handle_open, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
-		this.dialog = new org.goorm.core.project.build.all.dialog();
+		this.dialog = org.goorm.core.project.build.all.dialog;
 		this.dialog.init({
 			localization_key:"title_build_all",
 			title:"Build All", 

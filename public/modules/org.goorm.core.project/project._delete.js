@@ -6,14 +6,12 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.project._delete = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.chat = null;
-	this.project_list = null;	
-};
+org.goorm.core.project._delete = {
+	dialog: null,
+	buttons: null,
+	chat: null,
+	project_list: null,	
 
-org.goorm.core.project._delete.prototype = {
 	init: function () {
 		
 		var self = this;
@@ -77,7 +75,7 @@ org.goorm.core.project._delete.prototype = {
 		this.buttons = [ {text:"<span localization_key='delete'>Delete</span>", handler:handle_delete, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
-		this.dialog = new org.goorm.core.project._delete.dialog();
+		this.dialog = org.goorm.core.project._delete.dialog;
 		this.dialog.init({
 			localization_key:"title_delete_project",
 			title:"Delete Project", 
@@ -102,11 +100,11 @@ org.goorm.core.project._delete.prototype = {
 		});
 		this.dialog = this.dialog.dialog;
 		
-		this.project_list = new org.goorm.core.project.list;		
+		this.project_list = new org.goorm.core.project.list();		
 	},
 	
-	show: function () {
-		this.project_list.init("#project_delete");
+	show: function (list_callback) {
+		this.project_list.init("#project_delete", list_callback);
 		this.dialog.panel.show();
 	}
 };

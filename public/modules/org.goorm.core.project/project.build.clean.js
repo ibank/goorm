@@ -6,13 +6,11 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.project.build.clean = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.chat = null;
-};
+org.goorm.core.project.build.clean = {
+	dialog: null,
+	buttons: null,
+	chat: null,
 
-org.goorm.core.project.build.clean.prototype = {
 	init: function () {
 		var self = this;
 				
@@ -57,7 +55,7 @@ org.goorm.core.project.build.clean.prototype = {
 		this.buttons = [ {text:"<span localization_key='clean'>Clean</span>", handler:handle_clean, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
-		this.dialog = new org.goorm.core.project.build.clean.dialog();
+		this.dialog = org.goorm.core.project.build.clean.dialog;
 		this.dialog.init({
 			localization_key:"title_build_clean",
 			title:"Build Clean", 

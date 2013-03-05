@@ -35,7 +35,7 @@
 		"description": "#include<br>Preprocessor including header file"
 	},
 	{
-		"keyword": "&ltiostream&gt",
+		"keyword": "<iostream>",
 		"type": "class",
 		"description": "iostream<br>Input/Output Stream<br>iostream objects inherit all members from both istream and ostream, thus being able to perform both input and output operations. "
 	},
@@ -51,12 +51,12 @@
 	},
 
 	{
-		"keyword" : "&ltcstdio&gt",
+		"keyword" : "<cstdio>",
 		"type" : "file",
 		"description" : "cstdio<br>header file <br>This library uses what are called streams to operate with physical devices such as keyboards, printers, terminals or with any other type of files supported by the system."
 	},
 	{
-		"keyword" : "&ltcstdlib&gt",
+		"keyword" : "<cstdlib>",
 		"type" : "file",
 		"description" : "cstdlib<br>header file <br>This header defines several general purpose functions, including dynamic memory management, random number generation, communication with the environment, integer arthmetics, searching, sorting and converting."
 	}

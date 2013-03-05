@@ -6,16 +6,15 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.project.build.project = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.button_select_all = null;	
-	this.button_deselect_all = null;
-	this.is_repeat = null;
-	this.is_onclick = false;
-};
-
-org.goorm.core.project.build.project.prototype = {
+org.goorm.core.project.build.project = {
+	dialog: null,
+	buttons: null,
+	button_select_all: null,	
+	button_deselect_all: null,
+	is_repeat: null,
+	is_onclick: false,
+	handle_build_for_run : null,
+	flag : false,
 
 	init: function () {
 		
@@ -23,12 +22,38 @@ org.goorm.core.project.build.project.prototype = {
 
 		self.is_repeat = false;
 				
-		var handle_build = function() {
+		var handle_build = function(flag) {
+
+
+			//console.log('----',flag);
+			//self.flag=flag;
+			if(flag=='run'){
+				
+		
+				self.project_list();
+				self.is_onclick = false;
+				this.dialog.panel.show();
+				this.dialog.panel.hide();
+				//console.log( $("#build_project_list").find('label') );
+				var arr= $("#build_project_list").find('label');
+				for(var i=0; i< arr.length ;i++){
+						if(   $(arr[i]).text()==core.status.current_project_path      ){
+					
+					//	console.log(    $(arr[i]).parent()   );
+						$( $(arr[i]).parent().find('input')[0] ).attr("checked","checked");
+					}}
+			
+			}
+
+
+
+
 			if($("#build_project_list input[type=checkbox]:checked").length == 0){
 				var result = {result:false, code:3};
 				core.module.project.display_error_message(result, 'alert');
 				return false;
 			}
+
 
 			$("#build_project_list input[type=checkbox]:checked").each(function(){
 				var list = this;
@@ -87,12 +112,20 @@ org.goorm.core.project.build.project.prototype = {
 					
 					if(!self.is_onclick){
 						if(!$.isEmptyObject(core.module.plugin_manager.plugins["org.goorm.plugin."+$(list).attr("projectType")])) {
-							core.module.plugin_manager.plugins["org.goorm.plugin."+$(list).attr("projectType")].build($(list).val());
-							// self.is_onclick = true;
+							core.module.plugin_manager.plugins["org.goorm.plugin."+$(list).attr("projectType")].build($(list).val(), function(data){
+								//console.log('build result',data);
+								self.flag=data;
+								if(flag=='run'  && self.flag){
+									core.module.plugin_manager.plugins["org.goorm.plugin." + core.status.current_project_type].run(core.status.current_project_path);
+								}
+							});
 
+							// self.is_onclick = true;
+							//self.flag=true;
 							self.dialog.panel.hide();
 						}
 						else{
+							self.flag=false;
 							alert.show("Could not find a plugin to build this project");
 						}
 					}
@@ -100,7 +133,17 @@ org.goorm.core.project.build.project.prototype = {
 						self.is_onclick = false;
 					}
 				}
+
+			
 			});
+
+			
+
+			if(self.flag==true){
+				return true;
+			}else if(self.flag==false){
+				return false;
+			}
 			this.hide();
 		};
 
@@ -111,7 +154,7 @@ org.goorm.core.project.build.project.prototype = {
 		this.buttons = [ {text:"<span localization_key='build'>Build</span>", handler:handle_build, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
-		this.dialog = new org.goorm.core.project.build.project.dialog();
+		this.dialog = org.goorm.core.project.build.project.dialog;
 		this.dialog.init({
 			localization_key:"title_build_project",
 			title:"Build Project", 
@@ -135,6 +178,7 @@ org.goorm.core.project.build.project.prototype = {
 		this.dialog = this.dialog.dialog;
 		
 		//this.dialog.panel.setBody("AA");
+		self.handle_build_for_run=handle_build;
 	},
 
 	show: function () {

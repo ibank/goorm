@@ -6,15 +6,12 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.theme.details = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.manager = null;
-	this.parent = null;
-};
+org.goorm.core.theme.details = {
+	dialog: null,
+	buttons: null,
+	manager: null,
+	parent: null,
 
-
-org.goorm.core.theme.details.prototype = {
 	init: function (parent) {
 		var self = this;
 		self.parent = parent;
@@ -29,10 +26,10 @@ org.goorm.core.theme.details.prototype = {
 		this.buttons = [ {text:"<span localization_key='save'>Save</span>", handler:handle_apply, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 
-		this.manager = new org.goorm.core.theme.manager();
+		this.manager = org.goorm.core.theme.manager;
 		this.manager.init(parent);
 
-		this.dialog = new org.goorm.core.theme.details.dialog();
+		this.dialog = org.goorm.core.theme.details.dialog;
 		this.dialog.init({
 			localization_key:"title_theme_details",
 			title:"Theme Details", 

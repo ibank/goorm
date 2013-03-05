@@ -45,12 +45,12 @@
 		"description":"return<br>return some value or terminate function"
 	},
 	{
-		"keyword" : "&ltstdio.h&gt",
+		"keyword" : "<stdio.h>",
 		"type" : "file",
 		"description" : "stdio.h<br>header file <br>This library uses what are called streams to operate with physical devices such as keyboards, printers, terminals or with any other type of files supported by the system."
 	},
 	{
-		"keyword" : "&ltstdlib.h&gt",
+		"keyword" : "<stdlib.h>",
 		"type" : "file",
 		"description" : "stdlib.h<br>header file <br>This header defines several general purpose functions, including dynamic memory management, random number generation, communication with the environment, integer arthmetics, searching, sorting and converting."
 	}

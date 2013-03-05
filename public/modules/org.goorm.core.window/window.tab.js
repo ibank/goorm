@@ -54,6 +54,18 @@ org.goorm.core.window.tab.prototype = {
 		, function () {
 			self.set_event(); 
 		});
+		
+		$(core).on("on_project_open.tab", function () {
+			var project = self.window.filepath.split("/").shift();
+			var prefix = "";
+			// 현재 프로젝트가 다른경우 협업 중지 메시지를 출력한다.
+			if(core.status.current_project_path != project && self.window.filename != "debug") {
+				prefix = "["+core.module.localization.msg["collaboration_stop_message"]+"] ";
+			}
+			
+			$(self.tab.getElementsByClassName("tabtitle")).text(prefix + self.title);
+			
+		});
 	},
 
 	set_event: function(){
@@ -166,8 +178,6 @@ org.goorm.core.window.tab.prototype = {
 				this.window.tab = null;
 				this.window.close();
 			}
-			
-			delete this;
 		}
 		else {
 			confirmation_save.init({
@@ -191,9 +201,10 @@ org.goorm.core.window.tab.prototype = {
 					self.close();
 				}
 			});
-			
 			confirmation_save.panel.show();
 		}
+		$(core).off("on_project_open.tab");
+		delete this;
 	},
 	
 	activate: function() {

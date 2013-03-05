@@ -6,9 +6,6 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.shortcut = function () {
-};
-
-org.goorm.core.shortcut.prototype = {
+org.goorm.core.shortcut = {
 
 };

@@ -6,13 +6,11 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.project._new = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.tabview = null;
-};
-
-org.goorm.core.project._new.prototype = {
+org.goorm.core.project._new = {
+	dialog: null,
+	buttons: null,
+	tabview: null,
+	
 	init: function () { 
 		var self = this;
 		
@@ -117,7 +115,7 @@ org.goorm.core.project._new.prototype = {
 					project_name: $("#input_project_name").attr("value"),
 					project_desc: project_desc,
 					use_collaboration: use_collaboration,
-					plugins: plugin
+					plugins: plugin,
 				};
 
 				$.get("project/new", senddata, function (data) {
@@ -141,6 +139,7 @@ org.goorm.core.project._new.prototype = {
 							$('#project_new_import_form').submit();
 						}
 						
+						$(self).trigger('project_is_created');
 						core.dialog.open_project.open(data.project_author+"_"+data.project_name, data.project_name, data.project_type);
 						// core.module.layout.show_chat(str);
 					}
@@ -163,7 +162,9 @@ org.goorm.core.project._new.prototype = {
 		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
-		this.dialog = new org.goorm.core.project._new.dialog();
+		this.dialog = org.goorm.core.project._new.dialog;
+
+		
 		this.dialog.init({
 			localization_key:"title_new_project",
 			title:"New Project", 
@@ -173,6 +174,7 @@ org.goorm.core.project._new.prototype = {
 			modal:true,
 			buttons:this.buttons,
 			success: function () {
+			
 				self.add_project_item();
 				
 				var form_options = {
@@ -202,6 +204,8 @@ org.goorm.core.project._new.prototype = {
 						
 					}
 				}
+
+				
 	            $('#project_new_import_form').ajaxForm(form_options);
 
 				$('#project_new_import_form').submit(function() { 
@@ -231,7 +235,7 @@ org.goorm.core.project._new.prototype = {
 				}
 			}
 		});
-				
+		
 		this.dialog = this.dialog.dialog;
 	},
 	

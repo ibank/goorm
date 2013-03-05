@@ -3,14 +3,11 @@ var user_schema = {
 	pw: String,
 	name: String,
 	nick: String,
-	group : String,
 	email: String,
 	deleted: Boolean,
 	type : String,
 	level : String,
-	last_access_time : Date,
-	uid : Number,
-	gid : Array
+	last_access_time : Date
 };
 
 var EventEmitter = require("events").EventEmitter;
@@ -27,7 +24,38 @@ var check_form = {
 	regular_expression_password : /^(?=([a-zA-Z]+[0-9]+[a-zA-Z0-9]*|[0-9]+[a-zA-Z]+[a-zA-Z0-9]*)$).{8,15}$/,
 	regular_expression_name : /^[가-힣 0-9a-zA-Z._-]{2,15}$/,
 	regular_expression_nick : /^[가-힣 0-9a-zA-Z._-]{2,20}$/,
+	regular_expression_student_id : /^[0-9]{10,10}$/,
 	regular_expression_email : /^([0-9a-zA-Z._-]+)@([0-9a-zA-Z_-]+)(\.[a-zA-Z0-9]+)(\.[a-zA-Z]+)?$/
+
+}
+
+
+var exec = require('child_process').exec;
+
+var os = {
+	add : function(option){
+		var id = option.id;
+
+		return 'useradd ' + id;
+	},
+
+	del : function(option){
+		var id = option.id;
+
+		return 'userdel -f -r ' + id;
+	},
+
+	get_uid : function(option){
+		var id = option.id;
+
+		return 'id -u ' + id;
+	},
+
+	get_gid : function(option){
+		var id = option.id;
+
+		return 'id -g ' + id;
+	}
 }
 
 module.exports = {
@@ -91,8 +119,10 @@ module.exports = {
 				if(config){
 					if(config.general_signup_config){
 						req.body.level = 'Member';
+
 						self.add(req.body, function(add_result){
 							if(add_result){
+
 								self.update_session(req.session, req.body)
 								callback({
 									result : true
@@ -195,6 +225,14 @@ module.exports = {
 		});
 	},
 	
+	get_group_list : function(option, callback){
+		var group = option['group'];
+
+		User.find({'group':group}, function(err, data){
+			callback(data);
+		})
+	},
+
 	get_match_list : function(option, callback){
 		var query = option['query'];
 
@@ -264,7 +302,7 @@ module.exports = {
 		var member = {};
 		
 		for(var attrname in user){
-			if(attrname == 'id' || attrname == 'pw' || attrname == 'type' || attrname == 'level' || attrname == 'deleted' || attrname == 'last_access_time')
+			if(attrname == 'id' || attrname == 'type' || attrname == 'level' || attrname == 'deleted' || attrname == 'last_access_time')
 				continue;
 			member[attrname] = user[attrname];
 		}
@@ -288,7 +326,13 @@ module.exports = {
 	user_set : function(req, callback){
 		var self = this;
 		var user = req.body;
-		
+		if(user.pw)
+		{
+
+			var crypto = require('crypto');
+			var sha_pw = crypto.createHash('sha1');
+			user.pw=sha_pw.update(user.pw).digest('hex');
+		}
 		self.set(user, req, function(set_result){
 			if(set_result.result){
 				self.get(user, function(user_data){
@@ -308,38 +352,88 @@ module.exports = {
 		
 		self.get(user, function(user_data){
 			if(user_data && !user_data.deleted){
-				sha_pw.update(user.pw);
 
-				if(user_data.pw == sha_pw.digest('hex')){
-					self.duplicate_login_check(user_data, function(can_be_login){
-						if(can_be_login){
+				// For Service Mode
+				//
+				if(global.__service_mode){
+					if(user_data.uid && user_data.gid){
+						sha_pw.update(user.pw);
 
-							// Update Session
-							//
-							self.update_session(req.session, user_data);
+						if(user_data.pw == sha_pw.digest('hex')){
+							self.duplicate_login_check(user_data, function(can_be_login){
 
-							//	Access User
-							//
-							self.access(user);
-							callback({
-								result : true
+								if(can_be_login){
+
+									// Update Session
+									//
+									self.update_session(req.session, user_data);
+
+									//	Access User
+									//
+									self.access(user);
+									callback({
+										result : true
+									});
+								}
+								else{
+									// duplicate login process
+									//
+									callback({
+										code : 2,
+										result : false
+									})
+								}
 							});
 						}
 						else{
-							// duplicate login process
-							//
 							callback({
-								code : 2,
+								code : 0,
 								result : false
 							})
 						}
-					});
+					}
+					else{
+						callback({
+							code : 3,
+							result : false
+						})
+					}
 				}
 				else{
-					callback({
-						code : 0,
-						result : false
-					})
+					sha_pw.update(user.pw);
+
+					if(user_data.pw == sha_pw.digest('hex')){
+						self.duplicate_login_check(user_data, function(can_be_login){
+
+							if(can_be_login){
+
+								// Update Session
+								//
+								self.update_session(req.session, user_data);
+
+								//	Access User
+								//
+								self.access(user);
+								callback({
+									result : true
+								});
+							}
+							else{
+								// duplicate login process
+								//
+								callback({
+									code : 2,
+									result : false
+								})
+							}
+						});
+					}
+					else{
+						callback({
+							code : 0,
+							result : false
+						})
+					}
 				}
 			}
 			else{
@@ -438,8 +532,90 @@ module.exports = {
 					evt.emit("auth_set_check_user_data", ret);
 				}
 				else{
-					ret.result = true;
+				
+									ret.result = true;
+									evt.emit("auth_set_check_user_data", ret);
+						
+				}
+			});
+		}
+	},
+	set_check_pw : function(user, evt){
+		var ret = {}
+		
+		if(!user.id){
+			ret.result = false;
+			ret.code = 0;
+			
+			evt.emit("auth_set_check_user_data", ret);
+		}
+		else{
+			User.findOne({'id':user.id, 'type': user.type}, function(err, result){
+				if(err){
+					ret.result = false;
+					ret.code = 3;
+					
 					evt.emit("auth_set_check_user_data", ret);
+				}
+				else if(!user.name){
+					ret.result = false;
+					ret.code = 30;
+		
+					evt.emit("auth_set_check_user_data", ret);
+				}
+				else if(!check_form.regular_expression_name.test(user.name)){
+					ret.result = false;
+					ret.code = 31;
+					
+					evt.emit("auth_set_check_user_data", ret);
+				}
+				else if(!user.nick){
+					ret.result = false;
+					ret.code = 40;
+		
+					evt.emit("auth_set_check_user_data", ret);
+				}
+				else if(!check_form.regular_expression_nick.test(user.nick)){
+					ret.result = false;
+					ret.code = 41;
+					
+					evt.emit("auth_set_check_user_data", ret);
+				}
+				else if(!user.email){
+					ret.result = false;
+					ret.code = 20;
+		
+					evt.emit("auth_set_check_user_data", ret);
+				}
+				else if(!check_form.regular_expression_email.test(user.email)){
+					ret.result = false;
+					ret.code = 21;
+					
+					evt.emit("auth_set_check_user_data", ret);
+				}
+				else if(!user.re_pw){
+						ret.result = false;
+						ret.code = 11;
+			
+						evt.emit("auth_set_check_user_data", ret);
+					}
+					else if(user.pw != user.re_pw){
+						ret.result = false;
+						ret.code = 12;
+			
+						evt.emit("auth_set_check_user_data", ret);
+					}
+					else if(!check_form.regular_expression_password.test(user.pw)){
+						ret.result = false;
+						ret.code = 13;
+						
+						evt.emit("auth_set_check_user_data", ret);
+					}
+				else{
+				
+									ret.result = true;
+									evt.emit("auth_set_check_user_data", ret);
+						
 				}
 			});
 		}
@@ -530,8 +706,10 @@ module.exports = {
 						evt.emit("auth_check_user_data", ret);
 					}
 					else{
-						ret.result = true;
-						evt.emit("auth_check_user_data", ret);
+										ret.result = true;
+										evt.emit("auth_check_user_data", ret);
+				
+						
 					}
 				}
 			});
@@ -572,7 +750,8 @@ module.exports = {
 
 		// Redis Store
 		//
-		// store.client.set(user_data.id, JSON.stringify(session));
+		if(__redis_mode)
+			store.client.set(user_data.id, JSON.stringify(session));
 	},
 	
 	get_user_schema : function(){
@@ -608,14 +787,11 @@ module.exports = {
 
 		var is_connect = function(data){
 
-			//console.log(store);
-
-			// store.sessions : express MemoryStore
-			//
-			var sessions = store.sessions
-
 			// store.destroy : RedisStore
 			//
+
+			// console.log(Store);
+
 			// store.client.get(user.id, function(null_obj, session){
 				// var util = require('util'); console.log(util.inspect(JSON.parse(session), false, null));
 
@@ -627,16 +803,22 @@ module.exports = {
 				// }
 			// })
 
-			for(var sid in sessions){
-				var session = JSON.parse(sessions[sid]);
+			if(!__redis_mode){
+				// store.sessions : express MemoryStore
+				
+				var sessions = store.sessions
 
-				if(session.auth && session.auth.loggedIn){
-					var session_user = session.auth[user.type.toLowerCase()].user;
+				for(var sid in sessions){
+					var session = JSON.parse(sessions[sid]);
 
-					if(session_user.id == user.id && session_user.type == user.type){
-						store.destroy(sid, function(){
-							callback(true);
-						})
+					if(session.auth && session.auth.loggedIn){
+						var session_user = session.auth[user.type.toLowerCase()].user;
+
+						if(session_user.id == user.id && session_user.type == user.type){
+							store.destroy(sid, function(){
+								callback(true);
+							})
+						}
 					}
 				}
 			}
@@ -650,6 +832,21 @@ module.exports = {
 		}
 
 		g_collaboration_communication.is_connected(io, userdata, is_connect, is_not_connect);
-	}
+	},
+
+	get_user_doc : function(){
+		return User;
+	},
+
+	g_exec : function(command, callback){
+		exec(command, function(err, stdout, stderr){
+			if(err){
+				console.log(err, stdout, stderr);
+				callback(false)
+			}else{
+				callback(stdout)
+			}
+		})
+	},
 }
 

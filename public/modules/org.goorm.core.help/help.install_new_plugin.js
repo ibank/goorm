@@ -6,15 +6,13 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.help.install_new_plugin = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.tabview = null;
-	this.treeview = null;
-	this.num = 0;
-};
+org.goorm.core.help.install_new_plugin = {
+	dialog: null,
+	buttons: null,
+	tabview: null,
+	treeview: null,
+	num: 0,
 
-org.goorm.core.help.install_new_plugin.prototype = {
 	init: function () {
 		var self = this;
 		

@@ -265,17 +265,22 @@ label:hover {
 	
 }
 
-#goorm_signup_container .goorm_signup_input {
+#goorm_signup_container .goorm_signup_input ,#goorm_find_id_container .goorm_find_id_input,#goorm_find_pw_container .goorm_find_pw_input {
 	float: left;
 	margin : 5px;
 	padding : 3px;
 	width: 170px;
 }
 
-#goorm_signup_container .goorm_signup_span {
+#goorm_signup_container .goorm_signup_select {
+	float: left;
+	margin : 5px;
+	width: 178px;
+}
+#goorm_signup_container .goorm_signup_span,#goorm_find_id_container .goorm_find_id_span,#goorm_find_pw_container .goorm_find_pw_span  {
 	float: left;
 	text-align: right;
-	width: 150px;
+	width: 120px;
 	margin: 5px;
 }
 
@@ -288,7 +293,7 @@ label:hover {
 
 #goorm_profile_container .goorm_profile_span {
 	text-align: right;
-	width: 71px;
+	width: 100px;
 	float: left;
 	padding: 9px;
 	font-size: 11px;
@@ -397,12 +402,14 @@ label:hover {
 	border-bottom: 1px solid #999;*/	
 }
 
+/*
 #goorm_inner_layout_right .tab_area {
 	-webkit-transition: 500ms linear 0s;
 	-moz-transition: 500ms linear 0s;
 	-o-transition: 500ms linear 0s;
 	transition: 500ms linear 0s;
 }
+*/
 
 
 #goorm_inner_layout_center {
@@ -1029,8 +1036,8 @@ YUI TAB STYLE CUSTOMIZATION
 	padding-right:0px;
 	padding-top:0px;
 	
-	height:24px;
-	overflow: hidden;
+	min-height:24px;
+	/* overflow: hidden; */
 	
 	background-image: -o-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
 	background-image: -moz-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
@@ -1084,7 +1091,7 @@ YUI TAB STYLE CUSTOMIZATION
 	top:0px;
 	
 	padding-left: 10px;
-	padding-right: 10px;	
+	padding-right: 10px;
 }
 
 .yui-skin-sam .yui-navset .yui-nav a,
@@ -1100,7 +1107,9 @@ YUI TAB STYLE CUSTOMIZATION
 	background-image: -webkit-gradient(linear, left top, left top, color-stop(0.1, rgb(240,240,240)), color-stop(0.9, rgb(200,200,200)));
 	background-image: -webkit-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
 	background-image: -ms-linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
-	background-image: linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);	
+	background-image: linear-gradient(top, rgb(240,240,240) 10%, rgb(200,200,200) 90%);
+	
+	/*border-bottom: 1px solid #999;*/
 }
 .yui-skin-sam .yui-navset .yui-nav .selected a,   
 .yui-skin-sam .yui-navset .yui-nav .selected a:focus, /* no focus effect for selected */ 

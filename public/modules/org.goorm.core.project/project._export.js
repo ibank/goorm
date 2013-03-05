@@ -6,14 +6,12 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.project._export = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.tabview = null;
-	this.project_list = null;
-};
+org.goorm.core.project._export = {
+	dialog: null,
+	buttons: null,
+	tabview: null,
+	project_list: null,
 
-org.goorm.core.project._export.prototype = {
 	init: function () { 
 	
 		var self = this;
@@ -65,7 +63,7 @@ org.goorm.core.project._export.prototype = {
 		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
-		this.dialog = new org.goorm.core.project._export.dialog();
+		this.dialog = org.goorm.core.project._export.dialog;
 		this.dialog.init({
 			localization_key:"title_export_project",
 			title:"Export Project", 
@@ -92,7 +90,7 @@ org.goorm.core.project._export.prototype = {
 		});
 		this.dialog = this.dialog.dialog;
 		
-		this.project_list = new org.goorm.core.project.list;
+		this.project_list = new org.goorm.core.project.list();
 	},
 
 	show: function () {

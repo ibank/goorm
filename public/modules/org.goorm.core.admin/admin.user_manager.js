@@ -1,19 +1,24 @@
+/**
+ * Copyright Sung-tae Ryu, Youseok Nam. All rights reserved.
+ * Code licensed under the AGPL v3 License:
+ * http://www.goorm.io/intro/License
+ * project_name : goormIDE
+ * version: 1.0.0
+ **/
 
 
-org.goorm.core.admin.user_manager = function() {
-	this.dialog = null;
-	this.buttons = null;
-	this.manager = null;
-};
+org.goorm.core.admin.user_manager = {
+	dialog: null,
+	buttons: null,
+	manager: null,
 
-org.goorm.core.admin.user_manager.prototype = {
 	init: function () {
 		var self = this;
 
-		this.manager = new org.goorm.core.admin.user_manager.manager();
+		this.manager = org.goorm.core.admin.user_manager.manager;
 		this.manager.init();
 		
-		this.dialog = new org.goorm.core.admin.user_manager.dialog();
+		this.dialog = org.goorm.core.admin.user_manager.dialog;
 	},
 	
 	load_default: function(){

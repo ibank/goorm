@@ -6,16 +6,14 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.file.save_as = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.tabview = null;
-	this.dialog_explorer = null;
-	this.is_save_anyway = false;
-	this.contents_data = null;
-};
+org.goorm.core.file.save_as = {
+	dialog: null,
+	buttons: null,
+	tabview: null,
+	dialog_explorer: null,
+	is_save_anyway: false,
+	contents_data: null,
 
-org.goorm.core.file.save_as.prototype = {
 	init: function () { 
 		var self = this;
 		
@@ -82,7 +80,7 @@ org.goorm.core.file.save_as.prototype = {
 		this.buttons = [ {text:"<span localization_key='save'>Save</span>", handler:handle_save, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}];
 						 
-		this.dialog = new org.goorm.core.file.save_as.dialog();
+		this.dialog = org.goorm.core.file.save_as.dialog;
 		this.dialog.init({
 			localization_key:"title_save_as",
 			title:"Save as", 

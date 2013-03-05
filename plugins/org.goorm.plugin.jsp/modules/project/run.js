@@ -34,11 +34,13 @@ module.exports = {
 
 		if(!fs.existsSync(target_path)) {
 			fs.mkdir(target_path, function(err){
-				evt.emit("do_run_complete", {
-					code : 500,
-					message : "failure"
-				});
-				return ;
+				if(err){
+					evt.emit("do_run_complete", {
+						code : 500,
+						message : "failure"
+					});
+					return ;
+				}
 			});
 		}
 		

@@ -25,18 +25,35 @@ module.exports = {
 			clients.forEach(function(client){
 				client.get('id_type', function(err, data){
 					if(data == target_id_type){
-						io.sockets.sockets[client.id].emit('communication_whisper_message', from_chatting_message);
+						var message_data = {
+							'message' : from_chatting_message,
+							'workspace' : msg.workspace
+						}
+
+						io.sockets.sockets[client.id].emit('communication_whisper_message', message_data);
 					};
 				})
 			});
 			
-			io.sockets.sockets[sessionid].emit('communication_whisper_message', to_chatting_message);
+			var message_data = {
+				'message' : to_chatting_message,
+				'workspace' : msg.workspace
+			}
+
+			io.sockets.sockets[sessionid].emit('communication_whisper_message', message_data);
 		}
 		else{ // or msg.action = send_message
 			var chatting_message = msg.nick + " : " + msg.message;
 			
-			socket.broadcast.to(msg.workspace).emit("communication_message", chatting_message);
-			socket.emit("communication_message", chatting_message);
+			var message_data = {
+				'message' : chatting_message,
+				'workspace' : msg.workspace
+			}
+
+			//socket.broadcast.to(msg.workspace).emit("communication_message", chatting_message);
+			//socket.emit("communication_message", chatting_message);
+			
+			io.sockets.in(msg.workspace).emit("communication_message", message_data);
 		}
 	},
 

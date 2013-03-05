@@ -6,16 +6,14 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.help.contents = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.tabview = null;
-	this.treeview = null;
-	this.top = null;
-	this.title = null;
-};
+org.goorm.core.help.contents = {
+	dialog: null,
+	buttons: null,
+	tabview: null,
+	treeview: null,
+	top: null,
+	title: null,
 
-org.goorm.core.help.contents.prototype = {
 	init: function () {
 		var self = this;
 		
@@ -119,6 +117,7 @@ org.goorm.core.help.contents.prototype = {
 					$(this).html(title);
 					$(this).parent().unbind("click");
 					$(this).parent().click(function () {
+						console.log(top);
 						$('#help_contents_middle').scrollTop(top);
 					});
 				}

@@ -12,7 +12,7 @@
 		"value": "취소"	
 	},
 	"find_info": {
-		"value": "아이디/비밀번호 찾기"	
+		"value": "계정정보찾기"	
 	},
 	"forgot_id": {
 		"value": "아이디 찾기"	
@@ -154,6 +154,9 @@
 	},
 	"modify" : {
 		"value" : "변경"
+	},
+	"modify_pw" : {
+		"value" : "비밀번호변경"
 	},
 	"All" : {
 		"value" : "모든 유저"

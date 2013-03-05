@@ -6,11 +6,9 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.project._delete.dialog = function () {
-	this.dialog = null;
-};
+org.goorm.core.project._delete.dialog = {
+	dialog: null,
 
-org.goorm.core.project._delete.dialog.prototype = {
 	init: function (option) {
 		this.dialog = new org.goorm.core.dialog();
 		this.dialog.init(option);

@@ -6,15 +6,13 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.cloud.explorer = function () {
-	this.treeview = null;
-	this.current_tree_data = null;	
-	this.which_cloud=null;
+org.goorm.core.cloud.explorer = {
+	treeview: null,
+	current_tree_data: null,
+	which_cloud: null,
 
-	this.google=null;
-};
-
-org.goorm.core.cloud.explorer.prototype = {
+	google: null,
+	
 	init: function () {
 		$("#cloud_explorer").empty();
 		var self = this;
@@ -31,7 +29,7 @@ org.goorm.core.cloud.explorer.prototype = {
 		});
 	
 		this.make_cloud_selectbox();
-		console.log(" cloud load complete");
+		console.log("cloud load complete");
 	},
 
 	make_cloud_selectbox: function() {
@@ -61,7 +59,6 @@ org.goorm.core.cloud.explorer.prototype = {
 				$(document).bind('tree_node_complete', function(evt, data){
 					if (data != null) {
 						var sorting_data = eval(data);
-					//	console.log('tree consist of this data', jQuery.extend(true,{},sorting_data));
 						core.cloud={};
 						core.cloud.google=jQuery.extend(true,{},sorting_data);
 

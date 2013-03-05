@@ -605,6 +605,27 @@
             "dialog_goorm_profile_email": {
                 "value": " 이메일 : "
              },
+             "dialog_goorm_profile_student_id": {
+                "value": " 학번 : "
+             },
+             "dialog_goorm_profile_lecture": {
+                "value": " 수강과목 : "
+             },
+             "dialog_goorm_profile_lect_1": {
+                "value": "컴퓨터 공학실습(월)"
+             },
+             "dialog_goorm_profile_lect_2": {
+                "value": "컴퓨터 공학실습(화)"
+             },
+             "dialog_goorm_profile_lect_3": {
+                "value": "컴퓨터 공학실습(수)"
+             },
+             "dialog_goorm_profile_lect_4": {
+                "value": "컴퓨터 공학실습(목)"
+             },
+             "dialog_goorm_profile_lect_5": {
+                "value": "컴퓨터 공학실습(금)"
+             },
             "dialog_goorm_profile_type": {
                 "value": " 타입 : "
              },

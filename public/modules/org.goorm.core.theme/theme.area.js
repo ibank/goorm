@@ -6,14 +6,12 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.theme.area = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.parent = null;
-	this.target = null;
-};
+org.goorm.core.theme.area = {
+	dialog: null,
+	buttons: null,
+	parent: null,
+	target: null,
 
-org.goorm.core.theme.area.prototype = {
 	init: function (parent) {
 		var self = this;
 		
@@ -71,7 +69,7 @@ org.goorm.core.theme.area.prototype = {
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}];
 						 
 						 
-		this.dialog = new org.goorm.core.theme._css.dialog();
+		this.dialog = org.goorm.core.theme._css.dialog;
 		this.dialog.init({
 			localization_key:"title_add_new_area",
 			title:"Add New Area", 

@@ -6,14 +6,12 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.help.search = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.tabview = null;
-	this.treeview = null;
-};
-
-org.goorm.core.help.search.prototype = {
+org.goorm.core.help.search = {
+	dialog: null,
+	buttons: null,
+	tabview: null,
+	treeview: null,
+	
 	init: function () {
 		var self = this;
 		

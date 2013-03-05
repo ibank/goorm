@@ -6,12 +6,5 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.collaboration = function () {
-
-};
-
-org.goorm.core.collaboration.prototype = {
-	init: function () {
-
-	}
+org.goorm.core.collaboration = {
 };

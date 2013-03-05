@@ -6,18 +6,27 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.clipboard = function () {
-	this.clip = null;
-};
+org.goorm.core.clipboard = {
+	clip: null,
 
-org.goorm.core.clipboard.prototype = {
-	
 	init: function (){
 		this.clip = {};
 		ZeroClipboard.setMoviePath( '/lib/com.zeroclipboard/ZeroClipboard.swf' );
 		
 		this._init_copy();
 		this._init_cut();
+		
+		var self = this;
+		// 메인메뉴를 열었을 시 플래시가 위에떠서 생기는 문제 해결
+		var menus = core.module.layout.mainmenu;
+		menus.subscribe("beforeShow", function(){
+			$(self.clip.copy.icon.div).hide();
+			$(self.clip.cut.icon.div).hide();
+		});
+		menus.subscribe("beforeHide", function(){
+			$(self.clip.copy.icon.div).show();
+			$(self.clip.cut.icon.div).show();
+		});
 	},
 	
 	_init_copy: function(){

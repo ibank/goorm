@@ -6,15 +6,13 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.help.check_for_updates = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.current_version = null;
-	this.official_version = null;
-	this.official_url = null;
-};
-
-org.goorm.core.help.check_for_updates.prototype = {
+org.goorm.core.help.check_for_updates = {
+	dialog: null,
+	buttons: null,
+	current_version: null,
+	official_version: null,
+	official_url: null,
+	
 	init: function () {
 		var self = this;
 		

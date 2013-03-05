@@ -2,6 +2,9 @@
 	"title_new_project": {
         "value": "New Project"
     },
+    "title_confirmation": {
+        "value": "Confirmation"
+    },
     "title_goorm_management": {
 	    "value": "Goorm Management"
     },
@@ -14,11 +17,14 @@
     "title_profile": {
 	    "value": "Profile"
     },
+    "title_exit": {
+        "value": "Exit"
+    },
     "title_register": {
 	    "value": "Register"
     },
      "title_forgot": {
-        "value": "Forgot id/pw"
+        "value": "Forgot ID/PW"
     },
     "title_join_online_project": {
 	    "value": "Join Online Project"

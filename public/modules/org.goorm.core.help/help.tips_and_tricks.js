@@ -6,13 +6,11 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.help.tips_and_tricks = function () {
-	this.dialog = null;
-	this.buttons = null;
-	this.tabview = null;
-};
+org.goorm.core.help.tips_and_tricks = {
+	dialog: null,
+	buttons: null,
+	tabview: null,
 
-org.goorm.core.help.tips_and_tricks.prototype = {
 	init: function () {
 		var self = this;
 		

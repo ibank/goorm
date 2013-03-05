@@ -6,26 +6,23 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.project.property = function () {
-	this.dialog = null;
-	this.tabview = null;
-	this.treeview = null;
-	this.buttons = null;
-	this.manager = null;
-	this.property = null;
-	this.plugin = null;
-	this.firstShow = true;
-};
+org.goorm.core.project.property = {
+	dialog: null,
+	tabview: null,
+	treeview: null,
+	buttons: null,
+	manager: null,
+	property: null,
+	plugin: null,
+	firstShow: true,
 
-org.goorm.core.project.property.prototype = {
 	init: function () { 
 		var self = this;
-		this.manager = new org.goorm.core.project.property.manager();
+		
+		this.manager = org.goorm.core.project.property.manager;
 		
 		this.property = {};
-		
-		this.dialog = new org.goorm.core.project.property.dialog();
-		
+
 		this.init_dialog();
 		
 		$(core).on("on_project_open", function(){
@@ -90,46 +87,46 @@ org.goorm.core.project.property.prototype = {
 	
 	refresh_toolbox: function () {
 
-		$(".toolsets").hide();
-		
-		var active_file_type = null;
-		
-		if (core.module.layout.workspace.window_manager.active_window > -1) {
-			active_file_type = core.module.layout.workspace.window_manager.window[core.module.layout.workspace.window_manager.active_window].filetype;
-		}
-
-		if(core.status.current_project_type) {
-			for (var value in core.module.plugin_manager.plugins) {
-				if ("org.goorm.plugin." + core.status.current_project_type.toLowerCase() == value) {
-					
-					if(core.module.plugin_manager.plugins["org.goorm.plugin."+core.status.current_project_type.toLowerCase()].refresh_toolbox) {				
-							core.module.plugin_manager.plugins["org.goorm.plugin."+core.status.current_project_type.toLowerCase()].refresh_toolbox();
-							if(toolbox_button_menu)
-								toolbox_button_menu.set("label", core.module.plugin_manager.plugins[value].toolbox_name);
-					}else{
-						$("#"+core.status.current_project_type.toLowerCase()+"_toolset").show();
-					}
-					
-					break;
-				}
-			}
-		}		
-		else if(active_file_type) {
-			for (var value in core.module.plugin_manager.plugins) {
-				if (typeof(core.module.plugin_manager.plugins[value].filetypes)!="undefined") {
-					if(core.module.plugin_manager.plugins[value].filetypes.indexOf(active_file_type) > -1) {
-						if(core.module.plugin_manager.plugins["org.goorm.plugin."+core.module.plugin_manager.plugins[value].name].refresh_toolbox) {				
-							core.module.plugin_manager.plugins["org.goorm.plugin."+core.module.plugin_manager.plugins[value].name].refresh_toolbox();
-						}else{
-							$("#"+core.module.plugin_manager.plugins[value].name+"_toolset").show();
-						}
-						
-						//toolbox_button_menu.set("label", core.module.plugin_manager.plugins[value].toolbox_name);
-						break;
-					}
-				}
-			}
-		}
+//		$(".toolsets").hide();
+//		
+//		var active_file_type = null;
+//		
+//		if (core.module.layout.workspace.window_manager.active_window > -1) {
+//			active_file_type = core.module.layout.workspace.window_manager.window[core.module.layout.workspace.window_manager.active_window].filetype;
+//		}
+//
+//		if(core.status.current_project_type) {
+//			for (var value in core.module.plugin_manager.plugins) {
+//				if ("org.goorm.plugin." + core.status.current_project_type.toLowerCase() == value) {
+//					
+//					if(core.module.plugin_manager.plugins["org.goorm.plugin."+core.status.current_project_type.toLowerCase()].refresh_toolbox) {				
+//							core.module.plugin_manager.plugins["org.goorm.plugin."+core.status.current_project_type.toLowerCase()].refresh_toolbox();
+//							if(toolbox_button_menu)
+//								toolbox_button_menu.set("label", core.module.plugin_manager.plugins[value].toolbox_name);
+//					}else{
+//						$("#"+core.status.current_project_type.toLowerCase()+"_toolset").show();
+//					}
+//					
+//					break;
+//				}
+//			}
+//		}		
+//		else if(active_file_type) {
+//			for (var value in core.module.plugin_manager.plugins) {
+//				if (typeof(core.module.plugin_manager.plugins[value].filetypes)!="undefined") {
+//					if(core.module.plugin_manager.plugins[value].filetypes.indexOf(active_file_type) > -1) {
+//						if(core.module.plugin_manager.plugins["org.goorm.plugin."+core.module.plugin_manager.plugins[value].name].refresh_toolbox) {				
+//							core.module.plugin_manager.plugins["org.goorm.plugin."+core.module.plugin_manager.plugins[value].name].refresh_toolbox();
+//						}else{
+//							$("#"+core.module.plugin_manager.plugins[value].name+"_toolset").show();
+//						}
+//						
+//						//toolbox_button_menu.set("label", core.module.plugin_manager.plugins[value].toolbox_name);
+//						break;
+//					}
+//				}
+//			}
+//		}
 	},
 	
 	// save current property(core.property) to project.json
@@ -327,7 +324,7 @@ org.goorm.core.project.property.prototype = {
 		this.buttons = [ {text:"<span localization_key='ok'>OK</span>", handler:handle_ok, isDefault:true},
 						 {text:"<span localization_key='cancel'>Cancel</span>",  handler:handle_cancel}]; 
 						 
-		this.dialog = new org.goorm.core.project.property.dialog();
+		this.dialog = org.goorm.core.project.property.dialog;
 		this.dialog.init({
 			localization_key:"title_project_property",
 			title:"Project Property", 

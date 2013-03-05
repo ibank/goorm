@@ -6,29 +6,26 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.collaboration.communication = function () {
-	this.userID = 0;
-	this.userName = null;
-	this.socket = null;
-	this.predefined_colors = null;
-  	this.assigned_colors = null;
-  	this.updating_process_running = false;
-  	this.update_queue = [];
-  	this.project_id = null;
-  	this.is_chat_on = null;
-  	this.timer = null;
+org.goorm.core.collaboration.communication = {
+	userID: 0,
+	userName: null,
+	socket: null,
+	predefined_colors: null,
+  	assigned_colors: null,
+  	updating_process_running: false,
+  	update_queue: [],
+  	project_id: null,
+  	is_chat_on: null,
+  	timer: null,
   	
-  	this.socket = null;
-  	this.context_menu = [];
-  	this.notification = null;
+  	socket: null,
+  	context_menu: [],
+  	notification: null,
   	
-  	this.selected_user = null;
-  	this.user_list = [];
-  	this.message_state = null;
-  	this.message_interface_data = {};
-};
-
-org.goorm.core.collaboration.communication.prototype = {
+  	selected_user: null,
+  	user_list: [],
+  	message_state: null,
+  	message_interface_data: {},
 
 	init: function (target) {
 		var self = this;
@@ -61,7 +58,12 @@ org.goorm.core.collaboration.communication.prototype = {
 			$("#goorm_inner_layout_right").find(".communication_message_container").height(layout_right_height - 195);
 		});
 		
- 		this.socket.on("communication_message", function (data) {
+ 		this.socket.on("communication_message", function (message_data) {
+ 			var data = message_data.message;
+ 			var msg_workspace = message_data.workspace;
+
+ 			if(msg_workspace != core.status.current_project_path) return;
+
  			data = decodeURIComponent(data);
 			
 			data = ((data.replace(/&/g, '&amp;')).replace(/\"/g, '&quot;')).replace(/\'/g, '&#39;'); 
@@ -83,11 +85,12 @@ org.goorm.core.collaboration.communication.prototype = {
  				self.notification.show();
  			}
  			else if($('#goorm_inner_layout_right .selected span').attr('localization_key') != 'communication'){
- 				$('#goorm_inner_layout_right').find('[localization_key="communication"]').addClass("glowing");
+ 				//$('#goorm_inner_layout_right').find('[localization_key="communication"]').addClass("glowing");
  			}
  		});
  		
- 		this.socket.on("communication_whisper_message", function(data) {
+ 		this.socket.on("communication_whisper_message", function(message_data) {
+ 			var data = message_data.message;
  			data = decodeURIComponent(data);
  			
 			data = ((data.replace(/&/g, '&amp;')).replace(/\"/g, '&quot;')).replace(/\'/g, '&#39;'); 
@@ -103,91 +106,85 @@ org.goorm.core.collaboration.communication.prototype = {
  				self.notification.show();
  			}
  			else if($('#goorm_inner_layout_right .selected span').attr('localization_key') != 'communication'){
- 				$('#goorm_inner_layout_right').find('[localization_key="communication"]').addClass("glowing");
+ 				//$('#goorm_inner_layout_right').find('[localization_key="communication"]').addClass("glowing");
  			}
  		});
  		
  		//save user colors
 		self.boxcolors = {};
 		
+		var remove_context_menu = function(data,callback){
+			for(var i = (self.context_menu.length-1) ; i>= 0 ; i--){
+				if(self.context_menu[i] && self.context_menu[i].remove){
+					self.context_menu[i].remove();
+					self.context_menu.pop();
+				}
+			}
+			callback(data);
+		}
  		this.socket.on("communication_someone_joined", function (data) {
- 			data = JSON.parse(data);
- 			if(data.workspace != core.status.current_project_path) return;
+ 			remove_context_menu(data,function(data){
+ 				data = JSON.parse(data);
+	 			if(data.workspace != core.status.current_project_path) return;
 
- 			$("#" + self.target).find(".communication_user_container").empty();
- 			self.user_list = data.list;
+	 			$("#" + self.target).find(".communication_user_container").empty();
+	 			self.user_list = data.list;
+	 			for(var i=0; i<data.list.length; i++){
+	 				var user_data = JSON.parse(data.list[i]);
+	 				// var user_item = $("#communication .communication_user_item[user_nick='" + data.nick +  "']");
+					var item_id = "communication_user_item"+i;
+	 				var user_item = self.get_user_item(user_data, item_id); 				
+	 				$("#" + self.target).find(".communication_user_container").append(user_item);
+	 				
+	 				if(user_data.user == core.user.id){
+	 					$('.communication_user_container [user_id="'+core.user.id+'"]').find('.context_menu_button').hide()
+	 				}
+	 				else{
+		 				self.attach_context_menu(i, '#'+item_id);
+	 				}
+
+	 				self.set_box_color(user_data);
+	 			}
+	 			
+	 			$("#" + self.target).find(".communication_message_container").append("<div>" + data.nick + " joined this workspace!</div>");
+ 			});
  			
- 			for(var i=0; i<data.list.length; i++){
- 				var user_data = JSON.parse(data.list[i]);
- 				// var user_item = $("#communication .communication_user_item[user_nick='" + data.nick +  "']");
- 				
-				var item_id = "communication_user_item"+i;
- 				var user_item = self.get_user_item(user_data, item_id); 				
- 				$("#" + self.target).find(".communication_user_container").append(user_item);
- 				
- 				if(user_data.user == core.user.id){
- 					$('.communication_user_container [user_id="'+core.user.id+'"]').find('.context_menu_button').hide()
- 				}
- 				else{
-	 				self.attach_context_menu(i, '#'+item_id);
- 				}
-
- 				if(self.boxcolors[user_data.nick]){	// box color cached?
-					$("#communication .communication_user_item[user_nick='" + user_data.nick +  "'] .communication_user_item_color_box").css("background-color", self.boxcolors[user_data.nick].light_color);
-					$("#communication .communication_user_item[user_nick='" + user_data.nick +  "'] .communication_user_item_color_box").css("border-color", self.boxcolors[user_data.nick].color);
- 				}else{
-		 			// moved from public/modules/org.goorm.core.collaboration/collaboration.editing.js > set_cursor()
-		 			// these color will be reused to make collaborator's cursor color.
-		 			// @author : roland87
-		 			var red = Math.floor(Math.random()*206) - Math.floor(Math.random()*30);
-					var green = Math.floor(Math.random()*206) - Math.floor(Math.random()*30);
-					var blue = Math.floor(Math.random()*206) - Math.floor(Math.random()*30);
-					
-					var light_red = (red + 90 >= 255)? 255 : red + 90;
-					var light_green = (red + 90 >= 255)? 255 : green + 90;
-					var light_blue = (red + 90 >= 255)? 255 : blue + 90;
-					
-					var color = '#' + red.toString(16) + green.toString(16) + blue.toString(16);
-					var light_color = '#' + light_red.toString(16) + light_green.toString(16) + light_blue.toString(16);
-					
-					$("#communication .communication_user_item[user_nick='" + user_data.nick +  "'] .communication_user_item_color_box").css("background-color", light_color);
-					$("#communication .communication_user_item[user_nick='" + user_data.nick +  "'] .communication_user_item_color_box").css("border-color", color);
-
-					self.boxcolors[user_data.nick] = {light_color: light_color, color: color};
- 				}
- 			}
- 			
- 			$("#" + self.target).find(".communication_message_container").append("<div>" + data.nick + " joined this workspace!</div>");
  		});
  		
  		this.socket.on("communication_someone_leaved", function (data) {
- 			data = JSON.parse(data);
- 			if(data.workspace != core.status.current_project_path) return;
+ 			remove_context_menu(data, function(data){
+ 				data = JSON.parse(data);
+	 			if(data.workspace != core.status.current_project_path) return;
+	 			
 
- 			$("#" + self.target).find(".communication_user_container").empty();
- 			self.user_list = data.list;
+	 			$("#" + self.target).find(".communication_user_container").empty();
+	 			self.user_list = data.list;
+	 			
+	 			for(var i=0; i<data.list.length; i++){
+	 				var user_data = JSON.parse(data.list[i]);
+
+					var item_id = "communication_user_item"+i
+	 				var user_item = self.get_user_item(user_data, item_id);
+	 				$("#" + self.target).find(".communication_user_container").append(user_item);
+
+	 				if(user_data.user == core.user.id){
+	 					$('.communication_user_container [user_id="'+core.user.id+'"]').find('.context_menu_button').hide()
+	 				}
+	 				else{
+		 				self.attach_context_menu(i, '#'+item_id);
+		 				
+	 				}
+
+	 				self.set_box_color(user_data);
+	 			}
+	 			
+	 			$("#" + self.target).find(".communication_message_container").append("<div>" + data.nick + " leaved this workspace!</div>");
+	 			
+	 			// $("#communication > .communication_user_container > .communication_user_item[user_nick='" + data.nick + "']").remove();
+	 			// $("#" + self.target).find(".communication_user_container").html(data.list.join("<br />"));
+	 			delete self.boxcolors[data.nick];
+ 			});
  			
- 			for(var i=0; i<data.list.length; i++){
- 				var user_data = JSON.parse(data.list[i]);
-
-				var item_id = "communication_user_item"+i
- 				var user_item = self.get_user_item(user_data, item_id);
-
- 				if(user_data.user == core.user.id){
- 					$('.communication_user_container [user_id="'+core.user.id+'"]').find('.context_menu_button').hide()
- 				}
- 				else{
-	 				self.attach_context_menu(i, '#'+item_id);
- 				}
-
- 				$("#" + self.target).find(".communication_user_container").append(user_item);
- 			}
- 			
- 			$("#" + self.target).find(".communication_message_container").append("<div>" + data.nick + " leaved this workspace!</div>");
- 			
- 			// $("#communication > .communication_user_container > .communication_user_item[user_nick='" + data.nick + "']").remove();
- 			// $("#" + self.target).find(".communication_user_container").html(data.list.join("<br />"));
- 			delete self.boxcolors[data.nick];
  		});
  		
  		this.socket.on('disconnect', function() {
@@ -214,7 +211,7 @@ org.goorm.core.collaboration.communication.prototype = {
  			}
  		}, ".communication_user_item")
  		
- 		this.notification = new org.goorm.core.collaboration.notification();
+ 		this.notification = org.goorm.core.collaboration.notification;
  		this.notification.init();
 	},
 	
@@ -237,6 +234,34 @@ org.goorm.core.collaboration.communication.prototype = {
 		
 	},
 	
+	set_box_color : function(user_data){
+		var self = this;
+
+		if(self.boxcolors[user_data.nick]){	// box color cached?
+			$("#communication .communication_user_item[user_nick='" + user_data.nick +  "'] .communication_user_item_color_box").css("background-color", self.boxcolors[user_data.nick].light_color);
+			$("#communication .communication_user_item[user_nick='" + user_data.nick +  "'] .communication_user_item_color_box").css("border-color", self.boxcolors[user_data.nick].color);
+		}else{
+			// moved from public/modules/org.goorm.core.collaboration/collaboration.editing.js > set_cursor()
+			// these color will be reused to make collaborator's cursor color.
+			// @author : roland87
+			var red = Math.floor(Math.random()*206) - Math.floor(Math.random()*30);
+			var green = Math.floor(Math.random()*206) - Math.floor(Math.random()*30);
+			var blue = Math.floor(Math.random()*206) - Math.floor(Math.random()*30);
+			
+			var light_red = (red + 90 >= 255)? 255 : red + 90;
+			var light_green = (red + 90 >= 255)? 255 : green + 90;
+			var light_blue = (red + 90 >= 255)? 255 : blue + 90;
+			
+			var color = '#' + red.toString(16) + green.toString(16) + blue.toString(16);
+			var light_color = '#' + light_red.toString(16) + light_green.toString(16) + light_blue.toString(16);
+			
+			$("#communication .communication_user_item[user_nick='" + user_data.nick +  "'] .communication_user_item_color_box").css("background-color", light_color);
+			$("#communication .communication_user_item[user_nick='" + user_data.nick +  "'] .communication_user_item_color_box").css("border-color", color);
+
+			self.boxcolors[user_data.nick] = {light_color: light_color, color: color};
+		}
+	},
+
 	set_chat_on: function () {
 		
 	},
@@ -287,7 +312,6 @@ org.goorm.core.collaboration.communication.prototype = {
 	attach_context_menu : function(i, trigger){
 		var self = this;
 		var 	timestamp = (new Date()).getTime();
-
 		this.context_menu[i] = new org.goorm.core.menu.context();
 		this.context_menu[i].init("configs/menu/org.goorm.core.collaboration/collaboration.communication.user.html", "user.context", $(trigger), timestamp, null, function(){
 			$("a[action=account_profile_context]").unbind("click");
@@ -296,6 +320,7 @@ org.goorm.core.collaboration.communication.prototype = {
 				if(user){
 					core.module.auth.show_profile(user.id, user.type);
 				}
+				self.context_menu[i].hide();
 			});
 			
 			$("a[action=account_user_whisper]").unbind("click");
@@ -312,6 +337,7 @@ org.goorm.core.collaboration.communication.prototype = {
 					$("#" + communication.target + " #input_chat_message").val('[@'+user.nick+'] ')
 					$("#" + communication.target + " #input_chat_message").focus();
 				}
+				self.context_menu[i].hide();
 			});
 			
 			if(self.context_menu[i].menu){
@@ -354,7 +380,7 @@ org.goorm.core.collaboration.communication.prototype = {
 		
 		function get_user_index(target, type){
 			var user_list = self.user_list;
-			
+			self.user_number = user_llst.length;
 			for(var i=0; i<user_list.length; i++){
 				var data = JSON.parse(user_list[i]);
 				if(data[type] == target){

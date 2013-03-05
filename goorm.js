@@ -59,11 +59,14 @@ fs.readFile(__dirname+"/info_goorm.json", "utf8", function(err, contents) {
 				console.log('');
 				console.log('      -d, --daemon           run the goorm server as a daemon using the forever module...');
 				console.log('      -p, --port [PORT NUM]  run the goorm server with port which you want...');
+				console.log('      --redis-mode  run the goorm server with redis-server');
 				console.log('');
 				console.log('      $ node goorm.js start -d');
 				console.log('      $ goorm start --daemon');
 				console.log('      $ node goorm.js start -p 9999');
 				console.log('      $ goorm start --port 9999');
+				console.log('      $ node goorm.js start --redis-mode');
+				console.log('      $ goorm start --redis-mode');
 				console.log('');
 				console.log('   - Restart goormIDE server:');
 				console.log('');
@@ -144,12 +147,13 @@ fs.readFile(__dirname+"/info_goorm.json", "utf8", function(err, contents) {
 			.option('-p, --port [PORT NUM]', 'run the goorm server with port which you want...')
 			.option('-s, --send-info [Y/N],', 'send server information to developer...')
 			.option('-h, --home [HOME Directory]', 'set HOME directory in server')
-			.option('--service', 'run the goorm server as a service mode...')
+			.option('--redis-mode', 'run the goorm with redis-server')
 			.action(function (env, options) {
 				var process_options = [];
 				process_options.push(options.port);
 				process_options.push(options.home);
 				var service_mode = false;
+				var redis_mode = false;
 
 				function start_process(){
 					if (options.daemon) {							
@@ -168,8 +172,18 @@ fs.readFile(__dirname+"/info_goorm.json", "utf8", function(err, contents) {
 				if(options.service){
 					service_mode = true;
 					process_options.push(service_mode);
+				} else {
+					process_options.push(service_mode);
+				}
+
+				if(options.redisMode){
+					redis_mode = true;
+					process_options.push(redis_mode);
+				} else {
+					process_options.push(redis_mode);
 				}
 				
+
 				if(options['sendInfo']){
 					var send = options['sendInfo'];
 					if(send == 'y' || send == 'yes' || send == 'Y' || send == 'Yes'){

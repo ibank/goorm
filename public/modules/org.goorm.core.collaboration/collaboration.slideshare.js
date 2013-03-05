@@ -6,27 +6,25 @@
  * version: 1.0.0
  **/
 
-org.goorm.core.collaboration.slideshare = function () {
-  	this.socket = null;
-	this.current_slide_name = null;
-	this.button_play = null;
-	this.button_prev = null;
-	this.button_next = null;
-	this.canvas = null;
-	this.slideshare_document = null;
-	this.ctx = null;
-	this.myctx = {
+org.goorm.core.collaboration.slideshare = {
+  	socket: null,
+	current_slide_name: null,
+	button_play: null,
+	button_prev: null,
+	button_next: null,
+	canvas: null,
+	slideshare_document: null,
+	ctx: null,
+	myctx: {
 		strokeStyle : "#FF0000",
 		lineWidth : 3
-	};
-	this.datum = null;
-	this.flashMovie = null;
-	this.drawing_state = 'undraw';
-	this.slide_show_mode = false;
-	this.layout_temp_data = {}
-};
+	},
+	datum: null,
+	flashMovie: null,
+	drawing_state: 'undraw',
+	slide_show_mode: false,
+	layout_temp_data: {},
 
- org.goorm.core.collaboration.slideshare.prototype = {
 
 	init: function(){
 		this.socket = io.connect();
@@ -34,10 +32,7 @@ org.goorm.core.collaboration.slideshare = function () {
 
 		var slide_body = "";
 		slide_body += "<div id='slide_url' class='layout_right_slide_tab'>";
-		slide_body +=	"URL <input id='slideshare_url' type='text' value='http://www.slideshare.net/jeg0330/goorm-15035830'/>"
-		slide_body += 	"<select id='slide_select' style='display:none'>"
-		slide_body += 		"<option>Select_url</option>"
-		slide_body += 	"</select>"
+		slide_body +=	"<div id='slide_url_input'>URL <input id='slideshare_url' type='text' value='http://www.slideshare.net/nrkim87/ss'/></div>"
 		slide_body += "</div>";
 		slide_body += "<div id='slide_menu'>"
 		slide_body += 	"<div id='slide_control'>"
@@ -87,7 +82,8 @@ org.goorm.core.collaboration.slideshare = function () {
 		//$("#slideshare_palette_container").hide();
 		//$("#slideshare_palette_container").attr("state","hide");
 		//$("#slideshare_palette_container").css("position","absolute");
-
+		this.slide_qu = [];
+		this.slide_page = 1;
 		$('a[action="slideshare_draw"]').attr("value","draw");
 		var slider = new YAHOO.widget.Slider.getHorizSlider("sliderbg", "sliderthumb", 0, 200);
 		slider.subscribe("slideEnd", function (){
@@ -119,6 +115,7 @@ org.goorm.core.collaboration.slideshare = function () {
 				$(self.canvas).css('z-index', '1');
 				if(self.connect_button.attr('state')=="connected")
 					self.connect_button.addClass('slide_button_pressed');
+
 			} else {
 				$(this).attr('value', 'undraw');
 				$(self.canvas).css('z-index', '4');
@@ -130,6 +127,9 @@ org.goorm.core.collaboration.slideshare = function () {
 				if(count == 0) {
 					self.draw_init();
 					count++;
+				}
+				if(self.slide_qu[self.slide_page]){
+					self.ctx.drawImage(self.slide_qu[self.slide_page], 0, 0,$("#iframe_slideshare").contents().find("#main").width(),$("#iframe_slideshare").contents().find("#main").height());
 				}
  				//self.draw_canvas();
 
@@ -148,7 +148,6 @@ org.goorm.core.collaboration.slideshare = function () {
 			$("a[action=slideshare_brush]").hide();
 			$("a[action=slideshare_erase_all]").hide();*/
  		$("body").one("share_drawing", function () {
- 		
 			self.canvas = iframe_slideshare.get_canvas();
 			$(self.canvas).css('z-index', '4');
 			self.slideshare_document = iframe_slideshare.get_document();
@@ -172,12 +171,19 @@ org.goorm.core.collaboration.slideshare = function () {
 		this.button_play = new YAHOO.widget.Button("slideshare_presentation", {
 			onclick: {
 				fn:function(){
-					if(self.ctx != null) {
+					if(self.canvas){
+						var dataURL =self.canvas.toDataURL();
+						var img = new Image;
+						img.src = dataURL;
+						self.slide_qu[self.slide_page] = img;
+						self.slide_page = 1;
 						self.erase_all();
-						self.socket_mode('slideshare','{"channel":"erase_all", "workspace": "'+ core.status.current_project_path +'"}');
-						//self.socket.emit("slideshare",'{"channel":"erase_all", "workspace": "'+ core.status.current_project_name +'"}');
+						if(self.slide_qu[self.slide_page]){
+							//self.slide_qu[self.slide_page].onload = function(){
+							self.ctx.drawImage(self.slide_qu[self.slide_page], 0, 0,$("#iframe_slideshare").contents().find("#main").width(),$("#iframe_slideshare").contents().find("#main").height());
+						}
+						
 					}
-
 					var url = $("#slideshare_url").val();
 					if(url != ""){
 						self.load_slide(url);
@@ -194,6 +200,18 @@ org.goorm.core.collaboration.slideshare = function () {
  				fn:function(){
 	 				iframe_slideshare.player.previous();
 					self.socket_mode("message", '{"channel": "slideshare", "workspace": "'+ core.status.current_project_path +'", "slide_url":"'+self.current_slide_name+'", "page":'+iframe_slideshare.player.getCurrentSlide()+'}');
+					if(self.canvas){
+						var dataURL =self.canvas.toDataURL();
+						var img = new Image;
+						img.src = dataURL;
+						self.slide_qu[self.slide_page] = img;
+						--self.slide_page;
+						self.erase_all();
+						if(self.slide_qu[self.slide_page]){
+							//self.slide_qu[self.slide_page].onload = function(){
+							self.ctx.drawImage(self.slide_qu[self.slide_page], 0, 0,$("#iframe_slideshare").contents().find("#main").width(),$("#iframe_slideshare").contents().find("#main").height());
+						}
+					}
 				}
 			}
 		});
@@ -202,7 +220,22 @@ org.goorm.core.collaboration.slideshare = function () {
  			onclick: {
  				fn: function(){
 					iframe_slideshare.player.next();
-					self.socket_mode("message", '{"channel": "slideshare", "workspace": "'+ core.status.current_project_path +'", "slide_url":"'+self.current_slide_name+'", "page":'+iframe_slideshare.player.getCurrentSlide()+'}');
+					if(self.slide_page!=iframe_slideshare.player.getCurrentSlide()){
+						self.socket_mode("message", '{"channel": "slideshare", "workspace": "'+ core.status.current_project_path +'", "slide_url":"'+self.current_slide_name+'", "page":'+iframe_slideshare.player.getCurrentSlide()+'}');
+						if(self.canvas){
+							var dataURL =self.canvas.toDataURL();
+							var img = new Image;
+							img.src = dataURL;
+							self.slide_qu[self.slide_page] = img;
+							++self.slide_page;
+							self.erase_all();
+							if(self.slide_qu[self.slide_page]){
+								//self.slide_qu[self.slide_page].onload = function(){
+								self.ctx.drawImage(self.slide_qu[self.slide_page], 0, 0,$("#iframe_slideshare").contents().find("#main").width(),$("#iframe_slideshare").contents().find("#main").height());
+							}
+							
+						}
+					}
 				}
 			}
 		});
@@ -221,7 +254,6 @@ org.goorm.core.collaboration.slideshare = function () {
 		var self = this;
 		var msg_obj = (typeof(raw_msg) == "string") ? JSON.parse(raw_msg) : raw_msg;
 		var channel = "";
-
 		if (msg_obj["channel"] != undefined) {
 			channel = msg_obj["channel"];
 		}
@@ -234,6 +266,9 @@ org.goorm.core.collaboration.slideshare = function () {
 			break;
 		case "erase_all" :
 			self.erase_all();
+			break;
+		case "request" :
+			self.request_current_state();
 			break;
 		}	
 	},
@@ -292,18 +327,52 @@ org.goorm.core.collaboration.slideshare = function () {
 		self.socket.on("slideshare_get", function (data) {
 				self.draw_slideshare_msg(data);
 		});
+		if($('#slide_authentic').val()!='true')
+			self.socket.emit("message", '{"channel":"slideshare", "type": "request", "userid":"'+core.user.id+'", "workspace": "'+ core.status.current_project_path +'"}');
 		self.socket.on("slideshare_message", function (data) {
 			/*
 			 * data = {slide_url, page}
 			 */
+			if(self.canvas && self.ctx){
+				if(data.img){
+					console.log(data.img);
+					var dataURL = data.img;
+					var img = new Image;
+					img.src = dataURL;
+					self.slide_page = data.page;
+					self.slide_qu[data.page] = img;
+					self.erase_all();
+					img.onload = function(){
+						self.ctx.drawImage(img, 0, 0,$("#iframe_slideshare").contents().find("#main").width(),$("#iframe_slideshare").contents().find("#main").height());
+					};
+				}else{
+					var dataURL =self.canvas.toDataURL();
+					var img = new Image;
+					img.src = dataURL;
+					self.slide_qu[self.slide_page] = img;
+					self.slide_page = data.page;
+					self.erase_all();
+					if(self.slide_qu[data.page]){
+						self.ctx.drawImage(self.slide_qu[data.page], 0, 0,$("#iframe_slideshare").contents().find("#main").width(),$("#iframe_slideshare").contents().find("#main").height());
+					}	
+				}		
+			}else if(data.img){
+				var dataURL = data.img;
+				var img = new Image;
+				img.src = dataURL;
+				self.slide_page = data.page;
+				self.slide_qu[data.page] = img;
+
+			}
 			if(data.slide_url != self.current_slide_name) {
 				iframe_slideshare.loadPlayer(data.slide_url, data.page);
 				self.current_slide_name = data.slide_url;
+				$("#slideshare_url").val(data.slide_url);
+				self.slide_qu = [];
 			}
 			if(iframe_slideshare.player && iframe_slideshare.player.jumpTo) {
 				iframe_slideshare.player.jumpTo(data.page);
 			}
-
 			$("body").trigger("share_drawing");
 		});
 	},
@@ -405,12 +474,14 @@ org.goorm.core.collaboration.slideshare = function () {
 			$('#eraser').hide();
 		});
 
-		$("#erase_all, #slide_prev, #slide_next").unbind('click');
-		$("#erase_all, #slide_prev, #slide_next").click( function () {
+		//$("#erase_all, #slide_prev, #slide_next").unbind('click');
+		//$("#erase_all, #slide_prev, #slide_next").click( function () {
+		$("#erase_all").unbind('click');
+		$("#erase_all").click( function(){
 			self.ctx.beginPath();
 			self.ctx.clearRect( 0, 0, self.ctx.canvas.width, self.ctx.canvas.height);
 			self.ctx.closePath();
-			self.socket.emit("slideshare",'{"channel":"erase_all", "workspace": "'+ core.status.current_project_path +'"}');
+			self.socket_mode("slideshare",'{"channel":"erase_all", "workspace": "'+ core.status.current_project_path +'"}');
 		});
 		
 		if(self.picker==null){
@@ -492,6 +563,7 @@ org.goorm.core.collaboration.slideshare = function () {
 					"workspace" : core.status.current_project_path,
 					"x" : e.pageX/self.canvas.width,
 					"y" : e.pageY/self.canvas.height,
+					"erase_size" : self.erase_size,
 					"relative_width" : self.canvas.width,
 					"relative_height" : self.canvas.height
 				};
@@ -578,7 +650,8 @@ org.goorm.core.collaboration.slideshare = function () {
 	
 	erase : function (data) {
 		this.ctx.beginPath();
-		this.ctx.clearRect( data["x"]*this.canvas.width, data["y"]*this.canvas.height, this.erase_size*this.canvas.width/data["relative_width"], this.erase_size*this.canvas.height/data["relative_height"]);
+		this.ctx.clearRect( data["x"]*this.canvas.width, data["y"]*this.canvas.height, data["erase_size"]*this.canvas.width/data["relative_width"], data["erase_size"]*this.canvas.height/data["relative_height"]);
+		//this.ctx.clearRect( data["x"]*this.canvas.width, data["y"]*this.canvas.height, this.erase_size, this.erase_size);
 		this.ctx.closePath();
 	},
 	/*highlight: function(data){
@@ -594,17 +667,10 @@ org.goorm.core.collaboration.slideshare = function () {
 		this.ctx.stroke();
 	},*/
 	erase_all : function () {
-		this.ctx.beginPath();
-		this.ctx.clearRect( 0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-		this.ctx.closePath();
-	},
-	// thickness : function (data) {
-	// 	this.ctx.beginPath();
-	// 	this.ctx.lineWidth = data["lineWidth"];
-	// 	this.ctx.closePath();
-	// },
-
-	hide_all : function(){
-
+		if(this.ctx){
+			this.ctx.beginPath();
+			this.ctx.clearRect( 0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+			this.ctx.closePath();
+		}
 	}
 };

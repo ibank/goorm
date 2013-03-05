@@ -50,8 +50,9 @@ module.exports = {
 		io.sockets.in(msg.workspace).emit("communication_someone_joined", JSON.stringify(return_msg))
 	},
 	
-	msg: function (socket, msg) {
-		socket.broadcast.to(msg.workspace).emit("workspace_message", JSON.stringify(msg));
+	msg: function (io, socket, msg) {
+		//socket.broadcast.to(msg.workspace).emit("workspace_message", JSON.stringify(msg));
+		io.sockets.in(msg.workspace).emit("workspace_message", JSON.stringify(msg));
 	},
 	
 	leave: function (io, socket, msg) {
@@ -72,11 +73,13 @@ module.exports = {
 					workspace : msg.workspace
 				};
 
-				socket.broadcast.to(msg.workspace).emit("communication_someone_leaved", JSON.stringify(return_msg));
+				//socket.broadcast.to(msg.workspace).emit("communication_someone_leaved", JSON.stringify(return_msg));
+				io.sockets.in(msg.workspace).emit("communication_someone_leaved", JSON.stringify(return_msg));
 			}
 		}
 
-		socket.broadcast.to(msg.workspace).emit("editing_someone_leaved", msg.nick);
+		//socket.broadcast.to(msg.workspace).emit("editing_someone_leaved", msg.nick);
+		io.sockets.in(msg.workspace).emit("editing_someone_leaved", msg.nick);
 	},
 
 	invite : function(io, socket, msg){
