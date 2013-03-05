@@ -80,14 +80,6 @@ module.exports = {
 											project_type : query.project_type
 										}
 
-										if(__service_mode){
-											var project_permission_data = {
-												project_path : __workspace + '/' + project_dir
-											}
-
-											evt.emit("project_change_permission", project_permission_data)
-										}
-
 										evt.emit("project_add_db", project_db_data);
 										evt.emit("project_do_new", data);
 									}

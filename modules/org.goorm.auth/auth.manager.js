@@ -352,88 +352,39 @@ module.exports = {
 		
 		self.get(user, function(user_data){
 			if(user_data && !user_data.deleted){
+				sha_pw.update(user.pw);
 
-				// For Service Mode
-				//
-				if(global.__service_mode){
-					if(user_data.uid && user_data.gid){
-						sha_pw.update(user.pw);
+				if(user_data.pw == sha_pw.digest('hex')){
+					self.duplicate_login_check(user_data, function(can_be_login){
 
-						if(user_data.pw == sha_pw.digest('hex')){
-							self.duplicate_login_check(user_data, function(can_be_login){
+						if(can_be_login){
 
-								if(can_be_login){
+							// Update Session
+							//
+							self.update_session(req.session, user_data);
 
-									// Update Session
-									//
-									self.update_session(req.session, user_data);
-
-									//	Access User
-									//
-									self.access(user);
-									callback({
-										result : true
-									});
-								}
-								else{
-									// duplicate login process
-									//
-									callback({
-										code : 2,
-										result : false
-									})
-								}
+							//	Access User
+							//
+							self.access(user);
+							callback({
+								result : true
 							});
 						}
 						else{
+							// duplicate login process
+							//
 							callback({
-								code : 0,
+								code : 2,
 								result : false
 							})
 						}
-					}
-					else{
-						callback({
-							code : 3,
-							result : false
-						})
-					}
+					});
 				}
 				else{
-					sha_pw.update(user.pw);
-
-					if(user_data.pw == sha_pw.digest('hex')){
-						self.duplicate_login_check(user_data, function(can_be_login){
-
-							if(can_be_login){
-
-								// Update Session
-								//
-								self.update_session(req.session, user_data);
-
-								//	Access User
-								//
-								self.access(user);
-								callback({
-									result : true
-								});
-							}
-							else{
-								// duplicate login process
-								//
-								callback({
-									code : 2,
-									result : false
-								})
-							}
-						});
-					}
-					else{
-						callback({
-							code : 0,
-							result : false
-						})
-					}
+					callback({
+						code : 0,
+						result : false
+					})
 				}
 			}
 			else{
