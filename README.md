@@ -3,8 +3,8 @@ project.goorm
 
 goorm is the cloud-based Integrated Development Environment. It is developed in only javascript and using various open source libraries. It is also an open-source project. goorm supports currently C/C++ and Java as well as HTML, CSS, PHP and Javascript. Other languages will be supported with plugin. (future works).
 
-* **goorm is developing now and this repository provides only beta version.**
-* **please, feedback to us about bugs and feature what you need.** (email: sungtae.ryu@goorm.io)
+* **goorm is developing now and this repository provides only the beta version.**
+* **please, give feedback to us about bugs and features that you need.** (email: sungtae.ryu@goorm.io)
 
 Installation
 ------------
@@ -48,15 +48,15 @@ Getting Started
           $ make
           $ sudo make install
 
-  check node.js installed successfully :
+  check if node.js installed successfully :
   
           $ node -v
           
-  if node.js installed successfully, it prints node.js version as below:
+  if node.js is installed successfully, it prints its version as below:
   
           $ v0.8.2
 
-  install npm (optional- latest version of node.js automatically install npm, so you may not install npm) :
+  install npm (optional- latest version of node.js automatically installs npm, so you may not need to install npm) :
   
   it requires curl to install npm, install curl as below :
         
@@ -134,7 +134,7 @@ Getting Started
           $ node goorm.js stop
           $ goorm stop
           
-  if goorm runned successfully, it prints information as below :
+  if goorm ran successfully, it prints information as below :
   
           goormIDE:: loading config...
           /--------------------------------------------------------
